@@ -74,5 +74,6 @@ Selon les avantages et inconvénients listés, la plupart des solutions existant
 
 Différentes sources :
 ---------------------
-http://igm.univ-mlv.fr/~dr/XPOSE2010/supervision/nagios.html
-https://www.supinfo.com/articles/single/3124-comparaison-outils-supervison
+
+* http://igm.univ-mlv.fr/~dr/XPOSE2010/supervision/nagios.html
+* https://www.supinfo.com/articles/single/3124-comparaison-outils-supervison
