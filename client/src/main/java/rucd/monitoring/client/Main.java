@@ -23,53 +23,31 @@
  */
 package rucd.monitoring.client;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.io.IOException;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
-/**
- * Run all the sensors.
- *
- * @author Thibault Debatty
- */
-public class Monitor {
+public class Main {
 
-    private final LinkedList<Sensor> sensors;
+    public static void main(String[] args) {
+        Monitor monitor = new Monitor();
+        Map<String, Object> analyze_result = monitor.analyze();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // Convert object to JSON string and pretty print
+            String json_string = mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(analyze_result);
+            System.out.println(json_string);
 
-    /**
-     * Initialize the monitor with the default sensors: disk usage, inodes
-     * usage, reboot required.
-     */
-    public Monitor() {
-        sensors = new LinkedList<>();
-        sensors.add(new Disk());
-        sensors.add(new Inodes());
-        sensors.add(new Reboot());
-    }
-
-    /**
-     * Run all the sensors and return the result as a map:
-     * name of the sensor -> result of the sensor.
-     * @return
-     */
-    public final Map<String, Object> analyze() {
-        Map<String, Object> results = new HashMap<>();
-        for (Sensor sensor : sensors) {
-            results.put(
-                    sensor.getClass().getSimpleName(),
-                    sensor.run());
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        return results;
     }
 
-    /*
-    public void getUpdate() {
-        String cmd = "gksudo cat /var/lib/update-notifier/updates-available";
-        String str = executeCommand(cmd);
-
-        String numberOnly = str.replaceAll("[^0-9]", "");
-        System.out.println(str);
-    }
-    */
 }

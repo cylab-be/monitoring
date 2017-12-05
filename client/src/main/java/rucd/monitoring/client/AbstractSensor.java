@@ -23,53 +23,38 @@
  */
 package rucd.monitoring.client;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
- * Run all the sensors.
  *
  * @author Thibault Debatty
  */
-public class Monitor {
+public abstract class AbstractSensor implements Sensor {
 
-    private final LinkedList<Sensor> sensors;
+    protected final String executeCommand(final String command) {
+        StringBuilder output = new StringBuilder();
+        Process p;
 
-    /**
-     * Initialize the monitor with the default sensors: disk usage, inodes
-     * usage, reboot required.
-     */
-    public Monitor() {
-        sensors = new LinkedList<>();
-        sensors.add(new Disk());
-        sensors.add(new Inodes());
-        sensors.add(new Reboot());
-    }
+        try {
+            p = Runtime.getRuntime().exec(command);
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
 
-    /**
-     * Run all the sensors and return the result as a map:
-     * name of the sensor -> result of the sensor.
-     * @return
-     */
-    public final Map<String, Object> analyze() {
-        Map<String, Object> results = new HashMap<>();
-        for (Sensor sensor : sensors) {
-            results.put(
-                    sensor.getClass().getSimpleName(),
-                    sensor.run());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return results;
+        return output.toString();
     }
-
-    /*
-    public void getUpdate() {
-        String cmd = "gksudo cat /var/lib/update-notifier/updates-available";
-        String str = executeCommand(cmd);
-
-        String numberOnly = str.replaceAll("[^0-9]", "");
-        System.out.println(str);
-    }
-    */
 }

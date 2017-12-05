@@ -23,53 +23,14 @@
  */
 package rucd.monitoring.client;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
 /**
- * Run all the sensors.
- *
+ * Check the space available on each partition by running the command "df".
  * @author Thibault Debatty
  */
-public class Monitor {
+public class Disk extends AbstractSensor {
 
-    private final LinkedList<Sensor> sensors;
-
-    /**
-     * Initialize the monitor with the default sensors: disk usage, inodes
-     * usage, reboot required.
-     */
-    public Monitor() {
-        sensors = new LinkedList<>();
-        sensors.add(new Disk());
-        sensors.add(new Inodes());
-        sensors.add(new Reboot());
+    @Override
+    public String run() {
+        return executeCommand("df");
     }
-
-    /**
-     * Run all the sensors and return the result as a map:
-     * name of the sensor -> result of the sensor.
-     * @return
-     */
-    public final Map<String, Object> analyze() {
-        Map<String, Object> results = new HashMap<>();
-        for (Sensor sensor : sensors) {
-            results.put(
-                    sensor.getClass().getSimpleName(),
-                    sensor.run());
-        }
-
-        return results;
-    }
-
-    /*
-    public void getUpdate() {
-        String cmd = "gksudo cat /var/lib/update-notifier/updates-available";
-        String str = executeCommand(cmd);
-
-        String numberOnly = str.replaceAll("[^0-9]", "");
-        System.out.println(str);
-    }
-    */
 }
