@@ -6,6 +6,6 @@ Security oriented monitoring service
 
 ## Components
 
-* [client](./client) : collect data on the system
+* [client](./client) : collect data on the systems
 * web : web interface to visualize data
 * analytics : process data to provide additional insight
