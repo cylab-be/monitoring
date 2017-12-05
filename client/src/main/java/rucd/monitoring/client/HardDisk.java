@@ -1,3 +1,5 @@
+package rucd.monitoring.client;
+
 import java.math.BigInteger;
 
 public class HardDisk {
@@ -61,5 +63,5 @@ public class HardDisk {
 		return "HardDisk [Name=" + Name + ", Blocs=" + Blocs + ", UsedBlocs=" + UsedBlocs + ", FreeBlocs=" + FreeBlocs
 				+ ", Used=" + Used + ", Mounted=" + Mounted + "]";
 	}
-	
+
 }

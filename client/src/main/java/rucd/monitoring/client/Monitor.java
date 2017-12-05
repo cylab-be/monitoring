@@ -1,3 +1,5 @@
+package rucd.monitoring.client;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class Monitor {
 	private String mac ="1";
 
 	public Monitor() {
-		super();		
+		super();
 	}
 
 	public String executeCommand(String command) {
@@ -50,7 +52,7 @@ public class Monitor {
 	public void getUpdate() {
 		String cmd = "gksudo cat /var/lib/update-notifier/updates-available";
 		String str = executeCommand(cmd);
-		
+
 		String numberOnly= str.replaceAll("[^0-9]", "");
 		System.out.println(str);
 	}
