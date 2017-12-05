@@ -45,6 +45,9 @@ public class Monitor {
         sensors.add(new Disk());
         sensors.add(new Inodes());
         sensors.add(new Reboot());
+        sensors.add(new Network());
+        sensors.add(new TCP());
+        sensors.add(new UDP());
     }
 
     /**
