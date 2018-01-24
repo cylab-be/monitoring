@@ -39,7 +39,14 @@ public class Main {
             // Convert object to JSON string and pretty print
             String json_string = mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(analyze_result);
-            System.out.println(json_string);
+            Uploader up = new Uploader(json_string);
+            up.initialize();
+            try {
+				up.post();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
         } catch (JsonGenerationException e) {
             e.printStackTrace();
