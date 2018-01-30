@@ -13,4 +13,8 @@ class Organizations extends Model
         return $this->belongsToMany('App\Models\User','users_organizations', 'organization_id','user_id')
             ->withTimestamps();
     }
+    public function servers()
+    {
+        return $this->hasMany('App\Models\Server', 'organization_id');
+    }
 }

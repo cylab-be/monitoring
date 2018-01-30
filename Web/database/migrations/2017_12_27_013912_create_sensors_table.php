@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSensorsTable extends Migration
 {
+    protected $connection = 'mongodb';
     /**
      * Run the migrations.
      *
@@ -13,9 +14,9 @@ class CreateSensorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sensors', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::connection($this->connection)->table('sensors', function(Blueprint $collection)
+        {
+            $collection->index('id');
         });
     }
 
@@ -26,6 +27,10 @@ class CreateSensorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sensors');
+        Schema::connection($this->connection)->table('sensors', function(Blueprint $collection)
+        {
+            $collection->dropIndex('id');
+        });
+
     }
 }

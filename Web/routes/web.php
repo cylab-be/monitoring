@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/org', 'OrganizationController@index')->name('organizations');
 Route::post('/org', 'OrganizationController@addOrg');
+Route::get('/org/{name}', ['uses' =>'OrganizationController@details']);
