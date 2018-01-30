@@ -14,7 +14,7 @@
                         </div>
                     @endif
                         @foreach ($organizations as $org)
-                            <p>{{ $org->name }}</p>
+                            <p><a href="\org\{{ $org->name }}">{{ $org->name }}</a></p>
                         @endforeach
 
                 </div>
