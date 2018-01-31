@@ -8,6 +8,11 @@ class Sensors extends Moloquent
 {
     protected $connection = 'mongodb';
     protected $collection = 'sensors';
-    protected $fillable = ['id','content'];
+    protected $fillable = ['id','content','server_id'];
+    protected $server;
 
+    public function server($id)
+    {
+        $server = Server::find($id);
+    }
 }

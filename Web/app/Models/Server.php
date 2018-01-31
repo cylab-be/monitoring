@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Server extends Model
 {
     protected $fillable = ['name'];
-
+    public $sensors;
     public function organization()
     {
         return $this->belongsTo('App\Models\Organizations');
+    }
+    public function sensors($id)
+    {
+        $this->sensors = json_encode(Sensors::where("server_id","".$id)->get());
     }
 }

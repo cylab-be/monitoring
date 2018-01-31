@@ -8,7 +8,7 @@
                 <div class="panel-heading">Organization : {{ $organization->name }}</div>
                 @foreach ($servers as $server)
                     <p> Server : {{ $server->name }}</p>
-
+                    <p> Sensors : {{ $server->sensors }}</p>
                 @endforeach
             </div>
         </div>

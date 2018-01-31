@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Organizations;
 use App\Models\Server;
+use App\Models\Sensors;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
@@ -21,6 +22,9 @@ class OrganizationController extends Controller
         $org =  Organizations::where('name',$name)->first();
         if($org==null)abort(404);
         $servers = $org->servers()->get();
-        return view("org/detail",['organization' => $org , 'servers' => $servers]);
+        foreach($servers as $server){
+            $server->sensors($server->id);
+        }
+       return view("org/detail",['organization' => $org , 'servers' => $servers]);
     }
 }

@@ -13,7 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    {{ $sensor }}
+            Look at your organizations : <a href="org">
+                            Organizations
+                        </a>
 
                 </div>
             </div>
