@@ -23,7 +23,7 @@ class OrganizationController extends Controller
         if($org==null)abort(404);
         $servers = $org->servers()->get();
         foreach($servers as $server){
-            $server->sensors($server->id);
+            $server->sensors();
         }
        return view("org/detail",['organization' => $org , 'servers' => $servers]);
     }

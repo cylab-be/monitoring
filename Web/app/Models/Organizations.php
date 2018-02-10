@@ -17,4 +17,5 @@ class Organizations extends Model
     {
         return $this->hasMany('App\Models\Server', 'organization_id');
     }
+    
 }

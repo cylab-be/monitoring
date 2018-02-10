@@ -8,7 +8,20 @@
                 <div class="panel-heading">Organization : {{ $organization->name }}</div>
                 @foreach ($servers as $server)
                     <p> Server : {{ $server->name }}</p>
-                    <p> Sensors : {{ $server->sensors }}</p>
+                    @if ($server->sensors !=null)
+                        <p> Sensors :}</p>
+                        @foreach($server->sensors as $sensor){
+                        <p> {{$sensor["content"]->{"TCP"} }}</p>
+                        <p> {{$sensor["content"]->{"UDP"} }}</p>
+                        <p> {{$sensor["content"]->{"Network"} }}</p>
+                        <p> {{$sensor["content"]->{"Inodes"} }}</p>
+                        @if($sensor["content"]->{"Reboot"})
+                             <p> ok</p>
+                        @else
+                            <p>not ok</p>
+                        @endif
+                        @endforeach
+                    @endif
                 @endforeach
             </div>
         </div>

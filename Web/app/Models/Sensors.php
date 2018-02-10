@@ -13,6 +13,6 @@ class Sensors extends Moloquent
 
     public function server($id)
     {
-        $server = Server::find($id);
+        $this->server = Server::find($id);
     }
 }

@@ -16,7 +16,23 @@
             Look at your organizations : <a href="org">
                             Organizations
                         </a>
+                    @foreach($organization as $org)
+                         <p> Organization : {{ $org->name }}</p>
+                            @foreach ($org->servers as $server)
+                                <p> Server : {{ $server->name }}</p>
+                                @if ($server->lastState["content"] != null)
 
+                                    <p> Last updated state:</p>
+
+                                    @if($server->lastState["content"]->{"Reboot"})
+                                        <p> ok</p>
+                                    @else
+                                        <p>not ok</p>
+                                    @endif
+
+                                @endif
+                            @endforeach
+                     @endforeach
                 </div>
             </div>
         </div>
