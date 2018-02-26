@@ -6178,3 +6178,9 @@ html, body {
 @media (min-width: 1200px) {
   .container {
     max-width: 970px; } }
+
+.collapse.show {
+  background-color: white; }
+
+.container {
+  padding-bottom: 3px; }
