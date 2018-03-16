@@ -17,7 +17,7 @@ class Server extends Model
 
     public function sensors()
     {
-        $sensors = Sensors::where("server_id","".$this->getKey())->get();
+        $sensors = Sensors::where("token","".$this->token)->get();
         foreach($sensors as $sensor){
             $sensor["content"] = json_decode($sensor["content"]);
         }
@@ -25,7 +25,7 @@ class Server extends Model
     }
     public function getLastState()
     {
-        $sensor = Sensors::where("server_id","".$this->getKey())->orderBy('created_at', 'desc')->first();
+        $sensor = Sensors::where("token","".$this->token)->orderBy('created_at', 'desc')->first();
         $sensor["content"] = json_decode($sensor["content"]);
 
         return $this->lastState = $sensor;
