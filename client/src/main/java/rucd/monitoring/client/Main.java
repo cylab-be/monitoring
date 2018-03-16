@@ -23,16 +23,70 @@
  */
 package rucd.monitoring.client;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
 
 public class Main {
-
+	public static String token;
     public static void main(String[] args) {
-        Monitor monitor = new Monitor();
+		Properties properties = new Properties();
+    	if(new File("config.properties").isFile()) {
+    		InputStream input = null;
+    		try {
+
+    			input = new FileInputStream("config.properties");
+
+    			// load a properties file
+    			properties.load(input);
+
+    			// get the property value and print it out
+    			token = properties.getProperty("token");
+    			System.out.println(token);
+    		} catch (IOException ex) {
+    			ex.printStackTrace();
+    		} finally {
+    			if (input != null) {
+    				try {
+    					input.close();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    	}else{
+			System.out.println("Veuillez entrer le token fourni par l'interface d'administration");
+			Scanner s = new Scanner(System.in);
+			token = s.nextLine();
+			
+			properties.setProperty("token", token);
+			// Save the grades properties using store() and an output stream
+			FileOutputStream out;
+			try {
+				out = new FileOutputStream(
+						"config.properties");
+				properties.store(out, null);
+				out.close();
+				System.out.println("Fichier de configuration créer");
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    	Monitor monitor = new Monitor();
         Map<String, Object> analyze_result = monitor.analyze();
         ObjectMapper mapper = new ObjectMapper();
         try {
