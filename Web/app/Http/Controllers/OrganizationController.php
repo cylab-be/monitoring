@@ -27,4 +27,14 @@ class OrganizationController extends Controller
         }
        return view("org/detail",['organization' => $org , 'servers' => $servers]);
     }
+    public function addServer(Request $request){
+        $server =  Server::where('token',$request->input('token'))->first();
+        if($server !=null){
+            $org =  Organizations::where('name',$request->input('organization'))->first();
+            $org->servers()->save($server);
+            return "ok";
+        }
+
+        return redirect()->back();
+    }
 }

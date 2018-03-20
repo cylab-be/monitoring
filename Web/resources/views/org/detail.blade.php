@@ -6,6 +6,11 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Organization : {{ $organization->name }}</div>
+                {{ Form::open(array('url' => 'org/'.$organization->name )) }}
+                Add a server : {{Form::text('token','Token')}}
+                {{ Form::submit('Add a server')}}
+                {{ Form::hidden('organization', $organization->name) }}
+                 {{ Form::close() }}
                 @foreach ($servers as $server)
                     <p> Server : {{ $server->name }}</p>
                     @if ($server->sensors !=null)

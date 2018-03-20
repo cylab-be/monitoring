@@ -21,3 +21,4 @@ Route::get('sensors/{sensor}', 'SensorController@show');
 Route::post('sensors', 'SensorController@store');
 Route::put('sensors/{sensor}', 'SensorController@update');
 Route::delete('sensors/{article}', 'SensorController@delete');
+Route::get('register', 'ServerController@register');

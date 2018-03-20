@@ -17,7 +17,7 @@ class CreateServersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('token');
-            $table->integer('organization_id')->unsigned();
+            $table->integer('organization_id')->nullable()->unsigned();
             $table->foreign('organization_id')
                 ->references('id')->on('organizations')
                 ->onDelete('cascade');
