@@ -38,7 +38,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-	public static String token;
+	public static String token="";
     public static void main(String[] args) {
 		Properties properties = new Properties();
     	if(new File("config.properties").isFile()) {
@@ -52,7 +52,8 @@ public class Main {
 
     			// get the property value and print it out
     			token = properties.getProperty("token");
-    			System.out.println(token);
+    			System.out.println("Insert the following token in organization management :");
+    			System.out.println("\""+token+"\"");
     		} catch (IOException ex) {
     			ex.printStackTrace();
     		} finally {
@@ -65,11 +66,20 @@ public class Main {
     			}
     		}
     	}else{
-			System.out.println("Veuillez entrer le token fourni par l'interface d'administration");
-			Scanner s = new Scanner(System.in);
-			token = s.nextLine();
+    		Uploader up = new Uploader();
+    		up.initialize();
+			while(token=="") {
+				try {
+					token = up.register();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
 			properties.setProperty("token", token);
+			System.out.println("Insert the following token in organization management :");
+			System.out.println("\""+token+"\"");
 			// Save the grades properties using store() and an output stream
 			FileOutputStream out;
 			try {
@@ -77,7 +87,7 @@ public class Main {
 						"config.properties");
 				properties.store(out, null);
 				out.close();
-				System.out.println("Fichier de configuration créer");
+				System.out.println("configuration file created");
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -89,11 +99,12 @@ public class Main {
     	Monitor monitor = new Monitor();
         Map<String, Object> analyze_result = monitor.analyze();
         ObjectMapper mapper = new ObjectMapper();
+        Uploader up;
         try {
             // Convert object to JSON string and pretty print
             String json_string = mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(analyze_result);
-            Uploader up = new Uploader(json_string);
+            up = new Uploader(json_string);
             up.initialize();
             try {
 				up.post();
