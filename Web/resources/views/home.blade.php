@@ -1,41 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-            Look at your organizations : <a href="org">
-                            Organizations
-                        </a>
-                    @foreach($organization as $org)
-                         <p> Organization : {{ $org->name }}</p>
-                            @foreach ($org->servers as $server)
-                                <p> Server : {{ $server->name }}</p>
-                                @if ($server->lastState["content"] != null)
-
-                                    <p> Last updated state:</p>
-
-                                    @if($server->lastState["content"]->{"Reboot"})
-                                        <p> ok</p>
-                                    @else
-                                        <p>not ok</p>
-                                    @endif
-
-                                @endif
-                            @endforeach
-                     @endforeach
+    <div class="py-5">
+        <div class="container bg-light">
+            <div class="row bg-primary">
+                <div class="col-md-12">
+                    <h3 class="display-5 text-light">Dashboard</h3>
                 </div>
+            </div>
+            <div class="row my-1">
+                <div class="col-md-12"><a class="text-muted text-xs-center" href="org">
+                        Look at your organizations
+                    </a>
+                </div>
+                @foreach($organization as $org)
+                    <div class="col-md-12">
+                        <div class="card border">
+                            <div class="card-header"> {{ $org->name }}<a class="text-dark"
+                                                                         href="OrganizationManagement.html"><i
+                                            class="pull-right fa fa-lg fa-cog"></i></a></div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Server</th>
+                                        <th scope="col">Disk</th>
+                                        <th scope="col">Reboot</th>
+                                        <th scope="col">Updates</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($org->servers as $server)
+                                        <tr>
+                                            <th scope="row">{{ $server->name }}</th>
+                                            @if ($server->lastState["content"] != null)
+                                                <td>OK</td>
+                                                <td>@if($server->lastState["content"]->{"Reboot"})
+                                                        <p>ok</p>
+                                                    @else
+                                                        <p>not ok</p>
+                                                    @endif</td>
+                                                <td>OK</td>
+                                            @else
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            @endif
+                                            <td><a class="btn btn-secondary" href="server.html">Go to details</a></td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
-</div>
 @endsection
