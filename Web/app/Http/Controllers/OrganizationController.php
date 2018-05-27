@@ -15,7 +15,9 @@ class OrganizationController extends Controller
     }
     public function addOrg(Request $request){
         $org =  Organizations::where('name',$request->input('name'))->first();
-        Auth::user()->organizations()->attach($org->id);
+        if (! Auth::user()->organizations->contains($org->id)) {
+            Auth::user()->organizations()->attach($org->id);
+        }
         return view("org/manage",['organizations' => Auth::user()->organizations()->get()]);
     }
     public function details($name){
@@ -31,8 +33,11 @@ class OrganizationController extends Controller
         $server =  Server::where('token',$request->input('token'))->first();
         if($server !=null){
             $org =  Organizations::where('name',$request->input('organization'))->first();
-            $org->servers()->save($server);
-            return "ok";
+            if (Auth::user()->organizations->contains($org->id)) {
+                $org->servers()->save($server);
+                return "ok";
+            }
+           return redirect()->back();
         }
 
         return redirect()->back();

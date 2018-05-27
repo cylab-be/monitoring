@@ -17,7 +17,7 @@
                     <div class="col-md-12">
                         <div class="card border">
                             <div class="card-header"> {{ $org->name }}<a class="text-dark"
-                                                                         href="OrganizationManagement.html"><i
+                                                                         href="{{ route('organization',$org->name) }}"><i
                                             class="pull-right fa fa-lg fa-cog"></i></a></div>
                             <div class="card-body">
                                 <table class="table">
@@ -26,7 +26,6 @@
                                         <th scope="col">Server</th>
                                         <th scope="col">Disk</th>
                                         <th scope="col">Reboot</th>
-                                        <th scope="col">Updates</th>
                                         <th scope="col"></th>
                                     </tr>
                                     </thead>
@@ -35,19 +34,19 @@
                                         <tr>
                                             <th scope="row">{{ $server->name }}</th>
                                             @if ($server->lastState["content"] != null)
-                                                <td>OK</td>
+                                                <td>{{$server->lastState["diskOk"]}}</td>
                                                 <td>@if($server->lastState["content"]->{"Reboot"})
                                                         <p>ok</p>
                                                     @else
                                                         <p>not ok</p>
                                                     @endif</td>
-                                                <td>OK</td>
+                                                <td></td>
                                             @else
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                             @endif
-                                            <td><a class="btn btn-secondary" href="server.html">Go to details</a></td>
+                                            <td><a class="btn btn-secondary" href="{{ route('serverDetails',$server->id) }}">Go to details</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>

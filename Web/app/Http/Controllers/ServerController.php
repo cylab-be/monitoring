@@ -18,4 +18,13 @@ class ServerController extends Controller
         $server->save();
         return $token_id;
     }
+    public function server($id)
+    {
+        //verifier si membre de l'orga
+        $serv = Server::find($id);
+        $sensors = $serv->sensors();
+        $lastState = $serv->getLastState();
+
+        return view("server/server",['server' => $serv,'lastState'=> $lastState]);
+    }
 }
