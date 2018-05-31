@@ -21,7 +21,8 @@ public class Uploader {
 private String json;
 private HttpClient httpclient;
 private HttpPost httppost ;
-private String baseUrl = "http://192.168.0.71/Laravel/public/api/";
+public static String url;
+
 	public Uploader(String json) {
 		// TODO Auto-generated constructor stub
 		this.json = json;
@@ -35,6 +36,8 @@ private String baseUrl = "http://192.168.0.71/Laravel/public/api/";
 	}
 	
 	public void post() throws Exception {
+		if(url==null)url="192.168.0.71";
+		String baseUrl = "http://"+url+"/Laravel/public/api/";
 		String url = "sensors/";
 		httppost = new HttpPost(baseUrl+url);
 		List<NameValuePair> params = new ArrayList<NameValuePair>(1);
@@ -54,6 +57,8 @@ private String baseUrl = "http://192.168.0.71/Laravel/public/api/";
 		}
 	}
 	public String register() throws Exception{
+		if(url==null)url="192.168.0.71";
+		String baseUrl = "http://"+url+"/Laravel/public/api/";
 		String url = "register";
 		HttpGet httpget = new HttpGet(baseUrl+url);
 		HttpResponse response = httpclient.execute(httpget);

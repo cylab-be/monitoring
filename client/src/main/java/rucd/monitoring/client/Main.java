@@ -40,6 +40,11 @@ import java.util.Scanner;
 public class Main {
 	public static String token="";
     public static void main(String[] args) {
+    	 if (args.length > 0) {
+    		 if(args[0]!=null) {
+    			 Uploader.url=args[0];
+    		 }
+    	 }
 		Properties properties = new Properties();
     	if(new File("config.properties").isFile()) {
     		InputStream input = null;
