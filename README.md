@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/RUCD/monitoring.svg?branch=master)](https://travis-ci.org/RUCD/monitoring)
 
-Security oriented monitoring service
+Security oriented monitoring service.
+
+Developement takes place at https://gitlab.cylab.be/cylab/monitoring
 
 ## Components
 
