@@ -35,7 +35,8 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            //'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => __DIR__ . '/../storage/app/db.sqlite',
             'prefix' => '',
         ],
 
@@ -71,9 +72,9 @@ return [
             'driver' => 'mongodb',
             'host' => env('DB_MONGO_HOST', 'localhost'),
             'port' => env('DB_MONGO_PORT', 27017),
-            'database' => env('DB_MONGO_DATABASE', 'records'),
-            'username' => env('DB_MONGO_USERNAME', 'admin2'),
-            'password' => env('DB_MONGO_PASSWORD', 'admin'),
+            'database' => env('DB_MONGO_DATABASE', 'monitor'),
+            'username' => env('DB_MONGO_USERNAME', ''),
+            'password' => env('DB_MONGO_PASSWORD', ''),
             'options' => array(
                 'db' => 'admin' // sets the authentication database required by mongo 3
             )

@@ -19,38 +19,37 @@
 <div id="app">
     <nav class="navbar navbar-expand-md bg-primary navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}"><i
-                        class="fa d-inline fa-lg fa-line-chart"></i><b>Monitoring</b></a>
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <i class="fa d-inline fa-lg fa-line-chart"></i> <b>Monitoring</b>
+            </a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
                 <ul class="navbar-nav">
                     @guest
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                        @else
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('organizations') }}">
+                            <i class="fa d-inline fa-lg fa-bookmark-o"></i>&nbsp;My organizations</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('organizations') }}"><i
-                                            class="fa d-inline fa-lg fa-bookmark-o"></i>&nbsp;My organizations</a>
-                            </li>
-
-                            <li>
-                                <a class="nav-link" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-
-
-                            @endguest
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                              style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
+                    @endguest
                 </ul>
             </div>
         </div>
