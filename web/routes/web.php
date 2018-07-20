@@ -16,10 +16,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/org', 'OrganizationController@index')->name('organizations');
-Route::post('/org', 'OrganizationController@addOrg');
-Route::post('/org/{name}', 'OrganizationController@addServer');
-Route::get('/org/{name}', ['uses' =>'OrganizationController@details'])->name('organization');
-Route::get('/server/{id}', ['uses' =>'ServerController@server'])->name('serverDetails');
+
+Route::resource('app/organizations', 'OrganizationController');

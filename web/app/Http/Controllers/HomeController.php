@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organizations;
-use App\Models\Server;
-use App\Models\Sensors;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller

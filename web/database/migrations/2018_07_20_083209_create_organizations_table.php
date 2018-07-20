@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServersTable extends Migration
+class CreateOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateServersTable extends Migration
      */
     public function up()
     {
-        Schema::create('servers', function (Blueprint $table) {
+        Schema::create('organizations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('token');
-            $table->integer('organization_id')->nullable()->unsigned();
-            $table->foreign('organization_id')
-                ->references('id')->on('organizations')
-                ->onDelete('cascade');
             $table->timestamps();
+            $table->text("name");
         });
     }
 
@@ -32,6 +27,6 @@ class CreateServersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('servers');
+        Schema::dropIfExists('organizations');
     }
 }

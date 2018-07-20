@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use MongoDB\Client as Mongo;
-use App\Models\Server;
+use App\Server;
 
 /*
 |--------------------------------------------------------------------------

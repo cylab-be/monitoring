@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,7 +29,6 @@ class User extends Authenticatable
 
     public function organizations()
     {
-        return $this->belongsToMany('App\Models\Organizations','users_organizations', 'user_id','organization_id')
-            ->withTimestamps();
+        return $this->belongsToMany('App\Organization');
     }
 }

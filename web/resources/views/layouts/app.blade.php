@@ -9,6 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Monitoring</title>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
           type="text/css">
     <!-- Styles -->
@@ -16,7 +18,6 @@
 
 </head>
 <body>
-<div id="app">
     <nav class="navbar navbar-expand-md bg-primary navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -34,7 +35,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('organizations') }}">
+                        <a class="nav-link" href="{{ action('OrganizationController@index') }}">
                             <i class="fa d-inline fa-lg fa-bookmark-o"></i>&nbsp;My organizations</a>
                     </li>
                     <li>
@@ -54,12 +55,7 @@
             </div>
         </div>
     </nav>
+
     @yield('content')
-</div>
-
-<!-- Scripts -->
-
-<script src="{{ asset('js/app.js') }}"></script>
-@yield('scripts')
 </body>
 </html>

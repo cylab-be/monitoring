@@ -19,3 +19,10 @@ cp .env.example .env
 php artisan migrate
 php artisan key:generate
 ```
+
+## Fronted
+
+```
+npm install
+npm run watch
+```
