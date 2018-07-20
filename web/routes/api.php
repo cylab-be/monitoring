@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use MongoDB\Client as Mongo;
 use App\Server;
 
 /*
@@ -24,7 +23,7 @@ Route::post('record/{server}', function(Request $request, Server $server) {
     $data["server_id"] = $server->id;
     $data["time"] = time();
 
-    $collection = (new Mongo)->monitoring->records;
+    $collection = Mongo::get()->monitoring->records;
     $collection->insertOne($data);
 
     return "ok";

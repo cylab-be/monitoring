@@ -6,9 +6,13 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <p>Last heartbeet:<br>
-                    {{ Carbon\Carbon::createFromTimestamp($server->lastRecordTime())->toDateTimeString() }}</p>
+                    <p>
+                        Last heartbeet:<br>
+                        {{ $server->lastRecordTime()->toDateTimeString() }}<br>
+                        ({{ $server->lastRecordTime()->diffForHumans() }})
+                    </p>
 
+                    <p>Status: {{ $server->status() }}</p>
                     <p>Client version: {{ $server->clientVersion() }}</p>
                 </div>
             </div>

@@ -26,11 +26,19 @@ class Server extends Model
                 ["sort" => ["_id" => -1]]);
     }
 
+    /**
+     *
+     * @return \DateTimeZone
+     */
     public function lastRecordTime() {
-        return $this->lastRecord()->time;
+        return \Carbon\Carbon::createFromTimestamp($this->lastRecord()->time);
     }
 
     public function clientVersion() {
         return $this->lastRecord()->version;
+    }
+
+    public function status() {
+        return "OK";
     }
 }
