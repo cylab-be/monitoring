@@ -38,8 +38,15 @@ class ExampleTest extends TestCase
         $data = [
             "token" => $server->token,
             "version" => "0.1.2",
-            "uname" => "Linux whatever..."
-        ];
+            "uname" => "Linux think 4.15.0-24-generic #26~16.04.1-Ubuntu SMP Fri Jun 15 14:35:08 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux",
+            "loadavg" => "0.83 0.87 0.70 2/1747 25404",
+            "reboot" => true,
+            "updates" => "
+6 packages can be updated.
+0 updates are security updates.
+
+",
+            ];
 
         $this->post('/api/record/' . $server->id, $data)->assertStatus(200);
     }

@@ -43,6 +43,10 @@
 
         <div class="col-md-8">
             <h1>{{ $server->name }}</h1>
+
+            @foreach ($server->getSensors() as $sensor)
+            {!! $sensor->report() !!}
+            @endforeach
         </div>
 
     </div>

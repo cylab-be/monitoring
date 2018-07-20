@@ -2,13 +2,18 @@
 
 namespace App;
 
-use MongoDB\Client as Mongo;
 use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
 {
 
     protected $fillable = ["token"];
+
+    static $sensors = [
+        \App\Sensor\LoadAvg::class,
+        \App\Sensor\Reboot::class,
+        \App\Sensor\Update::class
+    ];
 
     public function __construct(array $attributes = array()) {
         $attributes["token"] = str_random(32);
@@ -20,7 +25,7 @@ class Server extends Model
     }
 
     public function lastRecord() {
-        $collection = (new Mongo)->monitoring->records;
+        $collection = \Mongo::get()->monitoring->records;
         return $collection->findOne(
                 ["server_id" => $this->id],
                 ["sort" => ["_id" => -1]]);
@@ -40,5 +45,14 @@ class Server extends Model
 
     public function status() {
         return "OK";
+    }
+
+    public function getSensors() {
+
+        $sensors = [];
+        foreach (self::$sensors as $sensor) {
+            $sensors[] = new $sensor($this);
+        }
+        return $sensors;
     }
 }
