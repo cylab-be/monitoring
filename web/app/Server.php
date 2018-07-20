@@ -2,6 +2,7 @@
 
 namespace App;
 
+use MongoDB\Client as Mongo;
 use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
@@ -16,5 +17,20 @@ class Server extends Model
 
     public function organization() {
         return $this->belongsTo("App\Organization");
+    }
+
+    public function lastRecord() {
+        $collection = (new Mongo)->monitoring->records;
+        return $collection->findOne(
+                ["server_id" => $this->id],
+                ["sort" => ["_id" => -1]]);
+    }
+
+    public function lastRecordTime() {
+        return $this->lastRecord()->time;
+    }
+
+    public function clientVersion() {
+        return $this->lastRecord()->version;
     }
 }

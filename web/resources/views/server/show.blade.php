@@ -2,33 +2,45 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-4">
             <div class="card">
-                <div class="card-header">{{ $server->name }}</div>
+                <div class="card-body">
+                    <p>Last heartbeet:<br>
+                    {{ Carbon\Carbon::createFromTimestamp($server->lastRecordTime())->toDateTimeString() }}</p>
+
+                    <p>Client version: {{ $server->clientVersion() }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Danger zone</h4>
+                </div>
 
                 <div class="card-body">
-                    <p>Name: {{ $server->name }}</p>
+                    <a class="btn btn-primary"
+                       href="{{ action('ServerController@edit', ['Server' => $server]) }}">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                    </a>
 
-                    <div>
-                        <a class="btn btn-primary"
-                           href="{{ action('ServerController@edit', ['Server' => $server]) }}">
-                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
-                        </a>
-
-                        <form method="POST"
-                              action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
-                              style="display: inline-block">
-                            {{ csrf_field() }}
-                            {{ method_field("DELETE") }}
-                            <button class="btn btn-danger">
-                                <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
-                            </button>
-                        </form>
-                    </div>
+                    <form method="POST"
+                          action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
+                          style="display: inline-block">
+                        {{ csrf_field() }}
+                        {{ method_field("DELETE") }}
+                        <button class="btn btn-danger">
+                            <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-8">
+            <h1>{{ $server->name }}</h1>
+        </div>
+
     </div>
 </div>
 @endsection
