@@ -6,10 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
 {
-    protected $fillable = ['name'];
+
+    protected $fillable = ['name', 'token'];
     public $sensors;
-    protected $primaryKey = 'id';
     public $lastState;
+
+    public function __construct(array $attributes = []) {
+        $attributes["token"] = str_random(32);
+        return parent::__construct($attributes);
+    }
+
+
     public function organization()
     {
         return $this->belongsTo('App\Models\Organizations');

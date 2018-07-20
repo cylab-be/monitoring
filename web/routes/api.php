@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use MongoDB\Client as Mongo;
+use App\Models\Server;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('record/{server}', function(Request $request, Server $server) {
+    if ($server->token !== $request->get("token", "")) {
+        abort(403);
+    }
+
+    $data = $request->all();
+    $data["server_id"] = $server->id;
+    $data["time"] = time();
+
+    $collection = (new Mongo)->monitoring->records;
+    $collection->insertOne($data);
+
+    return "ok";
 });
-Route::get('sensors', 'SensorController@index');
-Route::get('sensors/{sensor}', 'SensorController@show');
-Route::post('sensors', 'SensorController@store');
-Route::put('sensors/{sensor}', 'SensorController@update');
-Route::delete('sensors/{article}', 'SensorController@delete');
-Route::get('register', 'ServerController@register');
