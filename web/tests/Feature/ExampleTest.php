@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Organization;
 use App\Server;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,9 +24,13 @@ class ExampleTest extends TestCase
 
     public function testRecord()
     {
+        $organization = new Organization();
+        $organization->name = "TEST";
+        $organization->save();
+
         $server = new Server();
         $server->name = "srv01";
-        $server->save();
+        $organization->servers()->save($server);
 
         $this->post('/api/record/' . $server->id, [])->assertStatus(403);
         $this->post('/api/record/' . $server->id, ["token" => "abc123"])->assertStatus(403);
