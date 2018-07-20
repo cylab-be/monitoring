@@ -1,4 +1,0 @@
-language: java
-script: cd client && mvn clean package
-notifications:
-    slack: cylab-be:achLIftQ5SqdRgGjeuEq0Sc9
