@@ -1,0 +1,26 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "vendor/herrera-io/phar-update/res/schema.json",
+        "version"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Tests",
+                "tests",
+                "herrera-io/annotations",
+                "herrera-io/box"
+            ],
+            "in": "vendor"
+        }
+    ],
+    "main": "src/Main.php",
+    "output": "bin/monitor.phar",
+    "stub": true
+}
+
