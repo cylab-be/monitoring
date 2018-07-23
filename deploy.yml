@@ -1,0 +1,12 @@
+- plugin: App\Plugins\Writable
+  params:
+  - web/bootstrap/cache
+- plugin: App\Plugins\Shared
+  params:
+  - web/storage
+- plugin: App\Plugins\Exec
+  params:
+  - cd web && composer install
+  - cd web && cp env.prod .env
+  - cd web && touch storage/app/db.sqlite
+  - cd web && php artisan migrate --force
