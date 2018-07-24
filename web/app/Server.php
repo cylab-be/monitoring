@@ -12,7 +12,7 @@ class Server extends Model
     static $sensors = [
         \App\Sensor\LoadAvg::class,
         \App\Sensor\Reboot::class,
-        \App\Sensor\Update::class
+        \App\Sensor\Updates::class
     ];
 
     public function __construct(array $attributes = array()) {

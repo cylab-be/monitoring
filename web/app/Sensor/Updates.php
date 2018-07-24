@@ -13,15 +13,15 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Update extends \App\AbstractSensor {
+class Updates extends \App\AbstractSensor {
     //put your code here
     public function report() {
-        $record = $this->getLastRecord("update");
+        $record = $this->getLastRecord("updates");
         if ($record == null) {
             return "<p>No data availabe...</p>";
         }
 
-        return "<p>" . nl2br($record->update) . "</p>";
+        return "<p>" . nl2br($record->updates) . "</p>";
     }
 
     public function status() {
