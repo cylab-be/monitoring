@@ -53,7 +53,7 @@
 wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar
 sudo mv monitor.phar /usr/bin/monitor
 sudo chmod +x /usr/bin/monitor
-sudo echo "*/5 * * * *   root    /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }}" >> /etc/crontab
+echo "*/5 * * * *   root    /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }}" | sudo tee -a /etc/crontab
             </code></pre>
         </div>
 
