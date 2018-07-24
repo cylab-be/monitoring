@@ -57,7 +57,9 @@ class PingCommand extends Command {
         $sensors = [
             "loadavg" => LoadAvg::class,
             "reboot" => Reboot::class,
-            "updates" => Updates::class
+            "updates" => Updates::class,
+            "disks" => Disks::class,
+            "inodes" => Inodes::class
         ];
 
         foreach ($sensors as $key => $sensor_class) {

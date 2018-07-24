@@ -10,10 +10,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  *
  * @author tibo
  */
-class Updates implements SensorInterface {
+class Disks implements SensorInterface {
 
     public function run() {
-        $process = new Process('cat /var/lib/update-notifier/updates-available');
+        $process = new Process('df');
         $process->run();
         return $process->getOutput();
 
