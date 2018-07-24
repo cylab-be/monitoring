@@ -12,17 +12,15 @@
     <table class="table table-striped">
         <tr>
             <th>Name</th>
-            <th>ID</th>
-            <th>Token</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
         @foreach($organization->servers as $server)
         <tr>
             <td>{{ $server->name }}</td>
-            <td>{{ $server->id }}</td>
-            <td>{{ $server->token }}</td>
             <td>{{ $server->status() }}</td>
+            <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
                    href="{{ action('ServerController@show', ['Server' => $server]) }}">
