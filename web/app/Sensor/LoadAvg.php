@@ -22,8 +22,12 @@ class LoadAvg extends AbstractSensor {
     }
 
     public function getLastValue() {
-        $record = $this->getLastRecord("loadavg")->loadavg;
-        return $this->parse($record);
+        $record = $this->getLastRecord("loadavg");
+        if ($record == null) {
+            return "no data...";
+        }
+        $field = $record->loadavg;
+        return $this->parse($field);
     }
 
     function parse($string) {

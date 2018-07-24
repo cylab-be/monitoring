@@ -36,11 +36,21 @@ class Server extends Model
      * @return \DateTimeZone
      */
     public function lastRecordTime() {
-        return \Carbon\Carbon::createFromTimestamp($this->lastRecord()->time);
+        $last_record = $this->lastRecord();
+        if ($last_record === null) {
+            return \Carbon\Carbon::createFromTimestamp(0);
+        }
+
+        return \Carbon\Carbon::createFromTimestamp($last_record->time);
     }
 
     public function clientVersion() {
-        return $this->lastRecord()->version;
+        $last_record = $this->lastRecord();
+        if ($last_record == null) {
+            return "none";
+        }
+
+        return $last_record->version;
     }
 
     public function status() {
