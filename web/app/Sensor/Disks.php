@@ -25,9 +25,9 @@ class Disks extends \App\AbstractSensor {
 
         $disks = $this->parse($record->disks);
         $return = "<table class='table table-sm'>";
-        $return .= "<tr><th></th><th>Usage</th></tr>";
+        $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
         foreach ($disks as $disk) {
-            $return .= "<tr><td>" . $disk->filesystem . "</td><td>" . $disk->usedPercent() . "%</td></tr>";
+            $return .= "<tr><td>" . $disk->filesystem . "</td><td>" . $disk->mounted . "</td><td>" . $disk->usedPercent() . "%</td></tr>";
         }
         $return .= "</table>";
         return $return;
