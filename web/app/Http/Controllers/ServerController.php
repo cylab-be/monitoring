@@ -95,13 +95,11 @@ class ServerController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $organization = \App\Organization::find($request->organization_id);
-
         $server->name = $request->name;
         $server->organization_id = $request->organization_id;
         $server->save();
 
-        return redirect(action("OrganizationController@show", ["organization" => $organization]));
+        return redirect(action("ServerController@show", ["server" => $server]));
     }
 
     /**

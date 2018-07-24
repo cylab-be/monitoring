@@ -47,6 +47,14 @@
             @foreach ($server->getSensors() as $sensor)
             {!! $sensor->report() !!}
             @endforeach
+
+            <h3>PHP Client installation</h3>
+            <pre style="font-size: 75%; background: #ddd; overflow: hidden"><code>
+wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar
+sudo mv monitor.phar /usr/bin/monitor
+sudo chmod +x /usr/bin/monitor
+sudo echo "*/5 * * * *   root    /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }}" >> /etc/crontab
+            </code></pre>
         </div>
 
     </div>
