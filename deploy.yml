@@ -8,5 +8,4 @@
   params:
   - cd web && composer install
   - cd web && cp env.prod .env
-  - cd web && touch storage/app/db.sqlite
   - cd web && php artisan migrate --force
