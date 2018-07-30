@@ -59,7 +59,10 @@ class PingCommand extends Command {
             "reboot" => Reboot::class,
             "updates" => Updates::class,
             "disks" => Disks::class,
-            "inodes" => Inodes::class
+            "inodes" => Inodes::class,
+            "cpu" => CPUInfo::class,
+            "lsb" => LSB::class,
+            "memory" => MemInfo::class
         ];
 
         foreach ($sensors as $key => $sensor_class) {

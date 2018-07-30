@@ -3,17 +3,16 @@
 namespace Monitor;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Description of LoadAvg
  *
  * @author tibo
  */
-class LoadAvg implements SensorInterface {
+class LSB implements SensorInterface {
 
     public function run() {
-        $process = new Process('cat /proc/loadavg');
+        $process = new Process('lsb_release -a');
         $process->run();
         return $process->getOutput();
 
