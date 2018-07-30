@@ -35,8 +35,24 @@ class Disks extends \App\AbstractSensor {
     }
 
     public function status() {
-        return self::STATUS_OK;
+        $record = $this->getLastRecord("disks");
+        if ($record == null) {
+            return self::STATUS_UNKNOWN;
+        }
 
+        $all_status = [];
+        foreach ($this->parse($record->disks) as $disk) {
+            /* @var $disk Disk */
+            $status = self::STATUS_OK;
+            if ($disk->usedPercent() > 80) {
+                $status = self::STATUS_WARNING;
+            } elseif ($disk->usedPercent() > 95) {
+                $status = self::STATUS_ERROR;
+            }
+            $all_status[] = $status;
+        }
+
+        return max($all_status);
     }
 
     public function parse($string) {

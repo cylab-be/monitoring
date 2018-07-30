@@ -54,8 +54,30 @@ class Server extends Model
         return $last_record->version;
     }
 
+    /**
+     * Get integer status of server.
+     * @return int
+     */
     public function status() {
-        return "OK";
+        $all_status = [];
+        foreach ($this->getSensors() as $sensor) {
+            $all_status[] = $sensor->status();
+        }
+
+        return max($all_status);
+    }
+
+    public function statusString() {
+        switch ($this->status()) {
+            case 0:
+                return "OK";
+            case 10:
+                return "WARNING";
+            case 20:
+                return "ERROR";
+            default:
+                return "Unknown";
+        }
     }
 
     public function getSensors() {

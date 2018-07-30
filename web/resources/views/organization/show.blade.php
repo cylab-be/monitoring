@@ -19,7 +19,7 @@
         @foreach($organization->servers as $server)
         <tr>
             <td>{{ $server->name }}</td>
-            <td>{{ $server->status() }}</td>
+            <td>{{ $server->statusString() }}</td>
             <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"

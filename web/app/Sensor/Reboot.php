@@ -40,7 +40,6 @@ class Reboot extends \App\AbstractSensor {
             return self::STATUS_UNKNOWN;
         }
 
-
         if ($record->reboot) {
             return self::STATUS_WARNING;
         }
