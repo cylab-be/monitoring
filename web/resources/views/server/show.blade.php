@@ -12,7 +12,7 @@
                         ({{ $server->lastRecordTime()->diffForHumans() }})
                     </p>
 
-                    <p>Status: {{ $server->status() }}</p>
+                    <p>Status: {{ $server->statusString() }}</p>
                     <p>Client version: {{ $server->clientVersion() }}</p>
                 </div>
             </div>
@@ -45,7 +45,14 @@
             <h1>{{ $server->name }}</h1>
 
             @foreach ($server->getSensors() as $sensor)
-            {!! $sensor->report() !!}
+            <div class="card">
+                <div class="card-header">
+                    {{ get_class($sensor) }}
+                </div>
+                <div class="card-body">
+                    {!! $sensor->report() !!}
+                </div>
+            </div>
             @endforeach
 
             <h3>PHP Client installation</h3>
