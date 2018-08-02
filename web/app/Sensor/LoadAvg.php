@@ -34,43 +34,9 @@ class LoadAvg extends AbstractSensor {
             $points[] = new Point($record->time * 1000, $this->parse($record->loadavg));
         }
 
-
-
-        return "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js\"></script>"
-            . "<p>Current load: " . $this->getLastValue() . "</p>"
-            . "<canvas id=\"myChart\" width='400' height='300'></canvas>"
-                . "<script>"
-                . "var ctx = document.getElementById('myChart').getContext('2d');"
-                . "var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        datasets: [{
-            label: 'Load',
-            data: " . json_encode($points) . ",
-        }]
-    },
-    options: {
-        legend: {
-            display: false,
-        },
-        scales: {
-            xAxes: [{
-                    type: 'time',
-                    display: true,
-                    scaleLabel: {
-                            display: true,
-                            labelString: 'Time'
-                    }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});"
-                . "</script>";
+        return view("agent.loadavg", [
+            "current_load" => $this->getLastValue(),
+            "points" => $points]);
     }
 
     public function status() {
