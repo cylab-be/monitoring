@@ -34,4 +34,11 @@ abstract class AbstractSensor implements Sensor {
                     $field => ['$ne' => null]],
                 ["sort" => ["_id" => -1]]);
     }
+
+    function getLastRecords($field, $count) {
+        return \Mongo::get()->monitoring->records->find(
+                [   "server_id" => $this->server->id,
+                    $field => ['$ne' => null]],
+                ["limit" => $count, "sort" => ["_id" => -1]]);
+    }
 }
