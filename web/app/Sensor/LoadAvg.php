@@ -33,7 +33,8 @@ class LoadAvg extends AbstractSensor {
 
         return view("agent.loadavg", [
             "current_load" => $this->getLastValue(),
-            "points" => $points]);
+            "points" => $points,
+            "server" => $this->getServer()]);
     }
 
     public function status() {

@@ -19,7 +19,12 @@
 
             <div class="card">
                 <div class="card-body">
-                    <p>{!! $server->cpuinfo() !!}</p>
+                    @php
+                    $cpuinfo = $server->cpuinfo();
+                    @endphp
+                    @if ($cpuinfo !== null)
+                    <p>{{ $cpuinfo["cpu"] }}<br>({{ $cpuinfo["threads"] }} threads)</p>
+                    @endif
                     <p>{{ $server->meminfo() }}</p>
                     <p>{{ $server->lsb() }}</p>
                 </div>

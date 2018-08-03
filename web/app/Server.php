@@ -101,12 +101,10 @@ class Server extends Model
     public function cpuinfo() {
         $record = $this->lastRecordContaining("cpu");
         if ($record == null) {
-            return "";
+            return null;
         }
 
-        $cpuinfo = $this->parseCpuinfo($record->cpu);
-
-        return $cpuinfo["cpu"] . "<br>(" . $cpuinfo["threads"] . " threads)";
+        return $this->parseCpuinfo($record->cpu);
     }
 
     const CPU_INFO = "/^model name	: (.+)$/m";

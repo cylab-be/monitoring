@@ -1,4 +1,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.min.js"></script>
 <p>Current load: {{ $current_load }}</p>
 <canvas id="myChart" width='400' height='300'></canvas>
 <script>
@@ -28,6 +29,27 @@
                     ticks: {
                         beginAtZero:true
                     }
+                }]
+            },
+            annotation: {
+		// Defines when the annotations are drawn.
+		// This allows positioning of the annotation relative to the other
+		// elements of the graph.
+		//
+		// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+		// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+		drawTime: 'afterDatasetsDraw', // (default)
+
+		// Array of annotation configuration objects
+		// See below for detailed descriptions of the annotation options
+		annotations: [{
+			drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                        type: 'line',
+                        mode: 'horizontal',
+                        scaleID: 'y-axis-0',
+                        value: '{{ $server->cpuinfo()["threads"] }}',
+                        borderColor: 'red',
+                        borderWidth: 2
                 }]
             }
         }
