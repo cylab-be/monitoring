@@ -88,4 +88,16 @@ class Server extends Model
         }
         return $sensors;
     }
+
+    public function cpuinfo() {
+        return "";
+    }
+
+    public function meminfo() {
+        return "";
+    }
+
+    public function lsb() {
+        return "";
+    }
 }

@@ -22,9 +22,6 @@ class Point {
  */
 class LoadAvg extends AbstractSensor {
 
-
-
-
     public function report() {
 
         $records = $this->getLastRecords("loadavg", 288);

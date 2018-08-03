@@ -18,12 +18,20 @@
             </div>
 
             <div class="card">
+                <div class="card-body">
+                    <p>{{ $server->cpuinfo() }}</p>
+                    <p>{{ $server->meminfo() }}</p>
+                    <p>{{ $server->lsb() }}</p>
+                </div>
+            </div>
+
+            <div class="card">
                 <div class="card-header">
-                    <h4>Danger zone</h4>
+                    Danger zone
                 </div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary"
+                    <a class="btn btn-primary btn-sm"
                        href="{{ action('ServerController@edit', ['Server' => $server]) }}">
                         <i class="fa fa-pencil" aria-hidden="true"></i> Edit
                     </a>
@@ -33,7 +41,7 @@
                           style="display: inline-block">
                         {{ csrf_field() }}
                         {{ method_field("DELETE") }}
-                        <button class="btn btn-danger">
+                        <button class="btn btn-danger btn-sm">
                             <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
                         </button>
                     </form>
