@@ -56,5 +56,14 @@ tmpfs             2451716       0    2451716   0% /run/user/1000";
         $this->assertEquals(1128926648, $disks[2]->blocks);
     }
 
+    public function testUpdates() {
+        $string = "6 packages can be updated.
+2 updates are security updates.";
+
+        $sensor = new \App\Sensor\Updates(new \App\Server());
+        $status = $sensor->parse($string);
+        $this->assertEquals(2, $status["security"]);
+    }
+
 
 }
