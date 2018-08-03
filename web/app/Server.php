@@ -32,6 +32,13 @@ class Server extends Model
                 ["sort" => ["_id" => -1]]);
     }
 
+    public function lastRecordContaining($field) {
+        return \Mongo::get()->monitoring->records->findOne(
+                [   "server_id" => $this->id,
+                    $field => ['$ne' => null]],
+                ["sort" => ["_id" => -1]]);
+    }
+
     /**
      *
      * @return \DateTimeZone
@@ -89,8 +96,28 @@ class Server extends Model
         return $sensors;
     }
 
+
+
     public function cpuinfo() {
-        return "";
+        $record = $this->lastRecordContaining("cpu");
+        if ($record == null) {
+            return "";
+        }
+
+        $cpuinfo = $this->parseCpuinfo($record->cpu);
+
+        return $cpuinfo["cpu"] . "<br>(" . $cpuinfo["threads"] . " threads)";
+    }
+
+    const CPU_INFO = "/^model name	: (.+)$/m";
+    public function parseCpuinfo($string) {
+        $matches = array();
+        preg_match_all(self::CPU_INFO, $string, $matches);
+
+        $result["threads"] = count($matches[0]);
+        $result["cpu"] = $matches[1][1];
+        return $result;
+
     }
 
     public function meminfo() {

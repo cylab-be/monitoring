@@ -19,7 +19,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <p>{{ $server->cpuinfo() }}</p>
+                    <p>{!! $server->cpuinfo() !!}</p>
                     <p>{{ $server->meminfo() }}</p>
                     <p>{{ $server->lsb() }}</p>
                 </div>
