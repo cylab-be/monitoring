@@ -35,12 +35,14 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
                 @foreach($organization->servers as $server)
                 <tr>
                     <td>{{ $server->name }}</td>
                     <td><span class="badge badge-success">{{ $server->statusString() }}</span></td>
                     <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
+                    <td>{{ $server->lsb() }}</td>
                     <td class="text-right">
                         <a class="btn btn-primary btn-sm"
                            href="{{ action('ServerController@show', ['Server' => $server]) }}">
