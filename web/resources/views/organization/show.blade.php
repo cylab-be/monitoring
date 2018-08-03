@@ -37,7 +37,7 @@
                     <th></th>
                     <th></th>
                 </tr>
-                @foreach($organization->servers as $server)
+                @foreach($organization->servers()->orderBy("name")->get() as $server)
                 <tr>
                     <td>{{ $server->name }}</td>
                     <td><span class="badge badge-success">{{ $server->statusString() }}</span></td>
