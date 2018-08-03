@@ -16,7 +16,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('app/dashboard', function() {
+    return view("dashboard");
+})->name('dashboard');
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource('app/servers', 'ServerController');
