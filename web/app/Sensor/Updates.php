@@ -33,6 +33,10 @@ class Updates extends \App\AbstractSensor {
         }
 
         $status = $this->parse($record->updates);
+        if ($status == null) {
+            return self::STATUS_UNKNOWN;
+        }
+
         if ($status["security"] != 0) {
             return self::STATUS_WARNING;
         }
@@ -42,7 +46,10 @@ class Updates extends \App\AbstractSensor {
 
     public function parse($string) {
         $matches = [];
-        preg_match(self::REGEXP, $string, $matches);
+        if (!preg_match(self::REGEXP, $string, $matches)) {
+            return null;
+        }
+
         $result["updates"] = $matches[1];
         $result["security"] = $matches[2];
         return $result;
