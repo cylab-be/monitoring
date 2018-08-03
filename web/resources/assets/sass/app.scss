@@ -40,8 +40,6 @@ $body-color-inverse: invert($body-color) !default;
 $link-color: #FFF;
 
 
-
-
 // Fonts
 $font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $headings-font-family: $font-family-base;
@@ -149,11 +147,6 @@ html,body {
   margin-top:2px;
 }
 
-@media (min-width: 1200px) {
-  .container{
-    max-width: 970px;
-  }
-}
 .collapse.show {
   background-color:white;
 }
