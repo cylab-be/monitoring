@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/app/dashboard';
 
     /**
      * Create a new controller instance.
@@ -66,7 +66,7 @@ class RegisterController extends Controller
         $organization = new Organization();
         $organization->name = $data["name"];
         $organization->save();
-        
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
