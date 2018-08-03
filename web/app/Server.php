@@ -14,7 +14,8 @@ class Server extends Model
         \App\Sensor\Reboot::class,
         \App\Sensor\Updates::class,
         \App\Sensor\Disks::class,
-        \App\Sensor\Inodes::class
+        \App\Sensor\Inodes::class,
+        \App\Sensor\Date::class
     ];
 
     public function __construct(array $attributes = array()) {
