@@ -55,8 +55,4 @@ class LoadAvg extends AbstractSensor {
     function parse($string) {
         return current(explode(" ", $string));
     }
-
-    public function getLastValues() {
-
-    }
 }
