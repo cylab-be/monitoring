@@ -123,6 +123,19 @@ class Server extends Model
     }
 
     public function lsb() {
-        return "";
+
+        $record = $this->lastRecordContaining("lsb");
+        if ($record == null) {
+            return "";
+        }
+
+        return $this->parseLsb($record->lsb);
+    }
+
+    const LSB = "/^Description:	(.+)$/m";
+    public function parseLsb($string) {
+        $matches = [];
+        preg_match(self::LSB, $string, $matches);
+        return $matches[1];
     }
 }
