@@ -13,7 +13,8 @@ class Server extends Model
         \App\Sensor\LoadAvg::class,
         \App\Sensor\Reboot::class,
         \App\Sensor\Updates::class,
-        \App\Sensor\Disks::class
+        \App\Sensor\Disks::class,
+        \App\Sensor\Inodes::class
     ];
 
     public function __construct(array $attributes = array()) {
