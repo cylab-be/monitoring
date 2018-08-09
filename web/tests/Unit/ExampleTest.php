@@ -72,7 +72,12 @@ tmpfs             2451716       0    2451716   0% /run/user/1000";
         $cpuinfo = $server->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
+    }
 
+    public function testClientVersion() {
+        $server = new \App\Server();
+        $client_version = new \App\Sensor\ClientVersion($server);
+        $this->assertStringMatchesFormat('%f', $client_version->latestVersion());
     }
 
 
