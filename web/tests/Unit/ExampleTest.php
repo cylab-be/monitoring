@@ -40,15 +40,7 @@ class ExampleTest extends TestCase
     }
 
     public function testDisksSensor() {
-        $string = "Filesystem      1K-blocks    Used  Available Use% Mounted on
-udev             12238236       0   12238236   0% /dev
-tmpfs             2451716  264052    2187664  11% /run
-/dev/sda1      1128926648 6545484 1065011924   1% /
-tmpfs            12258572       4   12258568   1% /dev/shm
-tmpfs                5120       0       5120   0% /run/lock
-tmpfs            12258572       0   12258572   0% /sys/fs/cgroup
-tmpfs             2451716       0    2451716   0% /run/user/1000";
-
+        $string = file_get_contents(__DIR__ . "/df");
         $sensor = new Disks(new \App\Server());
         $disks = $sensor->parse($string);
         $this->assertEquals(7, count($disks));
@@ -65,9 +57,15 @@ tmpfs             2451716       0    2451716   0% /run/user/1000";
         $this->assertEquals(2, $status["security"]);
     }
 
+    public function testMeminfo() {
+        $string = file_get_contents(__DIR__ . "/meminfo");
+        $server = new \App\Server();
+        $mem_total = $server->parseMeminfo($string);
+        $this->assertEquals("15954328", $mem_total);
+    }
+
     public function testCpuinfo() {
         $string = file_get_contents(__DIR__ . "/cpuinfo");
-
         $server = new \App\Server();
         $cpuinfo = $server->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);

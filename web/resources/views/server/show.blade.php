@@ -23,9 +23,9 @@
                     $cpuinfo = $server->cpuinfo();
                     @endphp
                     @if ($cpuinfo !== null)
-                    <p>{{ $cpuinfo["cpu"] }}<br>({{ $cpuinfo["threads"] }} threads)</p>
+                    <p>{{ $cpuinfo["cpu"] }} ({{ $cpuinfo["threads"] }} threads)</p>
                     @endif
-                    <p>{{ $server->meminfo() }}</p>
+                    <p>Memory: {{ $server->meminfo() }}</p>
                     <p>{{ $server->lsb() }}</p>
                 </div>
             </div>

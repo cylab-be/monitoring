@@ -130,11 +130,23 @@ class Server extends Model
         $result["threads"] = count($matches[0]);
         $result["cpu"] = $matches[1][1];
         return $result;
-
     }
 
     public function meminfo() {
-        return "";
+        $record = $this->lastRecordContaining("memory");
+        if ($record == null) {
+            return "";
+        }
+
+        return round($this->parseMeminfo($record->memory)/1000/1000) . " GB";
+    }
+
+    const MEMINFO = "/^MemTotal:\\s+([0-9]+) kB$/m";
+    public function parseMeminfo($string) {
+        $matches = array();
+        preg_match(self::MEMINFO, $string, $matches);
+        $total = $matches[1];
+        return $total;
     }
 
     public function lsb() {
