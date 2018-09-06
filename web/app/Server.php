@@ -9,6 +9,12 @@ class Server extends Model
 
     protected $fillable = ["token"];
 
+    /**
+     * Last record from this server (used for caching).
+     * @var String
+     */
+    private $last_record = null;
+
     static $sensors = [
         \App\Sensor\LoadAvg::class,
         \App\Sensor\Reboot::class,
@@ -29,17 +35,23 @@ class Server extends Model
     }
 
     public function lastRecord() {
-        $collection = \Mongo::get()->monitoring->records;
-        return $collection->findOne(
-                ["server_id" => $this->id],
-                ["sort" => ["_id" => -1]]);
+        if ($this->last_record == null) {
+
+            $collection = \Mongo::get()->monitoring->records;
+            $this->last_record =  $collection->findOne(
+                    ["server_id" => $this->id],
+                    ["sort" => ["_id" => -1]]);
+        }
+
+        return $this->last_record;
     }
 
     public function lastRecordContaining($field) {
-        return \Mongo::get()->monitoring->records->findOne(
-                [   "server_id" => $this->id,
-                    $field => ['$ne' => null]],
-                ["sort" => ["_id" => -1]]);
+        if ($this->lastRecord()->$field != null) {
+            return $this->lastRecord();
+        }
+
+        return null;
     }
 
     /**
