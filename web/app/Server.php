@@ -47,7 +47,7 @@ class Server extends Model
     }
 
     public function lastRecordContaining($field) {
-        if ($this->lastRecord()->$field != null) {
+        if (isset($this->lastRecord()->$field)) {
             return $this->lastRecord();
         }
 
