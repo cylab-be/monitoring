@@ -65,7 +65,10 @@ window.monitorMemChart = function(element) {
     };
     window.memChart = new Chart(ctx, config);
 
-    var used_url = "/api/sensor/"
+    if (typeof window.monitorURL === 'undefined') {
+        window.monitorURL = "https://monitor.web-d.be";
+    }
+    var used_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/memory/used"
     $.getJSON(used_url, function( data ) {
