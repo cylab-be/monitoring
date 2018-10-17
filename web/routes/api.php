@@ -28,3 +28,25 @@ Route::post('record/{server}', function(Request $request, Server $server) {
 
     return "ok";
 });
+
+Route::get(
+        'sensor/{server}/{token}/memory/used',
+        function(Server $server, string $token) {
+            if ($server->read_token != $token) {
+                abort(403);
+            }
+
+            $meminfo = new App\Sensor\MemInfo($server);
+            return $meminfo->usedMemoryPoints();
+});
+
+Route::get(
+        'sensor/{server}/{token}/memory/cached',
+        function(Server $server, string $token) {
+            if ($server->read_token != $token) {
+                abort(403);
+            }
+
+            $meminfo = new App\Sensor\MemInfo($server);
+            return $meminfo->cachedMemoryPoints();
+});
