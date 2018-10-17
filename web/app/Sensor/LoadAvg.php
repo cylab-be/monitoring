@@ -5,16 +5,6 @@ namespace App\Sensor;
 use \App\AbstractSensor;
 
 
-class Point {
-    public $t = 0;
-    public $y = 0;
-
-    public function __construct($t, $y) {
-        $this->t = $t;
-        $this->y = $y;
-    }
-}
-
 /**
  * Description of LoadAvg
  *
@@ -25,10 +15,11 @@ class LoadAvg extends AbstractSensor {
     public function report() {
 
         $records = $this->getLastRecords("loadavg", 288);
-        $points = [];
 
+        $points = [];
         foreach ($records as $record) {
-            $points[] = new Point($record->time * 1000, $this->parse($record->loadavg));
+            $points[] = new Point(
+                    $record->time * 1000, $this->parse($record->loadavg));
         }
 
         return view("agent.loadavg", [
