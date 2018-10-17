@@ -35,6 +35,27 @@
                             labelString: 'Memory [MB]'
                     }
                 }]
+            },
+            annotation: {
+		// Defines when the annotations are drawn.
+		// This allows positioning of the annotation relative to the other
+		// elements of the graph.
+		//
+		// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+		// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+		drawTime: 'afterDatasetsDraw', // (default)
+
+		// Array of annotation configuration objects
+		// See below for detailed descriptions of the annotation options
+		annotations: [{
+			drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                        type: 'line',
+                        mode: 'horizontal',
+                        scaleID: 'y-axis-0',
+                        value: '{{ $server->memoryTotal() / 1000 }}',
+                        borderColor: 'red',
+                        borderWidth: 2
+                }]
             }
         }
     });

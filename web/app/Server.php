@@ -134,12 +134,20 @@ class Server extends Model
     }
 
     public function meminfo() {
+        return round($this->memoryTotal() / 1000 / 1000) . " GB";
+    }
+
+    /**
+     *
+     * @return int total memory (in KB)
+     */
+    public function memoryTotal() {
         $record = $this->lastRecordContaining("memory");
         if ($record == null) {
-            return "";
+            return null;
         }
 
-        return round($this->parseMeminfo($record->memory)/1000/1000) . " GB";
+        return $this->parseMeminfo($record->memory);
     }
 
     const MEMINFO = "/^MemTotal:\\s+([0-9]+) kB$/m";
