@@ -13,7 +13,12 @@ use \App\AbstractSensor;
 class LoadAvg extends AbstractSensor {
 
     public function report() {
+        return view("agent.loadavg", [
+            "current_load" => $this->getLastValue(),
+            "server" => $this->getServer()]);
+    }
 
+    public function loadPoints() {
         $records = $this->getLastRecords("loadavg", 288);
 
         $points = [];
@@ -21,11 +26,7 @@ class LoadAvg extends AbstractSensor {
             $points[] = new Point(
                     $record->time * 1000, $this->parse($record->loadavg));
         }
-
-        return view("agent.loadavg", [
-            "current_load" => $this->getLastValue(),
-            "points" => $points,
-            "server" => $this->getServer()]);
+        return $points;
     }
 
     public function status() {

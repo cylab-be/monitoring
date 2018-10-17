@@ -30,7 +30,7 @@ Route::post('record/{server}', function(Request $request, Server $server) {
 });
 
 Route::get(
-        'sensor/{server}/{token}/memory/used',
+        'sensor/{server}/{token}/memory',
         function(Server $server, string $token) {
             if ($server->read_token != $token) {
                 abort(403);
@@ -38,17 +38,22 @@ Route::get(
 
             header('Access-Control-Allow-Origin: *');
             $meminfo = new App\Sensor\MemInfo($server);
-            return $meminfo->usedMemoryPoints();
+            return [
+                "used" => $meminfo->usedMemoryPoints(),
+                "cached" => $meminfo->cachedMemoryPoints(),
+                "total" => $server->memoryTotal() / 1000];
 });
 
 Route::get(
-        'sensor/{server}/{token}/memory/cached',
+        'sensor/{server}/{token}/load',
         function(Server $server, string $token) {
             if ($server->read_token != $token) {
                 abort(403);
             }
 
             header('Access-Control-Allow-Origin: *');
-            $meminfo = new App\Sensor\MemInfo($server);
-            return $meminfo->cachedMemoryPoints();
+            $sensor = new App\Sensor\LoadAvg($server);
+            return [
+                "points" => $sensor->loadPoints(),
+                "max" => $server->cpuinfo()["threads"]];
 });
