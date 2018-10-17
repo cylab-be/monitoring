@@ -15,19 +15,19 @@ class MemInfo extends AbstractSensor {
         $records = $this->getLastRecords("memory", 288);
 
         $used = [];
-        $used_cached = [];
+        $cached = [];
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->memory);
             $used[] = new Point(
                     $record->time * 1000, $meminfo->used() / 1000);
-            $used_cached[] = new Point(
+            $cached[] = new Point(
                     $record->time * 1000,
-                    ($meminfo->used() + $meminfo->cached) / 1000);
+                    $meminfo->cached / 1000);
         }
 
         return view("agent.meminfo", [
             "used" => $used,
-            "used_cached" => $used_cached,
+            "cached" => $cached,
             "server" => $this->getServer()]);
     }
 
