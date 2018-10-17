@@ -36,6 +36,7 @@ Route::get(
                 abort(403);
             }
 
+            header('Access-Control-Allow-Origin: *');
             $meminfo = new App\Sensor\MemInfo($server);
             return $meminfo->usedMemoryPoints();
 });
@@ -47,6 +48,7 @@ Route::get(
                 abort(403);
             }
 
+            header('Access-Control-Allow-Origin: *');
             $meminfo = new App\Sensor\MemInfo($server);
             return $meminfo->cachedMemoryPoints();
 });
