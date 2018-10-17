@@ -82,7 +82,7 @@ window.monitorMemChart = function(element) {
         window.memChart.update();
     });
 
-    var cached_url = "/api/sensor/"
+    var cached_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/memory/cached"
     $.getJSON(cached_url, function( data ) {
