@@ -26,10 +26,27 @@ abstract class AbstractSensor implements Sensor {
         return $this->server->lastRecordContaining($field);
     }
 
+    /**
+     * Get the last $count records containing $field.
+     * !! $count is the MAXIMUM number of returned records.
+     * To optimize mongo's usage of index, we get the last $count records
+     * then filter locally for records containing this record
+     * @param type $field
+     * @param type $count
+     * @return type
+     */
     function getLastRecords($field, $count) {
-        return \Mongo::get()->monitoring->records->find(
-                [   "server_id" => $this->server->id,
-                    $field => ['$ne' => null]],
+        $records = \Mongo::get()->monitoring->records->find(
+                ["server_id" => $this->server->id],
                 ["limit" => $count, "sort" => ["_id" => -1]]);
+
+        $results = [];
+        foreach ($records as $record) {
+            if (isset($record->$field)) {
+                $results[] = $record;
+            }
+        }
+
+        return $results;
     }
 }
