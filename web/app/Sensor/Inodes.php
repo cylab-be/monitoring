@@ -55,6 +55,11 @@ class Inodes extends \App\AbstractSensor {
         $disks = array();
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
+            $fs = $values[1][$i];
+            if (in_array($fs, Disks::$skip_fs)) {
+                continue;
+            }
+
             $disk = new DiskInodes();
             $disk->filesystem = $values[1][$i];
             $disk->inodes = $values[2][$i];

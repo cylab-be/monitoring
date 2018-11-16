@@ -55,14 +55,21 @@ class Disks extends \App\AbstractSensor {
         return max($all_status);
     }
 
+    public static $skip_fs = ["none", "tmpfs", "shm"];
+
     public function parse($string) {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
         $disks = array();
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
+            $fs = $values[1][$i];
+            if (in_array($fs, self::$skip_fs)) {
+                continue;
+            }
+
             $disk = new Disk();
-            $disk->filesystem = $values[1][$i];
+            $disk->filesystem = $fs;
             $disk->blocks = $values[2][$i];
             $disk->used = $values[3][$i];
             $disk->mounted = $values[6][$i];
