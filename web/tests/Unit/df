@@ -6,3 +6,4 @@ tmpfs            12258572       4   12258568   1% /dev/shm
 tmpfs                5120       0       5120   0% /run/lock
 tmpfs            12258572       0   12258572   0% /sys/fs/cgroup
 tmpfs             2451716       0    2451716   0% /run/user/1000
+172.20.0.4:/srv/nfs/cylab03 1729930240 94934016 1547097088   6% /mnt/nfs
