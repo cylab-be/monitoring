@@ -49,7 +49,7 @@ class Ssacli extends \App\AbstractSensor {
     public function status() {
         $record = $this->getLastRecord("ssacli");
         if ($record == null) {
-            self::STATUS_UNKNOWN;
+            return self::STATUS_UNKNOWN;
         }
 
         $disks = $this->parse($record->ssacli);
