@@ -66,7 +66,7 @@
                     {{ get_class($sensor) }}
 
                     <div class="float-right">
-                        {!! $server->getBadge() !!}
+                        {!! $sensor->getBadge() !!}
                     </div>
                 </div>
                 <div class="card-body">
