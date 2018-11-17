@@ -51,7 +51,7 @@ abstract class AbstractSensor implements Sensor {
     }
 
     public static function getBadgeForStatus($status) {
-        switch ($this->status()) {
+        switch ($status) {
             case 0:
                 return '<span class="badge badge-success">OK</span>';
             case 10:
