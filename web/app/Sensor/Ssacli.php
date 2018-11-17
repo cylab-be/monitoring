@@ -23,12 +23,20 @@ class Ssacli extends \App\AbstractSensor {
         }
 
         $disks = $this->parse($record->ssacli);
-        $return = "<table class='table table-sm'>";
+        $return = "<table class='table table-sm'>"
+                . "<tr>"
+                . "<th>Port</th>"
+                . "<th>Box</th>"
+                . "<th>Bay</th>"
+                . "<th>Type</th>"
+                . "<th>Size</th>"
+                . "<th>Status</th>"
+                . "</tr>";
         foreach ($disks as $disk) {
             $return .= "<tr>"
                     . "<td>" . $disk->port . "</td>"
-                    . "<td>" . $disk->bay . "</td>"
                     . "<td>" . $disk->box . "</td>"
+                    . "<td>" . $disk->bay . "</td>"
                     . "<td>" . $disk->type . "</td>"
                     . "<td>" . $disk->size . "</td>"
                     . "<td>" . $disk->status . "</td>"
