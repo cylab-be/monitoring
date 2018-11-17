@@ -40,7 +40,7 @@
                 @foreach($organization->servers()->orderBy("name")->get() as $server)
                 <tr>
                     <td>{{ $server->name }}</td>
-                    <td><span class="badge badge-success">{!! $server->getBadge() !!}</span></td>
+                    <td>{!! $server->getBadge() !!}</td>
                     <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
                     <td>{{ $server->lsb() }}</td>
                     <td class="text-right">
