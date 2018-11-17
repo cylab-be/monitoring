@@ -48,6 +48,13 @@ class ExampleTest extends TestCase
         $this->assertEquals(1128926648, $disks[1]->blocks);
     }
 
+    public function testSsacli() {
+        $string = file_get_contents(__DIR__ . "/ssacli");
+        $sensor = new \App\Sensor\Ssacli(new \App\Server());
+        $disks = $sensor->parse($string);
+        $this->assertEquals("OK", $disks[0]->status);
+    }
+
     public function testUpdates() {
         $string = "6 packages can be updated.
 2 updates are security updates.";

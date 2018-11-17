@@ -22,6 +22,7 @@ class Server extends Model
         \App\Sensor\Updates::class,
         \App\Sensor\Disks::class,
         \App\Sensor\Inodes::class,
+        \App\Sensor\Ssacli::class,
         \App\Sensor\Date::class,
         \App\Sensor\ClientVersion::class
     ];
