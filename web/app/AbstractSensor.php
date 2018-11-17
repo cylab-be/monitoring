@@ -49,4 +49,21 @@ abstract class AbstractSensor implements Sensor {
 
         return $results;
     }
+
+    public static function getBadgeForStatus($status) {
+        switch ($this->status()) {
+            case 0:
+                return '<span class="badge badge-success">OK</span>';
+            case 10:
+                return '<span class="badge badge-warning">WARNING</span>';
+            case 20:
+                return '<span class="badge badge-danger">ERROR</span>';
+            default:
+                return '<span class="badge badge-secondary">Unknown</span>';
+        }
+    }
+
+    public function getBadge() {
+        return self::getBadgeForStatus($this->status());
+    }
 }

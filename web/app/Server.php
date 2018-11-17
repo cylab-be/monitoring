@@ -104,6 +104,10 @@ class Server extends Model
         }
     }
 
+    public function getBadge() {
+        return AbstractSensor::getBadgeForStatus($this->status());
+    }
+
     public function getSensors() {
 
         $sensors = [];
