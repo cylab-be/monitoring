@@ -1,8 +1,8 @@
 [
     {
         "name": "monitor.phar",
-        "sha1": "acafa398749ab053ec35421250fc7cc5c1330b77",
-        "url": "https://gitlab.cylab.be/cylab/monitoring/blob/master/php-client/release/monitor-20180906.075333.phar",
-        "version": "20180906.075333"
+        "sha1": "bd0eb1945ae96f256bc1c4f46e1b5cb4a64c8368",
+        "url": "https://gitlab.cylab.be/cylab/monitoring/blob/master/php-client/release/monitor-20181117.125525.phar",
+        "version": "20181117.125525"
     }
 ]

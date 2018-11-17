@@ -64,7 +64,8 @@ class PingCommand extends Command {
             "memory" => MemInfo::class,
             "date" => Date::class,
             "ifconfig" => Ifconfig::class,
-            "ssacli" => Ssacli::class
+            "ssacli" => Ssacli::class,
+            "system" => System::class
         ];
 
         foreach ($sensors as $key => $sensor_class) {
