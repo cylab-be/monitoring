@@ -86,11 +86,11 @@ class ExampleTest extends TestCase
         $this->assertEquals("LENOVO", $manufacturer);
     }
 
-    public function testVersion() {
+    public function testProductName() {
         $string = file_get_contents(__DIR__ . "/system");
         $server = new \App\Server();
-        $manufacturer = $server->parseVersion($string);
-        $this->assertEquals("ThinkPad T470p", $manufacturer);
+        $manufacturer = $server->parseProductName($string);
+        $this->assertEquals("20J60018MB", $manufacturer);
     }
 
     public function testClientVersion() {

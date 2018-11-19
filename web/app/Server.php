@@ -198,19 +198,19 @@ class Server extends Model
         return $this->parseManufacturer($record->system);
     }
 
-    const REGEX_VERSION = "/^\s*Version: (.*)$/m";
-    public function parseVersion($string) {
+    const REGEX_PRODUCT_NAME = "/^\s*Product Name: (.*)$/m";
+    public function parseProductName($string) {
         $matches = [];
-        preg_match(self::REGEX_VERSION, $string, $matches);
+        preg_match(self::REGEX_PRODUCT_NAME, $string, $matches);
         return $matches[1];
     }
 
-    public function version() {
+    public function productName() {
         $record = $this->lastRecordContaining("system");
         if ($record == null) {
             return "";
         }
 
-        return $this->parseVersion($record->system);
+        return $this->parseProductName($record->system);
     }
 }

@@ -22,7 +22,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <p>{{ $server->manufacturer() }} {{ $server->version() }}</p>
+                    <p>{{ $server->manufacturer() }} {{ $server->productName() }}</p>
 
                     @php
                     $cpuinfo = $server->cpuinfo();
