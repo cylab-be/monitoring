@@ -179,4 +179,38 @@ class Server extends Model
         preg_match(self::LSB, $string, $matches);
         return $matches[1];
     }
+
+
+
+    const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
+    public function parseManufacturer($string) {
+        $matches = [];
+        preg_match(self::REGEX_MANUFACTURER, $string, $matches);
+        return $matches[1];
+    }
+
+    public function manufacturer() {
+        $record = $this->lastRecordContaining("system");
+        if ($record == null) {
+            return "Unknown";
+        }
+
+        return $this->parseManufacturer($record->system);
+    }
+
+    const REGEX_VERSION = "/^\s*Version: (.*)$/m";
+    public function parseVersion($string) {
+        $matches = [];
+        preg_match(self::REGEX_VERSION, $string, $matches);
+        return $matches[1];
+    }
+
+    public function version() {
+        $record = $this->lastRecordContaining("system");
+        if ($record == null) {
+            return "";
+        }
+
+        return $this->parseVersion($record->system);
+    }
 }

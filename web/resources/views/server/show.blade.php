@@ -22,6 +22,8 @@
 
             <div class="card">
                 <div class="card-body">
+                    <p>{{ $server->manufacturer() }} {{ $server->version() }}</p>
+
                     @php
                     $cpuinfo = $server->cpuinfo();
                     @endphp

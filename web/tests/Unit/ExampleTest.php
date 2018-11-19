@@ -79,6 +79,20 @@ class ExampleTest extends TestCase
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
 
+    public function testManufacturer() {
+        $string = file_get_contents(__DIR__ . "/system");
+        $server = new \App\Server();
+        $manufacturer = $server->parseManufacturer($string);
+        $this->assertEquals("LENOVO", $manufacturer);
+    }
+
+    public function testVersion() {
+        $string = file_get_contents(__DIR__ . "/system");
+        $server = new \App\Server();
+        $manufacturer = $server->parseVersion($string);
+        $this->assertEquals("ThinkPad T470p", $manufacturer);
+    }
+
     public function testClientVersion() {
         $server = new \App\Server();
         $client_version = new \App\Sensor\ClientVersion($server);
