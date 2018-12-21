@@ -18,6 +18,7 @@ class Server extends Model
     static $sensors = [
         \App\Sensor\LoadAvg::class,
         \App\Sensor\MemInfo::class,
+        \App\Sensor\Ifconfig::class,
         \App\Sensor\Reboot::class,
         \App\Sensor\Updates::class,
         \App\Sensor\Disks::class,
