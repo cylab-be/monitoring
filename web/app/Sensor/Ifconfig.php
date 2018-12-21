@@ -13,7 +13,11 @@ class Ifconfig extends AbstractSensor {
 
     public function report() {
 
-        $interfaces = $this->parseIfconfig($this->getLastRecord("ifconfig"));
+        $interfaces = [];
+        $record = $this->getLastRecord("ifconfig");
+        if ($record !== null) {
+            $interfaces = $this->parseIfconfig($record->ifconfig);
+        }
         return view("agent.ifconfig", [
             "server" => $this->getServer(),
             "interfaces" => $interfaces]);
