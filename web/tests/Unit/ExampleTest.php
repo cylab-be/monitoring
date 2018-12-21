@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\User;
 use App\Organization;
 use App\Sensor\Disks;
+use App\Sensor\Ifconfig;
+
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -37,6 +39,22 @@ class ExampleTest extends TestCase
         $organization->users()->save($user);
 
         $this->assertEquals("Org", $user->organizations()->first()->name);
+    }
+
+    /**
+     * @group ifconfig
+     * @group sensors
+     */
+    public function testIfconfig() {
+        $string = file_get_contents(__DIR__ . "/ifconfig");
+        $sensor = new Ifconfig(new \App\Server());
+        $interfaces = $sensor->parseIfconfig($string);
+        $this->assertEquals(6, count($interfaces));
+        $this->assertEquals("br-fd7b87b0be70", $interfaces[0]->name);
+        $this->assertEquals("172.18.0.1", $interfaces[0]->address);
+        $this->assertEquals(1074590056, $interfaces[5]->rx);
+        $this->assertEquals(2074977132, $interfaces[5]->tx);
+
     }
 
     public function testDisksSensor() {
@@ -98,6 +116,4 @@ class ExampleTest extends TestCase
         $client_version = new \App\Sensor\ClientVersion($server);
         $this->assertStringMatchesFormat('%f', $client_version->latestVersion());
     }
-
-
 }

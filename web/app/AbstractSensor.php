@@ -22,7 +22,13 @@ abstract class AbstractSensor implements Sensor {
         return $this->server;
     }
 
-    function getLastRecord($field) {
+    /**
+     * Return the last record if it contains the field $field,
+     * otherwise return null.
+     * @param string $field
+     * @return
+     */
+    function getLastRecord (string $field) {
         return $this->server->lastRecordContaining($field);
     }
 

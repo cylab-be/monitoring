@@ -48,7 +48,13 @@ class Server extends Model
         return $this->last_record;
     }
 
-    public function lastRecordContaining($field) {
+    /**
+     * Return the last record if it contains the field $field,
+     * otherwise return null.
+     * @param string $field
+     * @return string
+     */
+    public function lastRecordContaining(string $field) {
         if (isset($this->lastRecord()->$field)) {
             return $this->lastRecord();
         }
