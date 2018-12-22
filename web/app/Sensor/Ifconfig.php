@@ -114,10 +114,6 @@ class Ifconfig extends AbstractSensor {
         foreach ($lines as $line) {
             $name = $this->pregMatchOne(self::IFNAME, $line);
             if ($name !== false) {
-                if (!\starts_with($name, $allowed_prefixes)) {
-                    continue;
-                }
-
                 // Starting the section of a new interface
                 $if = new NetworkInterface();
                 $interfaces[] = $if;
@@ -137,9 +133,17 @@ class Ifconfig extends AbstractSensor {
                 $if->tx = $matches[2];
                 continue;
             }
-
         }
-        return $interfaces;
+
+        // filter out uninteresting interfaces
+        $filtered = [];
+        foreach ($interfaces as $interface) {
+            if (\starts_with($interface->name, $allowed_prefixes)) {
+                $filtered[] = $interface;
+            }
+        }
+
+        return $filtered;
     }
 
     public function pregMatchOne($pattern, $string) {
