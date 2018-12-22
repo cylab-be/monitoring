@@ -102,6 +102,8 @@ class Ifconfig extends AbstractSensor {
      */
     public function parseIfconfig($string) {
 
+        $allowed_prefixes = ["en", "eth"];
+
         if ($string == null) {
             return [];
         }
@@ -112,6 +114,10 @@ class Ifconfig extends AbstractSensor {
         foreach ($lines as $line) {
             $name = $this->pregMatchOne(self::IFNAME, $line);
             if ($name !== false) {
+                if (!\starts_with($name, $allowed_prefixes)) {
+                    continue;
+                }
+
                 // Starting the section of a new interface
                 $if = new NetworkInterface();
                 $interfaces[] = $if;
