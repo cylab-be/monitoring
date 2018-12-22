@@ -46,11 +46,13 @@ window.monitorIfconfigChart = function(element) {
     $.getJSON(api_url, function(data) {
 
         $.each(data, function(key, dataset){
-            console.log(dataset);
+            // console.log(dataset);
+            var new_color_name = window.colorNames[key];
+            var new_color = window.chartColors[new_color_name];
             var new_dataset = {
                 label: dataset.name,
-                backgroundColor: window.chartColors.green,
-                borderColor: window.chartColors.green,
+                backgroundColor: new_color,
+                borderColor: new_color,
                 data: dataset.points
             };
             config.data.datasets.push(new_dataset);

@@ -9,6 +9,8 @@ window.chartColors = {
     grey: 'rgba(201, 203, 207, 0.2)'
 };
 
+window.colorNames = Object.keys(window.chartColors);
+
 window.monitorMemChart = function(element) {
     var ctx = element.getContext('2d');
     var config = {
