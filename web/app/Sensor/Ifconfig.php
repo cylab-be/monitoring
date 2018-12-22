@@ -26,7 +26,7 @@ class Ifconfig extends AbstractSensor {
     public function points() {
         $records = $this->getLastRecords("ifconfig", 289);
         usort($records, function($r1, $r2) {
-            return $r1.time < r2.time ? 1 : -1;
+            return $r1->time  < $r2->time ? 1 : -1;
         });
 
 
