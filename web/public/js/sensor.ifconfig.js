@@ -46,7 +46,7 @@ window.monitorIfconfigChart = function(element) {
     $.getJSON(api_url, function(data) {
         console.log(data);
 
-        data.each(function(dataset){
+        $.each(data, function(dataset){
             var new_dataset = {
                 label: dataset.name,
                 backgroundColor: window.chartColors.green,
