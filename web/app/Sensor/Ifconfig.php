@@ -45,8 +45,9 @@ class Ifconfig extends AbstractSensor {
                 "name" => $iname . "/TX",
                 "points" => []
             ];
-            $dataset[$iname . "/TX"] = [
-                "name" => $iname . "/TX",
+
+            $dataset[$iname . "/RX"] = [
+                "name" => $iname . "/RX",
                 "points" => []
             ];
             $current_value[$interface->name] = $interface;
