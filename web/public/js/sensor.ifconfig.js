@@ -44,9 +44,9 @@ window.monitorIfconfigChart = function(element) {
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/ifconfig";
     $.getJSON(api_url, function(data) {
-        console.log(data);
 
         $.each(data, function(dataset){
+            console.log(dataset);
             var new_dataset = {
                 label: dataset.name,
                 backgroundColor: window.chartColors.green,
