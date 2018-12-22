@@ -41,21 +41,37 @@ class Ifconfig extends AbstractSensor {
         $current_value = [];
         foreach ($interfaces[0] as $interface) {
             $iname = $interface->name;
-            $dataset[$iname] = [
-                "name" => $iname,
+            $dataset[$iname . "/TX"] = [
+                "name" => $iname . "/TX",
                 "points" => []
             ];
-            $current_value[$interface->name] = $interface->rx;
+            $dataset[$iname . "/TX"] = [
+                "name" => $iname . "/TX",
+                "points" => []
+            ];
+            $current_value[$interface->name] = $interface;
         }
 
         for ($i = 1; $i < count($interfaces); $i++) {
             foreach ($interfaces[$i] as $interface) {
                 $iname = $interface->name;
-                $delta = $interface->rx - $current_value[$iname];
-                $current_value[$iname] = $interface->rx;
-                $dataset[$iname]["points"][] = new Point(
+                $previous_value = $current_value[$iname];
+                $delta_time = $interface->time - $previous_value->time;
+
+                // RX
+                $delta = $interface->rx - $previous_value->rx;
+                $dataset[$iname . "/RX"]["points"][] = new Point(
                         $interface->time * 1000,
-                        $delta);
+                        $delta / $delta_time);
+
+                // TX
+                $delta = $interface->tx - $previous_value->tx;
+                $dataset[$iname . "/TX"]["points"][] = new Point(
+                        $interface->time * 1000,
+                        $delta / $delta_time);
+
+                // Keep current value for next record
+                $current_value[$iname] = $interface;
 
             }
         }
@@ -63,20 +79,6 @@ class Ifconfig extends AbstractSensor {
         return array_values($dataset);
 
     }
-
-    /*
-    public function cachedMemoryPoints() {
-        $records = $this->getLastRecords("ifconfig", 288);
-
-        $points = [];
-        foreach ($records as $record) {
-            $interfaces = $this->parseIfconfig($record->memory);
-            $points[] = new Point(
-                    $record->time * 1000, $interface->cached / 1000);
-        }
-
-        return $points;
-    }*/
 
     public function status() {
         return self::STATUS_OK;
