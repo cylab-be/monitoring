@@ -46,7 +46,7 @@ window.monitorIfconfigChart = function(element) {
     $.getJSON(meminfo_url, function( data ) {
         console.log(data);
 
-        data.each(function(dataset){
+        Array.from(data).each(function(dataset){
             var new_dataset = {
                 label: dataset.name,
                 backgroundColor: window.chartColors.green,
