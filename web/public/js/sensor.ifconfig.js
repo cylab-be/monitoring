@@ -40,13 +40,13 @@ window.monitorIfconfigChart = function(element) {
     if (typeof window.monitorURL === 'undefined') {
         window.monitorURL = "https://monitor.web-d.be";
     }
-    var meminfo_url = window.monitorURL + "/api/sensor/"
+    var api_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/ifconfig";
-    $.getJSON(meminfo_url, function( data ) {
+    $.getJSON(api_url, function(data) {
         console.log(data);
 
-        Array.from(data).each(function(dataset){
+        data.each(function(dataset){
             var new_dataset = {
                 label: dataset.name,
                 backgroundColor: window.chartColors.green,
