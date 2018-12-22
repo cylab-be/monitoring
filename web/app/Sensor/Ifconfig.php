@@ -24,13 +24,13 @@ class Ifconfig extends AbstractSensor {
     }
 
     public function points() {
+        // Get records in time ascending order
         $records = $this->getLastRecords("ifconfig", 289);
         usort($records, function($r1, $r2) {
             return $r1->time  > $r2->time ? 1 : -1;
         });
 
-
-        // Compute the array of arrays of interfaces
+        // Compute the time ordered list of arrays of interfaces
         $interfaces = [];
         foreach ($records as $record) {
             $interfaces[] = $this->parseIfconfigRecord($record);
@@ -45,7 +45,7 @@ class Ifconfig extends AbstractSensor {
                 "name" => $iname,
                 "points" => []
             ];
-            $current_value[$interface->name] = $interface->tx;
+            $current_value[$interface->name] = $interface->rx;
         }
 
         for ($i = 1; $i < count($interfaces); $i++) {
