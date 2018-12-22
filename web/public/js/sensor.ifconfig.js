@@ -44,6 +44,8 @@ window.monitorIfconfigChart = function(element) {
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/ifconfig";
     $.getJSON(meminfo_url, function( data ) {
+        console.log(data);
+
         data.foreach(function(dataset){
             var new_dataset = {
                 label: dataset.name,
