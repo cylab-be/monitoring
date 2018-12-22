@@ -16,11 +16,48 @@ class Ifconfig extends AbstractSensor {
         $interfaces = [];
         $record = $this->getLastRecord("ifconfig");
         if ($record !== null) {
-            $interfaces = $this->parseIfconfig($record->ifconfig);
+            $interfaces = $this->parseIfconfigRecord($record);
         }
         return view("agent.ifconfig", [
             "server" => $this->getServer(),
             "interfaces" => $interfaces]);
+    }
+
+    public function points() {
+        $records = $this->getLastRecords("ifconfig", 289);
+
+        // Compute the array of arrays of interfaces
+        $interfaces = [];
+        foreach ($records as $record) {
+            $interfaces[] = $this->parseIfconfigRecord($record);
+        }
+
+        // Foreach interface, compute the array of points
+        $dataset = [];
+        $current_value = [];
+        foreach ($interfaces[0] as $interface) {
+            $iname = $interface->name;
+            $dataset[$iname] = [
+                "name" => $iname,
+                "points" => []
+            ];
+            $current_value[$interface->name] = $interface->tx;
+        }
+
+        for ($i = 1; $i < count($interfaces); $i++) {
+            foreach ($interfaces[$i] as $interface) {
+                $iname = $interface->name;
+                $delta = $interface->rx - $current_value[$iname];
+                $current_value[$iname] = $interface->rx;
+                $dataset[$iname]["points"][] = new Point(
+                        $interface->time * 1000,
+                        $delta);
+
+            }
+        }
+
+        return $dataset;
+
     }
 
     /*
@@ -45,12 +82,22 @@ class Ifconfig extends AbstractSensor {
     const IPV4 = '/^\\s+inet addr:(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/m';
     const RXTX = '/^\\s+RX bytes:(\\d+) .*TX bytes:(\\d+)/m';
 
+    public function parseIfconfigRecord($record) {
+        $interfaces = $this->parseIfconfig($record->ifconfig);
+        foreach ($interfaces as $interface) {
+            $interface->time = $record->time;
+        }
+
+        return $interfaces;
+    }
+
     /**
      * Parse the result of the ifconfig command.
      * @param type $string
      * @return \App\Sensor\NetworkInterface[]
      */
     public function parseIfconfig($string) {
+
         if ($string == null) {
             return [];
         }
@@ -100,6 +147,7 @@ class NetworkInterface {
     public $address;
     public $rx;
     public $tx;
+    public $time;
 
     public function humanReadableSize($bytes, $decimals = 2) {
         $size = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');

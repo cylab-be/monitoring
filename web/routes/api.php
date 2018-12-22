@@ -57,3 +57,15 @@ Route::get(
                 "points" => $sensor->loadPoints(),
                 "max" => $server->cpuinfo()["threads"]];
 });
+
+Route::get(
+        'sensor/{server}/{token}/ifconfig',
+        function(Server $server, string $token) {
+            if ($server->read_token != $token) {
+                abort(403);
+            }
+
+            header('Access-Control-Allow-Origin: *');
+            $sensor = new App\Sensor\Ifconfig($server);
+            return $sensor->points();
+});
