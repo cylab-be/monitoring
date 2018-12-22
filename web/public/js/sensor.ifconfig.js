@@ -26,7 +26,7 @@ window.monitorIfconfigChart = function(element) {
                     },
                     scaleLabel: {
                             display: true,
-                            labelString: '[Bytes / sec]'
+                            labelString: '[Kbits / sec]'
                     }
                 }]
             },

@@ -63,13 +63,13 @@ class Ifconfig extends AbstractSensor {
                 $delta = $interface->rx - $previous_value->rx;
                 $dataset[$iname . "/RX"]["points"][] = new Point(
                         $interface->time * 1000,
-                        $delta / $delta_time);
+                        round(8 / 1024 * $delta / $delta_time));
 
                 // TX
                 $delta = $interface->tx - $previous_value->tx;
                 $dataset[$iname . "/TX"]["points"][] = new Point(
                         $interface->time * 1000,
-                        $delta / $delta_time);
+                        round(8 / 1024 * $delta / $delta_time));
 
                 // Keep current value for next record
                 $current_value[$iname] = $interface;
