@@ -45,7 +45,7 @@ window.monitorIfconfigChart = function(element) {
             + "/ifconfig";
     $.getJSON(api_url, function(data) {
 
-        $.each(data, function(dataset){
+        $.each(data, function(key, dataset){
             console.log(dataset);
             var new_dataset = {
                 label: dataset.name,
