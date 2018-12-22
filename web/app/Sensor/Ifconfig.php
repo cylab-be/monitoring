@@ -56,7 +56,7 @@ class Ifconfig extends AbstractSensor {
             }
         }
 
-        array_values($dataset);
+        return array_values($dataset);
 
     }
 
