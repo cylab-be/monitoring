@@ -46,7 +46,7 @@ window.monitorIfconfigChart = function(element) {
             var new_color = window.chartColors[new_color_name];
             var new_dataset = {
                 label: dataset.name,
-                backgroundColor: new_color,
+                // backgroundColor: new_color,
                 borderColor: new_color,
                 data: dataset.points
             };
