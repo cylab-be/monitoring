@@ -35,11 +35,7 @@ window.monitorIfconfigChart = function(element) {
             }
         }
     };
-    window.memChart = new Chart(ctx, config);
-
-    if (typeof window.monitorURL === 'undefined') {
-        window.monitorURL = "https://monitor.web-d.be";
-    }
+    window.ifconfigChart = new Chart(ctx, config);
     var api_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/ifconfig";
@@ -58,6 +54,6 @@ window.monitorIfconfigChart = function(element) {
             config.data.datasets.push(new_dataset);
         });
 
-        window.memChart.update();
+        window.ifconfigChart.update();
     });
 };

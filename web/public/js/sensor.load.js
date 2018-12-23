@@ -36,10 +36,6 @@ window.monitorLoadChart = function(element) {
     };
 
     window.loadChart = new Chart(ctx, config);
-
-    if (typeof window.monitorURL === 'undefined') {
-        window.monitorURL = "https://monitor.web-d.be";
-    }
     var load_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/load";
