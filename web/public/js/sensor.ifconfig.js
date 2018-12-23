@@ -20,7 +20,6 @@ window.monitorIfconfigChart = function(element) {
                     }
                 }],
                 yAxes: [{
-                    stacked: true,
                     ticks: {
                         beginAtZero:true
                     },
