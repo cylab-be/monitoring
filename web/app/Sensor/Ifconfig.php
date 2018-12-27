@@ -61,12 +61,20 @@ class Ifconfig extends AbstractSensor {
 
                 // RX
                 $delta = $interface->rx - $previous_value->rx;
+                if ($delta < 0) {
+                    // Can happen after a reboot...
+                    $delta = 0;
+                }
                 $dataset[$iname . "/RX"]["points"][] = new Point(
                         $interface->time * 1000,
                         round(8 / 1024 * $delta / $delta_time));
 
                 // TX
                 $delta = $interface->tx - $previous_value->tx;
+                if ($delta < 0) {
+                    // Can happen after a reboot...
+                    $delta = 0;
+                }
                 $dataset[$iname . "/TX"]["points"][] = new Point(
                         $interface->time * 1000,
                         round(8 / 1024 * $delta / $delta_time));
