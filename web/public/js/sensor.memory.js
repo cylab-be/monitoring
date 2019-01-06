@@ -42,7 +42,6 @@ window.monitorMemChart = function(element) {
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/memory";
     $.getJSON(meminfo_url, function(data) {
-        console.log(data);
         var new_dataset = {
                 label: 'Used',
                 backgroundColor: 'rgba(0, 178, 0, 0.3)',
