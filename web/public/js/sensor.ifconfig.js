@@ -35,6 +35,9 @@ window.monitorIfconfigChart = function(element) {
         }
     };
     window.ifconfigChart = new Chart(ctx, config);
+    if (typeof window.monitorURL === 'undefined') {
+        window.monitorURL = "https://monitor.web-d.be";
+    }
     var api_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/ifconfig";

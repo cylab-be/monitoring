@@ -35,6 +35,9 @@ window.monitorMemChart = function(element) {
         }
     };
     window.memChart = new Chart(ctx, config);
+    if (typeof window.monitorURL === 'undefined') {
+        window.monitorURL = "https://monitor.web-d.be";
+    }
     var meminfo_url = window.monitorURL + "/api/sensor/"
             + window.monitorServerID + "/" + window.monitorServerToken
             + "/memory";
