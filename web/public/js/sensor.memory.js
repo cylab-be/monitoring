@@ -45,16 +45,16 @@ window.monitorMemChart = function(element) {
         console.log(data);
         var new_dataset = {
                 label: 'Used',
-                backgroundColor: window.chartColors.green,
-                borderColor: window.chartColors.green,
+                backgroundColor: 'rgba(0, 178, 0, 0.3)',
+                borderColor: 'rgba(0, 178, 0, 0.3)',
                 data: data.used
             };
         config.data.datasets.push(new_dataset);
 
         new_dataset = {
                 label: 'Cached',
-                backgroundColor: window.chartColors.orange,
-                borderColor: window.chartColors.orange,
+                backgroundColor: 'rgba(255, 165, 0, 0.3)',
+                borderColor: 'rgba(255, 165, 0, 0.3)',
                 data: data.cached
             };
         config.data.datasets.push(new_dataset);
