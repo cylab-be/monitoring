@@ -116,4 +116,31 @@ class ExampleTest extends TestCase
         $client_version = new \App\Sensor\ClientVersion($server);
         $this->assertStringMatchesFormat('%f', $client_version->latestVersion());
     }
+
+    /**
+     * @group status-change
+     */
+    public function testStatusChangeDetection() {
+        $server = new \App\Server();
+        $server->id = 1;
+
+        $this->assertEquals(1, \App\StatusChange::getLastChangeForServer(1)->server_id);
+
+        // Insert a fake status change
+        $change = new \App\StatusChange();
+        $change->status = 155;
+        $change->server_id = 1;
+        \App\StatusChange::save($change);
+
+        // Run change detection
+        $change_detection_job = new \App\Jobs\StatusChangeDetection();
+        $change_detection_job->detectChangeForServer($server);
+
+        // Check if a new StatusChange was inserted in Mongo
+        $last_change = \App\StatusChange::getLastChangeForServer(1);
+        $this->assertEquals(
+                $server->status(),
+                $last_change->status);
+
+    }
 }
