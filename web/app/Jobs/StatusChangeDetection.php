@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Mail;
 
 class StatusChangeDetection implements ShouldQueue
 {
@@ -55,5 +56,9 @@ class StatusChangeDetection implements ShouldQueue
         $change->time = time();
         $change->status = $current_status;
         StatusChange::save($change);
+
+        foreach ($server->organization->users as $user) {
+            Mail::to($user)->send(new \App\Mail\StatusChanged($change));
+        }
     }
 }

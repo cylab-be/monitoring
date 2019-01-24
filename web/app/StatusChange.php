@@ -38,6 +38,10 @@ class StatusChange {
         return Carbon::createFromTimestamp($this->time);
     }
 
+    public function server() : Server {
+        return Server::id($this->server_id);
+    }
+
     public static function save($status) {
         $data = [
             "time" => time(),

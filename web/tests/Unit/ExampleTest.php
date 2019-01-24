@@ -121,15 +121,30 @@ class ExampleTest extends TestCase
      * @group status-change
      */
     public function testStatusChangeDetection() {
-        $server = new \App\Server();
-        $server->id = 1;
+        $organization = new Organization();
+        $organization->name = "ACME";
+        $organization->save();
 
-        $this->assertEquals(1, \App\StatusChange::getLastChangeForServer(1)->server_id);
+        $server = new \App\Server();
+        $server->name = "My test server";
+        $server->organization()->associate($organization);
+        $server->save();
+
+        $server_id = $server->id;
+
+        $user = new User();
+        $user->name = "Test";
+        $user->email = "thibault.debatty@gmail.com";
+        $user->password = "qmlskdj";
+        $user->save();
+        $organization->users()->attach($user->id);
+
+        $this->assertEquals($server_id, \App\StatusChange::getLastChangeForServer(1)->server_id);
 
         // Insert a fake status change
         $change = new \App\StatusChange();
         $change->status = 155;
-        $change->server_id = 1;
+        $change->server_id = $server_id;
         \App\StatusChange::save($change);
 
         // Run change detection
@@ -137,7 +152,7 @@ class ExampleTest extends TestCase
         $change_detection_job->detectChangeForServer($server);
 
         // Check if a new StatusChange was inserted in Mongo
-        $last_change = \App\StatusChange::getLastChangeForServer(1);
+        $last_change = \App\StatusChange::getLastChangeForServer($server_id);
         $this->assertEquals(
                 $server->status(),
                 $last_change->status);

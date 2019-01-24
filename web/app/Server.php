@@ -224,4 +224,8 @@ class Server extends Model
     public function getChanges($count = 10) {
         return \App\StatusChange::getLastChangesForServer($this->id, $count);
     }
+
+    public static function id($id) : Server {
+        return self::where("id", $id)->first();
+    }
 }
