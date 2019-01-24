@@ -32,6 +32,7 @@ class StatusChanged extends Mailable
     {
         return $this->markdown('emails.server.status')
                 ->with(["change" => $this->change])
+                ->from("monitor@web-d.be")
                 ->subject($this->change->server()->name . " : Status Change");
     }
 }
