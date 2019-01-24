@@ -94,6 +94,22 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </div>
             @endforeach
 
+            <div class="card">
+                <div class="card-header">
+                    History
+                </div>
+                <div class="card-body">
+                    <table class='table table-sm'>
+                        @foreach($server->getChanges() as $change)
+                        <tr>
+                            <td>{{ $change->getTimeCarbon()->toDateTimeString() }}</td>
+                            <td>{!! $change->getStatusBadge() !!}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+
             <h3>PHP Client installation</h3>
             <pre style="font-size: 75%; background: #ddd; overflow: hidden"><code>
 wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar

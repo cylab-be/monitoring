@@ -220,4 +220,8 @@ class Server extends Model
 
         return $this->parseProductName($record->system);
     }
+
+    public function getChanges($count = 10) {
+        return \App\StatusChange::getLastChangesForServer($this->id, $count);
+    }
 }
