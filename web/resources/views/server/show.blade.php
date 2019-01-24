@@ -110,15 +110,30 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
             </div>
 
-            <h3>PHP Client installation</h3>
-            <pre style="font-size: 75%; background: #ddd; overflow: hidden"><code>
-wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar
-sudo mv monitor.phar /usr/bin/monitor
-sudo chmod +x /usr/bin/monitor
-echo "*/5 * * * *   root    /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }}" | sudo tee -a /etc/crontab
-            </code></pre>
-        </div>
+             <div class="card">
+                <div class="card-header">
+                    PHP Client installation
+                </div>
+                <div class="card-body">
+                    <p>Download client application:</p>
+                    <pre style="font-size: 75%; overflow: hidden"><code>wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar
+chmod +x monitor.phar
+</code></pre>
+                    <p>Move it to /usr/bin:</p>
+                    <pre style="font-size: 75%; overflow: hidden"><code>sudo mv monitor.phar /usr/bin/monitor
+</code></pre>
 
+                    <p>Test it:</p>
+                    <pre style="font-size: 75%; overflow: hidden"><code>sudo monitor ping -i {{ $server->id }} -t {{ $server->token }}
+</code></pre>
+
+                    <p>Add a cron entry to run it automatically:</p>
+                    <pre style="font-size: 75%; overflow: hidden"><code>echo "*/5 * * * * root /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }}" | \
+sudo tee -a /etc/crontab
+            </code></pre>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
