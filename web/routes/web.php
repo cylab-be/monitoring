@@ -21,4 +21,5 @@ Route::get('app/dashboard', function() {
     return view("dashboard");
 })->name('dashboard');
 Route::resource('app/organizations', 'OrganizationController');
+Route::resource("app/organizations.user", "OrganizationUserController");
 Route::resource('app/servers', 'ServerController');

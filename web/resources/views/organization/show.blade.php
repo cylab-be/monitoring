@@ -15,6 +15,13 @@
                         <li>{{ $user->name }}</li>
                         @endforeach
                     </ul>
+
+                    <p>
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ action("OrganizationUserController@create", ["organization" => $organization]) }}">
+                            Invite user to organization
+                        </a>
+                    </p>
                 </div>
             </div>
 
