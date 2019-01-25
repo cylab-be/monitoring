@@ -50,7 +50,10 @@
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganizations">
                             @foreach (Auth::user()->organizations as $organization)
-                            <a class="dropdown-item" href="">{{ $organization->name }}</a>
+                            <a class="dropdown-item"
+                               href="{{ action("OrganizationController@show", ["organization" => $organization]) }}">
+                                {{ $organization->name }}
+                            </a>
                             @endforeach
                         </div>
                     </li>
