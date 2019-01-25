@@ -18,8 +18,10 @@ Route::get('/', function () {
 Auth::routes(['register'=>false]);
 
 Route::get('app/dashboard', function() {
-    return view("dashboard");
+    //return view("dashboard");
+    return redirect(action("OrganizationController@index"));
 })->name('dashboard');
+
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController");
 Route::resource('app/servers', 'ServerController');
