@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('app/dashboard', function() {
     return view("dashboard");
