@@ -18,6 +18,28 @@
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header">
+                    Danger zone
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary"
+                       href="{{ action('OrganizationController@edit', ['Organization' => $organization]) }}">
+                         Edit
+                    </a>
+
+                    <form method="POST"
+                          action="{{ action('OrganizationController@destroy', ['Organization' => $organization]) }}"
+                          style="display: inline-block">
+                        {{ csrf_field() }}
+                        {{ method_field("DELETE") }}
+                        <button class="btn btn-danger">
+                             Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-md-9">
@@ -67,23 +89,6 @@
                 </tr>
                 @endforeach
             </table>
-
-            <div>
-                <a class="btn btn-primary"
-                   href="{{ action('OrganizationController@edit', ['Organization' => $organization]) }}">
-                     Edit
-                </a>
-
-                <form method="POST"
-                      action="{{ action('OrganizationController@destroy', ['Organization' => $organization]) }}"
-                      style="display: inline-block">
-                    {{ csrf_field() }}
-                    {{ method_field("DELETE") }}
-                    <button class="btn btn-danger">
-                         Delete
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 </div>
