@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes(['register'=>false]);
 
+Route::get("home", function() {
+    return redirect(action("OrganizationController@index"));
+});
+
 Route::get('app/dashboard', function() {
     //return view("dashboard");
     return redirect(action("OrganizationController@index"));
