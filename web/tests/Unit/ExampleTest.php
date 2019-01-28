@@ -89,11 +89,25 @@ class ExampleTest extends TestCase
         $this->assertEquals("15954328", $mem_total);
     }
 
+    /**
+     * @group cpuinfo
+     */
     public function testCpuinfo() {
         $string = file_get_contents(__DIR__ . "/cpuinfo");
         $server = new \App\Server();
         $cpuinfo = $server->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);
+        $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
+    }
+
+    /**
+     * @group cpuinfo
+     */
+    public function testCpuinfoSingleCPU() {
+        $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
+        $server = new \App\Server();
+        $cpuinfo = $server->parseCpuinfo($string);
+        $this->assertEquals(1, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
 

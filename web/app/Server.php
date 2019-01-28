@@ -141,7 +141,7 @@ class Server extends Model
         preg_match_all(self::CPU_INFO, $string, $matches);
 
         $result["threads"] = count($matches[0]);
-        $result["cpu"] = $matches[1][1];
+        $result["cpu"] = $matches[1][0];
         return $result;
     }
 
