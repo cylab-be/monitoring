@@ -22,9 +22,10 @@ Route::get("home", function() {
 });
 
 Route::get('app/dashboard', function() {
-    //return view("dashboard");
     return redirect(action("OrganizationController@index"));
 })->name('dashboard');
+
+Route::get('app/organizations/{organization}/dashboard', 'OrganizationController@dashboard');
 
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController");

@@ -78,6 +78,11 @@ class OrganizationController extends Controller
         return view("organization.show", array("organization" => $organization));
     }
 
+    public function dashboard(Organization $organization)
+    {
+        return view("organization.dashboard", array("organization" => $organization));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

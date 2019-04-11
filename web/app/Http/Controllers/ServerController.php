@@ -24,7 +24,7 @@ class ServerController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|regex:/^[a-zA-Z0-9\s-\.]+$/|max:255'
+            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255'
         ]);
     }
 
