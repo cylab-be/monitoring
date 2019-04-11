@@ -12,4 +12,10 @@ interface Sensor
     public function __construct(Server $server);
     public function status();
     public function report();
+
+    /**
+     * Get the name of this sensor (e.g meminfo, cpuload, heartbeat)
+     * @return string
+     */
+    public function getName() : string;
 }

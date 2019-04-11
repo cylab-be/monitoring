@@ -22,6 +22,10 @@ abstract class AbstractSensor implements Sensor {
         return $this->server;
     }
 
+    public function getName() : string {
+        return (new \ReflectionClass($this))->getShortName();
+    }
+
     /**
      * Return the last record if it contains the field $field,
      * otherwise return null.
