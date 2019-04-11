@@ -7,5 +7,5 @@
 - plugin: App\Plugins\Exec
   params:
   - cd web && composer install
-  - cd web && cp env.prod .env
+  - cd web && cp ../../../env.prod .env
   - cd web && php artisan migrate --force
