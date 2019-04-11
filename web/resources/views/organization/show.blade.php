@@ -5,6 +5,16 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card">
+                <div class="card-body">
+                    <a class="btn btn-primary btn-sm"
+                       href="{{ action("OrganizationController@dashboard", ["organization" => $organization]) }}">
+                        Dashboard
+                     </a>
+                </div>
+            </div>
+
+
+            <div class="card">
                 <div class="card-header">
                     Users
                 </div>
