@@ -101,6 +101,16 @@ class Server extends Model
         return $status_array;
     }
 
+    public function getSensorsNOK() {
+        $sensorsNOK = [];
+        foreach ($this->getSensors() as $sensor) {
+            if ($sensor->status() > 0) {
+                $sensorsNOK[] = $sensor;
+            }
+        }
+        return $sensorsNOK;
+    }
+
     public function statusString() {
         switch ($this->status()) {
             case 0:

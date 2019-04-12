@@ -16,11 +16,9 @@
                 </div>
 
                 <div class="card-body">
-                    <ul>
-                        @foreach ($server->getSensors() as $sensor)
-                        @if ($sensor->status() > 0)
+                    <ul class="list-unstyled">
+                        @foreach ($server->getSensorsNOK() as $sensor)
                         <li>{{ $sensor->getName() }}</li>
-                        @endif
                         @endforeach
                     </ul>
 
