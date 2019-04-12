@@ -16,6 +16,14 @@
                 </div>
 
                 <div class="card-body">
+                    <ul>
+                        @foreach ($server->getSensors() as $sensor)
+                        @if ($sensor->status() > 0)
+                        <li>{{ $sensor->getName() }}</li>
+                        @endif
+                        @endforeach
+                    </ul>
+
                     {!! $server->getBadge() !!}
                     <p>
                         {{ $server->lastRecordTime()->diffForHumans() }}

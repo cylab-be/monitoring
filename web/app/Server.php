@@ -90,12 +90,15 @@ class Server extends Model
      * @return int
      */
     public function status() {
-        $all_status = [];
-        foreach ($this->getSensors() as $sensor) {
-            $all_status[] = $sensor->status();
-        }
+        return max($this->statusArray());
+    }
 
-        return max($all_status);
+    public function statusArray() {
+        $status_array = [];
+        foreach ($this->getSensors() as $sensor) {
+            $status_array[\get_class($sensor)] = $sensor->status();
+        }
+        return $status_array;
     }
 
     public function statusString() {
