@@ -24,7 +24,7 @@
 
                     <p class="card-text">
                         <small class="text-muted">
-                            Last updated {{ $server->lastRecordTime()->diffForHumans() }} ago
+                            Last updated {{ $server->lastRecordTime()->diffForHumans() }}
                         </small>
                     </p>
                 </div>
