@@ -60,6 +60,19 @@ abstract class AbstractSensor implements Sensor {
         return $results;
     }
 
+    public static function getColorForStatus($status) {
+        switch ($status) {
+            case 0:
+                return 'success';
+            case 10:
+                return 'warning';
+            case 20:
+                return 'danger';
+            default:
+                return 'secondary';
+        }
+    }
+
     public static function getBadgeForStatus($status) {
         switch ($status) {
             case 0:

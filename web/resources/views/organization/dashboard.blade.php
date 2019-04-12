@@ -8,7 +8,7 @@
     <div class="row">
         @foreach($organization->servers()->orderBy("name")->get() as $server)
         <div class="col-md-3">
-            <div class="card">
+            <div class="card card-border-3 border-{{ $server->color() }}">
                 <div class="card-header">
                     <h5 class="card-title">
                         {{ $server->name }}
@@ -22,14 +22,15 @@
                         @endforeach
                     </ul>
 
-                    {!! $server->getBadge() !!}
-                    <p>
-                        {{ $server->lastRecordTime()->diffForHumans() }}
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Last updated {{ $server->lastRecordTime()->diffForHumans() }} ago
+                        </small>
                     </p>
                 </div>
 
                 <div class="card-footer">
-                    <a class="btn btn-primary btn-sm"
+                    <a class="btn btn-secondary btn-sm"
                        href="{{ action("ServerController@show", ["server" => $server]) }}">
                         View
                     </a>

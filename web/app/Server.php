@@ -128,6 +128,10 @@ class Server extends Model
         return AbstractSensor::getBadgeForStatus($this->status());
     }
 
+    public function color() {
+        return AbstractSensor::getColorForStatus($this->status());
+    }
+
     public function getSensors() {
 
         $sensors = [];
