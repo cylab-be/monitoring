@@ -21,6 +21,14 @@
                             Public dashboard
                         </a>
                     </p>
+
+                    <p>
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ action("OrganizationController@resetToken", [
+                               "organization" => $organization]) }}">
+                            Reset dashboard token
+                        </a>
+                    </p>
                 </div>
             </div>
 
