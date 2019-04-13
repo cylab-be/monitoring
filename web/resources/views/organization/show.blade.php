@@ -8,7 +8,8 @@
                 <div class="card-body">
                     <p>
                         <a class="btn btn-primary btn-sm"
-                           href="{{ action("OrganizationController@dashboard", ["organization" => $organization]) }}">
+                           href="{{ action("OrganizationController@dashboard",
+                                       ["organization" => $organization]) }}">
                             Dashboard
                         </a>
                     </p>
