@@ -110,7 +110,7 @@
 
                         <a class="btn btn-primary btn-sm"
                            href="{{ action('ServerController@edit', ['Server' => $server]) }}">
-                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                            <i class="fas fa-pencil-alt"></i> Edit
                         </a>
 
                         <form method="POST"
