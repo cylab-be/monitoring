@@ -25,7 +25,8 @@ class Server extends Model
         \App\Sensor\Inodes::class,
         \App\Sensor\Ssacli::class,
         \App\Sensor\Date::class,
-        \App\Sensor\ClientVersion::class
+        \App\Sensor\ClientVersion::class,
+        \App\Sensor\Heartbeat::class
     ];
 
     public function __construct(array $attributes = array()) {
@@ -65,7 +66,7 @@ class Server extends Model
 
     /**
      *
-     * @return \DateTimeZone
+     * @return \Carbon\Carbon
      */
     public function lastRecordTime() {
         $last_record = $this->lastRecord();
