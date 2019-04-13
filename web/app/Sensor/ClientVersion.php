@@ -28,6 +28,10 @@ class ClientVersion extends \App\AbstractSensor {
     }
 
     public function status() {
-        return self::STATUS_OK;
+        if ($this->getServer()->clientVersion() === $this->latestVersion()) {
+            return self::STATUS_OK;
+        }
+
+        return self::STATUS_WARNING;
     }
 }
