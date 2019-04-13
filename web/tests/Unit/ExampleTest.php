@@ -49,11 +49,11 @@ class ExampleTest extends TestCase
         $string = file_get_contents(__DIR__ . "/ifconfig");
         $sensor = new Ifconfig(new \App\Server());
         $interfaces = $sensor->parseIfconfig($string);
-        $this->assertEquals(6, count($interfaces));
-        $this->assertEquals("br-fd7b87b0be70", $interfaces[0]->name);
-        $this->assertEquals("172.18.0.1", $interfaces[0]->address);
-        $this->assertEquals(1074590056, $interfaces[5]->rx);
-        $this->assertEquals(2074977132, $interfaces[5]->tx);
+        $this->assertEquals(2, count($interfaces));
+        $this->assertEquals("enp0s31f6", $interfaces[0]->name);
+        $this->assertEquals("10.67.1.32", $interfaces[1]->address);
+        $this->assertEquals(1074590056, $interfaces[1]->rx);
+        $this->assertEquals(2074977132, $interfaces[1]->tx);
 
     }
 
