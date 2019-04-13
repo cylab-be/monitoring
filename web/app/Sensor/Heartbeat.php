@@ -21,7 +21,6 @@ class Heartbeat extends \App\AbstractSensor {
     }
 
 
-
     public function status() {
         $record = $this->getServer()->lastRecord();
 

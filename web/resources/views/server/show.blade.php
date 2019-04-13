@@ -26,13 +26,14 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
+                    <p>{!! $server->statusBadge() !!}</p>
+
                     <p>
                         Last heartbeet:<br>
                         {{ $server->lastRecordTime()->toDateTimeString() }}<br>
                         ({{ $server->lastRecordTime()->diffForHumans() }})
                     </p>
 
-                    <p>Status: {{ $server->statusString() }}</p>
                     <p>Client version: {{ $server->clientVersion() }}</p>
                 </div>
             </div>

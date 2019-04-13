@@ -94,6 +94,10 @@ class Server extends Model
         return max($this->statusArray());
     }
 
+    public function statusBadge() {
+        return AbstractSensor::getBadgeForStatus($this->status());
+    }
+
     public function statusArray() {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
