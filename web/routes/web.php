@@ -26,6 +26,8 @@ Route::get('app/dashboard', function() {
 })->name('dashboard');
 
 Route::get('app/organizations/{organization}/dashboard', 'OrganizationController@dashboard');
+Route::get('app/organizations/{organization}/reset-token',
+        'OrganizationController@resetToken');
 Route::get('app/organizations/{organization}/dashboard/{token}',
         function(\App\Organization $organization, string $token) {
 
