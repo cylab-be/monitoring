@@ -26,7 +26,15 @@ Route::get('app/dashboard', function() {
 })->name('dashboard');
 
 Route::get('app/organizations/{organization}/dashboard', 'OrganizationController@dashboard');
+Route::get('app/organizations/{organization}/dashboard/{token}',
+        function(\App\Organization $organization, string $token) {
 
+    if ($organization->dashboard_token != $token) {
+        abort(403);
+    }
+
+    return view("organization.dashboard", array("organization" => $organization));
+})->name("organization.public.dashboard");
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController");
 Route::resource('app/servers', 'ServerController');

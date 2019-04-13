@@ -65,6 +65,7 @@ class RegisterController extends Controller
     {
         $organization = new Organization();
         $organization->name = $data["name"];
+        $organization->dashboard_token = \str_random(20);
         $organization->save();
 
         $user = User::create([

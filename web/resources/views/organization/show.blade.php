@@ -6,10 +6,21 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-primary btn-sm"
-                       href="{{ action("OrganizationController@dashboard", ["organization" => $organization]) }}">
-                        Dashboard
-                     </a>
+                    <p>
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ action("OrganizationController@dashboard", ["organization" => $organization]) }}">
+                            Dashboard
+                        </a>
+                    </p>
+
+                    <p>
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ route("organization.public.dashboard", [
+                               "organization" => $organization,
+                                "token" => $organization->dashboard_token]) }}">
+                            Public dashboard
+                        </a>
+                    </p>
                 </div>
             </div>
 

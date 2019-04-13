@@ -107,7 +107,8 @@ class Ifconfig extends AbstractSensor {
     }
 
     /**
-     * Parse the result of the ifconfig command.
+     * Parse the result of the ifconfig command, skipping every virtual
+     * interfaces (docker, br, lo)
      * @param type $string
      * @return \App\Sensor\NetworkInterface[]
      */

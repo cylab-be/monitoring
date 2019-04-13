@@ -24,7 +24,7 @@ class OrganizationController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|regex:/^[a-zA-Z0-9\s-\.]+$/|max:255'
+            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255'
         ]);
     }
 
@@ -63,6 +63,7 @@ class OrganizationController extends Controller
 
         $organization = new Organization();
         $organization->name = $request->name;
+        $organization->dashboard_token = \str_random(20);
         Auth::user()->organizations()->save($organization);
 
         return redirect(action('OrganizationController@index'));
