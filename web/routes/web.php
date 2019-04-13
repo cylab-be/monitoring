@@ -32,7 +32,7 @@ Route::get('app/organizations/{organization}/dashboard/{token}',
         function(\App\Organization $organization, string $token) {
 
     if ($organization->dashboard_token != $token) {
-        abort(403, 'Forbidden');
+        abort(403);
     }
 
     return view("organization.dashboard", array("organization" => $organization));
