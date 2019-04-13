@@ -10,7 +10,7 @@
                         <a class="btn btn-primary btn-sm"
                            href="{{ action("OrganizationController@dashboard",
                                        ["organization" => $organization]) }}">
-                            Dashboard
+                            Dashboard <i class="fas fa-lock ml-2"></i>
                         </a>
                     </p>
 
@@ -19,7 +19,7 @@
                            href="{{ route("organization.public.dashboard", [
                                "organization" => $organization,
                                 "token" => $organization->dashboard_token]) }}">
-                            Public dashboard
+                            Public dashboard <i class="fas fa-globe ml-2"></i>
                         </a>
                     </p>
 
@@ -27,7 +27,7 @@
                         <a class="btn btn-primary btn-sm"
                            href="{{ action("OrganizationController@resetToken", [
                                "organization" => $organization]) }}">
-                            Reset dashboard token
+                            <i class="fas fa-redo-alt"></i> Reset dashboard token
                         </a>
                     </p>
                 </div>
