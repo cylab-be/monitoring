@@ -1,0 +1,28 @@
+# https://hub.docker.com/_/php/
+image: php:7.2
+
+before_script:
+  # Install git, the php image doesn't have installed
+  - apt-get update -yqq
+  - apt-get install git -yqq
+  # Install composer
+  - curl -sS https://getcomposer.org/installer | php
+  # Install PHP-ZIP extension (used by composer)
+  - apt-get install -yqq libzip-dev
+  - docker-php-ext-install zip
+  # Install xdebug extension (used for phpunit code coverage)
+  - pecl install xdebug
+  - docker-php-ext-enable xdebug
+  # Install all project dependencies
+  - php composer.phar install
+  # setup Laravel
+  - cp web/env.test web/.env
+  - touch web/storage/app/db.sqlite
+  - cd web && php artisan migrate
+
+
+# Test with PHP7 
+test:php72:
+  image: php:7.2
+  script:
+    - cd web && vendor/bin/phpunit --coverage-text
