@@ -13,6 +13,8 @@ before_script:
   # Install xdebug extension (used for phpunit code coverage)
   - pecl install xdebug
   - docker-php-ext-enable xdebug
+  - pecl install mongodb-1.4.4
+  - docker-php-ext-enable mongodb
   # Install all project dependencies
   - cd web && php ../composer.phar install
   # setup Laravel
