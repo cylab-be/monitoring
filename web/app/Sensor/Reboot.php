@@ -13,20 +13,23 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Reboot extends \App\AbstractSensor {
+class Reboot extends \App\AbstractSensor
+{
     //put your code here
-    public function report() {
+    public function report()
+    {
         return "<p>Reboot required: "
             . $this->statusHTML()
             . "</p>";
     }
 
-    function statusHTML() {
+    public function statusHTML()
+    {
         switch ($this->status()) {
-            case self::STATUS_OK :
+            case self::STATUS_OK:
                 return "no";
 
-            case self::STATUS_WARNING :
+            case self::STATUS_WARNING:
                 return "yes";
 
             default:
@@ -34,7 +37,8 @@ class Reboot extends \App\AbstractSensor {
         }
     }
 
-    public function status() {
+    public function status()
+    {
         $record = $this->getLastRecord("reboot");
         if ($record === null) {
             return self::STATUS_UNKNOWN;
@@ -46,5 +50,4 @@ class Reboot extends \App\AbstractSensor {
 
         return self::STATUS_OK;
     }
-
 }

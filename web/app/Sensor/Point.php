@@ -8,11 +8,13 @@ namespace App\Sensor;
  * @author tibo
  */
 
-class Point {
+class Point
+{
     public $t = 0;
     public $y = 0;
 
-    public function __construct($t, $y) {
+    public function __construct($t, $y)
+    {
         $this->t = $t;
         $this->y = $y;
     }

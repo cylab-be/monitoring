@@ -13,20 +13,22 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Heartbeat extends \App\AbstractSensor {
+class Heartbeat extends \App\AbstractSensor
+{
     //put your code here
-    public function report() {
+    public function report()
+    {
         return "<p>Last heartbeat received "
         . $this->getServer()->lastRecordTime()->diffForHumans() . "</p>";
     }
 
 
-    public function status() {
+    public function status()
+    {
         $record = $this->getServer()->lastRecord();
 
         if ($record === null) {
             $delta = PHP_INT_MAX;
-
         } else {
             $delta = \time() - $record->time;
         }

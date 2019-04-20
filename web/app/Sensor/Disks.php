@@ -7,11 +7,13 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Disks extends \App\AbstractSensor {
+class Disks extends \App\AbstractSensor
+{
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
 
-    public function report() {
+    public function report()
+    {
         $record = $this->getLastRecord("disks");
         if ($record == null) {
             return "<p>No data available...</p>";
@@ -21,13 +23,16 @@ class Disks extends \App\AbstractSensor {
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
         foreach ($partitions as $partition) {
-            $return .= "<tr><td>" . $partition->filesystem . "</td><td>" . $partition->mounted . "</td><td>" . $partition->usedPercent() . "%</td></tr>";
+            $return .= "<tr><td>" . $partition->filesystem . "</td><td>"
+                    . $partition->mounted . "</td><td>" . $partition->usedPercent()
+                    . "%</td></tr>";
         }
         $return .= "</table>";
         return $return;
     }
 
-    public function status() {
+    public function status()
+    {
         $record = $this->getLastRecord("disks");
         if ($record == null) {
             return self::STATUS_UNKNOWN;
@@ -50,7 +55,8 @@ class Disks extends \App\AbstractSensor {
 
     public static $skip_fs = ["none", "tmpfs", "shm"];
 
-    public function parse($string) {
+    public function parse($string)
+    {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
         $partitions = array();
@@ -69,16 +75,5 @@ class Disks extends \App\AbstractSensor {
             $partitions[] = $partition;
         }
         return $partitions;
-    }
-}
-
-class Partition {
-    public $filesystem = "";
-    public $blocks = 0;
-    public $used = 0;
-    public $mounted = "";
-
-    public function usedPercent() {
-        return round(100.0 * $this->used / $this->blocks);
     }
 }

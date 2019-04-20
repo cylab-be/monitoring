@@ -25,7 +25,8 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testRelations() {
+    public function testRelations()
+    {
         $user = new User();
         $user->name = "test";
         $user->email = "test@example.com";
@@ -38,14 +39,18 @@ class ExampleTest extends TestCase
 
         $organization->users()->save($user);
 
-        $this->assertEquals("Org", $user->organizations()->first()->name);
+        $this->assertEquals(
+            "Org",
+            $user->organizations()->first()->name
+        );
     }
 
     /**
      * @group ifconfig
      * @group sensors
      */
-    public function testIfconfig() {
+    public function testIfconfig()
+    {
         $string = file_get_contents(__DIR__ . "/ifconfig");
         $sensor = new Ifconfig(new \App\Server());
         $interfaces = $sensor->parseIfconfig($string);
@@ -54,10 +59,10 @@ class ExampleTest extends TestCase
         $this->assertEquals("10.67.1.32", $interfaces[1]->address);
         $this->assertEquals(1074590056, $interfaces[1]->rx);
         $this->assertEquals(2074977132, $interfaces[1]->tx);
-
     }
 
-    public function testDisksSensor() {
+    public function testDisksSensor()
+    {
         $string = file_get_contents(__DIR__ . "/df");
         $sensor = new Disks(new \App\Server());
         $disks = $sensor->parse($string);
@@ -66,14 +71,16 @@ class ExampleTest extends TestCase
         $this->assertEquals(1128926648, $disks[1]->blocks);
     }
 
-    public function testSsacli() {
+    public function testSsacli()
+    {
         $string = file_get_contents(__DIR__ . "/ssacli");
         $sensor = new \App\Sensor\Ssacli(new \App\Server());
         $disks = $sensor->parse($string);
         $this->assertEquals("OK", $disks[0]->status);
     }
 
-    public function testUpdates() {
+    public function testUpdates()
+    {
         $string = "6 packages can be updated.
 2 updates are security updates.";
 
@@ -82,7 +89,8 @@ class ExampleTest extends TestCase
         $this->assertEquals(2, $status["security"]);
     }
 
-    public function testMeminfo() {
+    public function testMeminfo()
+    {
         $string = file_get_contents(__DIR__ . "/meminfo");
         $server = new \App\Server();
         $mem_total = $server->parseMeminfo($string);
@@ -92,7 +100,8 @@ class ExampleTest extends TestCase
     /**
      * @group cpuinfo
      */
-    public function testCpuinfo() {
+    public function testCpuinfo()
+    {
         $string = file_get_contents(__DIR__ . "/cpuinfo");
         $server = new \App\Server();
         $cpuinfo = $server->parseCpuinfo($string);
@@ -103,7 +112,8 @@ class ExampleTest extends TestCase
     /**
      * @group cpuinfo
      */
-    public function testCpuinfoSingleCPU() {
+    public function testCpuinfoSingleCPU()
+    {
         $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
         $server = new \App\Server();
         $cpuinfo = $server->parseCpuinfo($string);
@@ -111,21 +121,24 @@ class ExampleTest extends TestCase
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
 
-    public function testManufacturer() {
+    public function testManufacturer()
+    {
         $string = file_get_contents(__DIR__ . "/system");
         $server = new \App\Server();
         $manufacturer = $server->parseManufacturer($string);
         $this->assertEquals("LENOVO", $manufacturer);
     }
 
-    public function testProductName() {
+    public function testProductName()
+    {
         $string = file_get_contents(__DIR__ . "/system");
         $server = new \App\Server();
         $manufacturer = $server->parseProductName($string);
         $this->assertEquals("20J60018MB", $manufacturer);
     }
 
-    public function testClientVersion() {
+    public function testClientVersion()
+    {
         $server = new \App\Server();
         $client_version = new \App\Sensor\ClientVersion($server);
         $this->assertStringMatchesFormat('%f', $client_version->latestVersion());
@@ -134,7 +147,8 @@ class ExampleTest extends TestCase
     /**
      * @group status-change
      */
-    public function testStatusChangeDetection() {
+    public function testStatusChangeDetection()
+    {
         $organization = new Organization();
         $organization->name = "ACME";
         $organization->save();
@@ -168,8 +182,8 @@ class ExampleTest extends TestCase
         // Check if a new StatusChange was inserted in Mongo
         $last_change = \App\StatusChange::getLastChangeForServer($server_id);
         $this->assertEquals(
-                $server->status(),
-                $last_change->status);
-
+            $server->status(),
+            $last_change->status
+        );
     }
 }

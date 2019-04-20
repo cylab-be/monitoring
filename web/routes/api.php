@@ -14,7 +14,7 @@ use App\Server;
 |
 */
 
-Route::post('record/{server}', function(Request $request, Server $server) {
+Route::post('record/{server}', function (Request $request, Server $server) {
     if ($server->token !== $request->get("token", "")) {
         abort(403);
     }
@@ -30,11 +30,11 @@ Route::post('record/{server}', function(Request $request, Server $server) {
 });
 
 Route::get(
-        'sensor/{server}/{token}/memory',
-        function(Server $server, string $token) {
-            if ($server->read_token != $token) {
-                abort(403);
-            }
+    'sensor/{server}/{token}/memory',
+    function (Server $server, string $token) {
+        if ($server->read_token != $token) {
+            abort(403);
+        }
 
             header('Access-Control-Allow-Origin: *');
             $meminfo = new App\Sensor\MemInfo($server);
@@ -42,30 +42,33 @@ Route::get(
                 "used" => $meminfo->usedMemoryPoints(),
                 "cached" => $meminfo->cachedMemoryPoints(),
                 "total" => $server->memoryTotal() / 1000];
-});
+    }
+);
 
 Route::get(
-        'sensor/{server}/{token}/load',
-        function(Server $server, string $token) {
-            if ($server->read_token != $token) {
-                abort(403);
-            }
+    'sensor/{server}/{token}/load',
+    function (Server $server, string $token) {
+        if ($server->read_token != $token) {
+            abort(403);
+        }
 
             header('Access-Control-Allow-Origin: *');
             $sensor = new App\Sensor\LoadAvg($server);
             return [
                 "points" => $sensor->loadPoints(),
                 "max" => $server->cpuinfo()["threads"]];
-});
+    }
+);
 
 Route::get(
-        'sensor/{server}/{token}/ifconfig',
-        function(Server $server, string $token) {
-            if ($server->read_token != $token) {
-                abort(403);
-            }
+    'sensor/{server}/{token}/ifconfig',
+    function (Server $server, string $token) {
+        if ($server->read_token != $token) {
+            abort(403);
+        }
 
             header('Access-Control-Allow-Origin: *');
             $sensor = new App\Sensor\Ifconfig($server);
             return $sensor->points();
-});
+    }
+);

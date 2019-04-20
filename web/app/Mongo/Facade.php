@@ -2,10 +2,11 @@
 
 namespace App\Mongo;
 
-class Facade extends \Illuminate\Support\Facades\Facade {
+class Facade extends \Illuminate\Support\Facades\Facade
+{
 
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return 'mongo';
     }
-
 }

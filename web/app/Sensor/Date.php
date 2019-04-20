@@ -13,15 +13,18 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Date extends \App\AbstractSensor {
+class Date extends \App\AbstractSensor
+{
     //put your code here
-    public function report() {
+    public function report()
+    {
         return "<p>Time drift: " . $this->delta() . " seconds</p>";
     }
 
 
 
-    public function status() {
+    public function status()
+    {
         $delta = $this->delta();
         if ($delta == null) {
             return self::STATUS_UNKNOWN;
@@ -34,7 +37,8 @@ class Date extends \App\AbstractSensor {
         return self::STATUS_OK;
     }
 
-    public function delta() {
+    public function delta()
+    {
         $record = $this->getLastRecord("date");
         if ($record === null) {
             return null;
@@ -42,5 +46,4 @@ class Date extends \App\AbstractSensor {
 
         return $record->date - $record->time;
     }
-
 }

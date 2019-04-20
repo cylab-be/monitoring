@@ -15,7 +15,7 @@ class Server extends Model
      */
     private $last_record = null;
 
-    static $sensors = [
+    private static $sensors = [
         \App\Sensor\LoadAvg::class,
         \App\Sensor\MemInfo::class,
         \App\Sensor\Ifconfig::class,
@@ -29,22 +29,25 @@ class Server extends Model
         \App\Sensor\Heartbeat::class
     ];
 
-    public function __construct(array $attributes = array()) {
+    public function __construct(array $attributes = array())
+    {
         $attributes["token"] = str_random(32);
         parent::__construct($attributes);
     }
 
-    public function organization() {
+    public function organization()
+    {
         return $this->belongsTo("App\Organization");
     }
 
-    public function lastRecord() {
+    public function lastRecord()
+    {
         if ($this->last_record == null) {
-
             $collection = \Mongo::get()->monitoring->records;
             $this->last_record =  $collection->findOne(
-                    ["server_id" => $this->id],
-                    ["sort" => ["_id" => -1]]);
+                ["server_id" => $this->id],
+                ["sort" => ["_id" => -1]]
+            );
         }
 
         return $this->last_record;
@@ -56,7 +59,8 @@ class Server extends Model
      * @param string $field
      * @return string
      */
-    public function lastRecordContaining(string $field) {
+    public function lastRecordContaining(string $field)
+    {
         if (isset($this->lastRecord()->$field)) {
             return $this->lastRecord();
         }
@@ -68,7 +72,8 @@ class Server extends Model
      *
      * @return \Carbon\Carbon
      */
-    public function lastRecordTime() {
+    public function lastRecordTime()
+    {
         $last_record = $this->lastRecord();
         if ($last_record === null) {
             return \Carbon\Carbon::createFromTimestamp(0);
@@ -77,7 +82,8 @@ class Server extends Model
         return \Carbon\Carbon::createFromTimestamp($last_record->time);
     }
 
-    public function clientVersion() {
+    public function clientVersion()
+    {
         $last_record = $this->lastRecord();
         if ($last_record == null) {
             return "none";
@@ -90,15 +96,18 @@ class Server extends Model
      * Get integer status of server.
      * @return int
      */
-    public function status() {
+    public function status()
+    {
         return max($this->statusArray());
     }
 
-    public function statusBadge() {
+    public function statusBadge()
+    {
         return AbstractSensor::getBadgeForStatus($this->status());
     }
 
-    public function statusArray() {
+    public function statusArray()
+    {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
             $status_array[\get_class($sensor)] = $sensor->status();
@@ -106,7 +115,8 @@ class Server extends Model
         return $status_array;
     }
 
-    public function getSensorsNOK() {
+    public function getSensorsNOK()
+    {
         $sensorsNOK = [];
         foreach ($this->getSensors() as $sensor) {
             if ($sensor->status() > 0) {
@@ -116,7 +126,8 @@ class Server extends Model
         return $sensorsNOK;
     }
 
-    public function statusString() {
+    public function statusString()
+    {
         switch ($this->status()) {
             case 0:
                 return "OK";
@@ -129,15 +140,18 @@ class Server extends Model
         }
     }
 
-    public function getBadge() {
+    public function getBadge()
+    {
         return AbstractSensor::getBadgeForStatus($this->status());
     }
 
-    public function color() {
+    public function color()
+    {
         return AbstractSensor::getColorForStatus($this->status());
     }
 
-    public function getSensors() {
+    public function getSensors()
+    {
 
         $sensors = [];
         foreach (self::$sensors as $sensor) {
@@ -148,7 +162,8 @@ class Server extends Model
 
 
 
-    public function cpuinfo() {
+    public function cpuinfo()
+    {
         $record = $this->lastRecordContaining("cpu");
         if ($record == null) {
             return null;
@@ -158,7 +173,8 @@ class Server extends Model
     }
 
     const CPU_INFO = "/^model name	: (.+)$/m";
-    public function parseCpuinfo($string) {
+    public function parseCpuinfo($string)
+    {
         $matches = array();
         preg_match_all(self::CPU_INFO, $string, $matches);
 
@@ -167,7 +183,8 @@ class Server extends Model
         return $result;
     }
 
-    public function meminfo() {
+    public function meminfo()
+    {
         return round($this->memoryTotal() / 1000 / 1000) . " GB";
     }
 
@@ -175,7 +192,8 @@ class Server extends Model
      *
      * @return int total memory (in KB)
      */
-    public function memoryTotal() {
+    public function memoryTotal()
+    {
         $record = $this->lastRecordContaining("memory");
         if ($record == null) {
             return null;
@@ -185,14 +203,16 @@ class Server extends Model
     }
 
     const MEMINFO = "/^MemTotal:\\s+([0-9]+) kB$/m";
-    public function parseMeminfo($string) {
+    public function parseMeminfo($string)
+    {
         $matches = array();
         preg_match(self::MEMINFO, $string, $matches);
         $total = $matches[1];
         return $total;
     }
 
-    public function lsb() {
+    public function lsb()
+    {
 
         $record = $this->lastRecordContaining("lsb");
         if ($record == null) {
@@ -203,7 +223,8 @@ class Server extends Model
     }
 
     const LSB = "/^Description:	(.+)$/m";
-    public function parseLsb($string) {
+    public function parseLsb($string)
+    {
         $matches = [];
         preg_match(self::LSB, $string, $matches);
         return $matches[1];
@@ -212,13 +233,15 @@ class Server extends Model
 
 
     const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
-    public function parseManufacturer($string) {
+    public function parseManufacturer($string)
+    {
         $matches = [];
         preg_match(self::REGEX_MANUFACTURER, $string, $matches);
         return $matches[1];
     }
 
-    public function manufacturer() {
+    public function manufacturer()
+    {
         $record = $this->lastRecordContaining("system");
         if ($record == null) {
             return "Unknown";
@@ -228,13 +251,15 @@ class Server extends Model
     }
 
     const REGEX_PRODUCT_NAME = "/^\s*Product Name: (.*)$/m";
-    public function parseProductName($string) {
+    public function parseProductName($string)
+    {
         $matches = [];
         preg_match(self::REGEX_PRODUCT_NAME, $string, $matches);
         return $matches[1];
     }
 
-    public function productName() {
+    public function productName()
+    {
         $record = $this->lastRecordContaining("system");
         if ($record == null) {
             return "";
@@ -243,11 +268,13 @@ class Server extends Model
         return $this->parseProductName($record->system);
     }
 
-    public function getChanges($count = 10) {
+    public function getChanges($count = 10)
+    {
         return \App\StatusChange::getLastChangesForServer($this->id, $count);
     }
 
-    public static function id($id) : Server {
+    public static function id($id) : Server
+    {
         return self::where("id", $id)->first();
     }
 }

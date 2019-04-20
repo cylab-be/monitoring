@@ -7,11 +7,13 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Updates extends \App\AbstractSensor {
+class Updates extends \App\AbstractSensor
+{
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates are security updates./";
 
-    public function report() {
+    public function report()
+    {
         $record = $this->getLastRecord("updates");
         if ($record == null) {
             return "<p>No data availabe...</p>";
@@ -20,7 +22,8 @@ class Updates extends \App\AbstractSensor {
         return "<p>" . nl2br($record->updates) . "</p>";
     }
 
-    public function status() {
+    public function status()
+    {
         $record = $this->getLastRecord("updates");
         if ($record == null) {
             return self::STATUS_UNKNOWN;
@@ -38,7 +41,8 @@ class Updates extends \App\AbstractSensor {
         return self::STATUS_OK;
     }
 
-    public function parse($string) {
+    public function parse($string)
+    {
         $matches = [];
         if (!preg_match(self::REGEXP, $string, $matches)) {
             return null;
@@ -48,5 +52,4 @@ class Updates extends \App\AbstractSensor {
         $result["security"] = $matches[2];
         return $result;
     }
-
 }

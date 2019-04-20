@@ -17,26 +17,30 @@ Route::get('/', function () {
 
 Auth::routes(['register'=>false]);
 
-Route::get("home", function() {
+Route::get("home", function () {
     return redirect(action("OrganizationController@index"));
 });
 
-Route::get('app/dashboard', function() {
+Route::get('app/dashboard', function () {
     return redirect(action("OrganizationController@index"));
 })->name('dashboard');
 
 Route::get('app/organizations/{organization}/dashboard', 'OrganizationController@dashboard');
-Route::get('app/organizations/{organization}/reset-token',
-        'OrganizationController@resetToken');
-Route::get('app/organizations/{organization}/dashboard/{token}',
-        function(\App\Organization $organization, string $token) {
+Route::get(
+    'app/organizations/{organization}/reset-token',
+    'OrganizationController@resetToken'
+);
+Route::get(
+    'app/organizations/{organization}/dashboard/{token}',
+    function (\App\Organization $organization, string $token) {
 
-    if ($organization->dashboard_token != $token) {
-        abort(403);
+        if ($organization->dashboard_token != $token) {
+            abort(403);
+        }
+
+            return view("organization.dashboard", array("organization" => $organization));
     }
-
-    return view("organization.dashboard", array("organization" => $organization));
-})->name("organization.public.dashboard");
+)->name("organization.public.dashboard");
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController");
 Route::resource('app/servers', 'ServerController');

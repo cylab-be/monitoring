@@ -9,9 +9,11 @@ use \App\AbstractSensor;
  *
  * @author tibo
  */
-class Ifconfig extends AbstractSensor {
+class Ifconfig extends AbstractSensor
+{
 
-    public function report() {
+    public function report()
+    {
 
         $interfaces = [];
         $record = $this->getLastRecord("ifconfig");
@@ -23,10 +25,11 @@ class Ifconfig extends AbstractSensor {
             "interfaces" => $interfaces]);
     }
 
-    public function points() {
+    public function points()
+    {
         // Get records in time ascending order
         $records = $this->getLastRecords("ifconfig", 289);
-        usort($records, function($r1, $r2) {
+        usort($records, function ($r1, $r2) {
             return $r1->time  > $r2->time ? 1 : -1;
         });
 
@@ -66,8 +69,9 @@ class Ifconfig extends AbstractSensor {
                     $delta = 0;
                 }
                 $dataset[$iname . "/RX"]["points"][] = new Point(
-                        $interface->time * 1000,
-                        round(8 / 1024 * $delta / $delta_time));
+                    $interface->time * 1000,
+                    round(8 / 1024 * $delta / $delta_time)
+                );
 
                 // TX
                 $delta = $interface->tx - $previous_value->tx;
@@ -76,20 +80,20 @@ class Ifconfig extends AbstractSensor {
                     $delta = 0;
                 }
                 $dataset[$iname . "/TX"]["points"][] = new Point(
-                        $interface->time * 1000,
-                        round(8 / 1024 * $delta / $delta_time));
+                    $interface->time * 1000,
+                    round(8 / 1024 * $delta / $delta_time)
+                );
 
                 // Keep current value for next record
                 $current_value[$iname] = $interface;
-
             }
         }
 
         return array_values($dataset);
-
     }
 
-    public function status() {
+    public function status()
+    {
         return self::STATUS_OK;
     }
 
@@ -97,7 +101,8 @@ class Ifconfig extends AbstractSensor {
     const IPV4 = '/^\\s+inet addr:(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/m';
     const RXTX = '/^\\s+RX bytes:(\\d+) .*TX bytes:(\\d+)/m';
 
-    public function parseIfconfigRecord($record) {
+    public function parseIfconfigRecord($record)
+    {
         $interfaces = $this->parseIfconfig($record->ifconfig);
         foreach ($interfaces as $interface) {
             $interface->time = $record->time;
@@ -112,7 +117,8 @@ class Ifconfig extends AbstractSensor {
      * @param type $string
      * @return \App\Sensor\NetworkInterface[]
      */
-    public function parseIfconfig($string) {
+    public function parseIfconfig($string)
+    {
 
         $allowed_prefixes = ["en", "eth", "wl"];
 
@@ -158,7 +164,8 @@ class Ifconfig extends AbstractSensor {
         return $filtered;
     }
 
-    public function pregMatchOne($pattern, $string) {
+    public function pregMatchOne($pattern, $string)
+    {
         $matches = array();
         if (preg_match($pattern, $string, $matches) === 1) {
             return $matches[1];
@@ -166,27 +173,4 @@ class Ifconfig extends AbstractSensor {
 
         return false;
     }
-}
-
-class NetworkInterface {
-    public $name;
-    public $address;
-    public $rx;
-    public $tx;
-    public $time;
-
-    public function humanReadableSize($bytes, $decimals = 2) {
-        $size = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-        $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
-    }
-
-    public function humanReadableRx() {
-        return $this->humanReadableSize($this->rx);
-    }
-
-    public function humanReadableTx() {
-        return $this->humanReadableSize($this->tx);
-    }
-
 }

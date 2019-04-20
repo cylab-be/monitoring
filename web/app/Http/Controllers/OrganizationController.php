@@ -36,8 +36,9 @@ class OrganizationController extends Controller
     public function index()
     {
         return view(
-                "organization.index",
-                array("organizations" => Auth::user()->organizations->sortBy("name")));
+            "organization.index",
+            array("organizations" => Auth::user()->organizations->sortBy("name"))
+        );
     }
 
     /**

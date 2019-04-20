@@ -2,12 +2,14 @@
 
 namespace App\Mongo;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider {
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
+{
 
     protected $defer = true;
 
-    public function register() {
-        $this->app->singleton('mongo', function($app) {
+    public function register()
+    {
+        $this->app->singleton('mongo', function ($app) {
             $config = $app->make('config');
             $uri = $config->get('services.mongo.uri');
             $uriOptions = $config->get('services.mongo.uriOptions');
@@ -16,8 +18,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
         });
     }
 
-    public function provides() {
+    public function provides()
+    {
         return ['mongo'];
     }
-
 }

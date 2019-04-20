@@ -13,10 +13,12 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Ssacli extends \App\AbstractSensor {
+class Ssacli extends \App\AbstractSensor
+{
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
-    public function report() {
+    public function report()
+    {
         $record = $this->getLastRecord("ssacli");
         if ($record == null) {
             return "<p>No data available...</p>";
@@ -46,7 +48,8 @@ class Ssacli extends \App\AbstractSensor {
         return $return;
     }
 
-    public function status() {
+    public function status()
+    {
         $record = $this->getLastRecord("ssacli");
         if ($record == null) {
             return self::STATUS_UNKNOWN;
@@ -60,7 +63,6 @@ class Ssacli extends \App\AbstractSensor {
         }
 
         return self::STATUS_OK;
-
     }
 
     /**
@@ -68,7 +70,8 @@ class Ssacli extends \App\AbstractSensor {
      * @param type $string
      * @return \App\Sensor\Disk[]
      */
-    public function parse($string) {
+    public function parse($string)
+    {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
         $disks = array();
@@ -85,14 +88,4 @@ class Ssacli extends \App\AbstractSensor {
         }
         return $disks;
     }
-}
-
-
-class Disk {
-    public $port = "";
-    public $box = 0;
-    public $bay = 0;
-    public $type = "";
-    public $size = "";
-    public $status = "";
 }

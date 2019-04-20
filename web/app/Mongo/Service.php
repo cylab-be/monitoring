@@ -4,16 +4,18 @@ namespace App\Mongo;
 
 use MongoDB\Client;
 
-class Service {
+class Service
+{
 
     private $mongo;
 
-    public function __construct($uri = null, $uriOptions = [], $driverOptions = []) {
+    public function __construct($uri = null, $uriOptions = [], $driverOptions = [])
+    {
         $this->mongo = new Client($uri, $uriOptions, $driverOptions);
     }
 
-    public function get() {
+    public function get()
+    {
         return $this->mongo;
     }
-
 }

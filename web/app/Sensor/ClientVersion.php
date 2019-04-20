@@ -7,14 +7,16 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class ClientVersion extends \App\AbstractSensor {
+class ClientVersion extends \App\AbstractSensor
+{
 
     const MANIFEST = "https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/release/manifest.json";
 
-    public function latestVersion() {
+    public function latestVersion()
+    {
         $ctx = stream_context_create(array('http' => ['timeout' => 5]));
         $json = @ \file_get_contents(self::MANIFEST, false, $ctx);
-        if ($json === FALSE) {
+        if ($json === false) {
             return "";
         }
 
@@ -22,12 +24,14 @@ class ClientVersion extends \App\AbstractSensor {
     }
 
     //put your code here
-    public function report() {
+    public function report()
+    {
         return "<p>Installed version: " . $this->getServer()->clientVersion() . "</p>"
         . "<p>Latest client version: " . $this->latestVersion() . "</p>";
     }
 
-    public function status() {
+    public function status()
+    {
         if ($this->getServer()->clientVersion() === $this->latestVersion()) {
             return self::STATUS_OK;
         }

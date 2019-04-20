@@ -10,28 +10,34 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-class OrganizationUserController extends Controller {
+class OrganizationUserController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function index() {
+    public function index()
+    {
     }
 
     /** Show form **/
-    public function create(Organization $organization) {
+    public function create(Organization $organization)
+    {
         return view("organization.user.create", ["organization" => $organization]);
     }
 
-    protected function validator(array $data) {
+    protected function validator(array $data)
+    {
         return Validator::make($data, [
             'email' => 'required|string|email|max:255|unique:users',
         ]);
     }
 
     /** add user to organization **/
-    public function store(Organization $organization, Request $request) {
+    public function store(Organization $organization, Request $request)
+    {
         $current_user = Auth::user();
         if (! $current_user->ownsOrganization($organization)) {
             return redirect(route("dashboard"));
@@ -59,16 +65,19 @@ class OrganizationUserController extends Controller {
         return redirect(route("dashboard"));
     }
 
-    public function show($id) {
+    public function show($id)
+    {
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
     }
 
-    public function update($id) {
+    public function update($id)
+    {
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
     }
-
 }

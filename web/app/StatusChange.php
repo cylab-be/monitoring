@@ -9,13 +9,15 @@ use \Carbon\Carbon;
  *
  * @author tibo
  */
-class StatusChange {
+class StatusChange
+{
 
     public $server_id = 0;
     public $status = 0;
     public $time = 0;
 
-    public function parse($array) {
+    public function parse($array)
+    {
         if ($array == null) {
             return;
         }
@@ -30,19 +32,23 @@ class StatusChange {
         return $this;
     }
 
-    public function getStatusBadge() {
+    public function getStatusBadge()
+    {
         return AbstractSensor::getBadgeForStatus($this->status);
     }
 
-    public function getTimeCarbon() : Carbon {
+    public function getTimeCarbon() : Carbon
+    {
         return Carbon::createFromTimestamp($this->time);
     }
 
-    public function server() : Server {
+    public function server() : Server
+    {
         return Server::id($this->server_id);
     }
 
-    public static function save($status) {
+    public static function save($status)
+    {
         $data = [
             "time" => time(),
             "server_id" => $status->server_id,
@@ -54,11 +60,13 @@ class StatusChange {
         $collection->insertOne($data);
     }
 
-    public static function getLastChangesForServer(int $server_id, int $count) : array {
+    public static function getLastChangesForServer(int $server_id, int $count) : array
+    {
         $collection = \Mongo::get()->monitoring->statuschanges;
         $records = $collection->find(
-                    ["server_id" => $server_id],
-                    ["limit" => $count, "sort" => ["_id" => -1]]);
+            ["server_id" => $server_id],
+            ["limit" => $count, "sort" => ["_id" => -1]]
+        );
 
         $changes = [];
         foreach ($records as $record) {
@@ -67,11 +75,13 @@ class StatusChange {
         return $changes;
     }
 
-    public static function getLastChangeForServer(int $server_id) : StatusChange {
+    public static function getLastChangeForServer(int $server_id) : StatusChange
+    {
         $collection = \Mongo::get()->monitoring->statuschanges;
         $record = $collection->findOne(
-                    ["server_id" => $server_id],
-                    ["sort" => ["_id" => -1]]);
+            ["server_id" => $server_id],
+            ["sort" => ["_id" => -1]]
+        );
 
         $change = new StatusChange();
         $change->server_id = $server_id;

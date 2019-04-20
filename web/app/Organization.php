@@ -8,11 +8,13 @@ class Organization extends Model
 {
 
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany("App\User");
     }
 
-    public function servers() {
+    public function servers()
+    {
         return $this->hasMany("App\Server");
     }
 }

@@ -4,36 +4,42 @@ namespace App\Sensor;
 
 use \App\AbstractSensor;
 
-
 /**
  * Description of LoadAvg
  *
  * @author tibo
  */
-class LoadAvg extends AbstractSensor {
+class LoadAvg extends AbstractSensor
+{
 
-    public function report() {
+    public function report()
+    {
         return view("agent.loadavg", [
             "current_load" => $this->getLastValue(),
             "server" => $this->getServer()]);
     }
 
-    public function loadPoints() {
+    public function loadPoints()
+    {
         $records = $this->getLastRecords("loadavg", 288);
 
         $points = [];
         foreach ($records as $record) {
             $points[] = new Point(
-                    $record->time * 1000, $this->parse($record->loadavg));
+                $record->time * 1000,
+                $this->parse($record->loadavg)
+            );
         }
         return $points;
     }
 
-    public function status() {
+    public function status()
+    {
         return self::STATUS_OK;
     }
 
-    public function getLastValue() {
+    public function getLastValue()
+    {
         $record = $this->getLastRecord("loadavg");
         if ($record == null) {
             return "no data...";
@@ -42,7 +48,8 @@ class LoadAvg extends AbstractSensor {
         return $this->parse($field);
     }
 
-    function parse($string) {
+    public function parse($string)
+    {
         return current(explode(" ", $string));
     }
 }

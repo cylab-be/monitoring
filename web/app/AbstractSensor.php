@@ -7,22 +7,26 @@ namespace App;
  *
  * @author tibo
  */
-abstract class AbstractSensor implements Sensor {
+abstract class AbstractSensor implements Sensor
+{
     /**
      *
      * @var \App\Server
      */
     private $server;
 
-    public function __construct(\App\Server $server) {
+    public function __construct(\App\Server $server)
+    {
         $this->server = $server;
     }
 
-    protected function getServer() {
+    protected function getServer()
+    {
         return $this->server;
     }
 
-    public function getName() : string {
+    public function getName() : string
+    {
         return (new \ReflectionClass($this))->getShortName();
     }
 
@@ -32,7 +36,8 @@ abstract class AbstractSensor implements Sensor {
      * @param string $field
      * @return
      */
-    function getLastRecord (string $field) {
+    public function getLastRecord(string $field)
+    {
         return $this->server->lastRecordContaining($field);
     }
 
@@ -45,10 +50,12 @@ abstract class AbstractSensor implements Sensor {
      * @param type $count
      * @return type
      */
-    function getLastRecords($field, $count) {
+    public function getLastRecords($field, $count)
+    {
         $records = \Mongo::get()->monitoring->records->find(
-                ["server_id" => $this->server->id],
-                ["limit" => $count, "sort" => ["_id" => -1]]);
+            ["server_id" => $this->server->id],
+            ["limit" => $count, "sort" => ["_id" => -1]]
+        );
 
         $results = [];
         foreach ($records as $record) {
@@ -60,7 +67,8 @@ abstract class AbstractSensor implements Sensor {
         return $results;
     }
 
-    public static function getColorForStatus($status) {
+    public static function getColorForStatus($status)
+    {
         switch ($status) {
             case 0:
                 return 'success';
@@ -73,7 +81,8 @@ abstract class AbstractSensor implements Sensor {
         }
     }
 
-    public static function getBadgeForStatus($status) {
+    public static function getBadgeForStatus($status)
+    {
         switch ($status) {
             case 0:
                 return '<span class="badge badge-success">OK</span>';
@@ -86,7 +95,8 @@ abstract class AbstractSensor implements Sensor {
         }
     }
 
-    public function getBadge() {
+    public function getBadge()
+    {
         return self::getBadgeForStatus($this->status());
     }
 }

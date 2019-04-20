@@ -32,7 +32,8 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Organization');
     }
 
-    public function ownsOrganization(Organization $organization) {
+    public function ownsOrganization(Organization $organization)
+    {
         foreach ($this->organizations as $o) {
             if ($o->id == $organization->id) {
                 return true;
@@ -42,8 +43,8 @@ class User extends Authenticatable
         return false;
     }
 
-    public static function findByEmail($email) {
+    public static function findByEmail($email)
+    {
         return self::where("email", $email)->first();
     }
-
 }
