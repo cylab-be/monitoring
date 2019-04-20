@@ -38,6 +38,7 @@ test:php72:
   image: php:7.2
   script:
     - vendor/bin/phpunit --coverage-text
+    - vendor/bin/phpcs
 
 test:gitleaks:
   image: 
