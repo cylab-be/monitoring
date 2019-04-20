@@ -1,3 +1,11 @@
+## Cache composer packages between all jobs and all branches
+## of this project...
+cache:
+  key: one-key-to-rull-them-all
+  paths:
+    - composer-cache/
+
+
 # https://hub.docker.com/_/php/
 image: php:7.2
 
@@ -17,7 +25,7 @@ before_script:
   - docker-php-ext-enable mongodb
   # Install all project dependencies
   - cd web
-  - php ../composer.phar install
+  - COMPOSER_CACHE_DIR=../composer-cache php ../composer.phar install
   # setup Laravel
   - cp env.test .env
   - touch storage/app/db.sqlite
