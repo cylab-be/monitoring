@@ -28,4 +28,4 @@ before_script:
 test:php72:
   image: php:7.2
   script:
-    - cd web && vendor/bin/phpunit --coverage-text
+    - vendor/bin/phpunit --coverage-text
