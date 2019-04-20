@@ -1,6 +1,7 @@
 # Monitoring
 
-[![Build Status](https://travis-ci.org/RUCD/monitoring.svg?branch=master)](https://travis-ci.org/RUCD/monitoring)
+[![pipeline status](https://gitlab.cylab.be/cylab/monitoring/badges/master/pipeline.svg)](https://gitlab.cylab.be/cylab/monitoring/commits/master)
+
 
 Security oriented monitoring service.
 
@@ -9,5 +10,4 @@ Developement takes place at https://gitlab.cylab.be/cylab/monitoring
 ## Components
 
 * [client](./client) : collect data on the systems
-* web : web interface to visualize data
-* analytics : process data to provide additional insight
+* [web](./web) : web interface to visualize data and trigger alerts
