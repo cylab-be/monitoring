@@ -16,12 +16,12 @@ before_script:
   - pecl install mongodb-1.4.4
   - docker-php-ext-enable mongodb
   # Install all project dependencies
-  - cd web && php ../composer.phar install
+  - cd web
+  - php ../composer.phar install
   # setup Laravel
-  - ls -al
   - cp env.test .env
-  - touch web/storage/app/db.sqlite
-  - cd web && php artisan migrate
+  - touch storage/app/db.sqlite
+  - php artisan migrate
 
 
 # Test with PHP7 
