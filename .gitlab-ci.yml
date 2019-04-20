@@ -18,7 +18,8 @@ before_script:
   # Install all project dependencies
   - cd web && php ../composer.phar install
   # setup Laravel
-  - cp web/env.test web/.env
+  - ls -al
+  - cp env.test .env
   - touch web/storage/app/db.sqlite
   - cd web && php artisan migrate
 
