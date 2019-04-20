@@ -8,31 +8,40 @@ cache:
   paths:
     - composer-cache/
 
-before_script:
-  # Install git, the php image doesn't have installed
-  - apt-get update -yqq
-  - apt-get install git -yqq
-  # Install composer
-  - curl -sS https://getcomposer.org/installer | php
-  # Install PHP-ZIP extension (used by composer)
-  - apt-get install -yqq libzip-dev
-  - docker-php-ext-install zip
-  # Install xdebug extension (used for phpunit code coverage)
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
-  - pecl install mongodb-1.4.4
-  - docker-php-ext-enable mongodb
-  # Install all project dependencies
-  - cd web
-  - COMPOSER_CACHE_DIR=../composer-cache php ../composer.phar install
-  # setup Laravel
-  - cp env.test .env
-  - touch storage/app/db.sqlite
-  - php artisan migrate
+.phptest:
+  before_script:
+    # Install git, the php image doesn't have installed
+    - apt-get update -yqq
+    - apt-get install git -yqq
+    # Install composer
+    - curl -sS https://getcomposer.org/installer | php
+    # Install PHP-ZIP extension (used by composer)
+    - apt-get install -yqq libzip-dev
+    - docker-php-ext-install zip
+    # Install xdebug extension (used for phpunit code coverage)
+    - pecl install xdebug
+    - docker-php-ext-enable xdebug
+    - pecl install mongodb-1.4.4
+    - docker-php-ext-enable mongodb
+    # Install all project dependencies
+    - cd web
+    - COMPOSER_CACHE_DIR=../composer-cache php ../composer.phar install
+    # setup Laravel
+    - cp env.test .env
+    - touch storage/app/db.sqlite
+    - php artisan migrate
 
 
 # Test with PHP7.2 
 test:php72:
+  extends: .phptest
   image: php:7.2
   script:
     - vendor/bin/phpunit --coverage-text
+
+test:gitleaks:
+  image: 
+    name: "zricethezav/gitleaks"
+    entrypoint: [""]
+  script:
+    - gitleaks -v --repo-path=./ --config=gitleaks.toml
