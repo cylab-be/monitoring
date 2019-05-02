@@ -40,4 +40,9 @@
         @endforeach
     </div>
 </div>
+
+<script type="text/javascript">
+    // Reload page every minute
+    setTimeout(location.reload.bind(location), 60000);
+</script>
 @endsection
