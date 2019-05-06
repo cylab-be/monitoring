@@ -2,6 +2,8 @@
 
 namespace App\Sensor;
 
+use GuzzleHttp\Client;
+
 /**
  * Description of Reboot
  *
@@ -14,8 +16,11 @@ class ClientVersion extends \App\AbstractSensor
 
     public function latestVersion()
     {
-        $ctx = stream_context_create(array('http' => ['timeout' => 5]));
-        $json = @ \file_get_contents(self::MANIFEST, false, $ctx);
+        $client = new Client([
+            'timeout'  => 2.0,
+        ]);
+
+        $json = $client->get(self::MANIFEST)->getBody();
         if ($json === false) {
             return "";
         }
