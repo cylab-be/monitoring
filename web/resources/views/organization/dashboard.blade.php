@@ -41,8 +41,20 @@
     </div>
 </div>
 
+<div style="position: absolute; bottom: 0; right: 2px" class="text-muted">
+    Reload in <span id="reload-countdown">300</span> seconds
+</div>
+
 <script type="text/javascript">
-    // Reload page every minute
-    setTimeout(location.reload.bind(location), 300000);
+    var reload_countdown = 300;
+    setInterval(function() {
+        reload_countdown -= 1;
+        $('#reload-countdown').text(reload_countdown);
+
+        if (reload_countdown === 0) {
+            console.log('reload...');
+            location.reload();
+        }
+    }, 1000);
 </script>
 @endsection
