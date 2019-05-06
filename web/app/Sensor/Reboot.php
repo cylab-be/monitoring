@@ -50,4 +50,8 @@ class Reboot extends \App\AbstractSensor
 
         return self::STATUS_OK;
     }
+
+    public function getName(): string {
+        return "Reboot required";
+    }
 }
