@@ -22,7 +22,6 @@ class ClientVersion extends \App\AbstractSensor
 
         try {
             $json = $client->get(self::MANIFEST)->getBody();
-
         } catch (\Exception $ex) {
             return "";
         }
