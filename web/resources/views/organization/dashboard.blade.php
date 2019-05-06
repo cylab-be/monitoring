@@ -43,6 +43,6 @@
 
 <script type="text/javascript">
     // Reload page every minute
-    setTimeout(location.reload.bind(location), 60000);
+    setTimeout(location.reload.bind(location), 300000);
 </script>
 @endsection
