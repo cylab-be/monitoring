@@ -17,11 +17,13 @@ class ClientVersion extends \App\AbstractSensor
     public function latestVersion()
     {
         $client = new Client([
-            'timeout'  => 2.0,
+            'timeout'  => 5.0,
         ]);
 
-        $json = $client->get(self::MANIFEST)->getBody();
-        if ($json === false) {
+        try {
+            $json = $client->get(self::MANIFEST)->getBody();
+
+        } catch (\Exception $ex) {
             return "";
         }
 
