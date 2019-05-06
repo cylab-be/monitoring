@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div style="position: absolute; bottom: 0; right: 2px" class="text-muted">
+<div class="text-muted bottom-right">
     Reload in <span id="reload-countdown">300</span> seconds
 </div>
 
