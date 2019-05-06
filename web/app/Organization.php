@@ -17,4 +17,8 @@ class Organization extends Model
     {
         return $this->hasMany("App\Server");
     }
+
+    public function url() : string {
+        return action('OrganizationController@show', ["organization" => $this]);
+    }
 }
