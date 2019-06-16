@@ -141,7 +141,7 @@ class ExampleTest extends TestCase
     {
         $server = new \App\Server();
         $client_version = new \App\Sensor\ClientVersion($server);
-        $this->assertStringMatchesFormat('%f', $client_version->latestVersion());
+        $this->assertStringMatchesFormat('%d.%d.%d', $client_version->latestVersion());
     }
 
     /**
