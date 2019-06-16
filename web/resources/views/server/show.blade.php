@@ -120,11 +120,11 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
                 <div class="card-body">
                     <p>Download client application:</p>
-                    <pre style="font-size: 75%; overflow: hidden"><code>wget https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/bin/monitor.phar
-chmod +x monitor.phar
+                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ $server->lastClientUrl() }}
+unzip monitor-*.zip
 </code></pre>
                     <p>Move it to /usr/bin:</p>
-                    <pre style="font-size: 75%; overflow: hidden"><code>sudo mv monitor.phar /usr/bin/monitor
+                    <pre style="font-size: 75%; overflow: hidden"><code>sudo mv monitor /usr/bin/monitor
 </code></pre>
 
                     <p>Test it:</p>
