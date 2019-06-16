@@ -12,7 +12,7 @@ use GuzzleHttp\Client;
 class ClientVersion extends \App\AbstractSensor
 {
 
-    const MANIFEST = "https://gitlab.cylab.be/cylab/monitoring/raw/master/php-client/release/manifest.json";
+    const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
 
     public function latestVersion()
     {
