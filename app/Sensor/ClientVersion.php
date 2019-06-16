@@ -16,7 +16,7 @@ class ClientVersion extends \App\AbstractSensor
     
     public function manifest()
     {
-		$client = new Client([
+        $client = new Client([
             'timeout'  => 5.0,
         ]);
 
@@ -27,8 +27,8 @@ class ClientVersion extends \App\AbstractSensor
         }
 
         return json_decode($json)[0];
-	}
-		
+    }
+        
 
     public function latestVersion()
     {
@@ -37,8 +37,8 @@ class ClientVersion extends \App\AbstractSensor
     
     public function latestUrl()
     {
-		return $this->manifest()->url;
-	}
+        return $this->manifest()->url;
+    }
 
     //put your code here
     public function report()

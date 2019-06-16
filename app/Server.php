@@ -94,9 +94,9 @@ class Server extends Model
     
     public function lastClientUrl()
     {
-		$client_sensor = new \App\Sensor\ClientVersion($this);
-		return $client_sensor->latestUrl();
-	}
+        $client_sensor = new \App\Sensor\ClientVersion($this);
+        return $client_sensor->latestUrl();
+    }
 
     /**
      * Get integer status of server.
