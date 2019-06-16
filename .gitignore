@@ -1,3 +1,13 @@
-/client/target/
-/web/nbproject/private/
-/php-client/nbproject/private/
+/nbproject/private/
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/.idea
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env

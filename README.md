@@ -1,13 +1,28 @@
-# Monitoring
-
-[![pipeline status](https://gitlab.cylab.be/cylab/monitoring/badges/master/pipeline.svg)](https://gitlab.cylab.be/cylab/monitoring/commits/master)
+# Monitoring - Webapp
 
 
-Security oriented monitoring service.
+## Installation
 
-Developement takes place at https://gitlab.cylab.be/cylab/monitoring
+Requires PHP mongodb extension:
 
-## Components
+https://docs.mongodb.com/ecosystem/drivers/php/
+https://pecl.php.net/package/mongodb
 
-* [client](./client) : collect data on the systems
-* [web](./web) : web interface to visualize data and trigger alerts
+```
+sudo pecl install mongodb-1.4.4
+```
+
+```
+composer install
+touch storage/app/db.sqlite
+cp .env.example .env
+php artisan migrate
+php artisan key:generate
+```
+
+## Fronted
+
+```
+npm install
+npm run watch
+```
