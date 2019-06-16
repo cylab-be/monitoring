@@ -11,8 +11,7 @@ cache:
 .phptest:
   before_script:
     # Install all project dependencies
-    - cd web
-    - COMPOSER_CACHE_DIR=../composer-cache composer install
+    - COMPOSER_CACHE_DIR=./composer-cache composer install
     # setup Laravel
     - cp env.test .env
     - touch storage/app/db.sqlite
