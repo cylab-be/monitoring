@@ -7,5 +7,5 @@
 - plugin: App\Plugins\Exec
   params:
   - composer install
-  - cp ../../../env.prod .env
+  - cp ../../env.prod .env
   - php artisan migrate --force
