@@ -93,8 +93,6 @@ class ExampleTest extends TestCase
 ";
         $status2 = $sensor->parse($string2);
         $this->assertEquals(1, $status2["security"]);
-
-
     }
 
     public function testMeminfo()
