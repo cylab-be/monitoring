@@ -20,5 +20,11 @@
 
     <!-- Show progression -->
     <arg value="p"/>
+    
+    <!-- Add some additional rules from slevomat 
+    see list of available rules at https://github.com/slevomat/coding-standard/ -->
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    
 </ruleset>
 
