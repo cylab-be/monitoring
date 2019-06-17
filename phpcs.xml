@@ -25,6 +25,7 @@
     see list of available rules at https://github.com/slevomat/coding-standard/ -->
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
     
 </ruleset>
 
