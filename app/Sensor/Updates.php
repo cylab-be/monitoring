@@ -10,7 +10,7 @@ namespace App\Sensor;
 class Updates extends \App\AbstractSensor
 {
 
-    const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates are security updates./";
+    const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
 
     public function report()
     {

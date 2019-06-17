@@ -81,12 +81,20 @@ class ExampleTest extends TestCase
 
     public function testUpdates()
     {
-        $string = "6 packages can be updated.
-2 updates are security updates.";
-
         $sensor = new \App\Sensor\Updates(new \App\Server());
-        $status = $sensor->parse($string);
+
+        $string1 = "6 packages can be updated.
+2 updates are security updates.";
+        $status = $sensor->parse($string1);
         $this->assertEquals(2, $status["security"]);
+
+        $string2 = "1 package can be updated.
+1 update is a security update.
+";
+        $status2 = $sensor->parse($string2);
+        $this->assertEquals(1, $status2["security"]);
+
+
     }
 
     public function testMeminfo()
