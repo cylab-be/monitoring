@@ -32,6 +32,11 @@ class StatusChange
         return $this;
     }
 
+    public function statusName()
+    {
+        return \App\Server::getNameForStatus($this->status);
+    }
+
     public function getStatusBadge()
     {
         return AbstractSensor::getBadgeForStatus($this->status);

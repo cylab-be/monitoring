@@ -91,7 +91,7 @@ class Server extends Model
 
         return $last_record->version;
     }
-    
+
     public function lastClientUrl()
     {
         $client_sensor = new \App\Sensor\ClientVersion($this);
@@ -134,7 +134,12 @@ class Server extends Model
 
     public function statusString()
     {
-        switch ($this->status()) {
+        return self::getNameForStatus($this->status());
+    }
+
+    public static function getNameForStatus($status)
+    {
+        switch ($status) {
             case 0:
                 return "OK";
             case 10:

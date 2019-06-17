@@ -1,7 +1,8 @@
 @component('mail::message')
-# {{ $change->server()->name }} : status change
+# {{ $change->server()->organization->name }} / {{ $change->server()->name }} : status change
 
-Your server "{{ $change->server()->name }}" went to {!! $change->getStatusBadge() !!}
+Your server **{{ $change->server()->organization->name }} / {{ $change->server()->name }}**
+went **{{ $change->statusName() }}**
 
 {{ action("ServerController@show", ["server" => $change->server()]) }}
 
