@@ -80,7 +80,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-8">
             <h1>
                 <a href="{{ $server->organization->url() }}">{{ $server->organization->name }}</a>
-                : {{ $server->name }}
+                / {{ $server->name }}
             </h1>
 
             @foreach ($server->getSensors() as $sensor)
