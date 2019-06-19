@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\Notification;
 use App\Organization;
 use App\Sensor\Disks;
 use App\Sensor\Ifconfig;
@@ -191,5 +192,21 @@ class ExampleTest extends TestCase
             $server->status(),
             $last_change->status
         );
+
+        // Check if a notification were inserted
+        $this->assertTrue(Notification::findForServer($server_id)->count() > 0);
+
+        // Insert multiple status changes to simulate bouncing
+
+        for ($i = 0; $i < 4; $i++) {
+            $change = new \App\StatusChange();
+            $change->status = 155;
+            $change->server_id = $server_id;
+            $change->save();
+
+            // Run change detection
+            $change_detection_job = new \App\Jobs\StatusChangeDetection();
+            $change_detection_job->detectChangeForServer($server);
+        }
     }
 }

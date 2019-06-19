@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
 
 class StatusChangeDetection implements ShouldQueue
 {
@@ -62,18 +61,40 @@ class StatusChangeDetection implements ShouldQueue
         $this->sendNotificationIfRequired($change);
     }
 
+    /**
+     * Maximum number of notifications sent per day.
+     */
+    const NOTIFICATIONS_PER_DAY = 4;
+
     public function sendNotificationIfRequired(StatusChange $change)
     {
         $server = $change->server();
+        $server_id = $server->id;
 
-        $notification = new Notification();
-        $notification->server()->associate($server);
-        $notification->type = "change";
-        $notification->change_id = $change->id;
-        $notification->save();
+        $onedayago = time() - 24 * 3600;
+        $sent_notifications_count = Notification::findForServer($server_id, $onedayago)->count();
 
-        foreach ($server->organization->users as $user) {
-            Mail::to($user)->send(new \App\Mail\StatusChanged($change));
+        if ($sent_notifications_count < self::NOTIFICATIONS_PER_DAY) {
+            $notification = new Notification();
+            $notification->server()->associate($server);
+            $notification->type = "change";
+            $notification->change_id = $change->id;
+            $notification->saveAndSend();
+
+            return;
         }
+
+        if ($sent_notifications_count == self::NOTIFICATIONS_PER_DAY) {
+            $notification = new Notification();
+            $notification->server()->associate($server);
+            $notification->type = "bouncing";
+            $notification->change_id = $change->id;
+            $notification->saveAndSend();
+
+            return;
+        }
+
+        // nothing to do if number of sent notifications > COUNT
+
     }
 }

@@ -83,6 +83,18 @@ class StatusChange
         return $changes;
     }
 
+    public static function find(string $id) : StatusChange
+    {
+        $collection = \Mongo::get()->monitoring->statuschanges;
+        $result = $collection->findOne(
+                ['_id' => new \MongoDB\BSON\ObjectId($id)]);
+
+        $status = new StatusChange();
+        $status->parse($result);
+        $status->id = $id;
+        return $status;
+    }
+
     public static function getLastChangeForServer(int $server_id) : StatusChange
     {
         $collection = \Mongo::get()->monitoring->statuschanges;
