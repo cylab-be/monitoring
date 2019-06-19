@@ -87,7 +87,8 @@ class StatusChange
     {
         $collection = \Mongo::get()->monitoring->statuschanges;
         $result = $collection->findOne(
-                ['_id' => new \MongoDB\BSON\ObjectId($id)]);
+            ['_id' => new \MongoDB\BSON\ObjectId($id)]
+        );
 
         $status = new StatusChange();
         $status->parse($result);

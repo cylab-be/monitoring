@@ -95,6 +95,5 @@ class StatusChangeDetection implements ShouldQueue
         }
 
         // nothing to do if number of sent notifications > COUNT
-
     }
 }
