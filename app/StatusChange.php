@@ -15,6 +15,7 @@ class StatusChange
     public $server_id = 0;
     public $status = 0;
     public $time = 0;
+    public $id;
 
     public function parse($array)
     {
@@ -52,17 +53,19 @@ class StatusChange
         return Server::id($this->server_id);
     }
 
-    public static function save($status)
+    public function save()
     {
-        $data = [
-            "time" => time(),
-            "server_id" => $status->server_id,
-            "status" => $status->status,
+        $this->time = time();
 
+        $data = [
+            "time" => $this->time,
+            "server_id" => $this->server_id,
+            "status" => $this->status,
         ];
 
         $collection = \Mongo::get()->monitoring->statuschanges;
-        $collection->insertOne($data);
+        $r = $collection->insertOne($data);
+        $this->id = $r->getInsertedId()->__toString();
     }
 
     public static function getLastChangesForServer(int $server_id, int $count) : array

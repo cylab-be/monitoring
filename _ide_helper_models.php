@@ -18,12 +18,14 @@ namespace App{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
+ * @property string $dashboard_token
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Server[] $servers
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization whereDashboardToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Organization whereUpdatedAt($value)
@@ -82,5 +84,29 @@ namespace App{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Server whereUpdatedAt($value)
  */
 	class Server extends \Eloquent {}
+}
+
+namespace App{
+/**
+ * App\Notification
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property int $server_id
+ * @property string $change_id
+ * @property string $type
+ * @property-read \App\Server $server
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereChangeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereServerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Notification whereUpdatedAt($value)
+ */
+	class Notification extends \Eloquent {}
 }
 

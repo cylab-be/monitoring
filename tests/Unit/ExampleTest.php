@@ -179,7 +179,7 @@ class ExampleTest extends TestCase
         $change = new \App\StatusChange();
         $change->status = 155;
         $change->server_id = $server_id;
-        \App\StatusChange::save($change);
+        $change->save();
 
         // Run change detection
         $change_detection_job = new \App\Jobs\StatusChangeDetection();

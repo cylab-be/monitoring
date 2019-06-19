@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Notification;
 use App\Organization;
 use App\Server;
 use App\StatusChange;
@@ -56,7 +57,20 @@ class StatusChangeDetection implements ShouldQueue
         $change->server_id = $server->id;
         $change->time = time();
         $change->status = $current_status;
-        StatusChange::save($change);
+        $change->save();
+
+        $this->sendNotificationIfRequired($change);
+    }
+
+    public function sendNotificationIfRequired(StatusChange $change)
+    {
+        $server = $change->server();
+
+        $notification = new Notification();
+        $notification->server()->associate($server);
+        $notification->type = "change";
+        $notification->change_id = $change->id;
+        $notification->save();
 
         foreach ($server->organization->users as $user) {
             Mail::to($user)->send(new \App\Mail\StatusChanged($change));
