@@ -65,43 +65,43 @@ class ExampleTest extends TestCase
     
     public function testDiskEvolution()
     {
-		$p = new Partition();
-		$p->filesystem = "test";
-		$p->blocks = 20;
-		$p->used = 10;
-		
-		$p2 = new Partition();
-		$p2->filesystem = "test";
-		$p2->blocks = 15;
-		$p2->used = 5;
-		
-		$oldPartitions = array($p, $p2);
-		
-		$p = new Partition();
-		$p->filesystem = "test";
-		$p->blocks = 20;
-		$p->used = 15;
-		
-		$p2 = new Partition();
-		$p2->filesystem = "test";
-		$p2->blocks = 15;
-		$p2->used = 10;
-		
-		$newPartitions = array($p, $p2);
-		$newAndOld = array($newPartitions, $oldPartitions);
-		
-		
-		$sensor = new DiskEvolution(new \App\Server());
-		$result = $sensor->computeEvolution($newAndOld);
-		
-		// test the result is correct...
-		$this->assertequals(5, $result[0]->delta);
-		$this->assertequals(5, $result[1]->delta);
-		$this->assertequals("test", $result[0]->filesystem);
-		$this->assertequals("test", $result[1]->filesystem);
-		$this->assertequals(((20-15)/5), $result[0]->timeUntillFull);
-		$this->assertequals(((15-10)/5), $result[1]->timeUntillFull);
-	}
+        $p = new Partition();
+        $p->filesystem = "test";
+        $p->blocks = 20;
+        $p->used = 10;
+        
+        $p2 = new Partition();
+        $p2->filesystem = "test";
+        $p2->blocks = 15;
+        $p2->used = 5;
+        
+        $oldPartitions = array($p, $p2);
+        
+        $p = new Partition();
+        $p->filesystem = "test";
+        $p->blocks = 20;
+        $p->used = 15;
+        
+        $p2 = new Partition();
+        $p2->filesystem = "test";
+        $p2->blocks = 15;
+        $p2->used = 10;
+        
+        $newPartitions = array($p, $p2);
+        $newAndOld = array($newPartitions, $oldPartitions);
+        
+        
+        $sensor = new DiskEvolution(new \App\Server());
+        $result = $sensor->computeEvolution($newAndOld);
+        
+        // test the result is correct...
+        $this->assertequals(5, $result[0]->delta);
+        $this->assertequals(5, $result[1]->delta);
+        $this->assertequals("test", $result[0]->filesystem);
+        $this->assertequals("test", $result[1]->filesystem);
+        $this->assertequals(((20-15)/5), $result[0]->timeUntillFull);
+        $this->assertequals(((15-10)/5), $result[1]->timeUntillFull);
+    }
 
     public function testDisksSensor()
     {
