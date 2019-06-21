@@ -26,7 +26,8 @@ class Server extends Model
         \App\Sensor\Ssacli::class,
         \App\Sensor\Date::class,
         \App\Sensor\ClientVersion::class,
-        \App\Sensor\Heartbeat::class
+        \App\Sensor\Heartbeat::class,
+        \App\Sensor\DiskEvolution::class
     ];
 
     public function __construct(array $attributes = array())

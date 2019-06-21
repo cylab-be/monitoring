@@ -7,7 +7,8 @@ use App\Notification;
 use App\Organization;
 use App\Sensor\Disks;
 use App\Sensor\Ifconfig;
-
+use App\Sensor\Partition;
+use App\Sensor\DiskEvolution;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -45,7 +46,7 @@ class ExampleTest extends TestCase
             $user->organizations()->first()->name
         );
     }
-
+    
     /**
      * @group ifconfig
      * @group sensors
@@ -60,6 +61,46 @@ class ExampleTest extends TestCase
         $this->assertEquals("10.67.1.32", $interfaces[1]->address);
         $this->assertEquals(1074590056, $interfaces[1]->rx);
         $this->assertEquals(2074977132, $interfaces[1]->tx);
+    }
+    
+    public function testDiskEvolution()
+    {
+        $p = new Partition();
+        $p->filesystem = "test";
+        $p->blocks = 20;
+        $p->used = 10;
+        
+        $p2 = new Partition();
+        $p2->filesystem = "test";
+        $p2->blocks = 15;
+        $p2->used = 5;
+        
+        $oldPartitions = array($p, $p2);
+        
+        $p = new Partition();
+        $p->filesystem = "test";
+        $p->blocks = 20;
+        $p->used = 15;
+        
+        $p2 = new Partition();
+        $p2->filesystem = "test";
+        $p2->blocks = 15;
+        $p2->used = 10;
+        
+        $newPartitions = array($p, $p2);
+        $newAndOld = array($newPartitions, $oldPartitions);
+        
+        
+        $sensor = new DiskEvolution(new \App\Server());
+        $result = $sensor->computeEvolution($newAndOld);
+        
+        // test the result is correct...
+        $this->assertequals(5, $result[0]->delta);
+        $this->assertequals(5, $result[1]->delta);
+        $this->assertequals("test", $result[0]->filesystem);
+        $this->assertequals("test", $result[1]->filesystem);
+        $this->assertequals(((20-15)/5), $result[0]->timeUntillFull);
+        $this->assertequals(((15-10)/5), $result[1]->timeUntillFull);
     }
 
     public function testDisksSensor()
