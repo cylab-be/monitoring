@@ -19,7 +19,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md bg-primary navbar-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <i class="fa d-inline fa-lg fa-line-chart"></i> <b>Monitoring</b>
             </a>
