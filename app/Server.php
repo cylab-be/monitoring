@@ -174,7 +174,7 @@ class Server extends Model
 
     public function uptime()
     {
-        $record = $this->lastRecordContaining("uptime");
+        $record = $this->lastRecordContaining("upaimte");
         if ($record == null) {
             return "";
         }
