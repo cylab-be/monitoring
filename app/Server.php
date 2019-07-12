@@ -179,7 +179,7 @@ class Server extends Model
             return "";
         }
 
-        return $this->parseUptime($record->uptime);
+        return $this->parseUptime($record->upaimte);
     }
 
     public function parseUptime(string $string)
