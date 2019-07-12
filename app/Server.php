@@ -172,6 +172,22 @@ class Server extends Model
         return $sensors;
     }
 
+    public function uptime()
+    {
+        $record = $this->lastRecordContaining("uptime");
+        if ($record == null) {
+            return "";
+        }
+
+        return $this->parseUptime($record->uptime);
+    }
+
+    public function parseUptime(string $string)
+    {
+        $pieces = explode(' ', $string);
+        $uptime = \Carbon\Carbon::now()->subSeconds($pieces[0]);
+        return $uptime->diffForHumans(null, true);
+    }
 
 
     public function cpuinfo()

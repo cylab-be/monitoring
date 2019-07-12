@@ -46,7 +46,7 @@ class ExampleTest extends TestCase
             $user->organizations()->first()->name
         );
     }
-    
+
     /**
      * @group ifconfig
      * @group sensors
@@ -62,38 +62,38 @@ class ExampleTest extends TestCase
         $this->assertEquals(1074590056, $interfaces[1]->rx);
         $this->assertEquals(2074977132, $interfaces[1]->tx);
     }
-    
+
     public function testDiskEvolution()
     {
         $p = new Partition();
         $p->filesystem = "test";
         $p->blocks = 20;
         $p->used = 10;
-        
+
         $p2 = new Partition();
         $p2->filesystem = "test";
         $p2->blocks = 15;
         $p2->used = 5;
-        
+
         $oldPartitions = array($p, $p2);
-        
+
         $p = new Partition();
         $p->filesystem = "test";
         $p->blocks = 20;
         $p->used = 15;
-        
+
         $p2 = new Partition();
         $p2->filesystem = "test";
         $p2->blocks = 15;
         $p2->used = 10;
-        
+
         $newPartitions = array($p, $p2);
         $newAndOld = array($newPartitions, $oldPartitions);
-        
-        
+
+
         $sensor = new DiskEvolution(new \App\Server());
         $result = $sensor->computeEvolution($newAndOld);
-        
+
         // test the result is correct...
         $this->assertequals(5, $result[0]->delta);
         $this->assertequals(5, $result[1]->delta);
@@ -155,6 +155,17 @@ class ExampleTest extends TestCase
         $cpuinfo = $server->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
+    }
+
+    /**
+     * @group uptime
+     */
+    public function testUptime()
+    {
+        $string = "24439.45 190434.65";
+        $server = new \App\Server();
+        $uptime = $server->parseUptime($string);
+        $this->assertEquals("6 hours", $uptime);
     }
 
     /**

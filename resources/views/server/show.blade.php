@@ -21,7 +21,7 @@ window.monitorServerID = {{ $server->id }};
 window.monitorServerToken = "{{ $server->read_token }}";
 </script>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -35,6 +35,8 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     </p>
 
                     <p>Client version: {{ $server->clientVersion() }}</p>
+
+                    <p>Uptime: {{ $server->uptime() }}</p>
                 </div>
             </div>
 
