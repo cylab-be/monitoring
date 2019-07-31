@@ -189,6 +189,25 @@ class Server extends Model
         return $uptime->diffForHumans(null, true);
     }
 
+    public function uuid()
+    {
+        $record = $this->lastRecordContaining("system");
+        if ($record == null) {
+            return "";
+        }
+
+        return $this->parseUUID($record->system);
+    }
+
+    const UUID = "/\s*UUID: (.*)/m";
+
+    public function parseUUID(string $string)
+    {
+        $matches = array();
+        preg_match(self::UUID, $string, $matches);
+        return $matches[1];
+    }
+
 
     public function cpuinfo()
     {

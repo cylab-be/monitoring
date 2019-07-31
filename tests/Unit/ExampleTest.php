@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\User;
 use App\Notification;
 use App\Organization;
+use App\Server;
 use App\Sensor\Disks;
 use App\Sensor\Ifconfig;
 use App\Sensor\Partition;
@@ -163,9 +164,16 @@ class ExampleTest extends TestCase
     public function testUptime()
     {
         $string = "24439.45 190434.65";
-        $server = new \App\Server();
+        $server = new Server();
         $uptime = $server->parseUptime($string);
         $this->assertEquals("6 hours", $uptime);
+    }
+
+    public function testUUID()
+    {
+        $server = new Server();
+        $uuid = $server->parseUUID(file_get_contents(__DIR__ . "/system"));
+        $this->assertEquals("74F7C34C-2924-11B2-A85C-DC427DCA7109", $uuid);
     }
 
     /**
