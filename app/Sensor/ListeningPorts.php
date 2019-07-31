@@ -14,24 +14,33 @@ class ListeningPorts extends \App\AbstractSensor
 
     public function report()
     {
-        $record = $this->getLastRecord("netstat-listen-tcp");
-        if ($record == null) {
+        $tcp_record = $this->getLastRecord("netstat-listen-tcp");
+        $udp_record = $this->getLastRecord("netstat-listen-udp");
+        if ($tcp_record == null && $udp_record == null) {
             return "<p>No data available...</p>";
         }
 
-        $ports = $this->parse($record["netstat-listen-tcp"]);
+        $ports = array_merge(
+                $this->parse($tcp_record["netstat-listen-tcp"]),
+                $this->parse($udp_record["netstat-listen-udp"]));
+
+        usort($ports,
+                function(ListeningPort $port1, ListeningPort $port2) {
+                    return $port1->port - $port2->port;
+                });
+
         $return = "<table class='table table-sm'>";
         $return .= "<tr>"
+                . "<th>Port</th>"
                 . "<th>Proto</th>"
                 . "<th>Bind address</th>"
-                . "<th>Port</th>"
                 . "<th>Process</th>"
                 . "</tr>";
         foreach ($ports as $port) {
             $return .= "<tr>"
+                    . "<td>" . $port->port . "</td>"
                     . "<td>" . $port->proto . "</td>"
                     . "<td>" . $port->bind . "</td>"
-                    . "<td>" . $port->port . "</td>"
                     . "<td>" . $port->process . "</td>"
                     . "</tr>";
         }
@@ -49,8 +58,12 @@ class ListeningPorts extends \App\AbstractSensor
      * @param string $string
      * @return \App\Sensor\ListeningPort[]
      */
-    public function parse(string $string)
+    public function parse(?string $string)
     {
+        if ($string == null) {
+            return [];
+        }
+
         $values = [];
         preg_match_all(self::REGEXP, $string, $values);
 
