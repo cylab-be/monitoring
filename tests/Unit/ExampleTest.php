@@ -107,17 +107,28 @@ class ExampleTest extends TestCase
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");
-        $sensor = new Disks(new \App\Server());
+        $sensor = new Disks(new Server());
         $disks = $sensor->parse($string);
         $this->assertEquals(3, count($disks));
         $this->assertEquals("/dev/sda1", $disks[1]->filesystem);
         $this->assertEquals(1128926648, $disks[1]->blocks);
     }
 
+    public function testNetstatListening()
+    {
+        $string = file_get_contents(__DIR__ . "/netstat-tcp");
+        $sensor = new \App\Sensor\ListeningPorts(new Server());
+        $ports = $sensor->parse($string);
+        $this->assertEquals(16, count($ports));
+        $this->assertEquals("31933/cloud-backup-", $ports[4]->process);
+        $this->assertEquals(1024, $ports[4]->port);
+        $this->assertEquals("127.0.0.1", $ports[4]->bind);
+    }
+
     public function testSsacli()
     {
         $string = file_get_contents(__DIR__ . "/ssacli");
-        $sensor = new \App\Sensor\Ssacli(new \App\Server());
+        $sensor = new \App\Sensor\Ssacli(new Server());
         $disks = $sensor->parse($string);
         $this->assertEquals("OK", $disks[0]->status);
     }
