@@ -19,7 +19,7 @@ class ListeningPorts extends \App\AbstractSensor
             return "<p>No data available...</p>";
         }
 
-        $ports = $this->parse($record->netstat-listen-tcp);
+        $ports = $this->parse($record["netstat-listen-tcp"]);
         $return = "<table class='table table-sm'>";
         $return .= "<tr>"
                 . "<th>Proto</th>"
