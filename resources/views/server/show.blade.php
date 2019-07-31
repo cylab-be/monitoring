@@ -43,7 +43,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             <div class="card">
                 <div class="card-body">
                     <p>{{ $server->manufacturer() }} {{ $server->productName() }}</p>
-                    <p>{{ $server->uuid() }}</p>
+                    <p><small>{{ $server->uuid() }}</small></p>
 
                     @php
                     $cpuinfo = $server->cpuinfo();
