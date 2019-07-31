@@ -21,13 +21,16 @@ class ListeningPorts extends \App\AbstractSensor
         }
 
         $ports = array_merge(
-                $this->parse($tcp_record["netstat-listen-tcp"]),
-                $this->parse($udp_record["netstat-listen-udp"]));
+            $this->parse($tcp_record["netstat-listen-tcp"]),
+            $this->parse($udp_record["netstat-listen-udp"])
+        );
 
-        usort($ports,
-                function(ListeningPort $port1, ListeningPort $port2) {
+        usort(
+            $ports,
+            function (ListeningPort $port1, ListeningPort $port2) {
                     return $port1->port - $port2->port;
-                });
+            }
+        );
 
         $return = "<table class='table table-sm'>";
         $return .= "<tr>"
