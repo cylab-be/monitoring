@@ -21,12 +21,13 @@ class Notification extends Model
         $this->save();
         $change = $this->change();
 
-        $mail = new \App\Mail\StatusChanged($change);
+        $mail_class = \App\Mail\StatusChanged::class;
         if ($this->type == "bouncing") {
-            $mail = new \App\Mail\StatusBouncing($change);
+            $mail_class = \App\Mail\StatusBouncing::class;
         }
 
         foreach ($this->server->organization->users as $user) {
+            $mail = new $mail_class($change);
             Mail::to($user)->send($mail);
         }
     }

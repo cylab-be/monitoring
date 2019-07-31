@@ -28,6 +28,13 @@ class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testClassInstance()
+    {
+        $class = Server::class;
+        $server = new $class;
+        $this->assertEquals("App\Server", get_class($server));
+    }
+
     public function testRelations()
     {
         $user = new User();
