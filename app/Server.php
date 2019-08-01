@@ -25,6 +25,7 @@ class Server extends Model
         \App\Sensor\Disks::class,
         \App\Sensor\Inodes::class,
         \App\Sensor\Ssacli::class,
+        \App\Sensor\Perccli::class,
         \App\Sensor\Date::class,
         \App\Sensor\ClientVersion::class,
         \App\Sensor\Heartbeat::class,

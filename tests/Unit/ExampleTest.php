@@ -140,6 +140,16 @@ class ExampleTest extends TestCase
         $this->assertEquals("OK", $disks[0]->status);
     }
 
+    public function testPerccli()
+    {
+        $string = file_get_contents(__DIR__ . "/perccli");
+        $sensor = new \App\Sensor\Perccli(new Server());
+        $disks = $sensor->parse($string);
+        $this->assertEquals("Onln", $disks[0]->status);
+        $this->assertEquals("SSD", $disks[0]->type);
+        $this->assertEquals("446.625 GB", $disks[0]->size);
+    }
+
     public function testUpdates()
     {
         $sensor = new \App\Sensor\Updates(new \App\Server());
