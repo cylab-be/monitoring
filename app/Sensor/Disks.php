@@ -19,7 +19,7 @@ class Disks extends \App\AbstractSensor
             return "<p>No data available...</p>";
         }
 
-        $partitions = $this->parse($record->disks);
+        $partitions = self::parse($record->disks);
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
         foreach ($partitions as $partition) {
@@ -39,7 +39,7 @@ class Disks extends \App\AbstractSensor
         }
 
         $all_status = [];
-        foreach ($this->parse($record->disks) as $partition) {
+        foreach (self::parse($record->disks) as $partition) {
             /* @var $partition Partition */
             $status = self::STATUS_OK;
             if ($partition->usedPercent() > 80) {
@@ -55,7 +55,7 @@ class Disks extends \App\AbstractSensor
 
     public static $skip_fs = ["none", "tmpfs", "shm"];
 
-    public function parse($string)
+    public static function parse(string $string)
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
