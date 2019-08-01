@@ -59,7 +59,7 @@ class DiskEvolution extends \App\AbstractSensor {
 
     public function report() {
         return $this->printResults(
-                $this->computeEvolution($this->get2Partitions(24)), 24);
+                $this->computeEvolution($this->get2Partitions(24), 24));
     }
 
     public function status() {
