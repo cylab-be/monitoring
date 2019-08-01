@@ -16,7 +16,11 @@ class DiskEvolution extends \App\AbstractSensor {
             $delta = new Delta();
             $delta->filesystem = $partition->filesystem;
             $delta->delta = $partition->used - $newAndOld[1][$key]->used;
-            $delta->timeUntillFull = ($partition->blocks - $partition->used) / $delta->delta * $timeDifference;
+            if ($delta->delta == 0) {
+                $delta->timeUntillFull = PHP_INT_MAX;
+            } else  {
+                $delta->timeUntillFull = ($partition->blocks - $partition->used) / $delta->delta * $timeDifference;
+            }
             $deltas[] = $delta;
         }
         return $deltas;
