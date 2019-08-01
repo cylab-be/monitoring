@@ -72,11 +72,9 @@ class DiskEvolution extends \App\AbstractSensor {
     {
         foreach ($deltas as $delta) {
             $status = self::STATUS_OK;
-            if ($delta->timeUntillFull == "Not enough messurements") {
-                $status = self::STATUS_UNKNOWN;
-            } elseif ($delta->timeUntillFull == "more storage left then last calculation") {
-                $status = self::STATUS_UNKNOWN;
-            } elseif ($delta->timeUntillFull < 96) {
+
+            if ($delta->timeUntillFull > 0
+                    && $delta->timeUntillFull < 96) {
                 $status = self::STATUS_WARNING;
             }
 
