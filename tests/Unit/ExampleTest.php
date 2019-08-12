@@ -8,7 +8,6 @@ use App\Organization;
 use App\Server;
 use App\Sensor\Disks;
 use App\Sensor\Ifconfig;
-use App\Sensor\Partition;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
