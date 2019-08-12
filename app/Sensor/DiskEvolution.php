@@ -14,7 +14,13 @@ class DiskEvolution extends \App\AbstractSensor
     public function computeEvolution(array $newAndOld, int $timeDifference) : array
     {
 
+        $deltas = [];
         foreach ($newAndOld[0] as $key => $partition) {
+
+            if (!isset($newAndOld[1][$key])) {
+                continue;
+            }
+
             $delta = new Delta();
             $delta->filesystem = $partition->filesystem;
             $delta->delta = $partition->used - $newAndOld[1][$key]->used;
