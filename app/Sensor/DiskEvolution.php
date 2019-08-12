@@ -16,7 +16,6 @@ class DiskEvolution extends \App\AbstractSensor
 
         $deltas = [];
         foreach ($newAndOld[0] as $key => $partition) {
-
             if (!isset($newAndOld[1][$key])) {
                 continue;
             }
