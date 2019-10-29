@@ -40,7 +40,8 @@ test:gitleaks:
 deploy:
   stage: deploy
   image: alpine
-  only: master
+  only:
+    - master
   script:
     - apk add wget
     - wget "http://deployer.web-d.be/projects/19/deploy/CnyUff07McfEi7hQtHND7JWALkzKCmf4b4ddREUE"
