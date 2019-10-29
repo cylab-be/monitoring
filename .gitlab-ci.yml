@@ -1,6 +1,3 @@
-services:
-  - mongo
-
 ## Cache composer packages between all jobs and all branches
 ## of this project...
 cache:
@@ -8,7 +5,12 @@ cache:
   paths:
     - composer-cache/
 
-.phptest:
+
+# Test with PHP7.2 
+test:php72:
+  image: cylab/php72
+  services:
+    - mongo
   before_script:
     # Install all project dependencies
     - COMPOSER_CACHE_DIR=./composer-cache composer install
@@ -16,12 +18,6 @@ cache:
     - cp env.test .env
     - touch storage/app/db.sqlite
     - php artisan migrate
-
-
-# Test with PHP7.2 
-test:php72:
-  extends: .phptest
-  image: cylab/php72
   script:
     - vendor/bin/phpunit --coverage-text
     - vendor/bin/phpcs
@@ -32,3 +28,5 @@ test:gitleaks:
     entrypoint: [""]
   script:
     - gitleaks -v --repo-path=./ --config=gitleaks.toml
+    
+
