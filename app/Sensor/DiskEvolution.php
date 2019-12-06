@@ -88,8 +88,13 @@ class DiskEvolution extends \App\AbstractSensor
         return $this->computeStatusFromDeltas($deltas);
     }
 
-    public function computeStatusFromDeltas(array $deltas)
+    public function computeStatusFromDeltas(array $deltas) : int
     {
+        if (count($deltas) == 0) {
+            return self::STATUS_UNKNOWN;
+        }
+        
+        $all_status = [];
         foreach ($deltas as $delta) {
             $status = self::STATUS_OK;
 
@@ -100,7 +105,6 @@ class DiskEvolution extends \App\AbstractSensor
 
             $all_status[] = $status;
         }
-
         return max($all_status);
     }
 }
