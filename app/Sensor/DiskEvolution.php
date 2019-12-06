@@ -39,7 +39,7 @@ class DiskEvolution extends \App\AbstractSensor
 
 
     /**
-     * 
+     *
      * @param int $timeInterval
      * @return array|null
      */
