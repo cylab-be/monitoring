@@ -11,9 +11,13 @@ class DiskEvolution extends \App\AbstractSensor
      * @param Partition[] $newAndOld
      * @return \App\Sensor\Delta[]
      */
-    public function computeEvolution(array $newAndOld, int $timeDifference) : array
+    public function computeEvolution(?array $newAndOld, int $timeDifference) : array
     {
-
+        if ($newAndOld == null) {
+            // can happen if we have no records for this server
+            return [];
+        }
+        
         $deltas = [];
         foreach ($newAndOld[0] as $key => $partition) {
             if (!isset($newAndOld[1][$key])) {
@@ -33,16 +37,20 @@ class DiskEvolution extends \App\AbstractSensor
         return $deltas;
     }
 
+
     /**
-     * Gets the records over a certain time
-     * then gets the first and the last record
-     * and uses parse to make them partition object
-     *
-     * @param int $timeInterval in hours
+     * 
+     * @param int $timeInterval
+     * @return array|null
      */
-    public function get2Partitions(int $timeInterval)
+    public function get2Partitions(int $timeInterval) : ?array
     {
         $records = $this->getLastRecords("disks", $timeInterval * 12);
+        
+        if (count($records) < 2) {
+            return null;
+        }
+        
         $newPartitions = Disks::parse($records[0]->disks);
         $oldPartitions = Disks::parse($records[count($records) - 1]->disks);
         $newAndOld = [$newPartitions, $oldPartitions];
