@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Monitoring'),
 
+    'proxy' => env('PROXY', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

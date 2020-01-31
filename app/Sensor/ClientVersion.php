@@ -18,8 +18,8 @@ class ClientVersion extends \App\AbstractSensor
     {
         $options = ['timeout' => 5.0];
 
-        $proxy = getenv("https_proxy");
-        if ($proxy != false) {
+        $proxy = config("app.proxy", null);
+        if ($proxy != null) {
             $options["proxy"] = $proxy;
         }
 
