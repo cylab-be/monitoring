@@ -13,12 +13,17 @@ class ClientVersion extends \App\AbstractSensor
 {
 
     const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
-    
+
     public function manifest()
     {
-        $client = new Client([
-            'timeout'  => 5.0,
-        ]);
+        $options = ['timeout' => 5.0];
+
+        $proxy = getenv("https_proxy");
+        if ($proxy != false) {
+            $options["proxy"] = $proxy;
+        }
+
+        $client = new Client($options);
 
         try {
             $json = $client->get(self::MANIFEST)->getBody();
@@ -28,13 +33,13 @@ class ClientVersion extends \App\AbstractSensor
 
         return json_decode($json)[0];
     }
-        
+
 
     public function latestVersion()
     {
         return $this->manifest()->version;
     }
-    
+
     public function latestUrl()
     {
         return $this->manifest()->url;
