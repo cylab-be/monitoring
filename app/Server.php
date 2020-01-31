@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Server extends Model
 {
@@ -119,7 +120,13 @@ class Server extends Model
     {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
-            $status_array[\get_class($sensor)] = $sensor->status();
+            $sensor_name = \get_class($sensor);
+            try {
+                $status_array[$sensor_name] = $sensor->status();
+            } catch (\Exception $ex) {
+                $status_array[$sensor_name] = Sensor::STATUS_UNKNOWN;
+                Log::error("Sensor $sensor_name failed : " . $ex->getTraceAsString());
+            }
         }
         return $status_array;
     }

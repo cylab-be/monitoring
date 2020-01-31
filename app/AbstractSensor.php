@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Log;
+
 /**
  * Description of AbstractSensor
  *
@@ -98,5 +100,15 @@ abstract class AbstractSensor implements Sensor
     public function getBadge()
     {
         return self::getBadgeForStatus($this->status());
+    }
+
+    public function reportHTML() : string
+    {
+        try {
+            return $this->report();
+        } catch (\Exception $ex) {
+            Log::error('Sensor failed : ' . $ex->getTraceAsString());
+            return "<p>Sensor " . $this->getName() . " failed :-(</p>";
+        }
     }
 }
