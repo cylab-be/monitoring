@@ -16,7 +16,8 @@ class ClientVersion extends \App\AbstractSensor
 
     public function manifest()
     {
-        $options = ['timeout' => 5.0];
+        $options = [
+            'timeout' => 5.0];
 
         $proxy = config("app.proxy", null);
         if ($proxy != null) {
@@ -24,12 +25,7 @@ class ClientVersion extends \App\AbstractSensor
         }
 
         $client = new Client($options);
-
-        try {
-            $json = $client->get(self::MANIFEST)->getBody();
-        } catch (\Exception $ex) {
-            return "";
-        }
+        $json = $client->get(self::MANIFEST)->getBody();
 
         return json_decode($json)[0];
     }
