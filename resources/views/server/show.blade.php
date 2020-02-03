@@ -86,6 +86,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 / {{ $server->name }}
             </h1>
 
+            @if ($server->hasData())
             @foreach ($server->getSensors() as $sensor)
             <div class="card">
                 <div class="card-header">
@@ -117,7 +118,9 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
             </div>
 
-             <div class="card">
+            @endif
+
+            <div class="card">
                 <div class="card-header">
                     PHP Client installation
                 </div>

@@ -57,6 +57,11 @@ class Server extends Model
         return $this->last_record;
     }
 
+    public function hasData() : bool
+    {
+        return $this->lastRecord() != null;
+    }
+
     /**
      * Return the last record if it contains the field $field,
      * otherwise return null.
