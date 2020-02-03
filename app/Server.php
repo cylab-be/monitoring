@@ -215,10 +215,13 @@ class Server extends Model
 
     const UUID = "/\s*UUID: (.*)/m";
 
-    public function parseUUID(string $string)
+    public function parseUUID(string $string) : string
     {
         $matches = array();
         preg_match(self::UUID, $string, $matches);
+        if (! isset($matches[1])) {
+            return "unknown";
+        }
         return $matches[1];
     }
 
@@ -294,10 +297,14 @@ class Server extends Model
 
 
     const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
-    public function parseManufacturer($string)
+    public function parseManufacturer(string $string) : string
     {
         $matches = [];
         preg_match(self::REGEX_MANUFACTURER, $string, $matches);
+
+        if (!isset($matches[1])) {
+            return "unkwnown";
+        }
         return $matches[1];
     }
 
@@ -312,10 +319,13 @@ class Server extends Model
     }
 
     const REGEX_PRODUCT_NAME = "/^\s*Product Name: (.*)$/m";
-    public function parseProductName($string)
+    public function parseProductName(string $string) : string
     {
         $matches = [];
         preg_match(self::REGEX_PRODUCT_NAME, $string, $matches);
+        if (!isset($matches[1])) {
+            return "unkwnown";
+        }
         return $matches[1];
     }
 
