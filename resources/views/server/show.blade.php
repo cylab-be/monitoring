@@ -62,20 +62,25 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary btn-sm"
-                       href="{{ action('ServerController@edit', ['Server' => $server]) }}">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> Edit
-                    </a>
+                    <p>Server id: <code>{{ $server->id }}</code></p>
+                    <p>Token: <code>{{ $server->token }}</code></p>
 
-                    <form method="POST"
-                          action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
-                          style="display: inline-block">
-                        {{ csrf_field() }}
-                        {{ method_field("DELETE") }}
-                        <button class="btn btn-danger btn-sm">
-                            <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
-                        </button>
-                    </form>
+                    <div>
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ action('ServerController@edit', ['Server' => $server]) }}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
+                              style="display: inline-block">
+                            {{ csrf_field() }}
+                            {{ method_field("DELETE") }}
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
