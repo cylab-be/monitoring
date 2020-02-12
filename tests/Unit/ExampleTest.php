@@ -75,8 +75,8 @@ class ExampleTest extends TestCase
         $sensor = new Disks(new Server());
         $disks = $sensor->parse($string);
         $this->assertEquals(2, count($disks));
-        $this->assertEquals("/dev/sda1", $disks[1]->filesystem);
-        $this->assertEquals(1128926648, $disks[1]->blocks);
+        $this->assertEquals("/dev/sda1", $disks[0]->filesystem);
+        $this->assertEquals(1128926648, $disks[0]->blocks);
     }
 
     public function testNetstatListening()
