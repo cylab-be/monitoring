@@ -53,7 +53,7 @@ class Disks extends \App\AbstractSensor
         return max($all_status);
     }
 
-    public static $skip_fs = ["none", "tmpfs", "shm", "udev", "overlay"];
+    public static $skip_fs = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop'];
 
     public static function parse(string $string)
     {
@@ -63,7 +63,7 @@ class Disks extends \App\AbstractSensor
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
-            if (in_array($fs, self::$skip_fs)) {
+            if (self::shouldSkip($fs)) {
                 continue;
             }
 
@@ -75,5 +75,21 @@ class Disks extends \App\AbstractSensor
             $partitions[] = $partition;
         }
         return $partitions;
+    }
+
+    public static function shouldSkip(string $fs) : bool
+    {
+        foreach (self::$skip_fs as $should_skip) {
+            if (self::startsWith($should_skip, $fs)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function startsWith(string $needle, string $haystack) : bool
+    {
+        return substr($haystack, 0, strlen($needle)) === $needle;
     }
 }

@@ -61,7 +61,7 @@ class Inodes extends \App\AbstractSensor
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
-            if (in_array($fs, Disks::$skip_fs)) {
+            if (Disks::shouldSkip($fs)) {
                 continue;
             }
 
