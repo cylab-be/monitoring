@@ -74,7 +74,7 @@ class ExampleTest extends TestCase
         $string = file_get_contents(__DIR__ . "/df");
         $sensor = new Disks(new Server());
         $disks = $sensor->parse($string);
-        $this->assertEquals(3, count($disks));
+        $this->assertEquals(2, count($disks));
         $this->assertEquals("/dev/sda1", $disks[1]->filesystem);
         $this->assertEquals(1128926648, $disks[1]->blocks);
     }
