@@ -53,7 +53,7 @@ class Disks extends \App\AbstractSensor
         return max($all_status);
     }
 
-    public static $skip_fs = ["none", "tmpfs", "shm"];
+    public static $skip_fs = ["none", "tmpfs", "shm", "udev", "overlay"];
 
     public static function parse(string $string)
     {
