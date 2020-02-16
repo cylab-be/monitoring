@@ -36,12 +36,12 @@ Route::get(
             abort(403);
         }
 
-            header('Access-Control-Allow-Origin: *');
-            $meminfo = new App\Sensor\MemInfo($server);
-            return [
-                "used" => $meminfo->usedMemoryPoints(),
-                "cached" => $meminfo->cachedMemoryPoints(),
-                "total" => $server->memoryTotal() / 1000];
+        header('Access-Control-Allow-Origin: *');
+        $meminfo = new App\Sensor\MemInfo($server);
+        return [
+            "used" => $meminfo->usedMemoryPoints(),
+            "cached" => $meminfo->cachedMemoryPoints(),
+            "total" => $server->memoryTotal() / 1000];
     }
 );
 
@@ -52,11 +52,11 @@ Route::get(
             abort(403);
         }
 
-            header('Access-Control-Allow-Origin: *');
-            $sensor = new App\Sensor\LoadAvg($server);
-            return [
-                "points" => $sensor->loadPoints(),
-                "max" => $server->cpuinfo()["threads"]];
+        header('Access-Control-Allow-Origin: *');
+        $sensor = new App\Sensor\LoadAvg($server);
+        return [
+            "points" => $sensor->loadPoints(),
+            "max" => $server->cpuinfo()["threads"]];
     }
 );
 
@@ -67,8 +67,21 @@ Route::get(
             abort(403);
         }
 
-            header('Access-Control-Allow-Origin: *');
-            $sensor = new App\Sensor\Ifconfig($server);
-            return $sensor->points();
+        header('Access-Control-Allow-Origin: *');
+        $sensor = new App\Sensor\Ifconfig($server);
+        return $sensor->points();
+    }
+);
+
+Route::get(
+    'sensor/{server}/{token}/netstat',
+    function (Server $server, string $token) {
+        if ($server->read_token != $token) {
+            abort(403);
+        }
+
+        header('Access-Control-Allow-Origin: *');
+        $sensor = new App\Sensor\Netstat($server);
+        return $sensor->points();
     }
 );

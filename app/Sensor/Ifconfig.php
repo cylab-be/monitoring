@@ -29,9 +29,6 @@ class Ifconfig extends AbstractSensor
     {
         // Get records in time ascending order
         $records = $this->getLastRecords("ifconfig", 289);
-        usort($records, function ($r1, $r2) {
-            return $r1->time  > $r2->time ? 1 : -1;
-        });
 
         // Compute the time ordered list of arrays of interfaces
         $interfaces = [];

@@ -48,6 +48,7 @@ abstract class AbstractSensor implements Sensor
      * !! $count is the MAXIMUM number of returned records.
      * To optimize mongo's usage of index, we get the last $count records
      * then filter locally for records containing this record
+     * Records are returned in chronological order
      * @param type $field
      * @param type $count
      * @return type
@@ -65,6 +66,10 @@ abstract class AbstractSensor implements Sensor
                 $results[] = $record;
             }
         }
+
+        usort($results, function ($r1, $r2) {
+            return $r1->time  > $r2->time ? 1 : -1;
+        });
 
         return $results;
     }

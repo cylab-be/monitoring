@@ -198,6 +198,18 @@ class ExampleTest extends TestCase
     }
 
     /**
+     * @group netstat
+     */
+    public function testNetstat()
+    {
+        $string = file_get_contents(__DIR__ . "/netstat");
+        $server = new \App\Server();
+        $netstat = new \App\Sensor\Netstat($server);
+        $this->assertEquals(24004, $netstat->parse($string)->tcp_segments_retransmitted);
+
+    }
+
+    /**
      * @group status-change
      */
     public function testStatusChangeDetection()

@@ -20,6 +20,7 @@ class Server extends Model
         \App\Sensor\LoadAvg::class,
         \App\Sensor\MemInfo::class,
         \App\Sensor\Ifconfig::class,
+        \App\Sensor\Netstat::class,
         \App\Sensor\ListeningPorts::class,
         \App\Sensor\Reboot::class,
         \App\Sensor\Updates::class,
