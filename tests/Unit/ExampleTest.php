@@ -206,7 +206,6 @@ class ExampleTest extends TestCase
         $server = new \App\Server();
         $netstat = new \App\Sensor\Netstat($server);
         $this->assertEquals(24004, $netstat->parse($string)->tcp_segments_retransmitted);
-
     }
 
     /**

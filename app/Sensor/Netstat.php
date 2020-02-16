@@ -78,7 +78,6 @@ class Netstat extends AbstractSensor
                 $this->pregMatchOne(self::TCP_SENT, $string, 0);
 
         return $report;
-
     }
 
     public function pregMatchOne($pattern, $string, $default = null)
