@@ -43,7 +43,8 @@ class Netstat extends AbstractSensor
             if ($sent_segments != 0) {
                 $ratio = $retransmitted_segments / $sent_segments * 100;
             }
-            $dataset["points"][] = new Point($report->time, $ratio);
+            // point time is in miliseconds :-(
+            $dataset["points"][] = new Point($report->time * 1000, $ratio);
             $previous_report = $report;
         }
 
