@@ -64,10 +64,8 @@ Edit php.ini (PHP configuration file) :
 ```
 vim /etc/php/7.2/cli/php.ini 
 ```
-In the dynamic extensions section, insert/uncomment the following lines :
+In the dynamic extensions section, insert the following line :
 ```
-extension=mbstring;
-extension=mongodb;
 extension=mysqli.so;
 ```
 
