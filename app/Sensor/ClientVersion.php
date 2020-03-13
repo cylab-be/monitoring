@@ -19,6 +19,9 @@ class ClientVersion extends \App\AbstractSensor
         $options = ['timeout' => 5.0];
 
         $proxy = config("app.proxy", null);
+        var_dump($proxy);
+        //exit();
+        
         if ($proxy != null) {
             $options["proxy"] = $proxy;
         }
@@ -37,12 +40,14 @@ class ClientVersion extends \App\AbstractSensor
 
     public function latestVersion()
     {
-        return $this->manifest()->version;
+        //return $this->manifest()->version;
+        return "";
     }
 
     public function latestUrl()
     {
-        return $this->manifest()->url;
+        //return $this->manifest()->url;
+        return "";
     }
 
     //put your code here
