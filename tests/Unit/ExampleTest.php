@@ -7,6 +7,7 @@ use App\Notification;
 use App\Organization;
 use App\Server;
 use App\Sensor\Disks;
+use App\Sensor\CPUtemperature;
 use App\Sensor\Ifconfig;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -69,6 +70,10 @@ class ExampleTest extends TestCase
         $this->assertEquals(2074977132, $interfaces[1]->tx);
     }
 
+    /**
+     * @group Disks
+     */
+    
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");
@@ -265,5 +270,17 @@ class ExampleTest extends TestCase
             $change_detection_job = new \App\Jobs\StatusChangeDetection();
             $change_detection_job->detectChangeForServer($server);
         }
+    }
+    /**
+     * @group CPUtemp
+     */
+    public function testCPUtemp()
+    {
+        $string = file_get_contents(__DIR__ . "/sensors");
+        $sensor = new CPUtemperature(new Server());
+        $CPUTEMPS = $sensor->parse($string);
+        $this->assertEquals(4, count($CPUTEMPS));
+        $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
+        $this->assertEquals("34.0", $CPUTEMPS[3]->value);
     }
 }
