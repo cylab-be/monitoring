@@ -31,7 +31,8 @@ class Server extends Model
         \App\Sensor\Date::class,
         \App\Sensor\ClientVersion::class,
         \App\Sensor\Heartbeat::class,
-        \App\Sensor\DiskEvolution::class
+        \App\Sensor\DiskEvolution::class,
+        \App\Sensor\CPUtemperature::class
     ];
 
     public function __construct(array $attributes = array())
