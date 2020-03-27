@@ -14,7 +14,7 @@ class CPUtemperature extends \App\AbstractSensor
 
     public function report()
     {
-        $record = $this->getLastRecord("cputemperature");
+        $record = $this->getLastRecord("cpu-temperature");
         if ($record == null) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"
@@ -34,13 +34,13 @@ class CPUtemperature extends \App\AbstractSensor
 
     public function status()
     {
-        $record = $this->getLastRecord("cputemperature");
+        $record = $this->getLastRecord("cpu-temperature");
         if ($record == null) {
             return self::STATUS_UNKNOWN;
         }
 
         $all_status = [];
-        foreach (self::parse($record->cputemperature) as $CPUTemp) {
+        foreach (self::parse($record['cpu-temperature']) as $CPUTemp) {
             /* @var $CPUTemp Temperature */
             $status = self::STATUS_OK;
             if ($CPUTemp->value > 100) {
@@ -52,25 +52,18 @@ class CPUtemperature extends \App\AbstractSensor
         return max($all_status);
     }
 
-    public static $skip_fs = ["none"];
-
     public static function parse(string $string)
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
-        $CPUTEMPS = array();
+        $temperatures = array();
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
-            $fs = $values[1][$i];
-            if (in_array($fs, self::$skip_fs)) {
-                continue;
-            }
-
             $CPUTemp = new Temperature();
-            $CPUTemp->name = $fs;
+            $CPUTemp->name = $values[1][$i];
             $CPUTemp->value = $values[2][$i];
-            $CPUTEMPS[] = $CPUTemp;
+            $temperatures[] = $CPUTemp;
         }
-        return $CPUTEMPS;
+        return $temperatures;
     }
 }
