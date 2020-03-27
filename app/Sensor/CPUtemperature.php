@@ -21,12 +21,12 @@ class CPUtemperature extends \App\AbstractSensor
                 . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
         }
 
-        $CPUTEMPS = self::parse($record['cpu-temperature']);
+        $temperatures = self::parse($record['cpu-temperature']);
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th>Name</th><th>Temperature (°C)</th></tr>";
-        foreach ($CPUTEMPS as $CPUTemp) {
-            $return .= "<tr><td>" . $CPUTemp->name . "</td><td>"
-                    . $CPUTemp->value  . "</td></tr>";
+        foreach ($temperatures as $temperature) {
+            $return .= "<tr><td>" . $temperature->name . "</td><td>"
+                    . $temperature->value  . "</td></tr>";
         }
         $return .= "</table>";
         return $return;
