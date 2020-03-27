@@ -44,7 +44,7 @@ class CPUtemperature extends \App\AbstractSensor
             if ($CPUTemp->value > 100) {
                 $status = self::STATUS_WARNING;
             }
-            $all_status[] = $status; 
+            $all_status[] = $status;
         }
 
         return max($all_status);
