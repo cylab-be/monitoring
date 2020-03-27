@@ -16,7 +16,9 @@ class CPUtemperature extends \App\AbstractSensor
     {
         $record = $this->getLastRecord("cputemperature");
         if ($record == null) {
-            return "<p>No data available...</p>";
+            return "<p>No data available...</p>"
+                . "<p>Maybe <code>sensors</code> is not installed.</p>"
+                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
         }
 
         $CPUTEMPS = self::parse($record->cputemperature);
