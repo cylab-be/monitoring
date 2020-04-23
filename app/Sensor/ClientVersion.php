@@ -33,12 +33,14 @@ class ClientVersion extends \App\AbstractSensor
 
     public function latestVersion()
     {
-        return $this->manifest()->version;
+        //return $this->manifest()->version;
+        return "";
     }
 
     public function latestUrl()
     {
-        return $this->manifest()->url;
+        //return $this->manifest()->url;
+        return "";
     }
 
     //put your code here
