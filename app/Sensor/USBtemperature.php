@@ -10,7 +10,7 @@ namespace App\Sensor;
 class USBtemperature extends \App\AbstractSensor
 {
     //get device responce (8 bytes) :
-    const REGEXP = "^(80 80)\s*([A-z\/0-9]+) \s*([A-z\/0-9]+)/m";
+    const REGEXP = "/^(80 80)\s*([A-z\/0-9]+) \s*([A-z\/0-9]+)/m";
 
     public function report()
     {
@@ -20,10 +20,9 @@ class USBtemperature extends \App\AbstractSensor
                 . "<p>Maybe <code>TEMPer</code> is not installed.</p>"
                 . "<p>You can install it following the tutorial on the Gitlab repository</p>";
         }
-        $temper = self::parse($record['TEMPer']);
-        $return= "<p>Ambient temperature (USB TEMPer) : "
-        . $temper[1] . "." . $temper[2] . " °C " . "</p>";
-        return $return;
+        $temper = self::parse($record["TEMPer"]);
+        $return= "<p>Ambient temperature (USB TEMPer) : ".$temper->temp[1].".".$temper->temp[2]." °C "."</p>";
+        return $return;//$record['TEMPer'];
     }
 
     public function status()
@@ -32,29 +31,29 @@ class USBtemperature extends \App\AbstractSensor
         if ($record == null) {
             return self::STATUS_UNKNOWN;
         }
-
-        $all_status = [];
-        foreach (self::parse($record['TEMPer']) as $USBTemp) {
-            /* @var $USBTemp Temper */
-            $status = self::STATUS_OK;
-            if ($USBTemp->temperature[1] > 75) {
-                $status = self::STATUS_WARNING;
-            }
-            $all_status[] = $status;
+        //foreach (self::parse($record['TEMPer']) as $USBTemp) {
+         //   /* @var $USBTemp Temper */
+        
+        $status = self::STATUS_OK;
+        /*
+        $USBTemp = self::parse($record['TEMPer']);
+        if ((int)($USBTemp->temp[1]) > 75) {
+            $status = self::STATUS_WARNING;
         }
-
-        return max($all_status);
+         */
+        return $status;
+        
     }
 
     public static function parse(string $string)
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values); //get 8 bytes response from TEMPerUSB device
-        $temperatures = array();
         $USBTemp = new Temper();
-        $USBTemp->part1 = $values[2];
-        $USBTemp->part2 = $values[3];
-        $temper[] = $USBTemp->conversion(); //1st element = integer part, 2th = decimal part
+        $USBTemp->part1 = implode($values[2]);
+        $USBTemp->part2 = implode($values[3]);
+        $USBTemp->conversion(); //1st element = integer part, 2th = decimal part
+        $temper=$USBTemp;
         return $temper;
     }
 }
