@@ -297,4 +297,16 @@ class ExampleTest extends TestCase
         $this->assertEquals("26", $USBTemp->temp[1]);
         $this->assertEquals("68", $USBTemp->temp[2]);
     }
+    /**
+     * @group multicpu
+     */
+    public function testmultiCPUtemp()
+    {
+        $string = file_get_contents(__DIR__ . "/sensors");
+        $sensor = new CPUtemperature(new Server());
+        $CPUTEMPS = $sensor->parseCPUtemperature($string);
+        $this->assertEquals(4, count($CPUTEMPS));
+        $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
+        $this->assertEquals("34.0", $CPUTEMPS[3]->corevalue);
+    }
 }

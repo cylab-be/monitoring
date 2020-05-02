@@ -3,12 +3,12 @@
 namespace App\Sensor;
 
 /**
- * Description of Temperature
+ * Description of Temperature (core)
  *
  * @author helha
  */
-class Temperature
+class Temperature extends Cpu
 {
     public $name = ""; //eg : core 0
-    public $value= ""; //eg : T° value
+    public $corevalue= ""; //eg : T° value
 }
