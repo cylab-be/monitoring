@@ -292,10 +292,10 @@ class ExampleTest extends TestCase
         $string = file_get_contents(__DIR__ . "/TEMPer");
         $TEMPer = new USBtemperature(new Server());
         $USBTemp = $TEMPer->parse($string);
-        $this->assertEquals("0a", $USBTemp->part1);
-        $this->assertEquals("6c", $USBTemp->part2);
-        $this->assertEquals("26", $USBTemp->temp[1]);
-        $this->assertEquals("68", $USBTemp->temp[2]);
+        $this->assertEquals("09", $USBTemp->part1);
+        $this->assertEquals("47", $USBTemp->part2);
+        $this->assertEquals("23", $USBTemp->temp[1]);
+        $this->assertEquals("75", $USBTemp->temp[2]);
     }
     /**
      * @group multicpu

@@ -20,9 +20,9 @@ class USBtemperature extends \App\AbstractSensor
                 . "<p>Maybe <code>TEMPer</code> is not installed.</p>"
                 . "<p>You can install it following the tutorial on the Gitlab repository</p>";
         }
-        $temper = self::parse($record["TEMPer"]);
-        $return= "<p>Ambient temperature (USB TEMPer) : ".$temper->temp[1].".".$temper->temp[2]." °C "."</p>";
-        return $return;//$record['TEMPer'];
+        $temper = self::parse($record['TEMPer']);
+        $return= "<p>Ambient temperature (USB TEMPer) : " . $temper->temp[1] . "." . $temper->temp[2] . " °C " . "</p>";
+        return $return;
     }
 
     public function status()
@@ -31,16 +31,11 @@ class USBtemperature extends \App\AbstractSensor
         if ($record == null) {
             return self::STATUS_UNKNOWN;
         }
-        //foreach (self::parse($record['TEMPer']) as $USBTemp) {
-         //   /* @var $USBTemp Temper */
-        
         $status = self::STATUS_OK;
-        /*
         $USBTemp = self::parse($record['TEMPer']);
-        if ((int)($USBTemp->temp[1]) > 75) {
+        if ((int)($USBTemp->temp[1]) > 60) {
             $status = self::STATUS_WARNING;
         }
-         */
         return $status;
         
     }
