@@ -8,6 +8,7 @@ use App\Organization;
 use App\Server;
 use App\Sensor\Disks;
 use App\Sensor\CPUtemperature;
+use App\Sensor\USBtemperature;
 use App\Sensor\Ifconfig;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -282,5 +283,30 @@ class ExampleTest extends TestCase
         $this->assertEquals(4, count($CPUTEMPS));
         $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
         $this->assertEquals("34.0", $CPUTEMPS[3]->value);
+    }
+    /**
+     * @group USBtemp
+     */
+    public function testTEMPer()
+    {
+        $string = file_get_contents(__DIR__ . "/TEMPer");
+        $TEMPer = new USBtemperature(new Server());
+        $USBTemp = $TEMPer->parse($string);
+        $this->assertEquals("09", $USBTemp->part1);
+        $this->assertEquals("47", $USBTemp->part2);
+        $this->assertEquals("23", $USBTemp->temp[1]);
+        $this->assertEquals("75", $USBTemp->temp[2]);
+    }
+    /**
+     * @group multicpu
+     */
+    public function testmultiCPUtemp()
+    {
+        $string = file_get_contents(__DIR__ . "/sensors");
+        $sensor = new CPUtemperature(new Server());
+        $CPUTEMPS = $sensor->parseCPUtemperature($string);
+        $this->assertEquals(4, count($CPUTEMPS));
+        $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
+        $this->assertEquals("34.0", $CPUTEMPS[3]->corevalue);
     }
 }
