@@ -26,6 +26,7 @@ test:php72:
   script:
     - vendor/bin/phpunit --coverage-text
     - vendor/bin/phpcs
+    - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
 
 test:gitleaks:
   stage: test
