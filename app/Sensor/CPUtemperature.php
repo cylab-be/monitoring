@@ -63,6 +63,10 @@ class CPUtemperature extends \App\AbstractSensor
             $all_status[] = $status;
         }
 
+        if (count($all_status) < 1) {
+            return self::STATUS_UNKNOWN;
+        }
+
         return max($all_status);
     }
 
