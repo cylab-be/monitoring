@@ -24,7 +24,7 @@ test:php72:
     - touch storage/app/db.sqlite
     - php artisan migrate
   script:
-    - vendor/bin/phpunit --coverage-text
+    - vendor/bin/phpunit --coverage-text --colors=never
     - vendor/bin/phpcs
     - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
 
