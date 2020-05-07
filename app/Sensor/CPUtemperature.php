@@ -12,28 +12,7 @@ class CPUtemperature extends \App\AbstractSensor
 
     const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";
     const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
-    /*
-    public function report()
-    {
-        $record = $this->getLastRecord("cpu-temperature");
-        if ($record == null) {
-            return "<p>No data available...</p>"
-                . "<p>Maybe <code>sensors</code> is not installed.</p>"
-                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
-        }
 
-        $temperatures = self::parse($record['cpu-temperature']);
-        $CPUS=self::parseCPU($record['cpu-temperature']);
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr><th>Name</th><th>Temperature (°C)</th></tr>";
-        foreach ($temperatures as $temperature) {
-            $return .= "<tr><td>" . $temperature->name . "</td><td>"
-                    . $temperature->value  . "</td></tr>";
-        }
-        $return .= "</table>";
-        return $return;
-    }
-    */
     public function report()
     {
         $record = $this->getLastRecord("cpu-temperature");
@@ -59,7 +38,7 @@ class CPUtemperature extends \App\AbstractSensor
         $return .= "</table>";
         return $return;
     }
-    
+
     public function status()
     {
         $record = $this->getLastRecord("cpu-temperature");
@@ -86,7 +65,7 @@ class CPUtemperature extends \App\AbstractSensor
 
         return max($all_status);
     }
-    
+
     public static function parse(string $string) //cores only
     {
         $values = array();
@@ -101,7 +80,7 @@ class CPUtemperature extends \App\AbstractSensor
         }
         return $temperatures;
     }
-    
+
     public static function parseCPU(string $string) //cpus only
     {
         $values = array();
