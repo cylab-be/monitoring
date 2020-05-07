@@ -33,7 +33,7 @@ class Server extends Model
         \App\Sensor\Heartbeat::class,
         \App\Sensor\DiskEvolution::class,
         \App\Sensor\CPUtemperature::class,
-        \App\Sensor\USBtemperature::class    
+        \App\Sensor\USBtemperature::class
     ];
 
     public function __construct(array $attributes = array())

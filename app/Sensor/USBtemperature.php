@@ -37,7 +37,6 @@ class USBtemperature extends \App\AbstractSensor
             $status = self::STATUS_WARNING;
         }
         return $status;
-        
     }
 
     public static function parse(string $string)

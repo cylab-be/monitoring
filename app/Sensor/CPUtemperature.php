@@ -12,7 +12,7 @@ class CPUtemperature extends \App\AbstractSensor
 
     const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";
     const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
-	/*
+    /*
     public function report()
     {
         $record = $this->getLastRecord("cpu-temperature");
@@ -23,7 +23,7 @@ class CPUtemperature extends \App\AbstractSensor
         }
 
         $temperatures = self::parse($record['cpu-temperature']);
-		$CPUS=self::parseCPU($record['cpu-temperature']);
+        $CPUS=self::parseCPU($record['cpu-temperature']);
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th>Name</th><th>Temperature (°C)</th></tr>";
         foreach ($temperatures as $temperature) {
@@ -33,14 +33,15 @@ class CPUtemperature extends \App\AbstractSensor
         $return .= "</table>";
         return $return;
     }
-	*/
-	public function report()
+    */
+    public function report()
     {
         $record = $this->getLastRecord("cpu-temperature");
         if ($record == null) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"
-                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";}
+                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
+        }
         $Cores = self::parseCPUtemperature($record['cpu-temperature']);
         $CPUS=self::parseCPU($record['cpu-temperature']);
         $return = "<table class='table table-sm'>";
@@ -48,16 +49,18 @@ class CPUtemperature extends \App\AbstractSensor
         foreach ($CPUS as $CPU) {
             $return .= "<tr><td>" . "<b>" ."CPU " . $CPU->number . "</td><td>"
                     . "<b>" . $CPU->value  . "</td><td>" . "<b>" . $CPU->critvalue . "</td></tr>";
-            foreach($Cores as $Core) {
-		if ($Core->number == $CPU->number) {
+            foreach ($Cores as $Core) {
+                if ($Core->number == $CPU->number) {
                     $return .= "<tr><td>" . $Core->name . "</td><td>"
-                            . $Core->corevalue  . "</td><td>" . " " . "</td></tr>";}	
-        }}
+                            . $Core->corevalue  . "</td><td>" . " " . "</td></tr>";
+                }
+            }
+        }
         $return .= "</table>";
         return $return;
     }
-	
-	public function status()
+    
+    public function status()
     {
         $record = $this->getLastRecord("cpu-temperature");
         if ($record == null) {
@@ -67,23 +70,23 @@ class CPUtemperature extends \App\AbstractSensor
         $all_status = [];
         foreach (self::parseCPU($record['cpu-temperature']) as $CPU) {
             /* @var $CPU Cpu */
-			$status = self::STATUS_OK;
+            $status = self::STATUS_OK;
             if ($CPU->value > $CPU->critvalue) {
                 $status = self::STATUS_WARNING;
             }
-			foreach (self::parseCPUtemperature($record['cpu-temperature']) as $Core){
-				if ($Core->number == $CPU->number) {
-					if ($Core->value > $CPU->critvalue) {
-						$status = self::STATUS_WARNING;
-					}
-				}		
-			}	
+            foreach (self::parseCPUtemperature($record['cpu-temperature']) as $Core) {
+                if ($Core->number == $CPU->number) {
+                    if ($Core->value > $CPU->critvalue) {
+                        $status = self::STATUS_WARNING;
+                    }
+                }
+            }
             $all_status[] = $status;
         }
 
         return max($all_status);
     }
-	
+    
     public static function parse(string $string) //cores only
     {
         $values = array();
@@ -98,8 +101,8 @@ class CPUtemperature extends \App\AbstractSensor
         }
         return $temperatures;
     }
-	
-	public static function parseCPU(string $string) //cpus only
+    
+    public static function parseCPU(string $string) //cpus only
     {
         $values = array();
         preg_match_all(self::REGEXPCPU, $string, $values);
@@ -109,35 +112,40 @@ class CPUtemperature extends \App\AbstractSensor
             $CPU = new Cpu();
             $CPU->number = $values[2][$i];
             $CPU->value = $values[3][$i];
-			$CPU->critvalue = $values[4][$i];
+            $CPU->critvalue = $values[4][$i];
             $CPUS[] = $CPU;
         }
         return $CPUS;
     }
-	public function parseCPUtemperature($string) //cores (to associate with cpus only in report() )
-	{
-	if ($string == null) {return [];}
-	$CPUS=[]; 
-	$Cores=[];
-	$lines=explode("\n",$string);
-	foreach ($lines as $line) {
+    public function parseCPUtemperature($string) //cores (to associate with cpus only in report() )
+    {
+        if ($string == null) {
+            return [];
+        }
+        $CPUS=[];
+        $Cores=[];
+        $lines=explode("\n", $string);
+        foreach ($lines as $line) {
             $matchesCPU=array();
             if (preg_match(self::REGEXPCPU, $line, $matchesCPU) === 1) {
                 $CPU = new Cpu();
-		$CPU->number = $matchesCPU[2];
-		$CPUS[]=$CPU;
-		continue; }
-            $matchesCore=array();    
+                $CPU->number = $matchesCPU[2];
+                $CPUS[]=$CPU;
+                continue;
+            }
+            $matchesCore=array();
             if (preg_match(self::REGEXP, $line, $matchesCore) === 1) {
                 $Core=new Temperature();
                 $Core->name = $matchesCore[1];
                 $Core->corevalue = $matchesCore[2];
                 $Core->number=$CPU->number;
                 $Cores[]=$Core;
-            continue; }}
+                continue;
+            }
+        }
         return $Cores;
-	}
-	public function pregMatchOne($pattern, $string)
+    }
+    public function pregMatchOne($pattern, $string)
     {
         $matches = array();
         if (preg_match($pattern, $string, $matches) === 1) {
