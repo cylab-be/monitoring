@@ -161,7 +161,6 @@ class Ifconfig extends AbstractSensor
             if ($tx !== false) {
                 $if->tx = $tx;
             }
-
         }
 
         // filter out uninteresting interfaces
