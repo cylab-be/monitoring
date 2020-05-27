@@ -72,9 +72,27 @@ class ExampleTest extends TestCase
     }
 
     /**
+     * Test parsing of ifconfig string from a ubuntu 18.04 server
+     *
+     * @group ifconfig
+     * @group sensors
+     */
+    public function testIfconfig1804()
+    {
+        $string = file_get_contents(__DIR__ . "/ifconfig1804");
+        $sensor = new Ifconfig(new \App\Server());
+        $interfaces = $sensor->parseIfconfig($string);
+        $this->assertEquals(2, count($interfaces));
+        $this->assertEquals("eno1", $interfaces[0]->name);
+        $this->assertEquals("172.20.0.8", $interfaces[1]->address);
+        $this->assertEquals(185252610, $interfaces[1]->rx);
+        $this->assertEquals(266912412, $interfaces[1]->tx);
+    }
+
+    /**
      * @group Disks
      */
-    
+
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");

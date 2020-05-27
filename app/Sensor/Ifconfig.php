@@ -94,9 +94,11 @@ class Ifconfig extends AbstractSensor
         return self::STATUS_OK;
     }
 
-    const IFNAME = "/^(\\S+)\\s+Link encap:/m";
-    const IPV4 = '/^\\s+inet addr:(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/m';
-    const RXTX = '/^\\s+RX bytes:(\\d+) .*TX bytes:(\\d+)/m';
+    const IFNAME = '/^(?|(\S+)\s+Link encap:|(\S+): flags)/m';
+    const IPV4 = '/^\s+inet (?>addr:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/m';
+    const RXTX = '/^\s+RX bytes:(\d+) .*TX bytes:(\d+)/m';
+    const RX = '/^\s+RX packets (?>\d+)  bytes (\d+)/m';
+    const TX = '/^\s+TX packets (?>\d+)  bytes (\d+)/m';
 
     public function parseIfconfigRecord($record)
     {
@@ -128,6 +130,7 @@ class Ifconfig extends AbstractSensor
         $if = null;
         foreach ($lines as $line) {
             $name = $this->pregMatchOne(self::IFNAME, $line);
+
             if ($name !== false) {
                 // Starting the section of a new interface
                 $if = new NetworkInterface();
@@ -142,12 +145,23 @@ class Ifconfig extends AbstractSensor
                 continue;
             }
 
-            $matches = array();
+            $matches = [];
             if (preg_match(self::RXTX, $line, $matches) === 1) {
                 $if->rx = $matches[1];
                 $if->tx = $matches[2];
                 continue;
             }
+
+            $rx = $this->pregMatchOne(self::RX, $line);
+            if ($rx !== false) {
+                $if->rx = $rx;
+            }
+
+            $tx = $this->pregMatchOne(self::TX, $line);
+            if ($tx !== false) {
+                $if->tx = $tx;
+            }
+
         }
 
         // filter out uninteresting interfaces
@@ -161,11 +175,11 @@ class Ifconfig extends AbstractSensor
         return $filtered;
     }
 
-    public function pregMatchOne($pattern, $string)
+    public function pregMatchOne(string $pattern, string $string, int $match_group = 1)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match($pattern, $string, $matches) === 1) {
-            return $matches[1];
+            return $matches[$match_group];
         }
 
         return false;
