@@ -119,7 +119,7 @@ class Ifconfig extends AbstractSensor
     public function parseIfconfig($string)
     {
 
-        $allowed_prefixes = ["en", "eth", "wl"];
+        $allowed_prefixes = ["en", "eth", "wl", "venet"];
 
         if ($string == null) {
             return [];
