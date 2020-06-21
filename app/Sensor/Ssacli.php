@@ -17,10 +17,10 @@ class Ssacli extends \App\AbstractSensor
 {
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("ssacli");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['ssacli'])) {
             return "<p>No data available...</p>";
         }
 
@@ -48,10 +48,10 @@ class Ssacli extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("ssacli");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['ssacli'])) {
             return self::STATUS_UNKNOWN;
         }
 

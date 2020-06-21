@@ -16,7 +16,7 @@ namespace App\Sensor;
 class Reboot extends \App\AbstractSensor
 {
     //put your code here
-    public function report()
+    public function report() : string
     {
         return "<p>Reboot required: "
             . $this->statusHTML()
@@ -37,10 +37,10 @@ class Reboot extends \App\AbstractSensor
         }
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("reboot");
-        if ($record === null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['reboot'])) {
             return self::STATUS_UNKNOWN;
         }
 

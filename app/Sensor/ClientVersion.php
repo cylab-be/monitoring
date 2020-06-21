@@ -30,26 +30,41 @@ class ClientVersion extends \App\AbstractSensor
         return json_decode($json)[0];
     }
 
-
-    public function latestVersion()
+    /**
+     * Fetch the latest available version (e.g. "1.2.3")
+     *
+     * @throws \RuntimeException if a network problem occurs
+     * @return string the latest available version (e.g. "1.2.3")
+     */
+    public function latestVersion() : string
     {
+        return "unknown";
         return $this->manifest()->version;
     }
 
-    public function latestUrl()
+    public function latestUrl() : string
     {
+        return "unknown";
         return $this->manifest()->url;
     }
 
-    public function report()
+    public function report() : string
     {
         return "<p>Installed version: " . $this->getServer()->clientVersion() . "</p>"
         . "<p>Latest client version: " . $this->latestVersion() . "</p>";
     }
 
-    public function status()
+    public function status() : int
     {
-        if ($this->getServer()->clientVersion() === $this->latestVersion()) {
+        $latest_version = "unknown";
+
+        try {
+            $latest_version = $this->latestVersion();
+        } catch (\ErrorException $ex) {
+            return self::STATUS_UNKNOWN;
+        }
+
+        if ($this->getServer()->clientVersion() === $latest_version) {
             return self::STATUS_OK;
         }
 

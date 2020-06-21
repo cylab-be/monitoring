@@ -66,21 +66,6 @@ class Server extends Model
     }
 
     /**
-     * Return the last record if it contains the field $field,
-     * otherwise return null.
-     * @param string $field
-     * @return string
-     */
-    public function lastRecordContaining(string $field)
-    {
-        if (isset($this->lastRecord()->$field)) {
-            return $this->lastRecord();
-        }
-
-        return null;
-    }
-
-    /**
      *
      * @return \Carbon\Carbon
      */
@@ -189,17 +174,22 @@ class Server extends Model
         return $sensors;
     }
 
-    public function uptime()
+    /**
+     * Human readable uptime.
+     *
+     * @return string
+     */
+    public function uptime() : string
     {
-        $record = $this->lastRecordContaining("upaimte");
-        if ($record == null) {
-            return "";
+        $record = $this->lastRecord();
+        if (! isset($record["upaimte"])) {
+            return "unknown";
         }
 
         return $this->parseUptime($record->upaimte);
     }
 
-    public function parseUptime(string $string)
+    public function parseUptime(string $string) : string
     {
         $pieces = explode(' ', $string);
         $uptime = \Carbon\Carbon::now()->subSeconds($pieces[0]);
@@ -208,8 +198,8 @@ class Server extends Model
 
     public function uuid()
     {
-        $record = $this->lastRecordContaining("system");
-        if ($record == null) {
+        $record = $this->lastRecord();
+        if (! isset($record["system"])) {
             return "";
         }
 
@@ -229,18 +219,19 @@ class Server extends Model
     }
 
 
-    public function cpuinfo()
+    public function cpuinfo() : array
     {
-        $record = $this->lastRecordContaining("cpu");
-        if ($record == null) {
-            return null;
+        $record = $this->lastRecord();
+        if (! isset($record["cpu"])) {
+            return ["threads" => 0,
+                "cpu" => "unknown"];
         }
 
         return $this->parseCpuinfo($record->cpu);
     }
 
     const CPU_INFO = "/^model name	: (.+)$/m";
-    public function parseCpuinfo($string)
+    public function parseCpuinfo($string) : array
     {
         $matches = array();
         preg_match_all(self::CPU_INFO, $string, $matches);
@@ -261,8 +252,8 @@ class Server extends Model
      */
     public function memoryTotal()
     {
-        $record = $this->lastRecordContaining("memory");
-        if ($record == null) {
+        $record = $this->lastRecord();
+        if (! isset($record["memory"])) {
             return null;
         }
 
@@ -281,22 +272,21 @@ class Server extends Model
     public function lsb()
     {
 
-        $record = $this->lastRecordContaining("lsb");
-        if ($record == null) {
-            return "";
+        $record = $this->lastRecord();
+        if (! isset($record["lsb"])) {
+            return "unknown";
         }
 
         return $this->parseLsb($record->lsb);
     }
 
     const LSB = "/^Description:	(.+)$/m";
-    public function parseLsb($string)
+    public function parseLsb($string) : string
     {
         $matches = [];
         preg_match(self::LSB, $string, $matches);
         return $matches[1];
     }
-
 
 
     const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
@@ -313,9 +303,9 @@ class Server extends Model
 
     public function manufacturer()
     {
-        $record = $this->lastRecordContaining("system");
-        if ($record == null) {
-            return "Unknown";
+        $record = $this->lastRecord();
+        if (! isset($record["system"])) {
+            return "unknown";
         }
 
         return $this->parseManufacturer($record->system);
@@ -334,9 +324,9 @@ class Server extends Model
 
     public function productName()
     {
-        $record = $this->lastRecordContaining("system");
-        if ($record == null) {
-            return "";
+        $record = $this->lastRecord();
+        if (! isset($record["system"])) {
+            return "unknown";
         }
 
         return $this->parseProductName($record->system);

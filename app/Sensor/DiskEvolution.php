@@ -17,7 +17,7 @@ class DiskEvolution extends \App\AbstractSensor
             // can happen if we have no records for this server
             return [];
         }
-        
+
         $deltas = [];
         foreach ($newAndOld[0] as $key => $partition) {
             if (!isset($newAndOld[1][$key])) {
@@ -46,11 +46,11 @@ class DiskEvolution extends \App\AbstractSensor
     public function get2Partitions(int $timeInterval) : ?array
     {
         $records = $this->getLastRecords("disks", $timeInterval * 12);
-        
+
         if (count($records) < 2) {
             return null;
         }
-        
+
         $newPartitions = Disks::parse($records[0]->disks);
         $oldPartitions = Disks::parse($records[count($records) - 1]->disks);
         $newAndOld = [$newPartitions, $oldPartitions];
@@ -74,14 +74,14 @@ class DiskEvolution extends \App\AbstractSensor
         return $return;
     }
 
-    public function report()
+    public function report() : string
     {
         return $this->printResults(
             $this->computeEvolution($this->get2Partitions(24), 24)
         );
     }
 
-    public function status()
+    public function status() : int
     {
 
         $deltas = $this->computeEvolution($this->get2Partitions(24), 24);
@@ -93,7 +93,7 @@ class DiskEvolution extends \App\AbstractSensor
         if (count($deltas) == 0) {
             return self::STATUS_UNKNOWN;
         }
-        
+
         $all_status = [];
         foreach ($deltas as $delta) {
             $status = self::STATUS_OK;

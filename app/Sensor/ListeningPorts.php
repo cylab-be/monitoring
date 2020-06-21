@@ -12,17 +12,19 @@ class ListeningPorts extends \App\AbstractSensor
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";
 
-    public function report()
+    public function report() : string
     {
-        $tcp_record = $this->getLastRecord("netstat-listen-tcp");
-        $udp_record = $this->getLastRecord("netstat-listen-udp");
-        if ($tcp_record == null && $udp_record == null) {
+        $record = $this->getServer()->lastRecord();
+
+        // "netstat-listen-tcp" "netstat-listen-udp"
+        if (! isset($record["netstat-listen-udp"])
+                && ! isset($record["netstat-listen-tcp"])) {
             return "<p>No data available...</p>";
         }
 
         $ports = array_merge(
-            $this->parse($tcp_record["netstat-listen-tcp"]),
-            $this->parse($udp_record["netstat-listen-udp"])
+            $this->parse($record["netstat-listen-tcp"]),
+            $this->parse($record["netstat-listen-udp"])
         );
 
         usort(
@@ -51,7 +53,7 @@ class ListeningPorts extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
         return self::STATUS_OK;
     }

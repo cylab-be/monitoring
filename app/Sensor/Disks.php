@@ -12,10 +12,10 @@ class Disks extends \App\AbstractSensor
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("disks");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['disks'])) {
             return "<p>No data available...</p>";
         }
 
@@ -31,11 +31,11 @@ class Disks extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("disks");
-        if ($record == null) {
-            return self::STATUS_UNKNOWN;
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['disks'])) {
+            self::STATUS_UNKNOWN;
         }
 
         $all_status = [];

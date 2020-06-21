@@ -33,17 +33,6 @@ abstract class AbstractSensor implements Sensor
     }
 
     /**
-     * Return the last record if it contains the field $field,
-     * otherwise return null.
-     * @param string $field
-     * @return
-     */
-    public function getLastRecord(string $field)
-    {
-        return $this->server->lastRecordContaining($field);
-    }
-
-    /**
      * Get the last $count records containing $field.
      * !! $count is the MAXIMUM number of returned records.
      * To optimize mongo's usage of index, we get the last $count records

@@ -16,14 +16,14 @@ namespace App\Sensor;
 class Heartbeat extends \App\AbstractSensor
 {
     //put your code here
-    public function report()
+    public function report() : string
     {
         return "<p>Last heartbeat received "
         . $this->getServer()->lastRecordTime()->diffForHumans() . "</p>";
     }
 
 
-    public function status()
+    public function status() : int
     {
         $record = $this->getServer()->lastRecord();
 

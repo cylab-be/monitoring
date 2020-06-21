@@ -12,7 +12,7 @@ use \App\AbstractSensor;
 class Netstat extends AbstractSensor
 {
 
-    public function report()
+    public function report() : string
     {
         return view("agent.netstat", [
             "server" => $this->getServer()]);
@@ -51,7 +51,7 @@ class Netstat extends AbstractSensor
         return [$dataset];
     }
 
-    public function status()
+    public function status() : int
     {
         return self::STATUS_OK;
     }

@@ -12,7 +12,7 @@ use \App\AbstractSensor;
 class LoadAvg extends AbstractSensor
 {
 
-    public function report()
+    public function report() : string
     {
         return view("agent.loadavg", [
             "current_load" => $this->getLastValue(),
@@ -33,16 +33,16 @@ class LoadAvg extends AbstractSensor
         return $points;
     }
 
-    public function status()
+    public function status() : int
     {
         return self::STATUS_OK;
     }
 
     public function getLastValue()
     {
-        $record = $this->getLastRecord("loadavg");
-        if ($record == null) {
-            return "no data...";
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['loadavg'])) {
+            return "<p>No data available...</p>";
         }
         $field = $record->loadavg;
         return $this->parse($field);

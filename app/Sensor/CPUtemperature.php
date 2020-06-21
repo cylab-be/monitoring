@@ -13,10 +13,10 @@ class CPUtemperature extends \App\AbstractSensor
     const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";
     const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("cpu-temperature");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record["cpu-temperature"])) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"
                 . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
@@ -39,10 +39,10 @@ class CPUtemperature extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("cpu-temperature");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record["cpu-temperature"])) {
             return self::STATUS_UNKNOWN;
         }
 

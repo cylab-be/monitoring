@@ -11,10 +11,10 @@ class Perccli extends \App\AbstractSensor
 {
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("perccli");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['perccli'])) {
             return "<p>No data available...</p>";
         }
 
@@ -38,10 +38,10 @@ class Perccli extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("perccli");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['perccli'])) {
             return self::STATUS_UNKNOWN;
         }
 

@@ -16,14 +16,14 @@ namespace App\Sensor;
 class Date extends \App\AbstractSensor
 {
     //put your code here
-    public function report()
+    public function report() : string
     {
         return "<p>Time drift: " . $this->delta() . " seconds</p>";
     }
 
 
 
-    public function status()
+    public function status() : int
     {
         $delta = $this->delta();
         if ($delta == null) {
@@ -39,8 +39,8 @@ class Date extends \App\AbstractSensor
 
     public function delta()
     {
-        $record = $this->getLastRecord("date");
-        if ($record === null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record["date"])) {
             return null;
         }
 

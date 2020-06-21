@@ -12,21 +12,21 @@ class Updates extends \App\AbstractSensor
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("updates");
-        if ($record == null) {
-            return "<p>No data availabe...</p>";
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['updates'])) {
+            return "<p>No data available...</p>";
         }
 
         return "<p>" . nl2br($record->updates) . "</p>";
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("updates");
-        if ($record == null) {
-            return self::STATUS_UNKNOWN;
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['updates'])) {
+            self::STATUS_UNKNOWN;
         }
 
         $status = $this->parse($record->updates);

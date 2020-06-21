@@ -10,8 +10,8 @@ interface Sensor
     const STATUS_ERROR = 20;
 
     public function __construct(Server $server);
-    public function status();
-    public function report();
+    public function status() : int;
+    public function report() : string;
 
     /**
      * Get the name of this sensor (e.g meminfo, cpuload, heartbeat)

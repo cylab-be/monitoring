@@ -12,11 +12,11 @@ class Inodes extends \App\AbstractSensor
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
 
-    public function report()
+    public function report() : string
     {
-        $record = $this->getLastRecord("inodes");
-        if ($record == null) {
-            return "<p>No data availabe...</p>";
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['inodes'])) {
+            return "<p>No data available...</p>";
         }
 
         $disks = $this->parse($record->inodes);
@@ -31,10 +31,10 @@ class Inodes extends \App\AbstractSensor
         return $return;
     }
 
-    public function status()
+    public function status() : int
     {
-        $record = $this->getLastRecord("inodes");
-        if ($record == null) {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['inodes'])) {
             return self::STATUS_UNKNOWN;
         }
 

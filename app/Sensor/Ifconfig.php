@@ -12,14 +12,15 @@ use \App\AbstractSensor;
 class Ifconfig extends AbstractSensor
 {
 
-    public function report()
+    public function report() : string
     {
 
-        $interfaces = [];
-        $record = $this->getLastRecord("ifconfig");
-        if ($record !== null) {
-            $interfaces = $this->parseIfconfigRecord($record);
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['ifconfig'])) {
+            return "<p>No data available...</p>";
         }
+
+        $interfaces = $this->parseIfconfigRecord($record);
         return view("agent.ifconfig", [
             "server" => $this->getServer(),
             "interfaces" => $interfaces]);
@@ -89,7 +90,7 @@ class Ifconfig extends AbstractSensor
         return array_values($dataset);
     }
 
-    public function status()
+    public function status() : int
     {
         return self::STATUS_OK;
     }
