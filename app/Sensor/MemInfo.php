@@ -20,7 +20,7 @@ class MemInfo extends AbstractSensor
 
     public function usedMemoryPoints()
     {
-        $records = $this->getServer()->lastRecords("memory", 288);
+        $records = $this->getServer()->lastRecords1Day();
 
         $used = [];
         foreach ($records as $record) {
@@ -36,7 +36,7 @@ class MemInfo extends AbstractSensor
 
     public function cachedMemoryPoints()
     {
-        $records = $this->getServer()->lastRecords("memory", 288);
+        $records = $this->getServer()->lastRecords1Day();
 
         $points = [];
         foreach ($records as $record) {

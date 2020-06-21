@@ -16,6 +16,8 @@ class Server extends Model
      */
     private $last_record = null;
 
+    private $records_1day = null;
+
     private static $sensors = [
         \App\Sensor\LoadAvg::class,
         \App\Sensor\MemInfo::class,
@@ -61,34 +63,27 @@ class Server extends Model
     }
 
     /**
-     * Get the last $count records containing $field.
-     * !! $count is the MAXIMUM number of returned records.
-     * To optimize mongo's usage of index, we get the last $count records
-     * then filter locally for records containing this record
-     * Records are returned in chronological order
-     * @param type $field
-     * @param type $count
+     * Get the last day of data.
      * @return type
      */
-    public function lastRecords(string $field, int $count)
+    public function lastRecords1Day()
     {
-        $records = \Mongo::get()->monitoring->records->find(
-            ["server_id" => $this->id],
-            ["limit" => $count, "sort" => ["_id" => -1]]
-        );
-
-        $results = [];
-        foreach ($records as $record) {
-            if (isset($record->$field)) {
-                $results[] = $record;
-            }
+        if ($this->records_1day !== null) {
+            return $this->records_1day;
         }
 
-        usort($results, function ($r1, $r2) {
+        $records = \Mongo::get()->monitoring->records->find(
+            ["server_id" => $this->id],
+            ["limit" => 288, "sort" => ["_id" => -1]]
+        )->toArray();
+
+        usort($records, function ($r1, $r2) {
             return $r1->time  > $r2->time ? 1 : -1;
         });
 
-        return $results;
+        $this->records_1day = $records;
+
+        return $records;
     }
 
     public function hasData() : bool

@@ -21,7 +21,7 @@ class LoadAvg extends AbstractSensor
 
     public function loadPoints()
     {
-        $records = $this->getServer()->lastRecords("loadavg", 288);
+        $records = $this->getServer()->lastRecords1Day();
 
         $points = [];
         foreach ($records as $record) {
