@@ -29,7 +29,7 @@ class Ifconfig extends AbstractSensor
     public function points()
     {
         // Get records in time ascending order
-        $records = $this->getLastRecords("ifconfig", 289);
+        $records = $this->getServer()->lastRecords("ifconfig", 289);
 
         // Compute the time ordered list of arrays of interfaces
         $interfaces = [];

@@ -45,7 +45,7 @@ class DiskEvolution extends \App\AbstractSensor
      */
     public function get2Partitions(int $timeInterval) : ?array
     {
-        $records = $this->getLastRecords("disks", $timeInterval * 12);
+        $records = $this->getServer()->lastRecords("disks", $timeInterval * 12);
 
         if (count($records) < 2) {
             return null;

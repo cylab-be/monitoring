@@ -20,7 +20,7 @@ class Netstat extends AbstractSensor
 
     public function points() : array
     {
-        $records = $this->getLastRecords("netstat-statistics", 289);
+        $records = $this->getServer()->lastRecords("netstat-statistics", 289);
 
         if (count($records) == 0) {
             return [];
