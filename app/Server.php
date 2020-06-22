@@ -72,17 +72,12 @@ class Server extends Model
             return $this->records_1day;
         }
 
-        $records = \Mongo::get()->monitoring->records->find(
-            ["server_id" => $this->id],
-            ["limit" => 288, "sort" => ["_id" => -1]]
-        )->toArray();
+        $start = time() - 24 * 3600;
 
-        usort($records, function ($r1, $r2) {
-            return $r1->time  > $r2->time ? 1 : -1;
-        });
-
-        $this->records_1day = $records;
-
+        $records = \Mongo::get()->monitoring->records->find([
+                "server_id" => $this->id,
+                "time" => ['$gte' => $start]])
+                ->toArray();
         return $records;
     }
 
