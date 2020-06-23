@@ -19,13 +19,26 @@ class Heartbeat extends \App\AbstractSensor
     public function report(array $records) : string
     {
         return "<p>Last heartbeat received "
-        . $this->getServer()->lastRecordTime()->diffForHumans() . "</p>";
+        . $this->lastRecordTime(end($records))->diffForHumans() . "</p>";
+    }
+
+    /**
+     *
+     * @return \Carbon\Carbon
+     */
+    public function lastRecordTime($record) : \Carbon\Carbon
+    {
+        if ($record === null) {
+            return \Carbon\Carbon::createFromTimestamp(0);
+        }
+
+        return \Carbon\Carbon::createFromTimestamp($record->time);
     }
 
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
 
         if ($record === null) {
             $delta = PHP_INT_MAX;

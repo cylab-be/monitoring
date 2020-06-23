@@ -14,15 +14,20 @@ class LoadAvg extends AbstractSensor
 
     public function report(array $records) : string
     {
+        $record = $this->getServer()->lastRecord();
+        if (! isset($record['loadavg'])) {
+            return "<p>No data available...</p>";
+        }
+        $field = $record->loadavg;
+        $current_load = $this->parse($field);
+
+
         return view("agent.loadavg", [
-            "current_load" => $this->getLastValue(),
-            "server" => $this->getServer()]);
+            "current_load" => $current_load]);
     }
 
-    public function loadPoints()
+    public function loadPoints(array $records)
     {
-        $records = $this->getServer()->lastRecords1Day();
-
         $points = [];
         foreach ($records as $record) {
             $points[] = new Point(
@@ -33,19 +38,9 @@ class LoadAvg extends AbstractSensor
         return $points;
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         return self::STATUS_OK;
-    }
-
-    public function getLastValue()
-    {
-        $record = $this->getServer()->lastRecord();
-        if (! isset($record['loadavg'])) {
-            return "<p>No data available...</p>";
-        }
-        $field = $record->loadavg;
-        return $this->parse($field);
     }
 
     public function parse($string)

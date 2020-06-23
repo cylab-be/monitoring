@@ -269,8 +269,9 @@ class ExampleTest extends TestCase
 
         // Check if a new StatusChange was inserted in Mongo
         $last_change = \App\StatusChange::getLastChangeForServer($server_id);
+        $records = $server->lastRecords1Day();
         $this->assertEquals(
-            $server->status(),
+            $server->status($records),
             $last_change->status
         );
 

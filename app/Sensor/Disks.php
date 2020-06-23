@@ -31,9 +31,9 @@ class Disks extends \App\AbstractSensor
         return $return;
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['disks'])) {
             self::STATUS_UNKNOWN;
         }

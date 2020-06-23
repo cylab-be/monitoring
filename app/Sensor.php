@@ -10,7 +10,7 @@ interface Sensor
     const STATUS_ERROR = 20;
 
     public function __construct(Server $server);
-    public function status() : int;
+    public function status(array $records) : int;
     public function report(array $records) : string;
 
     /**

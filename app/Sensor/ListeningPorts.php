@@ -53,7 +53,7 @@ class ListeningPorts extends \App\AbstractSensor
         return $return;
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         return self::STATUS_OK;
     }

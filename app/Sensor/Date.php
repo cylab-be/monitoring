@@ -21,9 +21,9 @@ class Date extends \App\AbstractSensor
         return "<p>Time drift: " . $this->delta(end($records)) . " seconds</p>";
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $delta = $this->delta($this->getServer()->lastRecord());
+        $delta = $this->delta(end($records));
         if ($delta == null) {
             return self::STATUS_UNKNOWN;
         }

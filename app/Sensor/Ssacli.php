@@ -48,9 +48,9 @@ class Ssacli extends \App\AbstractSensor
         return $return;
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['ssacli'])) {
             return self::STATUS_UNKNOWN;
         }

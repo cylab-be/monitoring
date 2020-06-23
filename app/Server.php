@@ -92,12 +92,8 @@ class Server extends Model
      */
     public function lastRecordTime()
     {
-        $last_record = $this->lastRecord();
-        if ($last_record === null) {
-            return \Carbon\Carbon::createFromTimestamp(0);
-        }
-
-        return \Carbon\Carbon::createFromTimestamp($last_record->time);
+        $hearbeat = new \App\Sensor\Heartbeat($this);
+        return $hearbeat->lastRecordTime($this->lastRecord());
     }
 
     public function clientVersion()
@@ -120,23 +116,23 @@ class Server extends Model
      * Get integer status of server.
      * @return int
      */
-    public function status()
+    public function status(array $records)
     {
-        return max($this->statusArray());
+        return max($this->statusArray($records));
     }
 
-    public function statusBadge()
+    public function statusBadge(array $records)
     {
-        return AbstractSensor::getBadgeForStatus($this->status());
+        return AbstractSensor::getBadgeForStatus($this->status($records));
     }
 
-    public function statusArray()
+    public function statusArray(array $records)
     {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
             $sensor_name = \get_class($sensor);
             try {
-                $status_array[$sensor_name] = $sensor->status();
+                $status_array[$sensor_name] = $sensor->status($records);
             } catch (\Exception $ex) {
                 $status_array[$sensor_name] = Sensor::STATUS_UNKNOWN;
                 Log::error("Sensor $sensor_name failed : " . $ex->getTraceAsString());
@@ -145,23 +141,18 @@ class Server extends Model
         return $status_array;
     }
 
-    public function getSensorsNOK()
+    public function getSensorsNOK(array $records)
     {
         $sensorsNOK = [];
         foreach ($this->getSensors() as $sensor) {
-            if ($sensor->status() > 0) {
+            if ($sensor->status($records) > 0) {
                 $sensorsNOK[] = $sensor;
             }
         }
         return $sensorsNOK;
     }
 
-    public function statusString()
-    {
-        return self::getNameForStatus($this->status());
-    }
-
-    public static function getNameForStatus($status)
+    public static function getNameForStatus(int $status)
     {
         switch ($status) {
             case 0:
@@ -175,9 +166,9 @@ class Server extends Model
         }
     }
 
-    public function getBadge()
+    public function getBadge(array $records)
     {
-        return AbstractSensor::getBadgeForStatus($this->status());
+        return AbstractSensor::getBadgeForStatus($this->status($records));
     }
 
     public function color()

@@ -52,7 +52,7 @@ class ClientVersion extends \App\AbstractSensor
         . "<p>Latest client version: " . $this->latestVersion() . "</p>";
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         $latest_version = "unknown";
 

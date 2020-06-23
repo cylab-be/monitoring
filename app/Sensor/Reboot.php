@@ -19,13 +19,13 @@ class Reboot extends \App\AbstractSensor
     public function report(array $records) : string
     {
         return "<p>Reboot required: "
-            . $this->statusHTML()
+            . $this->statusHTML($records)
             . "</p>";
     }
 
-    public function statusHTML()
+    public function statusHTML(array $records)
     {
-        switch ($this->status()) {
+        switch ($this->status($records)) {
             case self::STATUS_OK:
                 return "no";
 
@@ -37,9 +37,9 @@ class Reboot extends \App\AbstractSensor
         }
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['reboot'])) {
             return self::STATUS_UNKNOWN;
         }

@@ -22,9 +22,9 @@ class Updates extends \App\AbstractSensor
         return "<p>" . nl2br($record->updates) . "</p>";
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['updates'])) {
             self::STATUS_UNKNOWN;
         }

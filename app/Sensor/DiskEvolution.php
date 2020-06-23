@@ -43,10 +43,8 @@ class DiskEvolution extends \App\AbstractSensor
      * @param int $timeInterval
      * @return array|null
      */
-    public function get2Partitions(int $timeInterval) : ?array
+    public function get2Partitions(array $records) : ?array
     {
-        $records = $this->getServer()->lastRecords1Day();
-
         if (count($records) < 2) {
             return null;
         }
@@ -77,14 +75,14 @@ class DiskEvolution extends \App\AbstractSensor
     public function report(array $records) : string
     {
         return $this->printResults(
-            $this->computeEvolution($this->get2Partitions(24), 24)
+            $this->computeEvolution($this->get2Partitions($records), 24)
         );
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
 
-        $deltas = $this->computeEvolution($this->get2Partitions(24), 24);
+        $deltas = $this->computeEvolution($this->get2Partitions($records), 24);
         return $this->computeStatusFromDeltas($deltas);
     }
 

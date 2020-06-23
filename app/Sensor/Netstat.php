@@ -14,8 +14,7 @@ class Netstat extends AbstractSensor
 
     public function report(array $records) : string
     {
-        return view("agent.netstat", [
-            "server" => $this->getServer()]);
+        return view("agent.netstat", []);
     }
 
     public function points(array $records) : array
@@ -49,7 +48,7 @@ class Netstat extends AbstractSensor
         return [$dataset];
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         return self::STATUS_OK;
     }

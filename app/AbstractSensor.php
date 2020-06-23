@@ -60,9 +60,9 @@ abstract class AbstractSensor implements Sensor
         }
     }
 
-    public function getBadge() : string
+    public function getBadge(array $records) : string
     {
-        return self::getBadgeForStatus($this->status());
+        return self::getBadgeForStatus($this->status($records));
     }
 
     public function reportHTML(array $records) : string

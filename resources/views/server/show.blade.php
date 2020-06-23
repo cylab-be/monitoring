@@ -26,7 +26,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <p>{!! $server->statusBadge() !!}</p>
+                    <p>{!! $server->statusBadge($records) !!}</p>
 
                     <p>
                         Last heartbeet:<br>
@@ -98,7 +98,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     {{ $sensor->getName() }}
 
                     <div class="float-right">
-                        {!! $sensor->getBadge() !!}
+                        {!! $sensor->getBadge($records) !!}
                     </div>
                 </div>
                 <div class="card-body">

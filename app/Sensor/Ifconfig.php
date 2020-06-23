@@ -22,7 +22,6 @@ class Ifconfig extends AbstractSensor
 
         $interfaces = $this->parseIfconfigRecord($record);
         return view("agent.ifconfig", [
-            "server" => $this->getServer(),
             "interfaces" => $interfaces]);
     }
 
@@ -87,7 +86,7 @@ class Ifconfig extends AbstractSensor
         return array_values($dataset);
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         return self::STATUS_OK;
     }

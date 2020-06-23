@@ -15,13 +15,11 @@ class MemInfo extends AbstractSensor
     public function report(array $records) : string
     {
 
-        return view("agent.meminfo", ["server" => $this->getServer()]);
+        return view("agent.meminfo", []);
     }
 
-    public function usedMemoryPoints()
+    public function usedMemoryPoints(array $records)
     {
-        $records = $this->getServer()->lastRecords1Day();
-
         $used = [];
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->memory);
@@ -34,10 +32,8 @@ class MemInfo extends AbstractSensor
         return $used;
     }
 
-    public function cachedMemoryPoints()
+    public function cachedMemoryPoints(array $records)
     {
-        $records = $this->getServer()->lastRecords1Day();
-
         $points = [];
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->memory);
@@ -50,7 +46,7 @@ class MemInfo extends AbstractSensor
         return $points;
     }
 
-    public function status() : int
+    public function status(array $records) : int
     {
         return self::STATUS_OK;
     }

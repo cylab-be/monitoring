@@ -39,9 +39,9 @@ Route::get(
         header('Access-Control-Allow-Origin: *');
         $meminfo = new App\Sensor\MemInfo($server);
         return [
-            "used" => $meminfo->usedMemoryPoints(),
-            "cached" => $meminfo->cachedMemoryPoints(),
-            "total" => $server->memoryTotal() / 1000];
+            "used" => $meminfo->usedMemoryPoints($server->lastRecords1Day()),
+            "cached" => $meminfo->cachedMemoryPoints($server->lastRecords1Day()),
+            "total" => $server->memoryTotal($server->lastRecords1Day()) / 1000];
     }
 );
 
@@ -55,7 +55,7 @@ Route::get(
         header('Access-Control-Allow-Origin: *');
         $sensor = new App\Sensor\LoadAvg($server);
         return [
-            "points" => $sensor->loadPoints(),
+            "points" => $sensor->loadPoints($server->lastRecords1Day()),
             "max" => $server->cpuinfo()["threads"]];
     }
 );
