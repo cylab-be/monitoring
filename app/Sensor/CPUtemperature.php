@@ -13,9 +13,9 @@ class CPUtemperature extends \App\AbstractSensor
     const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";
     const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record["cpu-temperature"])) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"

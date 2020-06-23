@@ -38,17 +38,15 @@ class ClientVersion extends \App\AbstractSensor
      */
     public function latestVersion() : string
     {
-        return "unknown";
         return $this->manifest()->version;
     }
 
     public function latestUrl() : string
     {
-        return "unknown";
         return $this->manifest()->url;
     }
 
-    public function report() : string
+    public function report(array $records) : string
     {
         return "<p>Installed version: " . $this->getServer()->clientVersion() . "</p>"
         . "<p>Latest client version: " . $this->latestVersion() . "</p>";

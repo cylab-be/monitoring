@@ -12,7 +12,7 @@ use \App\AbstractSensor;
 class LoadAvg extends AbstractSensor
 {
 
-    public function report() : string
+    public function report(array $records) : string
     {
         return view("agent.loadavg", [
             "current_load" => $this->getLastValue(),

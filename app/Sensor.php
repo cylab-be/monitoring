@@ -11,7 +11,7 @@ interface Sensor
 
     public function __construct(Server $server);
     public function status() : int;
-    public function report() : string;
+    public function report(array $records) : string;
 
     /**
      * Get the name of this sensor (e.g meminfo, cpuload, heartbeat)

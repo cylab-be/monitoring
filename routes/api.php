@@ -69,7 +69,7 @@ Route::get(
 
         header('Access-Control-Allow-Origin: *');
         $sensor = new App\Sensor\Ifconfig($server);
-        return $sensor->points();
+        return $sensor->points($server->lastRecords1Day());
     }
 );
 
@@ -82,6 +82,6 @@ Route::get(
 
         header('Access-Control-Allow-Origin: *');
         $sensor = new App\Sensor\Netstat($server);
-        return $sensor->points();
+        return $sensor->points($server->lastRecords1Day());
     }
 );

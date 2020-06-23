@@ -12,9 +12,9 @@ class Disks extends \App\AbstractSensor
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['disks'])) {
             return "<p>No data available...</p>";
         }

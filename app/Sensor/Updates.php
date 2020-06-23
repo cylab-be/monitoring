@@ -12,9 +12,9 @@ class Updates extends \App\AbstractSensor
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['updates'])) {
             return "<p>No data available...</p>";
         }

@@ -12,9 +12,9 @@ class ListeningPorts extends \App\AbstractSensor
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
 
         // "netstat-listen-tcp" "netstat-listen-udp"
         if (! isset($record["netstat-listen-udp"])

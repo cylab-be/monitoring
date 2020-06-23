@@ -16,7 +16,7 @@ namespace App\Sensor;
 class Reboot extends \App\AbstractSensor
 {
     //put your code here
-    public function report() : string
+    public function report(array $records) : string
     {
         return "<p>Reboot required: "
             . $this->statusHTML()

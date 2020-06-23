@@ -102,7 +102,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     </div>
                 </div>
                 <div class="card-body">
-                    {!! $sensor->reportHTML() !!}
+                    {!! $sensor->reportHTML($records) !!}
                 </div>
             </div>
             @endforeach

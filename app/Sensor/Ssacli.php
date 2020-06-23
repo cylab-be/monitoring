@@ -17,9 +17,9 @@ class Ssacli extends \App\AbstractSensor
 {
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['ssacli'])) {
             return "<p>No data available...</p>";
         }

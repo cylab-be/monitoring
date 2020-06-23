@@ -12,10 +12,10 @@ use \App\AbstractSensor;
 class Ifconfig extends AbstractSensor
 {
 
-    public function report() : string
+    public function report(array $records) : string
     {
 
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['ifconfig'])) {
             return "<p>No data available...</p>";
         }
@@ -26,11 +26,8 @@ class Ifconfig extends AbstractSensor
             "interfaces" => $interfaces]);
     }
 
-    public function points()
+    public function points(array $records)
     {
-        // Get records in time ascending order
-        $records = $this->getServer()->lastRecords1Day();
-
         // Compute the time ordered list of arrays of interfaces
         $interfaces = [];
         foreach ($records as $record) {

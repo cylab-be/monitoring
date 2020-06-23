@@ -74,7 +74,7 @@ class DiskEvolution extends \App\AbstractSensor
         return $return;
     }
 
-    public function report() : string
+    public function report(array $records) : string
     {
         return $this->printResults(
             $this->computeEvolution($this->get2Partitions(24), 24)

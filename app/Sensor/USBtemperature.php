@@ -12,9 +12,9 @@ class USBtemperature extends \App\AbstractSensor
     //get device responce (8 bytes) :
     const REGEXP = "/^(80 80)\s*([A-z\/0-9]+) \s*([A-z\/0-9]+)/m";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record["TEMPer"])) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>TEMPer</code> is not installed.</p>"

@@ -11,9 +11,9 @@ class Perccli extends \App\AbstractSensor
 {
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 
-    public function report() : string
+    public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['perccli'])) {
             return "<p>No data available...</p>";
         }

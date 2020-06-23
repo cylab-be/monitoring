@@ -65,10 +65,10 @@ abstract class AbstractSensor implements Sensor
         return self::getBadgeForStatus($this->status());
     }
 
-    public function reportHTML() : string
+    public function reportHTML(array $records) : string
     {
         try {
-            return $this->report();
+            return $this->report($records);
         } catch (\Exception $ex) {
             Log::error('Sensor failed : ' . $ex->getTraceAsString());
             return "<p>Sensor " . $this->getName() . " failed :-(</p>";

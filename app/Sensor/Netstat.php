@@ -12,16 +12,14 @@ use \App\AbstractSensor;
 class Netstat extends AbstractSensor
 {
 
-    public function report() : string
+    public function report(array $records) : string
     {
         return view("agent.netstat", [
             "server" => $this->getServer()]);
     }
 
-    public function points() : array
+    public function points(array $records) : array
     {
-        $records = $this->getServer()->lastRecords1Day();
-
         if (count($records) == 0) {
             return [];
         }

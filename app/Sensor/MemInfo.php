@@ -12,7 +12,7 @@ use \App\AbstractSensor;
 class MemInfo extends AbstractSensor
 {
 
-    public function report() : string
+    public function report(array $records) : string
     {
 
         return view("agent.meminfo", ["server" => $this->getServer()]);
