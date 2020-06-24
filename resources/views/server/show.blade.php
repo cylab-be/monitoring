@@ -34,7 +34,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                         ({{ $server->lastRecordTime()->diffForHumans() }})
                     </p>
 
-                    <p>Client version: {{ $server->clientVersion() }}</p>
+                    <p>Client version: {{ $server->clientVersion($records) }}</p>
 
                     <p>Uptime: {{ $server->uptime() }}</p>
                 </div>

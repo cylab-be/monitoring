@@ -14,7 +14,7 @@ class LoadAvg extends AbstractSensor
 
     public function report(array $records) : string
     {
-        $record = $this->getServer()->lastRecord();
+        $record = end($records);
         if (! isset($record['loadavg'])) {
             return "<p>No data available...</p>";
         }

@@ -96,14 +96,10 @@ class Server extends Model
         return $hearbeat->lastRecordTime($this->lastRecord());
     }
 
-    public function clientVersion()
+    public function clientVersion(array $records) : string
     {
-        $last_record = $this->lastRecord();
-        if ($last_record == null) {
-            return "none";
-        }
-
-        return $last_record->version;
+        $sensor = new \App\Sensor\ClientVersion($this);
+        return $sensor->installedVersion($records);
     }
 
     public function lastClientUrl()

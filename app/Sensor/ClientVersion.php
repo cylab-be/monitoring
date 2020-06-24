@@ -48,8 +48,18 @@ class ClientVersion extends \App\AbstractSensor
 
     public function report(array $records) : string
     {
-        return "<p>Installed version: " . $this->getServer()->clientVersion() . "</p>"
+        return "<p>Installed version: " . $this->installedVersion($records) . "</p>"
         . "<p>Latest client version: " . $this->latestVersion() . "</p>";
+    }
+
+    public function installedVersion(array $records)
+    {
+        $last_record = end($records);
+        if ($last_record == null) {
+            return "none";
+        }
+
+        return $last_record->version;
     }
 
     public function status(array $records) : int
@@ -62,7 +72,7 @@ class ClientVersion extends \App\AbstractSensor
             return self::STATUS_UNKNOWN;
         }
 
-        if ($this->getServer()->clientVersion() === $latest_version) {
+        if ($this->installedVersion($records) === $latest_version) {
             return self::STATUS_OK;
         }
 
