@@ -66,7 +66,7 @@ class Server extends Model
      * Get the last day of data.
      * @return type
      */
-    public function lastRecords1Day()
+    public function lastRecords1Day() : array
     {
         if ($this->records_1day !== null) {
             return $this->records_1day;
