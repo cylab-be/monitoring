@@ -112,21 +112,21 @@ class Server extends Model
      * Get integer status of server.
      * @return int
      */
-    public function status(array $records)
+    public function status(array $records) : int
     {
         return max($this->statusArray($records));
     }
 
     public function statusBadge(array $records)
     {
-        return AbstractSensor::getBadgeForStatus($this->status($records));
+        return SensorWrapper::getBadgeForStatus($this->status($records));
     }
 
     public function statusArray(array $records)
     {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
-            $sensor_name = \get_class($sensor);
+            $sensor_name = $sensor->id();
             try {
                 $status_array[$sensor_name] = $sensor->status($records);
             } catch (\Exception $ex) {
@@ -164,12 +164,12 @@ class Server extends Model
 
     public function getBadge(array $records)
     {
-        return AbstractSensor::getBadgeForStatus($this->status($records));
+        return SensorWrapper::getBadgeForStatus($this->status($records));
     }
 
     public function color(array $records)
     {
-        return AbstractSensor::getColorForStatus($this->status($records));
+        return SensorWrapper::getColorForStatus($this->status($records));
     }
 
     public function getSensors()
@@ -177,7 +177,7 @@ class Server extends Model
 
         $sensors = [];
         foreach (self::$sensors as $sensor) {
-            $sensors[] = new $sensor($this);
+            $sensors[] = new SensorWrapper(new $sensor());
         }
         return $sensors;
     }
@@ -342,7 +342,7 @@ class Server extends Model
 
     public function getChanges($count = 10)
     {
-        return \App\StatusChange::getLastChangesForServer($this->id, $count);
+        return StatusChange::getLastChangesForServer($this->id, $count);
     }
 
     public static function id($id) : Server

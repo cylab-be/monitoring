@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Log;
-
 /**
  * Description of AbstractSensor
  *
@@ -31,32 +29,7 @@ abstract class AbstractSensor implements Sensor
         }
     }
 
-    public static function getBadgeForStatus(int $status) : string
-    {
-        switch ($status) {
-            case 0:
-                return '<span class="badge badge-success">OK</span>';
-            case 10:
-                return '<span class="badge badge-warning">WARNING</span>';
-            case 20:
-                return '<span class="badge badge-danger">ERROR</span>';
-            default:
-                return '<span class="badge badge-secondary">Unknown</span>';
-        }
-    }
 
-    public function getBadge(array $records) : string
-    {
-        return self::getBadgeForStatus($this->status($records));
-    }
 
-    public function reportHTML(array $records) : string
-    {
-        try {
-            return $this->report($records);
-        } catch (\Exception $ex) {
-            Log::error('Sensor failed : ' . $ex->getTraceAsString());
-            return "<p>Sensor " . $this->getName() . " failed :-(</p>";
-        }
-    }
+
 }

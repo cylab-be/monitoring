@@ -35,12 +35,12 @@ class StatusChange
 
     public function statusName()
     {
-        return \App\Server::getNameForStatus($this->status);
+        return Server::getNameForStatus($this->status);
     }
 
     public function getStatusBadge()
     {
-        return AbstractSensor::getBadgeForStatus($this->status);
+        return SensorWrapper::getBadgeForStatus($this->status);
     }
 
     public function getTimeCarbon() : Carbon
