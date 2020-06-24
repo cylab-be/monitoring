@@ -34,11 +34,13 @@ Route::get(
     'app/organizations/{organization}/dashboard/{token}',
     function (\App\Organization $organization, string $token) {
 
+        abort(403);
+
         if ($organization->dashboard_token != $token) {
             abort(403);
         }
 
-            return view("organization.dashboard", array("organization" => $organization));
+        return view("organization.dashboard", array("organization" => $organization));
     }
 )->name("organization.public.dashboard");
 Route::resource('app/organizations', 'OrganizationController');
