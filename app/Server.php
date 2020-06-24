@@ -74,11 +74,11 @@ class Server extends Model
 
         $start = time() - 24 * 3600;
 
-        $records = \Mongo::get()->monitoring->records->find([
+        $this->records_1day = \Mongo::get()->monitoring->records->find([
                 "server_id" => $this->id,
                 "time" => ['$gte' => $start]])
                 ->toArray();
-        return $records;
+        return $this->records_1day;
     }
 
     public function hasData() : bool
