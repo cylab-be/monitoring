@@ -20,9 +20,9 @@ class SensorWrapper implements Sensor
         return \get_class($this->sensor);
     }
 
-    public function getName(): string
+    public function name(): string
     {
-        return $this->sensor->getName();
+        return $this->sensor->name();
     }
 
     public function report(array $records): string {

@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <ul class="list-unstyled">
                         @foreach ($server->getSensorsNOK($records) as $sensor)
-                        <li>{{ $sensor->getName() }}</li>
+                        <li>{{ $sensor->name() }}</li>
                         @endforeach
                     </ul>
 

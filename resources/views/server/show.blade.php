@@ -95,7 +95,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             @foreach ($server->getSensors() as $sensor)
             <div class="card">
                 <div class="card-header">
-                    {{ $sensor->getName() }}
+                    {{ $sensor->name() }}
 
                     <div class="float-right">
                         {!! $sensor->getBadge($records) !!}

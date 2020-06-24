@@ -10,7 +10,7 @@ namespace App;
 abstract class AbstractSensor implements Sensor
 {
 
-    public function getName() : string
+    public function name() : string
     {
         return (new \ReflectionClass($this))->getShortName();
     }

@@ -16,5 +16,5 @@ interface Sensor
      * Get the name of this sensor (e.g meminfo, cpuload, heartbeat)
      * @return string
      */
-    public function getName() : string;
+    public function name() : string;
 }
