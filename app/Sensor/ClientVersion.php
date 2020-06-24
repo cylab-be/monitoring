@@ -35,11 +35,9 @@ class ClientVersion extends \App\AbstractSensor
         try {
             $json = $client->get(self::MANIFEST)->getBody();
             self::$manifest = json_decode($json, true)[0];
-
         } catch (RequestException $e) {
             self::$manifest = ["version" => "unknown",
                 "url" => "??"];
-
         }
 
         return self::$manifest;
