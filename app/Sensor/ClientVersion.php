@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Description of Reboot
@@ -13,9 +14,14 @@ class ClientVersion extends \App\AbstractSensor
 {
 
     const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
+    private static $manifest = null;
 
     public function manifest()
     {
+        if (!is_null(self::$manifest)) {
+            return self::$manifest;
+        }
+
         $options = [
             'timeout' => 5.0];
 
@@ -25,9 +31,18 @@ class ClientVersion extends \App\AbstractSensor
         }
 
         $client = new Client($options);
-        $json = $client->get(self::MANIFEST)->getBody();
 
-        return json_decode($json)[0];
+        try {
+            $json = $client->get(self::MANIFEST)->getBody();
+            self::$manifest = json_decode($json, true)[0];
+
+        } catch (RequestException $e) {
+            self::$manifest = ["version" => "unknown",
+                "url" => "??"];
+
+        }
+
+        return self::$manifest;
     }
 
     /**
@@ -38,12 +53,12 @@ class ClientVersion extends \App\AbstractSensor
      */
     public function latestVersion() : string
     {
-        return $this->manifest()->version;
+        return $this->manifest()["version"];
     }
 
     public function latestUrl() : string
     {
-        return $this->manifest()->url;
+        return $this->manifest()["url"];
     }
 
     public function report(array $records) : string
