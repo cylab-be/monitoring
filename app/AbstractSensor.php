@@ -11,21 +11,6 @@ use Illuminate\Support\Facades\Log;
  */
 abstract class AbstractSensor implements Sensor
 {
-    /**
-     *
-     * @var \App\Server
-     */
-    private $server;
-
-    public function __construct(\App\Server $server)
-    {
-        $this->server = $server;
-    }
-
-    protected function getServer() : \App\Server
-    {
-        return $this->server;
-    }
 
     public function getName() : string
     {
