@@ -97,9 +97,12 @@
                     <th></th>
                 </tr>
                 @foreach($organization->servers()->orderBy("name")->get() as $server)
+                @php
+                $records = $server->lastRecords1Day();
+                @endphp
                 <tr>
                     <td>{{ $server->name }}</td>
-                    <td>{!! $server->getBadge() !!}</td>
+                    <td>{!! $server->getBadge($records) !!}</td>
                     <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
                     <td>{{ $server->lsb() }}</td>
                     <td class="text-right">

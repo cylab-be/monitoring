@@ -7,8 +7,11 @@
 
     <div class="row">
         @foreach($organization->servers()->orderBy("name")->get() as $server)
+        @php
+        $records = $server->lastRecords1Day();
+        @endphp
         <div class="col-md-3">
-            <div class="card card-border-3 border-{{ $server->color() }}">
+            <div class="card card-border-3 border-{{ $server->color($records) }}">
                 <div class="card-header">
                     <h5 class="card-title">
                         {{ $server->name }}
@@ -17,7 +20,7 @@
 
                 <div class="card-body">
                     <ul class="list-unstyled">
-                        @foreach ($server->getSensorsNOK() as $sensor)
+                        @foreach ($server->getSensorsNOK($records) as $sensor)
                         <li>{{ $sensor->getName() }}</li>
                         @endforeach
                     </ul>

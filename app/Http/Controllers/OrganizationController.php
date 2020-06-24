@@ -82,7 +82,7 @@ class OrganizationController extends Controller
 
     public function dashboard(Organization $organization)
     {
-        return view("organization.dashboard", array("organization" => $organization));
+        return view("organization.dashboard", ["organization" => $organization]);
     }
 
     public function resetToken(Organization $organization)
