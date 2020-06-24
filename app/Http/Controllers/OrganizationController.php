@@ -82,7 +82,6 @@ class OrganizationController extends Controller
 
     public function dashboard(Organization $organization)
     {
-        exit();
         return view("organization.dashboard", ["organization" => $organization]);
     }
 

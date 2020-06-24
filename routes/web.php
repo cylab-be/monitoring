@@ -34,8 +34,6 @@ Route::get(
     'app/organizations/{organization}/dashboard/{token}',
     function (\App\Organization $organization, string $token) {
 
-        abort(403);
-
         if ($organization->dashboard_token != $token) {
             abort(403);
         }
