@@ -97,14 +97,11 @@
                     <th></th>
                 </tr>
                 @foreach($organization->servers()->orderBy("name")->get() as $server)
-                @php
-                $records = $server->lastRecords1Day();
-                @endphp
                 <tr>
                     <td>{{ $server->name }}</td>
-                    <td>{!! $server->status($records)->badge() !!}</td>
-                    <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
-                    <td>{{ $server->lsb() }}</td>
+                    <td>{!! $server->status()->badge() !!}</td>
+                    <td>{{ $server->info()->lastRecordTime()->diffForHumans() }}</td>
+                    <td>{{ $server->info()->lsb() }}</td>
                     <td class="text-right">
                         <a class="btn btn-primary btn-sm"
                            href="{{ action('ServerController@show', ['Server' => $server]) }}">

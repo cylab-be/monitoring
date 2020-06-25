@@ -56,7 +56,7 @@ Route::get(
         $sensor = new App\Sensor\LoadAvg($server);
         return [
             "points" => $sensor->loadPoints($server->lastRecords1Day()),
-            "max" => $server->cpuinfo()["threads"]];
+            "max" => $server->info()->cpuinfo()["threads"]];
     }
 );
 

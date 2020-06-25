@@ -30,29 +30,24 @@ window.monitorServerToken = "{{ $server->read_token }}";
 
                     <p>
                         Last heartbeet:<br>
-                        {{ $server->lastRecordTime()->toDateTimeString() }}<br>
-                        ({{ $server->lastRecordTime()->diffForHumans() }})
+                        {{ $server->info()->lastRecordTime()->toDateTimeString() }}<br>
+                        ({{ $server->info()->lastRecordTime()->diffForHumans() }})
                     </p>
 
-                    <p>Client version: {{ $server->clientVersion() }}</p>
+                    <p>Client version: {{ $server->info()->clientVersion() }}</p>
 
-                    <p>Uptime: {{ $server->uptime() }}</p>
+                    <p>Uptime: {{ $server->info()->uptime() }}</p>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-body">
-                    <p>{{ $server->manufacturer() }} {{ $server->productName() }}</p>
-                    <p><small>{{ $server->uuid() }}</small></p>
-
-                    @php
-                    $cpuinfo = $server->cpuinfo();
-                    @endphp
-                    @if ($cpuinfo !== null)
-                    <p>{{ $cpuinfo["cpu"] }} ({{ $cpuinfo["threads"] }} threads)</p>
-                    @endif
-                    <p>Memory: {{ $server->meminfo() }}</p>
-                    <p>{{ $server->lsb() }}</p>
+                    <p>{{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}</p>
+                    <p><small>{{ $server->info()->uuid() }}</small></p>
+                    <p>{{ $server->info()->cpuinfo()["cpu"] }}
+                        ({{ $server->info()->cpuinfo()["threads"] }} threads)</p>
+                    <p>Memory: {{ $server->info()->meminfo() }}</p>
+                    <p>{{ $server->info()->lsb() }}</p>
                 </div>
             </div>
 
@@ -131,7 +126,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
                 <div class="card-body">
                     <p>Download client application:</p>
-                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ $server->lastClientUrl() }}
+                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ $server->info()->lastClientUrl() }}
 unzip monitor-*.zip
 </code></pre>
                     <p>Move it to /usr/bin:</p>

@@ -6,6 +6,7 @@ use App\User;
 use App\Notification;
 use App\Organization;
 use App\Server;
+use App\ServerInfo;
 use App\Sensor\Disks;
 use App\Sensor\CPUtemperature;
 use App\Sensor\USBtemperature;
@@ -151,8 +152,7 @@ class ExampleTest extends TestCase
     public function testMeminfo()
     {
         $string = file_get_contents(__DIR__ . "/meminfo");
-        $server = new \App\Server();
-        $mem_total = $server->parseMeminfo($string);
+        $mem_total = (new ServerInfo(null))->parseMeminfo($string);
         $this->assertEquals("15954328", $mem_total);
     }
 
@@ -162,8 +162,7 @@ class ExampleTest extends TestCase
     public function testCpuinfo()
     {
         $string = file_get_contents(__DIR__ . "/cpuinfo");
-        $server = new \App\Server();
-        $cpuinfo = $server->parseCpuinfo($string);
+        $cpuinfo = (new ServerInfo(null))->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
@@ -174,15 +173,13 @@ class ExampleTest extends TestCase
     public function testUptime()
     {
         $string = "24439.45 190434.65";
-        $server = new Server();
-        $uptime = $server->parseUptime($string);
+        $uptime = (new ServerInfo(null))->parseUptime($string);
         $this->assertEquals("6 hours", $uptime);
     }
 
     public function testUUID()
     {
-        $server = new Server();
-        $uuid = $server->parseUUID(file_get_contents(__DIR__ . "/system"));
+        $uuid = (new ServerInfo(null))->parseUUID(file_get_contents(__DIR__ . "/system"));
         $this->assertEquals("74F7C34C-2924-11B2-A85C-DC427DCA7109", $uuid);
     }
 
@@ -192,8 +189,7 @@ class ExampleTest extends TestCase
     public function testCpuinfoSingleCPU()
     {
         $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
-        $server = new \App\Server();
-        $cpuinfo = $server->parseCpuinfo($string);
+        $cpuinfo = (new ServerInfo(null))->parseCpuinfo($string);
         $this->assertEquals(1, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
@@ -201,16 +197,14 @@ class ExampleTest extends TestCase
     public function testManufacturer()
     {
         $string = file_get_contents(__DIR__ . "/system");
-        $server = new \App\Server();
-        $manufacturer = $server->parseManufacturer($string);
+        $manufacturer = (new ServerInfo(null))->parseManufacturer($string);
         $this->assertEquals("LENOVO", $manufacturer);
     }
 
     public function testProductName()
     {
         $string = file_get_contents(__DIR__ . "/system");
-        $server = new \App\Server();
-        $manufacturer = $server->parseProductName($string);
+        $manufacturer = (new ServerInfo(null))->parseProductName($string);
         $this->assertEquals("20J60018MB", $manufacturer);
     }
 

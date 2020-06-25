@@ -15,8 +15,8 @@ class Server extends Model
      * @var String
      */
     private $last_record = null;
-
     private $records_1day = null;
+    private $info = null;
 
     private static $sensors = [
         \App\Sensor\LoadAvg::class,
@@ -86,28 +86,13 @@ class Server extends Model
         return $this->lastRecord() != null;
     }
 
-    /**
-     *
-     * @return \Carbon\Carbon
-     */
-    public function lastRecordTime()
+    public function info() : ServerInfo
     {
-        $hearbeat = new \App\Sensor\Heartbeat($this);
-        return $hearbeat->lastRecordTime($this->lastRecord());
-    }
+        if (is_null($this->info)) {
+            $this->info = new ServerInfo($this->lastRecord());
+        }
 
-    public function clientVersion() : string
-    {
-        $sensor = new \App\Sensor\ClientVersion($this);
-        return $sensor->installedVersion([
-            $this->lastRecord()
-        ]);
-    }
-
-    public function lastClientUrl()
-    {
-        $client_sensor = new \App\Sensor\ClientVersion($this);
-        return $client_sensor->latestUrl();
+        return $this->info;
     }
 
     /**
@@ -154,164 +139,6 @@ class Server extends Model
             $sensors[] = new SensorWrapper(new $sensor(), $records);
         }
         return $sensors;
-    }
-
-    /**
-     * Human readable uptime.
-     *
-     * @return string
-     */
-    public function uptime() : string
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["upaimte"])) {
-            return "unknown";
-        }
-
-        return $this->parseUptime($record->upaimte);
-    }
-
-    public function parseUptime(string $string) : string
-    {
-        $pieces = explode(' ', $string);
-        $uptime = \Carbon\Carbon::now()->subSeconds($pieces[0]);
-        return $uptime->diffForHumans(null, true);
-    }
-
-    public function uuid()
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["system"])) {
-            return "";
-        }
-
-        return $this->parseUUID($record->system);
-    }
-
-    const UUID = "/\s*UUID: (.*)/m";
-
-    public function parseUUID(string $string) : string
-    {
-        $matches = array();
-        preg_match(self::UUID, $string, $matches);
-        if (! isset($matches[1])) {
-            return "unknown";
-        }
-        return $matches[1];
-    }
-
-
-    public function cpuinfo() : array
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["cpu"])) {
-            return ["threads" => 0,
-                "cpu" => "unknown"];
-        }
-
-        return $this->parseCpuinfo($record->cpu);
-    }
-
-    const CPU_INFO = "/^model name	: (.+)$/m";
-    public function parseCpuinfo($string) : array
-    {
-        $matches = array();
-        preg_match_all(self::CPU_INFO, $string, $matches);
-
-        $result["threads"] = count($matches[0]);
-        $result["cpu"] = $matches[1][0];
-        return $result;
-    }
-
-    public function meminfo()
-    {
-        return round($this->memoryTotal() / 1000 / 1000) . " GB";
-    }
-
-    /**
-     *
-     * @return int total memory (in KB)
-     */
-    public function memoryTotal()
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["memory"])) {
-            return null;
-        }
-
-        return $this->parseMeminfo($record->memory);
-    }
-
-    const MEMINFO = "/^MemTotal:\\s+([0-9]+) kB$/m";
-    public function parseMeminfo($string)
-    {
-        $matches = array();
-        preg_match(self::MEMINFO, $string, $matches);
-        $total = $matches[1];
-        return $total;
-    }
-
-    public function lsb()
-    {
-
-        $record = $this->lastRecord();
-        if (! isset($record["lsb"])) {
-            return "unknown";
-        }
-
-        return $this->parseLsb($record->lsb);
-    }
-
-    const LSB = "/^Description:	(.+)$/m";
-    public function parseLsb($string) : string
-    {
-        $matches = [];
-        preg_match(self::LSB, $string, $matches);
-        return $matches[1];
-    }
-
-
-    const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
-    public function parseManufacturer(string $string) : string
-    {
-        $matches = [];
-        preg_match(self::REGEX_MANUFACTURER, $string, $matches);
-
-        if (!isset($matches[1])) {
-            return "unkwnown";
-        }
-        return $matches[1];
-    }
-
-    public function manufacturer()
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["system"])) {
-            return "unknown";
-        }
-
-        return $this->parseManufacturer($record->system);
-    }
-
-    const REGEX_PRODUCT_NAME = "/^\s*Product Name: (.*)$/m";
-    public function parseProductName(string $string) : string
-    {
-        $matches = [];
-        preg_match(self::REGEX_PRODUCT_NAME, $string, $matches);
-        if (!isset($matches[1])) {
-            return "unkwnown";
-        }
-        return $matches[1];
-    }
-
-    public function productName()
-    {
-        $record = $this->lastRecord();
-        if (! isset($record["system"])) {
-            return "unknown";
-        }
-
-        return $this->parseProductName($record->system);
     }
 
     public function getChanges($count = 10)
