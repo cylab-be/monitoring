@@ -66,9 +66,7 @@ class ServerController extends Controller
      */
     public function show(Server $server)
     {
-        return view("server.show", [
-            "server" => $server,
-            "records" => $server->lastRecords1Day()]);
+        return view("server.show", ["server" => $server]);
     }
 
     /**

@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Log;
 class SensorWrapper
 {
     private $sensor;
+    private $records;
 
     private $report;
     private $status;
 
-    public function __construct(Sensor $sensor)
+    public function __construct(Sensor $sensor, array $records)
     {
         $this->sensor = $sensor;
+        $this->records = $records;
     }
 
     public function id() : string
@@ -26,11 +28,11 @@ class SensorWrapper
         return $this->sensor->name();
     }
 
-    public function report(array $records): string
+    public function report(): string
     {
         if (is_null($this->report)) {
             try {
-                $this->report = $this->sensor->report($records);
+                $this->report = $this->sensor->report($this->records);
             } catch (\Exception $ex) {
                 Log::error('Sensor failed : ' . $ex->getTraceAsString());
                 $this->report = "<p>Sensor " . $this->getName() . " failed :-(</p>";
@@ -40,11 +42,11 @@ class SensorWrapper
         return $this->report;
     }
 
-    public function status(array $records): Status
+    public function status(): Status
     {
         if (is_null($this->status)) {
             try {
-                $this->status = new Status($this->sensor->status($records));
+                $this->status = new Status($this->sensor->status($this->records));
             } catch (\Exception $ex) {
                 Log::error('Sensor failed : ' . $ex->getTraceAsString());
                 $this->status = new Status(Status::UNKNOWN);

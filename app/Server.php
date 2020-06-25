@@ -96,10 +96,12 @@ class Server extends Model
         return $hearbeat->lastRecordTime($this->lastRecord());
     }
 
-    public function clientVersion(array $records) : string
+    public function clientVersion() : string
     {
         $sensor = new \App\Sensor\ClientVersion($this);
-        return $sensor->installedVersion($records);
+        return $sensor->installedVersion([
+            $this->lastRecord()
+        ]);
     }
 
     public function lastClientUrl()
@@ -110,21 +112,20 @@ class Server extends Model
 
     /**
      *
-     * @param array $records
      * @return \App\Status
      */
-    public function status(array $records) : Status
+    public function status() : Status
     {
-        return Status::max($this->statusArray($records));
+        return Status::max($this->statusArray());
     }
 
-    public function statusArray(array $records)
+    public function statusArray()
     {
         $status_array = [];
         foreach ($this->getSensors() as $sensor) {
             $sensor_name = $sensor->id();
             try {
-                $status_array[$sensor_name] = $sensor->status($records);
+                $status_array[$sensor_name] = $sensor->status();
             } catch (\Exception $ex) {
                 $status_array[$sensor_name] = Sensor::STATUS_UNKNOWN;
                 Log::error("Sensor $sensor_name failed : " . $ex->getTraceAsString());
@@ -133,11 +134,11 @@ class Server extends Model
         return $status_array;
     }
 
-    public function getSensorsNOK(array $records)
+    public function getSensorsNOK()
     {
         $sensorsNOK = [];
         foreach ($this->getSensors() as $sensor) {
-            if ($sensor->status($records)->code() > 0) {
+            if ($sensor->status()->code() > 0) {
                 $sensorsNOK[] = $sensor;
             }
         }
@@ -146,10 +147,11 @@ class Server extends Model
 
     public function getSensors()
     {
+        $records = $this->lastRecords1Day();
 
         $sensors = [];
         foreach (self::$sensors as $sensor) {
-            $sensors[] = new SensorWrapper(new $sensor());
+            $sensors[] = new SensorWrapper(new $sensor(), $records);
         }
         return $sensors;
     }

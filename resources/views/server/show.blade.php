@@ -26,7 +26,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <p>{!! $server->status($records)->badge() !!}</p>
+                    <p>{!! $server->status()->badge() !!}</p>
 
                     <p>
                         Last heartbeet:<br>
@@ -34,7 +34,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                         ({{ $server->lastRecordTime()->diffForHumans() }})
                     </p>
 
-                    <p>Client version: {{ $server->clientVersion($records) }}</p>
+                    <p>Client version: {{ $server->clientVersion() }}</p>
 
                     <p>Uptime: {{ $server->uptime() }}</p>
                 </div>
@@ -98,11 +98,11 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     {{ $sensor->name() }}
 
                     <div class="float-right">
-                        {!! $sensor->status($records)->badge() !!}
+                        {!! $sensor->status()->badge() !!}
                     </div>
                 </div>
                 <div class="card-body">
-                    {!! $sensor->report($records) !!}
+                    {!! $sensor->report() !!}
                 </div>
             </div>
             @endforeach
