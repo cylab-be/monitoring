@@ -37,11 +37,11 @@ Route::get(
         }
 
         header('Access-Control-Allow-Origin: *');
-        $meminfo = new App\Sensor\MemInfo($server);
+        $meminfo = new \App\Sensor\MemInfo();
         return [
             "used" => $meminfo->usedMemoryPoints($server->lastRecords1Day()),
             "cached" => $meminfo->cachedMemoryPoints($server->lastRecords1Day()),
-            "total" => $server->memoryTotal($server->lastRecords1Day()) / 1000];
+            "total" => $server->info()->memoryTotal() / 1000];
     }
 );
 
@@ -53,7 +53,7 @@ Route::get(
         }
 
         header('Access-Control-Allow-Origin: *');
-        $sensor = new App\Sensor\LoadAvg($server);
+        $sensor = new \App\Sensor\LoadAvg();
         return [
             "points" => $sensor->loadPoints($server->lastRecords1Day()),
             "max" => $server->info()->cpuinfo()["threads"]];
@@ -68,7 +68,7 @@ Route::get(
         }
 
         header('Access-Control-Allow-Origin: *');
-        $sensor = new App\Sensor\Ifconfig($server);
+        $sensor = new \App\Sensor\Ifconfig();
         return $sensor->points($server->lastRecords1Day());
     }
 );
@@ -81,7 +81,7 @@ Route::get(
         }
 
         header('Access-Control-Allow-Origin: *');
-        $sensor = new App\Sensor\Netstat($server);
+        $sensor = new \App\Sensor\Netstat();
         return $sensor->points($server->lastRecords1Day());
     }
 );
