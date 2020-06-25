@@ -76,6 +76,5 @@ class Status
             default:
                 return 'secondary';
         }
-
     }
 }

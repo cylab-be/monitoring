@@ -271,7 +271,7 @@ class ExampleTest extends TestCase
         $last_change = \App\StatusChange::getLastChangeForServer($server_id);
         $records = $server->lastRecords1Day();
         $this->assertEquals(
-            $server->status($records),
+            $server->status($records)->code(),
             $last_change->status
         );
 

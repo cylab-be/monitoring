@@ -49,7 +49,7 @@ class StatusChangeDetection implements ShouldQueue
         $records = $server->lastRecords1Day();
         $current_status = $server->status($records);
 
-        if ($last_change->status == $current_status) {
+        if ($last_change->status == $current_status->code()) {
             // no change
             return;
         }
@@ -57,7 +57,7 @@ class StatusChangeDetection implements ShouldQueue
         $change = new StatusChange();
         $change->server_id = $server->id;
         $change->time = time();
-        $change->status = $current_status;
+        $change->status = $current_status->code();
         $change->save();
 
         $this->sendNotificationIfRequired($change);
