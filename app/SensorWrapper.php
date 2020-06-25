@@ -35,7 +35,7 @@ class SensorWrapper
                 $this->report = $this->sensor->report($this->records);
             } catch (\Exception $ex) {
                 Log::error('Sensor failed : ' . $ex->getTraceAsString());
-                $this->report = "<p>Sensor " . $this->getName() . " failed :-(</p>";
+                $this->report = "<p>Sensor " . $this->name() . " failed :-(</p>";
             }
         }
 
