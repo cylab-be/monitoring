@@ -26,19 +26,19 @@ class Updates extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['updates'])) {
-            self::STATUS_UNKNOWN;
+            \App\Status::UNKNOWN;
         }
 
         $status = $this->parse($record->updates);
         if ($status == null) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         if ($status["security"] != 0) {
-            return self::STATUS_WARNING;
+            return \App\Status::WARNING;
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     public function parse($string)

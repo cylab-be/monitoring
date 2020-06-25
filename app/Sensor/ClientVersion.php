@@ -82,13 +82,13 @@ class ClientVersion extends \App\AbstractSensor
         try {
             $latest_version = $this->latestVersion();
         } catch (\ErrorException $ex) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         if ($this->installedVersion($records) === $latest_version) {
-            return self::STATUS_OK;
+            return \App\Status::OK;
         }
 
-        return self::STATUS_WARNING;
+        return \App\Status::WARNING;
     }
 }

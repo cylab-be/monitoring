@@ -11,7 +11,7 @@
         $records = $server->lastRecords1Day();
         @endphp
         <div class="col-md-3">
-            <div class="card card-border-3 border-{{ $server->color($records) }}">
+            <div class="card card-border-3 border-{{ $server->status($records)->color() }}">
                 <div class="card-header">
                     <h5 class="card-title">
                         {{ $server->name }}

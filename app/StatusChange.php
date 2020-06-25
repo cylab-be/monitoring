@@ -33,14 +33,9 @@ class StatusChange
         return $this;
     }
 
-    public function statusName()
+    public function status() : Status
     {
-        return Server::getNameForStatus($this->status);
-    }
-
-    public function getStatusBadge()
-    {
-        return SensorWrapper::getBadgeForStatus($this->status);
+        return new Status($this->status);
     }
 
     public function getTimeCarbon() : Carbon

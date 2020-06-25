@@ -43,20 +43,20 @@ class CPUtemperature extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record["cpu-temperature"])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
         foreach (self::parseCPU($record['cpu-temperature']) as $CPU) {
             /* @var $CPU Cpu */
-            $status = self::STATUS_OK;
+            $status = \App\Status::OK;
             if ($CPU->value > $CPU->critvalue) {
-                $status = self::STATUS_WARNING;
+                $status = \App\Status::WARNING;
             }
             foreach (self::parseCPUtemperature($record['cpu-temperature']) as $Core) {
                 if ($Core->number == $CPU->number) {
                     if ($Core->value > $CPU->critvalue) {
-                        $status = self::STATUS_WARNING;
+                        $status = \App\Status::WARNING;
                     }
                 }
             }
@@ -64,7 +64,7 @@ class CPUtemperature extends \App\AbstractSensor
         }
 
         if (count($all_status) < 1) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         return max($all_status);

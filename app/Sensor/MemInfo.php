@@ -48,7 +48,7 @@ class MemInfo extends AbstractSensor
 
     public function status(array $records) : int
     {
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     // used = total - free - cached

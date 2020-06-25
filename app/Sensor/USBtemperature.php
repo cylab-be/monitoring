@@ -29,12 +29,12 @@ class USBtemperature extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record["TEMPer"])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
-        $status = self::STATUS_OK;
+        $status = \App\Status::OK;
         $USBTemp = self::parse($record['TEMPer']);
         if ((int)($USBTemp->temp[1]) > 60) {
-            $status = self::STATUS_WARNING;
+            $status = \App\Status::WARNING;
         }
         return $status;
     }

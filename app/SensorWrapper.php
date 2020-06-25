@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Support\Facades\Log;
 
-class SensorWrapper implements Sensor
+class SensorWrapper
 {
     private $sensor;
 
     private $report;
     private $status;
 
-    public function __construct(Sensor $sensor) {
+    public function __construct(Sensor $sensor)
+    {
         $this->sensor = $sensor;
     }
 
@@ -25,7 +26,8 @@ class SensorWrapper implements Sensor
         return $this->sensor->name();
     }
 
-    public function report(array $records): string {
+    public function report(array $records): string
+    {
         if (is_null($this->report)) {
             try {
                 $this->report = $this->sensor->report($records);
@@ -38,36 +40,17 @@ class SensorWrapper implements Sensor
         return $this->report;
     }
 
-    public function status(array $records): int {
+    public function status(array $records): Status
+    {
         if (is_null($this->status)) {
             try {
-                $this->status = $this->sensor->status($records);
+                $this->status = new Status($this->sensor->status($records));
             } catch (\Exception $ex) {
                 Log::error('Sensor failed : ' . $ex->getTraceAsString());
-                $this->status = self::STATUS_UNKNOWN;
+                $this->status = new Status(Status::UNKNOWN);
             }
         }
 
         return $this->status;
     }
-
-    public function getBadge(array $records) : string
-    {
-        return self::getBadgeForStatus($this->status($records));
-    }
-
-    public static function getBadgeForStatus(int $status) : string
-    {
-        switch ($status) {
-            case 0:
-                return '<span class="badge badge-success">OK</span>';
-            case 10:
-                return '<span class="badge badge-warning">WARNING</span>';
-            case 20:
-                return '<span class="badge badge-danger">ERROR</span>';
-            default:
-                return '<span class="badge badge-secondary">Unknown</span>';
-        }
-    }
-
 }

@@ -89,16 +89,16 @@ class DiskEvolution extends \App\AbstractSensor
     public function computeStatusFromDeltas(array $deltas) : int
     {
         if (count($deltas) == 0) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
         foreach ($deltas as $delta) {
-            $status = self::STATUS_OK;
+            $status = \App\Status::OK;
 
             if ($delta->timeUntillFull > 0
                     && $delta->timeUntillFull < 96) {
-                $status = self::STATUS_WARNING;
+                $status = \App\Status::WARNING;
             }
 
             $all_status[] = $status;

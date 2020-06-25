@@ -26,7 +26,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <p>{!! $server->statusBadge($records) !!}</p>
+                    <p>{!! $server->status($records)->badge() !!}</p>
 
                     <p>
                         Last heartbeet:<br>
@@ -98,7 +98,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     {{ $sensor->name() }}
 
                     <div class="float-right">
-                        {!! $sensor->getBadge($records) !!}
+                        {!! $sensor->status($records)->badge() !!}
                     </div>
                 </div>
                 <div class="card-body">
@@ -116,7 +116,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                         @foreach($server->getChanges() as $change)
                         <tr>
                             <td>{{ $change->getTimeCarbon()->toDateTimeString() }}</td>
-                            <td>{!! $change->getStatusBadge() !!}</td>
+                            <td>{!! $change->status()->badge() !!}</td>
                         </tr>
                         @endforeach
                     </table>

@@ -35,17 +35,17 @@ class Inodes extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['inodes'])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
         foreach ($this->parse($record->inodes) as $disk) {
             /* @var $disk InodesDisk */
-            $status = self::STATUS_OK;
+            $status = \App\Status::OK;
             if ($disk->usedPercent() > 80) {
-                $status = self::STATUS_WARNING;
+                $status = \App\Status::WARNING;
             } elseif ($disk->usedPercent() > 95) {
-                $status = self::STATUS_ERROR;
+                $status = \App\Status::ERROR;
             }
             $all_status[] = $status;
         }

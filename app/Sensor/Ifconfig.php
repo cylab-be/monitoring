@@ -88,7 +88,7 @@ class Ifconfig extends AbstractSensor
 
     public function status(array $records) : int
     {
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     const IFNAME = '/^(?|(\S+)\s+Link encap:|(\S+): flags)/m';

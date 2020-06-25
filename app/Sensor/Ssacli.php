@@ -52,17 +52,17 @@ class Ssacli extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['ssacli'])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $disks = $this->parse($record->ssacli);
         foreach ($disks as $disk) {
             if ($disk->status != "OK") {
-                return self::STATUS_WARNING;
+                return \App\Status::WARNING;
             }
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     /**

@@ -109,17 +109,13 @@ class Server extends Model
     }
 
     /**
-     * Get integer status of server.
-     * @return int
+     *
+     * @param array $records
+     * @return \App\Status
      */
-    public function status(array $records) : int
+    public function status(array $records) : Status
     {
-        return max($this->statusArray($records));
-    }
-
-    public function statusBadge(array $records)
-    {
-        return SensorWrapper::getBadgeForStatus($this->status($records));
+        return Status::max($this->statusArray($records));
     }
 
     public function statusArray(array $records)
@@ -141,35 +137,11 @@ class Server extends Model
     {
         $sensorsNOK = [];
         foreach ($this->getSensors() as $sensor) {
-            if ($sensor->status($records) > 0) {
+            if ($sensor->status($records)->code() > 0) {
                 $sensorsNOK[] = $sensor;
             }
         }
         return $sensorsNOK;
-    }
-
-    public static function getNameForStatus(int $status)
-    {
-        switch ($status) {
-            case 0:
-                return "OK";
-            case 10:
-                return "WARNING";
-            case 20:
-                return "ERROR";
-            default:
-                return "Unknown";
-        }
-    }
-
-    public function getBadge(array $records)
-    {
-        return SensorWrapper::getBadgeForStatus($this->status($records));
-    }
-
-    public function color(array $records)
-    {
-        return SensorWrapper::getColorForStatus($this->status($records));
     }
 
     public function getSensors()

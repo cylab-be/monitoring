@@ -35,17 +35,17 @@ class Disks extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['disks'])) {
-            self::STATUS_UNKNOWN;
+            \App\Status::UNKNOWN;
         }
 
         $all_status = [];
         foreach (self::parse($record->disks) as $partition) {
             /* @var $partition Partition */
-            $status = self::STATUS_OK;
+            $status = \App\Status::OK;
             if ($partition->usedPercent() > 80) {
-                $status = self::STATUS_WARNING;
+                $status = \App\Status::WARNING;
             } elseif ($partition->usedPercent() > 95) {
-                $status = self::STATUS_ERROR;
+                $status = \App\Status::ERROR;
             }
             $all_status[] = $status;
         }

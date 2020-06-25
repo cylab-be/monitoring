@@ -102,7 +102,7 @@
                 @endphp
                 <tr>
                     <td>{{ $server->name }}</td>
-                    <td>{!! $server->getBadge($records) !!}</td>
+                    <td>{!! $server->status($records)->badge() !!}</td>
                     <td>{{ $server->lastRecordTime()->diffForHumans() }}</td>
                     <td>{{ $server->lsb() }}</td>
                     <td class="text-right">

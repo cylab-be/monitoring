@@ -42,17 +42,17 @@ class Perccli extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['perccli'])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $drives = $this->parse($record->ssacli);
         foreach ($drives as $disk) {
             if ($disk->status != "Onln") {
-                return self::STATUS_WARNING;
+                return \App\Status::WARNING;
             }
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     /**

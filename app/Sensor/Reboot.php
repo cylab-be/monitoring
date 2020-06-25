@@ -26,10 +26,10 @@ class Reboot extends \App\AbstractSensor
     public function statusHTML(array $records)
     {
         switch ($this->status($records)) {
-            case self::STATUS_OK:
+            case \App\Status::OK:
                 return "no";
 
-            case self::STATUS_WARNING:
+            case \App\Status::WARNING:
                 return "yes";
 
             default:
@@ -41,14 +41,14 @@ class Reboot extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['reboot'])) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         if ($record->reboot) {
-            return self::STATUS_WARNING;
+            return \App\Status::WARNING;
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     public function name(): string

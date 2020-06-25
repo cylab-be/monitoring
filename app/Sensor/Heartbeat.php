@@ -47,9 +47,9 @@ class Heartbeat extends \App\AbstractSensor
         }
 
         if ($delta > 900) {
-            return self::STATUS_WARNING;
+            return \App\Status::WARNING;
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 }

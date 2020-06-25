@@ -25,14 +25,14 @@ class Date extends \App\AbstractSensor
     {
         $delta = $this->delta(end($records));
         if ($delta == null) {
-            return self::STATUS_UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         if (abs($delta) > 10) {
-            return self::STATUS_WARNING;
+            return \App\Status::WARNING;
         }
 
-        return self::STATUS_OK;
+        return \App\Status::OK;
     }
 
     public function delta($record)

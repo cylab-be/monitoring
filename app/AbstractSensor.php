@@ -28,8 +28,4 @@ abstract class AbstractSensor implements Sensor
                 return 'secondary';
         }
     }
-
-
-
-
 }
