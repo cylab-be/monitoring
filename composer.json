@@ -9,7 +9,7 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "~6.0",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
         "mongodb/mongodb": "1.3.*",
         "tdebatty/laravel-resource-generator": "^0.0.3"
