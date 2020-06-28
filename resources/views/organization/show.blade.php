@@ -61,12 +61,12 @@
                 </div>
                 <div class="card-body">
                     <a class="btn btn-primary"
-                       href="{{ action('OrganizationController@edit', ['Organization' => $organization]) }}">
+                       href="{{ action('OrganizationController@edit', ['organization' => $organization]) }}">
                          Edit
                     </a>
 
                     <form method="POST"
-                          action="{{ action('OrganizationController@destroy', ['Organization' => $organization]) }}"
+                          action="{{ action('OrganizationController@destroy', ['organization' => $organization]) }}"
                           style="display: inline-block">
                         {{ csrf_field() }}
                         {{ method_field("DELETE") }}
@@ -104,17 +104,17 @@
                     <td>{{ $server->info()->lsb() }}</td>
                     <td class="text-right">
                         <a class="btn btn-primary btn-sm"
-                           href="{{ action('ServerController@show', ['Server' => $server]) }}">
+                           href="{{ action('ServerController@show', ['server' => $server]) }}">
                             <i class="fa fa-search" aria-hidden="true"></i> Show
                         </a>
 
                         <a class="btn btn-primary btn-sm"
-                           href="{{ action('ServerController@edit', ['Server' => $server]) }}">
+                           href="{{ action('ServerController@edit', ['server' => $server]) }}">
                             <i class="fas fa-pencil-alt"></i> Edit
                         </a>
 
                         <form method="POST"
-                              action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
+                              action="{{ action('ServerController@destroy', ['server' => $server]) }}"
                               style="display: inline-block">
                             {{ csrf_field() }}
                             {{ method_field("DELETE") }}

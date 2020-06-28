@@ -62,12 +62,12 @@ window.monitorServerToken = "{{ $server->read_token }}";
 
                     <div>
                         <a class="btn btn-primary btn-sm"
-                           href="{{ action('ServerController@edit', ['Server' => $server]) }}">
+                           href="{{ action('ServerController@edit', ['server' => $server]) }}">
                             <i class="fa fa-pencil" aria-hidden="true"></i> Edit
                         </a>
 
                         <form method="POST"
-                              action="{{ action('ServerController@destroy', ['Server' => $server]) }}"
+                              action="{{ action('ServerController@destroy', ['server' => $server]) }}"
                               style="display: inline-block">
                             {{ csrf_field() }}
                             {{ method_field("DELETE") }}

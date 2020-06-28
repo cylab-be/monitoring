@@ -21,17 +21,17 @@
             <td>{{ $organization->name }}</td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
-                   href="{{ action('OrganizationController@show', ['Organization' => $organization]) }}">
+                   href="{{ action('OrganizationController@show', ['organization' => $organization]) }}">
                      Show
                 </a>
 
                 <a class="btn btn-primary btn-sm"
-                   href="{{ action('OrganizationController@edit', ['Organization' => $organization]) }}">
+                   href="{{ action('OrganizationController@edit', ['organization' => $organization]) }}">
                      Edit
                 </a>
 
                 <form method="POST"
-                      action="{{ action('OrganizationController@destroy', ['Organization' => $organization]) }}"
+                      action="{{ action('OrganizationController@destroy', ['organization' => $organization]) }}"
                       style="display: inline-block">
                     {{ csrf_field() }}
                     {{ method_field("DELETE") }}
