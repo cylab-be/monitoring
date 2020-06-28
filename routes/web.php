@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Auth::routes(['register'=>false]);
+Auth::routes();
 
 Route::get("home", function () {
     return redirect(action("OrganizationController@index"));
