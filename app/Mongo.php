@@ -27,5 +27,4 @@ class Mongo
 
         return self::$mongo;
     }
-
 }
