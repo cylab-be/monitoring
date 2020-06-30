@@ -27,7 +27,7 @@ test:php72:
     - vendor/bin/phpunit --coverage-text --colors=never
     - vendor/bin/phpcs
     - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
-    - vendor/bin/phpstan analyze
+    - vendor/bin/phpstan analyze --memory-limit=512M
 
 test:gitleaks:
   stage: test
