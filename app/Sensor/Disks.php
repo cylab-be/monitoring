@@ -35,7 +35,7 @@ class Disks extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['disks'])) {
-            \App\Status::UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $all_status = [];

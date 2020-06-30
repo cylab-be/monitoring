@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Server;
+use App\Mongo;
 
 /*
 |--------------------------------------------------------------------------

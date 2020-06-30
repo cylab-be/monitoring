@@ -6,10 +6,12 @@ class DiskEvolution extends \App\AbstractSensor
 {
 
 
+
     /**
-     * Compute deltas between two arrays of partitions
-     * @param Partition[] $newAndOld
-     * @return \App\Sensor\Delta[]
+     *
+     * @param array $newAndOld
+     * @param int $timeDifference
+     * @return array
      */
     public function computeEvolution(?array $newAndOld, int $timeDifference) : array
     {
@@ -38,9 +40,10 @@ class DiskEvolution extends \App\AbstractSensor
     }
 
 
+
     /**
      *
-     * @param int $timeInterval
+     * @param array $records
      * @return array|null
      */
     public function get2Partitions(array $records) : ?array

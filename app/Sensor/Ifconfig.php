@@ -110,10 +110,10 @@ class Ifconfig extends AbstractSensor
     /**
      * Parse the result of the ifconfig command, skipping every virtual
      * interfaces (docker, br, lo)
-     * @param type $string
+     * @param string $string
      * @return \App\Sensor\NetworkInterface[]
      */
-    public function parseIfconfig($string)
+    public function parseIfconfig(string $string)
     {
 
         $allowed_prefixes = ["en", "eth", "wl", "venet"];

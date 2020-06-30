@@ -45,9 +45,7 @@ class StatusChangeDetection implements ShouldQueue
     public function detectChangeForServer(Server $server)
     {
         $last_change = StatusChange::getLastChangeForServer($server->id);
-
-        $records = $server->lastRecords1Day();
-        $current_status = $server->status($records);
+        $current_status = $server->status();
 
         if ($last_change->status == $current_status->code()) {
             // no change

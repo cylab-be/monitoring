@@ -105,24 +105,26 @@ class CPUtemperature extends \App\AbstractSensor
         if ($string == null) {
             return [];
         }
+
+        $current_cpu = new Cpu();
         $CPUS=[];
         $Cores=[];
         $lines=explode("\n", $string);
         foreach ($lines as $line) {
-            $matchesCPU=array();
+            $matchesCPU = array();
             if (preg_match(self::REGEXPCPU, $line, $matchesCPU) === 1) {
-                $CPU = new Cpu();
-                $CPU->number = $matchesCPU[2];
-                $CPUS[]=$CPU;
+                $current_cpu = new Cpu();
+                $current_cpu->number = $matchesCPU[2];
+                $CPUS[]=$current_cpu;
                 continue;
             }
-            $matchesCore=array();
+            $matchesCore = array();
             if (preg_match(self::REGEXP, $line, $matchesCore) === 1) {
                 $Core=new Temperature();
                 $Core->name = $matchesCore[1];
                 $Core->corevalue = $matchesCore[2];
-                $Core->number=$CPU->number;
-                $Cores[]=$Core;
+                $Core->number = $current_cpu->number;
+                $Cores[] = $Core;
                 continue;
             }
         }

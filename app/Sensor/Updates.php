@@ -26,7 +26,7 @@ class Updates extends \App\AbstractSensor
     {
         $record = end($records);
         if (! isset($record['updates'])) {
-            \App\Status::UNKNOWN;
+            return \App\Status::UNKNOWN;
         }
 
         $status = $this->parse($record->updates);

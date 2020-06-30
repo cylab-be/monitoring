@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Mongo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
@@ -52,7 +53,7 @@ class Server extends Model
     public function lastRecord()
     {
         if ($this->last_record == null) {
-            $collection = \Mongo::get()->monitoring->records;
+            $collection = Mongo::get()->monitoring->records;
             $this->last_record =  $collection->findOne(
                 ["server_id" => $this->id],
                 ["sort" => ["_id" => -1]]
@@ -64,7 +65,7 @@ class Server extends Model
 
     /**
      * Get the last day of data.
-     * @return type
+     * @return array
      */
     public function lastRecords1Day() : array
     {
@@ -74,7 +75,7 @@ class Server extends Model
 
         $start = time() - 24 * 3600;
 
-        $this->records_1day = \Mongo::get()->monitoring->records->find([
+        $this->records_1day = Mongo::get()->monitoring->records->find([
                 "server_id" => $this->id,
                 "time" => ['$gte' => $start]])
                 ->toArray();
@@ -112,7 +113,7 @@ class Server extends Model
             try {
                 $status_array[$sensor_name] = $sensor->status();
             } catch (\Exception $ex) {
-                $status_array[$sensor_name] = Sensor::STATUS_UNKNOWN;
+                $status_array[$sensor_name] = Status::UNKNOWN;
                 Log::error("Sensor $sensor_name failed : " . $ex->getTraceAsString());
             }
         }

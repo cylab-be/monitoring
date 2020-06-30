@@ -86,12 +86,12 @@ class ServerInfo
 
     /**
      *
-     * @return int total memory (in KB)
+     * @return int total memory (in KB) or 0 if not found...
      */
     public function memoryTotal()
     {
         if (! isset($this->record["memory"])) {
-            return null;
+            return 0;
         }
 
         return $this->parseMeminfo($this->record->memory);
@@ -171,21 +171,19 @@ class ServerInfo
      */
     public function lastRecordTime()
     {
-        $hearbeat = new \App\Sensor\Heartbeat($this);
+        $hearbeat = new \App\Sensor\Heartbeat();
         return $hearbeat->lastRecordTime($this->record);
     }
 
     public function clientVersion() : string
     {
-        $sensor = new \App\Sensor\ClientVersion($this);
-        return $sensor->installedVersion([
-            $this->record
-        ]);
+        $sensor = new \App\Sensor\ClientVersion();
+        return $sensor->installedVersion([$this->record]);
     }
 
     public function lastClientUrl()
     {
-        $client_sensor = new \App\Sensor\ClientVersion($this);
+        $client_sensor = new \App\Sensor\ClientVersion();
         return $client_sensor->latestUrl();
     }
 }

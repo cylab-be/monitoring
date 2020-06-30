@@ -67,7 +67,7 @@ class Ssacli extends \App\AbstractSensor
 
     /**
      *
-     * @param type $string
+     * @param string $string
      * @return \App\Sensor\Disk[]
      */
     public function parse($string)

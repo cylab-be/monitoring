@@ -28,11 +28,7 @@ class OrganizationController extends Controller
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return view(
@@ -45,7 +41,6 @@ class OrganizationController extends Controller
      * Show the form for creating a new resource.
      * We use the same view for create and update => provide an empty Organization.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -56,7 +51,6 @@ class OrganizationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -73,7 +67,7 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Organization $organization     * @return \Illuminate\Http\Response
+     * @param  Organization $organization
      */
     public function show(Organization $organization)
     {
@@ -95,7 +89,7 @@ class OrganizationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Organization $organization     * @return \Illuminate\Http\Response
+     * @param  Organization $organization
      */
     public function edit(Organization $organization)
     {
@@ -106,7 +100,7 @@ class OrganizationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Organization $organization     * @return \Illuminate\Http\Response
+     * @param  Organization $organization
      */
     public function update(Request $request, Organization $organization)
     {
@@ -121,7 +115,6 @@ class OrganizationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

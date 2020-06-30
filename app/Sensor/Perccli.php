@@ -57,8 +57,8 @@ class Perccli extends \App\AbstractSensor
 
     /**
      *
-     * @param type $string
-     * @return \App\Sensor\PerccliDrive[]
+     * @param string $string
+     * @return array \App\Sensor\PerccliDrive
      */
     public function parse($string)
     {
@@ -68,7 +68,7 @@ class Perccli extends \App\AbstractSensor
         $drives = [];
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
-            $drive = new Disk();
+            $drive = new PerccliDrive();
             $drive->slot = $values[1][$i];
             $drive->type = $values[5][$i];
             $drive->size = $values[3][$i];

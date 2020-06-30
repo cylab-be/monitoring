@@ -30,7 +30,6 @@ class ServerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -41,7 +40,6 @@ class ServerController extends Controller
      * Show the form for creating a new resource.
      * We use the same view for create and update => provide an empty Server.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -52,7 +50,6 @@ class ServerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -62,7 +59,7 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Server $server     * @return \Illuminate\Http\Response
+     * @param  Server $server
      */
     public function show(Server $server)
     {
@@ -72,7 +69,7 @@ class ServerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Server $server     * @return \Illuminate\Http\Response
+     * @param  Server $server
      */
     public function edit(Server $server)
     {
@@ -83,7 +80,7 @@ class ServerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Server $server     * @return \Illuminate\Http\Response
+     * @param  Server $server
      */
     public function update(Request $request, Server $server)
     {
@@ -105,7 +102,6 @@ class ServerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

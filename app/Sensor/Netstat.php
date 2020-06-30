@@ -53,17 +53,6 @@ class Netstat extends AbstractSensor
         return \App\Status::OK;
     }
 
-
-    public function parseRecord($record)
-    {
-        $interfaces = $this->parseIfconfig($record->ifconfig);
-        foreach ($interfaces as $interface) {
-            $interface->time = $record->time;
-        }
-
-        return $interfaces;
-    }
-
     const TCP_SENT = '/^    (\d+) segments sent out/m';
     const TCP_RETRANSMITTED = '/^    (\d+) segments retransmitted$/m';
 

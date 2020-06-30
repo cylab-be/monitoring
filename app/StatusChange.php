@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Mongo;
 use \Carbon\Carbon;
 
 /**
@@ -58,14 +59,14 @@ class StatusChange
             "status" => $this->status,
         ];
 
-        $collection = \Mongo::get()->monitoring->statuschanges;
+        $collection = Mongo::get()->monitoring->statuschanges;
         $r = $collection->insertOne($data);
         $this->id = $r->getInsertedId()->__toString();
     }
 
     public static function getLastChangesForServer(int $server_id, int $count) : array
     {
-        $collection = \Mongo::get()->monitoring->statuschanges;
+        $collection = Mongo::get()->monitoring->statuschanges;
         $records = $collection->find(
             ["server_id" => $server_id],
             ["limit" => $count, "sort" => ["_id" => -1]]
@@ -80,7 +81,7 @@ class StatusChange
 
     public static function find(string $id) : StatusChange
     {
-        $collection = \Mongo::get()->monitoring->statuschanges;
+        $collection = Mongo::get()->monitoring->statuschanges;
         $result = $collection->findOne(
             ['_id' => new \MongoDB\BSON\ObjectId($id)]
         );
@@ -93,7 +94,7 @@ class StatusChange
 
     public static function getLastChangeForServer(int $server_id) : StatusChange
     {
-        $collection = \Mongo::get()->monitoring->statuschanges;
+        $collection = Mongo::get()->monitoring->statuschanges;
         $record = $collection->findOne(
             ["server_id" => $server_id],
             ["sort" => ["_id" => -1]]
