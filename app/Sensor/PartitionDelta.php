@@ -12,7 +12,8 @@ class PartitionDelta
     private $start;
     private $end;
 
-    public function __construct(Partition $start, Partition $end) {
+    public function __construct(Partition $start, Partition $end)
+    {
         if ($start->filesystem !== $end->filesystem) {
             throw new \Exception("Comparing different filesystems!");
         }
@@ -62,6 +63,4 @@ class PartitionDelta
     {
         return Carbon::createFromTimeStamp($this->timeUntillFull())->diffForHumans();
     }
-
-
 }
