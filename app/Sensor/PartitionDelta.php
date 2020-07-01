@@ -31,7 +31,7 @@ class PartitionDelta
      * Return difference of the number of used blocks.
      * @return int
      */
-    public function deltaBlocks() : int
+    private function deltaBlocks() : int
     {
         return $this->end->used - $this->start->used;
     }
@@ -40,7 +40,7 @@ class PartitionDelta
      * Return time difference between 2 partitions
      * @return int
      */
-    public function deltaT() : int
+    private function deltaT() : int
     {
         return $this->end->time - $this->start->time;
     }

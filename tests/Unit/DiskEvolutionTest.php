@@ -20,8 +20,6 @@ class DiskEvolutionTest extends TestCase
 
     use RefreshDatabase;
 
-
-
     public function testSlowEvolution()
     {
         $p_t0 = new Partition();
@@ -39,7 +37,6 @@ class DiskEvolutionTest extends TestCase
         $delta = new PartitionDelta($p_t0, $p_end);
 
         // test the result is correct...
-        $this->assertEquals(1, $delta->deltaBlocks());
         $this->assertEquals("test", $delta->filesystem());
         $this->assertEquals(9 * 24 * 3600, $delta->timeUntillFull());
 
@@ -64,7 +61,6 @@ class DiskEvolutionTest extends TestCase
         $delta = new PartitionDelta($p_t0, $p_end);
 
         // test the result is correct...
-        $this->assertEquals(2, $delta->deltaBlocks());
         $this->assertEquals("test", $delta->filesystem());
         $this->assertEquals(4 * 24 * 3600, $delta->timeUntillFull());
 

@@ -6,16 +6,40 @@ class DiskEvolution extends \App\AbstractSensor
 {
     public function report(array $records) : string
     {
-        return $this->printResults(
-            $this->computePartitionsDelta($records)
-        );
+        return view("agent.diskevolution", [
+            "deltas" => $this->computePartitionsDelta($records)]);
     }
 
     public function status(array $records) : int
     {
-
         $deltas = $this->computePartitionsDelta($records);
         return $this->computeStatusFromDeltas($deltas);
+    }
+
+    public function points(array $records) : array
+    {
+        // parse the first record to get the list of partitions
+        $partitions = Disks::fromRecord($records[0]);
+        $dataset = [];
+        foreach ($partitions as $partition) {
+            /** @var Partition $partition */
+            $dataset[$partition->filesystem] = [
+                "name" => $partition->filesystem,
+                "points" => []
+            ];
+        }
+
+        // parse all records to create the points
+        foreach ($records as $record) {
+            $partitions = Disks::fromRecord($record);
+            foreach ($partitions as $partition) {
+                $dataset[$partition->filesystem]["points"][] = new Point(
+                        $partition->time * 1000,
+                        $partition->usedPercent());
+            }
+        }
+
+        return array_values($dataset);
     }
 
     public function computeStatusFromDeltas(array $deltas) : int
@@ -62,26 +86,5 @@ class DiskEvolution extends \App\AbstractSensor
             $deltas[] = $delta;
         }
         return $deltas;
-    }
-
-
-    /**
-     *
-     * @param array $deltas
-     * @return string
-     */
-    public function printResults($deltas)
-    {
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr><th>name</th><th>time untill full</th></tr>";
-
-        foreach ($deltas as $delta) {
-            $return .= "<tr>"
-                    . "<td>" . $delta->filesystem() . "</td>"
-                    . "<td>" . $delta->timeUntilFullForHumans() . "</td>"
-                    . "</tr>";
-        }
-        $return .= "</table>";
-        return $return;
     }
 }
