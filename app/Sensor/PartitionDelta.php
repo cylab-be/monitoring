@@ -2,6 +2,8 @@
 
 namespace App\Sensor;
 
+use Carbon\Carbon;
+
 /**
  * Represents the time evolution of a single partition.
  */
@@ -54,7 +56,11 @@ class PartitionDelta
 
         return ($this->end->blocks - $this->end->used) / $this->deltaBlocks()
                 * $this->deltaT();
+    }
 
+    public function timeUntilFullForHumans() : string
+    {
+        return Carbon::createFromTimeStamp($this->timeUntillFull())->diffForHumans();
     }
 
 

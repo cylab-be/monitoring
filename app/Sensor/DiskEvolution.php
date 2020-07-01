@@ -78,7 +78,7 @@ class DiskEvolution extends \App\AbstractSensor
         foreach ($deltas as $delta) {
             $return .= "<tr>"
                     . "<td>" . $delta->filesystem() . "</td>"
-                    . "<td>" . $delta->timeUntillFull() . "</td>"
+                    . "<td>" . $delta->timeUntilFullForHumans() . "</td>"
                     . "</tr>";
         }
         $return .= "</table>";
