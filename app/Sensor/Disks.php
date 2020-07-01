@@ -55,7 +55,7 @@ class Disks extends \App\AbstractSensor
 
     public static $skip_fs = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop'];
 
-    public static function parse(string $string)
+    public static function parse(string $string) : array
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
@@ -74,6 +74,17 @@ class Disks extends \App\AbstractSensor
             $partition->mounted = $values[6][$i];
             $partitions[] = $partition;
         }
+        return $partitions;
+    }
+
+    public static function fromRecord($record) : array
+    {
+        $partitions = self::parse($record->disks);
+        $time = $record->time;
+        foreach ($partitions as $partition) {
+            $partition->time = $time;
+        }
+
         return $partitions;
     }
 
