@@ -34,8 +34,9 @@ class DiskEvolution extends \App\AbstractSensor
             $partitions = Disks::fromRecord($record);
             foreach ($partitions as $partition) {
                 $dataset[$partition->filesystem]["points"][] = new Point(
-                        $partition->time * 1000,
-                        $partition->usedPercent());
+                    $partition->time * 1000,
+                    $partition->usedPercent()
+                );
             }
         }
 
