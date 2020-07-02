@@ -40,10 +40,18 @@ class LoadAvg extends AbstractSensor
 
     public function status(array $records) : int
     {
+        $max = $this->server()->info()->cpuinfo()["threads"];
+        foreach ($records as $record) {
+            $load = $this->parse($record->loadavg);
+            if ($load > $max) {
+                return \App\Status::WARNING;
+            }
+        }
+
         return \App\Status::OK;
     }
 
-    public function parse($string)
+    public function parse($string) : float
     {
         return current(explode(" ", $string));
     }

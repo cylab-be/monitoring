@@ -10,6 +10,18 @@ namespace App;
 abstract class AbstractSensor implements Sensor
 {
 
+    private $server;
+
+    public function __construct (?Server $server = null)
+    {
+        $this->server = $server;
+    }
+
+    protected function server() : Server
+    {
+        return $this->server;
+    }
+
     public function name() : string
     {
         return (new \ReflectionClass($this))->getShortName();

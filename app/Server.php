@@ -137,7 +137,7 @@ class Server extends Model
 
         $sensors = [];
         foreach (self::$sensors as $sensor) {
-            $sensors[] = new SensorWrapper(new $sensor(), $records);
+            $sensors[] = new SensorWrapper(new $sensor($this), $records);
         }
         return $sensors;
     }
