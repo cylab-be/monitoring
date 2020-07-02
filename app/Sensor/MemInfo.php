@@ -48,6 +48,13 @@ class MemInfo extends AbstractSensor
 
     public function status(array $records) : int
     {
+        foreach ($records as $record) {
+            $mem = $this->parseMeminfo($record->memory);
+            if ($mem->usedRatio() > 0.8) {
+                return  \App\Status::WARNING;
+            }
+        }
+
         return \App\Status::OK;
     }
 
