@@ -12,7 +12,7 @@ abstract class AbstractSensor implements Sensor
 
     private $server;
 
-    public function __construct (?Server $server = null)
+    public function __construct(?Server $server = null)
     {
         $this->server = $server;
     }
