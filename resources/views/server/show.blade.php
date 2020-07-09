@@ -1,25 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.min.js"></script>
 <script>
-window.chartColors = {
-    red: 'rgba(255, 99, 132, 0.2)',
-    orange: 'rgba(255, 165, 0, 0.3)',
-    yellow: 'rgba(255, 205, 86, 0.2)',
-    green: 'rgba(0, 178, 0, 0.3)',
-    blue: 'rgba(54, 162, 235, 0.2)',
-    purple: 'rgba(153, 102, 255, 0.2)',
-    grey: 'rgba(201, 203, 207, 0.2)'
-};
-
-window.colorNames = Object.keys(window.chartColors);
-
 window.monitorURL = "{{ url('/') }}";
 window.monitorServerID = {{ $server->id }};
 window.monitorServerToken = "{{ $server->read_token }}";
 </script>
+<script src="/js/sensors.js"></script>
 
 <div class="container">
     <div class="row">

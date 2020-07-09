@@ -1,6 +1,27 @@
-// disk evolution graphing
 
 
+require('chart.js');
+require('chartjs-plugin-annotation');
+
+/*
+ * Common stuff for all sensors
+ */
+
+window.chartColors = {
+    red: 'rgba(255, 99, 132, 0.2)',
+    orange: 'rgba(255, 165, 0, 0.3)',
+    yellow: 'rgba(255, 205, 86, 0.2)',
+    green: 'rgba(0, 178, 0, 0.3)',
+    blue: 'rgba(54, 162, 235, 0.2)',
+    purple: 'rgba(153, 102, 255, 0.2)',
+    grey: 'rgba(201, 203, 207, 0.2)'
+};
+
+window.colorNames = Object.keys(window.chartColors);
+
+/*
+ * Disk evolution graphing
+ */
 window.loadDiskEvolutionChart = function(element) {
     var ctx = element.getContext('2d');
     var config = {

@@ -9,7 +9,6 @@
 </table>
 
 <canvas id="diskevolution-chart" width='400' height='300'></canvas>
-<script src="/js/sensors.js"></script>
 <script>
     window.addEventListener('load', function() {
         window.loadDiskEvolutionChart(document.getElementById('diskevolution-chart'));
