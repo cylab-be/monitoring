@@ -298,7 +298,7 @@ window.loadDiskEvolutionChart = function(element) {
  * Netstat
  */
 
-window.loadDiskEvolutionChart = function(element) {
+window.monitorNetstatChart = function(element) {
     var ctx = element.getContext('2d');
     var config = {
         type: 'line',
