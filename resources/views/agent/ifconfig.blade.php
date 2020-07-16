@@ -13,7 +13,6 @@
 </table>
 
 <canvas id="ifconfig-chart" width='400' height='300'></canvas>
-<script src="/js/sensor.ifconfig.js"></script>
 <script>
     window.addEventListener('load', function() {
         window.monitorIfconfigChart(document.getElementById('ifconfig-chart'));
