@@ -26,8 +26,16 @@ test:php72:
   script:
     - vendor/bin/phpunit --coverage-text --colors=never
     - vendor/bin/phpcs
-    - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
     - vendor/bin/phpstan analyze --memory-limit=512M
+
+# The latest versions of PHP CPD requires PHP7.3
+test:cpd:
+  stage: test
+  image: cylab/php73
+  before_script:
+    - composer require --dev sebastian/phpcpd:^6.0.3
+  script:
+    - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
 
 test:dependencies:
   image: cylab/php72
