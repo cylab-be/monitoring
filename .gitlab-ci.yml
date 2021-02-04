@@ -29,6 +29,12 @@ test:php72:
     - vendor/bin/phpcpd app/ config/ database/ public/ resources/ routes/ tests/
     - vendor/bin/phpstan analyze --memory-limit=512M
 
+test:dependencies:
+  image: cylab/php72
+  script:
+    # in cylab/php72, security-checker is already installed...
+    - ~/.composer/vendor/bin/security-checker security:check composer.lock
+
 test:gitleaks:
   stage: test
   image: 
