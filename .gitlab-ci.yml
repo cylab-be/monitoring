@@ -41,7 +41,7 @@ test:gitleaks:
     name: "zricethezav/gitleaks"
     entrypoint: [""]
   script:
-    - gitleaks -v --repo-path=./ --config=gitleaks.toml
+    - gitleaks -v -p ./ -c gitleaks.toml
     
 # deploy only when pushed to branch master
 # and tests succeeded
