@@ -51,7 +51,7 @@ class LoadAvg extends AbstractSensor
         return \App\Status::OK;
     }
 
-    public function parse($string) : float
+    public function parse($string) : string
     {
         return current(explode(" ", $string));
     }

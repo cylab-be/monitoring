@@ -6,6 +6,29 @@ use App\Mongo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * App\Server
+ *
+ * @property int $id
+ * @property int $organization_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $name
+ * @property string $token
+ * @property string $read_token
+ * @property-read \App\Organization $organization
+ * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Server query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereOrganizationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereReadToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Server whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Server extends Model
 {
 
