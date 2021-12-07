@@ -40,7 +40,7 @@ test:gitleaks:
     name: "zricethezav/gitleaks"
     entrypoint: [""]
   script:
-    - gitleaks detect -v -p ./ -c gitleaks.toml
+    - gitleaks detect -v -c gitleaks.toml ./
     
 # deploy only when pushed to branch master
 # and tests succeeded
