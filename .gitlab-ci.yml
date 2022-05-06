@@ -40,6 +40,10 @@ test:gitleaks:
     name: "zricethezav/gitleaks"
     entrypoint: [""]
   script:
+    # to avoid
+    # fatal: unsafe repository ('/builds/...' is owned by someone else)
+    # with recent git versions
+    - git config --global --add safe.directory $CI_PROJECT_DIR
     - gitleaks detect -v -c gitleaks.toml ./
     
 # deploy only when pushed to branch master
