@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Notification;
 use App\Organization;
 use App\Server;
 use App\ServerInfo;
