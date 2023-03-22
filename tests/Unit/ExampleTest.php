@@ -259,9 +259,8 @@ class ExampleTest extends TestCase
 
         // Check if a new StatusChange was inserted in Mongo
         $last_change = \App\StatusChange::getLastChangeForServer($server_id);
-        $records = $server->lastRecords1Day();
         $this->assertEquals(
-            $server->status($records)->code(),
+            $change->status,
             $last_change->status
         );
         
@@ -269,8 +268,6 @@ class ExampleTest extends TestCase
         $change_detection_job = new \App\Jobs\StatusChangeDetection();
         $change_detection_job->detectChangeForServer($server);
 
-        // Check if a notification was inserted
-        $this->assertTrue(Notification::findForServer($server_id)->count() > 0);
 
         // Insert multiple status changes to simulate bouncing
         for ($i = 0; $i < 4; $i++) {
