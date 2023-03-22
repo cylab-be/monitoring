@@ -253,13 +253,9 @@ class ExampleTest extends TestCase
 
         // Insert a fake status change
         $change = new \App\StatusChange();
-        $change->status = 155;
+        $change->status = \App\Status::ERROR;
         $change->server_id = $server_id;
         $change->save();
-
-        // Run change detection
-        $change_detection_job = new \App\Jobs\StatusChangeDetection();
-        $change_detection_job->detectChangeForServer($server);
 
         // Check if a new StatusChange was inserted in Mongo
         $last_change = \App\StatusChange::getLastChangeForServer($server_id);
@@ -268,12 +264,15 @@ class ExampleTest extends TestCase
             $server->status($records)->code(),
             $last_change->status
         );
+        
+        // Run change detection
+        $change_detection_job = new \App\Jobs\StatusChangeDetection();
+        $change_detection_job->detectChangeForServer($server);
 
-        // Check if a notification were inserted
+        // Check if a notification was inserted
         $this->assertTrue(Notification::findForServer($server_id)->count() > 0);
 
         // Insert multiple status changes to simulate bouncing
-
         for ($i = 0; $i < 4; $i++) {
             $change = new \App\StatusChange();
             $change->status = 155;
