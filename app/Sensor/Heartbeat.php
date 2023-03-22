@@ -46,8 +46,9 @@ class Heartbeat extends \App\AbstractSensor
             $delta = \time() - $record->time;
         }
 
+        // > 15 minutes
         if ($delta > 900) {
-            return \App\Status::WARNING;
+            return \App\Status::ERROR;
         }
 
         return \App\Status::OK;

@@ -68,6 +68,11 @@ class StatusChangeDetection implements ShouldQueue
 
     public function sendNotificationIfRequired(StatusChange $change)
     {
+        // Only send a notification if server changes to status "error"
+        if ($change->status < \App\Status::ERROR) {
+            return;
+        }
+        
         $server = $change->server();
         $server_id = $server->id;
 
