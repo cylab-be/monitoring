@@ -9,10 +9,10 @@ cache:
   paths:
     - composer-cache/
 
-# Test with PHP7.2 
-test:php72:
+# Test with PHP7.4 
+test:php74:
   stage: test
-  image: cylab/php72
+  image: cylab/php74
   before_script:
     # Install all project dependencies
     - COMPOSER_CACHE_DIR=./composer-cache composer install
