@@ -9,13 +9,10 @@ cache:
   paths:
     - composer-cache/
 
-
 # Test with PHP7.2 
 test:php72:
   stage: test
   image: cylab/php72
-  services:
-    - mongo
   before_script:
     # Install all project dependencies
     - COMPOSER_CACHE_DIR=./composer-cache composer install
@@ -45,15 +42,4 @@ test:gitleaks:
     # with recent git versions
     - git config --global --add safe.directory $CI_PROJECT_DIR
     - gitleaks detect -v -c gitleaks.toml ./
-    
-# deploy only when pushed to branch master
-# and tests succeeded
-deploy:
-  stage: deploy
-  image: alpine
-  only:
-    - master
-  script:
-    - apk add wget
-    - wget "http://deployer.web-d.be/projects/19/deploy/CnyUff07McfEi7hQtHND7JWALkzKCmf4b4ddREUE"
     
