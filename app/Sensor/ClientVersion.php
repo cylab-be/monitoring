@@ -72,7 +72,7 @@ class ClientVersion extends \App\AbstractSensor
     {
         try {
             $latest_version = $this->latestVersion();
-        } catch (\ErrorException $ex) {
+        } catch (\Exception $ex) {
             return \App\Status::UNKNOWN;
         }
 
