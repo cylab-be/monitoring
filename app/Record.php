@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $time
  * @property int $server_id
  * @property Server $server
- * @property string $data
+ * @property array $data
  */
 class Record extends Model
 {

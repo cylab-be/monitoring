@@ -15,7 +15,7 @@ class LoadAvg extends AbstractSensor
 
     /**
      *
-     * @param array<Record> $records
+     * @param array<\App\Record> $records
      * @return string
      */
     public function report(array $records) : string

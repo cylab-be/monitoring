@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property int $server_id
- * @property string $change_id
+ * @property int $change_id
  * @property string $type
  * @property-read \App\Server $server
  * @method static \Illuminate\Database\Eloquent\Builder|Notification newModelQuery()
