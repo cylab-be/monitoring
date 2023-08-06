@@ -15,21 +15,21 @@ class Updates extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['updates'])) {
+        if (! isset($record->data['updates'])) {
             return "<p>No data available...</p>";
         }
 
-        return "<p>" . nl2br($record->updates) . "</p>";
+        return "<p>" . nl2br($record->data["updates"]) . "</p>";
     }
 
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record['updates'])) {
+        if (! isset($record->data['updates'])) {
             return \App\Status::UNKNOWN;
         }
 
-        $status = $this->parse($record->updates);
+        $status = $this->parse($record->data["updates"]);
         if ($status == null) {
             return \App\Status::UNKNOWN;
         }

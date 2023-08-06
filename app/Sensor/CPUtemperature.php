@@ -16,15 +16,17 @@ class CPUtemperature extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record["cpu-temperature"])) {
+        if (! isset($record->data["cpu-temperature"])) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"
                 . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
         }
-        $Cores = self::parseCPUtemperature($record['cpu-temperature']);
-        $CPUS=self::parseCPU($record['cpu-temperature']);
+        $Cores = self::parseCPUtemperature($record->data['cpu-temperature']);
+        $CPUS = self::parseCPU($record->data['cpu-temperature']);
+        
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th>Name</th><th>Temperature (°C)</th><th>T°crit (°C)</th></tr>";
+        
         foreach ($CPUS as $CPU) {
             $return .= "<tr><td>" . "<b>" ."CPU " . $CPU->number . "</td><td>"
                     . "<b>" . $CPU->value  . "</td><td>" . "<b>" . $CPU->critvalue . "</td></tr>";
@@ -42,18 +44,18 @@ class CPUtemperature extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record["cpu-temperature"])) {
+        if (! isset($record->data["cpu-temperature"])) {
             return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
-        foreach (self::parseCPU($record['cpu-temperature']) as $CPU) {
+        foreach (self::parseCPU($record->data['cpu-temperature']) as $CPU) {
             /* @var $CPU Cpu */
             $status = \App\Status::OK;
             if ($CPU->value > $CPU->critvalue) {
                 $status = \App\Status::WARNING;
             }
-            foreach (self::parseCPUtemperature($record['cpu-temperature']) as $Core) {
+            foreach (self::parseCPUtemperature($record->data['cpu-temperature']) as $Core) {
                 if ($Core->number == $CPU->number) {
                     if ($Core->value > $CPU->critvalue) {
                         $status = \App\Status::WARNING;
@@ -100,7 +102,7 @@ class CPUtemperature extends \App\AbstractSensor
         }
         return $CPUS;
     }
-    public function parseCPUtemperature($string) //cores (to associate with cpus only in report() )
+    public function parseCPUtemperature(string $string) //cores (to associate with cpus only in report() )
     {
         if ($string == null) {
             return [];

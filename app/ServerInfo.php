@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Carbon\Carbon;
+
 /**
  * Holds info about a server.
  */
@@ -11,7 +13,7 @@ class ServerInfo
 
     private $record;
 
-    public function __construct($record)
+    public function __construct(Record $record)
     {
         $this->record = $record;
     }
@@ -22,11 +24,11 @@ class ServerInfo
      */
     public function uptime() : string
     {
-        if (! isset($this->record["upaimte"])) {
+        if (! isset($this->record->data["upaimte"])) {
             return "unknown";
         }
 
-        return $this->parseUptime($this->record->upaimte);
+        return $this->parseUptime($this->record->data["upaimte"]);
     }
 
     public function parseUptime(string $string) : string
@@ -38,11 +40,11 @@ class ServerInfo
 
     public function uuid()
     {
-        if (! isset($this->record["system"])) {
-            return "";
+        if (! isset($this->record->data["system"])) {
+            return "unknown";
         }
 
-        return $this->parseUUID($this->record->system);
+        return $this->parseUUID($this->record->data["system"]);
     }
 
     const UUID = "/\s*UUID: (.*)/m";
@@ -60,16 +62,16 @@ class ServerInfo
 
     public function cpuinfo() : array
     {
-        if (! isset($this->record["cpu"])) {
-            return ["threads" => 0,
-                "cpu" => "unknown"];
+        if (! isset($this->record->data["cpu"])) {
+            return ["threads" => 0, "cpu" => "unknown"];
         }
 
-        return $this->parseCpuinfo($this->record->cpu);
+        return $this->parseCpuinfo($this->record->data["cpu"]);
     }
 
     const CPU_INFO = "/^model name	: (.+)$/m";
-    public function parseCpuinfo($string) : array
+    
+    public function parseCpuinfo(string $string) : array
     {
         $matches = array();
         preg_match_all(self::CPU_INFO, $string, $matches);
@@ -90,15 +92,16 @@ class ServerInfo
      */
     public function memoryTotal()
     {
-        if (! isset($this->record["memory"])) {
+        if (! isset($this->record->data["memory"])) {
             return 0;
         }
 
-        return $this->parseMeminfo($this->record->memory);
+        return $this->parseMeminfo($this->record->data["memory"]);
     }
 
     const MEMINFO = "/^MemTotal:\\s+([0-9]+) kB$/m";
-    public function parseMeminfo($string)
+    
+    public function parseMeminfo(string $string)
     {
         $matches = array();
         preg_match(self::MEMINFO, $string, $matches);
@@ -108,15 +111,15 @@ class ServerInfo
 
     public function lsb()
     {
-        if (! isset($this->record["lsb"])) {
+        if (! isset($this->record->data["lsb"])) {
             return "unknown";
         }
 
-        return $this->parseLsb($this->record->lsb);
+        return $this->parseLsb($this->record->data["lsb"]);
     }
 
     const LSB = "/^Description:	(.+)$/m";
-    public function parseLsb($string) : string
+    public function parseLsb(string $string) : string
     {
         $matches = [];
         preg_match(self::LSB, $string, $matches);
@@ -125,6 +128,7 @@ class ServerInfo
 
 
     const REGEX_MANUFACTURER = "/^\s*Manufacturer: (.*)$/m";
+    
     public function parseManufacturer(string $string) : string
     {
         $matches = [];
@@ -138,11 +142,11 @@ class ServerInfo
 
     public function manufacturer()
     {
-        if (! isset($this->record["system"])) {
+        if (! isset($this->record->data["system"])) {
             return "unknown";
         }
 
-        return $this->parseManufacturer($this->record->system);
+        return $this->parseManufacturer($this->record->data["system"]);
     }
 
 
@@ -158,11 +162,11 @@ class ServerInfo
 
     public function productName()
     {
-        if (! isset($this->record["system"])) {
+        if (! isset($this->record->data["system"])) {
             return "unknown";
         }
 
-        return $this->parseProductName($this->record->system);
+        return $this->parseProductName($this->record->data["system"]);
     }
 
         /**
@@ -171,14 +175,14 @@ class ServerInfo
      */
     public function lastRecordTime()
     {
-        $hearbeat = new \App\Sensor\Heartbeat();
-        return $hearbeat->lastRecordTime($this->record);
+        return Carbon::createFromTimestamp($this->record->time);
     }
 
     public function clientVersion() : string
     {
-        $sensor = new \App\Sensor\ClientVersion();
-        return $sensor->installedVersion([$this->record]);
+        // $sensor = new \App\Sensor\ClientVersion();
+        // return $sensor->installedVersion([$this->record]);
+        return "";
     }
 
     public function lastClientUrl()

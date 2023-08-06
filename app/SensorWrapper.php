@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Support\Facades\Log;
 
+/**
+ * A wrapper around a sensor, used to catch possible exceptions.
+ */
 class SensorWrapper
 {
     private $sensor;
@@ -12,7 +15,7 @@ class SensorWrapper
     private $report;
     private $status;
 
-    public function __construct(Sensor $sensor, array $records)
+    public function __construct(Sensor $sensor, $records)
     {
         $this->sensor = $sensor;
         $this->records = $records;

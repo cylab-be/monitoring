@@ -14,11 +14,11 @@ class Perccli extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['perccli'])) {
+        if (! isset($record->data['perccli'])) {
             return "<p>No data available...</p>";
         }
 
-        $drives = $this->parse($record->perccli);
+        $drives = $this->parse($record->data["perccli"]);
         $return = "<table class='table table-sm'>"
                 . "<tr>"
                 . "<th>Slot</th>"
@@ -41,11 +41,11 @@ class Perccli extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record['perccli'])) {
+        if (! isset($record->data['perccli'])) {
             return \App\Status::UNKNOWN;
         }
 
-        $drives = $this->parse($record->ssacli);
+        $drives = $this->parse($record->data["perccli"]);
         foreach ($drives as $disk) {
             if ($disk->status != "Onln") {
                 return \App\Status::WARNING;

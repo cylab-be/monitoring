@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use \App\AbstractSensor;
+use \App\Status;
 
 /**
  * Description of LoadAvg
@@ -12,18 +13,22 @@ use \App\AbstractSensor;
 class LoadAvg extends AbstractSensor
 {
 
+    /**
+     * 
+     * @param array<Record> $records
+     * @return string
+     */
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['loadavg'])) {
+        if (! isset($record->data['loadavg'])) {
             return "<p>No data available...</p>";
         }
-        $field = $record->loadavg;
-        $current_load = $this->parse($field);
+        $current_load = $this->parse($record->data["loadavg"]);
 
-
-        return view("agent.loadavg", [
-            "current_load" => $current_load]);
+        return view(
+                "agent.loadavg",
+                ["current_load" => $current_load]);
     }
 
     public function loadPoints(array $records)
@@ -32,7 +37,7 @@ class LoadAvg extends AbstractSensor
         foreach ($records as $record) {
             $points[] = new Point(
                 $record->time * 1000,
-                $this->parse($record->loadavg)
+                $this->parse($record->data["loadavg"])
             );
         }
         return $points;
@@ -42,16 +47,16 @@ class LoadAvg extends AbstractSensor
     {
         $max = $this->server()->info()->cpuinfo()["threads"];
         foreach ($records as $record) {
-            $load = $this->parse($record->loadavg);
+            $load = $this->parse($record->data["loadavg"]);
             if ($load > $max) {
-                return \App\Status::WARNING;
+                return Status::WARNING;
             }
         }
 
-        return \App\Status::OK;
+        return Status::OK;
     }
 
-    public function parse($string) : string
+    public function parse(string $string) : string
     {
         return current(explode(" ", $string));
     }

@@ -20,11 +20,11 @@ class Ssacli extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['ssacli'])) {
+        if (! isset($record->data['ssacli'])) {
             return "<p>No data available...</p>";
         }
 
-        $disks = $this->parse($record->ssacli);
+        $disks = $this->parse($record->data["ssacli"]);
         $return = "<table class='table table-sm'>"
                 . "<tr>"
                 . "<th>Port</th>"
@@ -51,11 +51,11 @@ class Ssacli extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record['ssacli'])) {
+        if (! isset($record->data['ssacli'])) {
             return \App\Status::UNKNOWN;
         }
 
-        $disks = $this->parse($record->ssacli);
+        $disks = $this->parse($record->data["ssacli"]);
         foreach ($disks as $disk) {
             if ($disk->status != "OK") {
                 return \App\Status::WARNING;

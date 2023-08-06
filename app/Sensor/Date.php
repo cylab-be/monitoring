@@ -1,12 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Sensor;
+
+use App\Record;
 
 /**
  * Description of Reboot
@@ -15,7 +11,6 @@ namespace App\Sensor;
  */
 class Date extends \App\AbstractSensor
 {
-    //put your code here
     public function report(array $records) : string
     {
         return "<p>Time drift: " . $this->delta(end($records)) . " seconds</p>";
@@ -35,12 +30,12 @@ class Date extends \App\AbstractSensor
         return \App\Status::OK;
     }
 
-    public function delta($record)
+    public function delta(Record $record)
     {
-        if (! isset($record["date"])) {
+        if (! isset($record->data["date"])) {
             return null;
         }
 
-        return $record->date - $record->time;
+        return $record->data["date"] - $record->time;
     }
 }

@@ -22,14 +22,7 @@ class ClientVersion extends \App\AbstractSensor
             return self::$manifest;
         }
 
-        $options = [
-            'timeout' => 5.0];
-
-        $proxy = config("app.proxy", null);
-        if ($proxy != null) {
-            $options["proxy"] = $proxy;
-        }
-
+        $options = ['timeout' => 5.0];
         $client = new Client($options);
 
         try {
@@ -72,13 +65,11 @@ class ClientVersion extends \App\AbstractSensor
             return "none";
         }
 
-        return $last_record->version;
+        return $last_record->data["version"];
     }
 
     public function status(array $records) : int
     {
-        $latest_version = "unknown";
-
         try {
             $latest_version = $this->latestVersion();
         } catch (\ErrorException $ex) {

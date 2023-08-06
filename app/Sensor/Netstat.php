@@ -25,7 +25,7 @@ class Netstat extends AbstractSensor
 
         $reports = [];
         foreach ($records as $record) {
-            $report = $this->parse($record['netstat-statistics']);
+            $report = $this->parse($record->data['netstat-statistics']);
             $report->time = $record->time;
             $reports[] = $report;
         }

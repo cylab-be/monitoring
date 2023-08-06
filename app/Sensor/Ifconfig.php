@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use \App\AbstractSensor;
+use \App\Record;
 
 /**
  * Description of MemInfo
@@ -14,9 +15,8 @@ class Ifconfig extends AbstractSensor
 
     public function report(array $records) : string
     {
-
         $record = end($records);
-        if (! isset($record['ifconfig'])) {
+        if (! isset($record->data['ifconfig'])) {
             return "<p>No data available...</p>";
         }
 
@@ -97,9 +97,9 @@ class Ifconfig extends AbstractSensor
     const RX = '/^\s+RX packets (?>\d+)  bytes (\d+)/m';
     const TX = '/^\s+TX packets (?>\d+)  bytes (\d+)/m';
 
-    public function parseIfconfigRecord($record)
+    public function parseIfconfigRecord(Record $record)
     {
-        $interfaces = $this->parseIfconfig($record->ifconfig);
+        $interfaces = $this->parseIfconfig($record->data["ifconfig"]);
         foreach ($interfaces as $interface) {
             $interface->time = $record->time;
         }
@@ -113,7 +113,7 @@ class Ifconfig extends AbstractSensor
      * @param string $string
      * @return \App\Sensor\NetworkInterface[]
      */
-    public function parseIfconfig(string $string)
+    public function parseIfconfig(string $string) : array
     {
 
         $allowed_prefixes = ["en", "eth", "wl", "venet"];

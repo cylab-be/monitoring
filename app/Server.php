@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Mongo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
@@ -72,15 +71,16 @@ class Server extends Model
     {
         return $this->belongsTo("App\Organization");
     }
+    
+    public function records()
+    {
+        return $this->hasMany(Record::class);
+    }
 
-    public function lastRecord()
+    public function lastRecord() : ?Record
     {
         if ($this->last_record == null) {
-            $collection = Mongo::get()->monitoring->records;
-            $this->last_record =  $collection->findOne(
-                ["server_id" => $this->id],
-                ["sort" => ["_id" => -1]]
-            );
+            $this->last_record = $this->records()->orderBy("time", "desc")->first();
         }
 
         return $this->last_record;
@@ -88,21 +88,16 @@ class Server extends Model
 
     /**
      * Get the last day of data.
-     * @return array
      */
     public function lastRecords1Day() : array
     {
-        if ($this->records_1day !== null) {
-            return $this->records_1day;
+        if ($this->records_1day == null) {
+            $start = time() - 24 * 3600;
+            $this->records_1day = $this->records()->where("time", ">", $start)->get()->all();
         }
 
-        $start = time() - 24 * 3600;
-
-        $this->records_1day = Mongo::get()->monitoring->records->find([
-                "server_id" => $this->id,
-                "time" => ['$gte' => $start]])
-                ->toArray();
         return $this->records_1day;
+
     }
 
     public function hasData() : bool
@@ -167,10 +162,11 @@ class Server extends Model
 
     public function getChanges($count = 10)
     {
-        return StatusChange::getLastChangesForServer($this->id, $count);
+        return [];
+        //return StatusChange::getLastChangesForServer($this->id, $count);
     }
 
-    public static function id($id) : Server
+    public static function id(int $id) : Server
     {
         return self::where("id", $id)->first();
     }

@@ -15,11 +15,11 @@ class Inodes extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['inodes'])) {
+        if (! isset($record->data['inodes'])) {
             return "<p>No data available...</p>";
         }
 
-        $disks = $this->parse($record->inodes);
+        $disks = $this->parse($record->data["inodes"]);
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
         foreach ($disks as $disk) {
@@ -34,12 +34,12 @@ class Inodes extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record['inodes'])) {
+        if (! isset($record->data['inodes'])) {
             return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
-        foreach ($this->parse($record->inodes) as $disk) {
+        foreach ($this->parse($record->data["inodes"]) as $disk) {
             /* @var $disk InodesDisk */
             $status = \App\Status::OK;
             if ($disk->usedPercent() > 80) {
@@ -53,7 +53,7 @@ class Inodes extends \App\AbstractSensor
         return max($all_status);
     }
 
-    public function parse($string)
+    public function parse(string $string)
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);

@@ -17,14 +17,14 @@ class ListeningPorts extends \App\AbstractSensor
         $record = end($records);
 
         // "netstat-listen-tcp" "netstat-listen-udp"
-        if (! isset($record["netstat-listen-udp"])
-                && ! isset($record["netstat-listen-tcp"])) {
+        if (! isset($record->data["netstat-listen-udp"])
+                && ! isset($record->data["netstat-listen-tcp"])) {
             return "<p>No data available...</p>";
         }
 
         $ports = array_merge(
-            $this->parse($record["netstat-listen-tcp"]),
-            $this->parse($record["netstat-listen-udp"])
+            $this->parse($record->data["netstat-listen-tcp"]),
+            $this->parse($record->data["netstat-listen-udp"])
         );
 
         usort(

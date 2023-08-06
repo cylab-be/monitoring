@@ -15,11 +15,11 @@ class Disks extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record['disks'])) {
+        if (! isset($record->data['disks'])) {
             return "<p>No data available...</p>";
         }
 
-        $partitions = self::parse($record->disks);
+        $partitions = self::parse($record->data["disks"]);
         $return = "<table class='table table-sm'>";
         $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
         foreach ($partitions as $partition) {
@@ -34,12 +34,12 @@ class Disks extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record['disks'])) {
+        if (! isset($record->data['disks'])) {
             return \App\Status::UNKNOWN;
         }
 
         $all_status = [];
-        foreach (self::parse($record->disks) as $partition) {
+        foreach (self::parse($record->data["disks"]) as $partition) {
             /* @var $partition Partition */
             $status = \App\Status::OK;
             if ($partition->usedPercent() > 80) {
@@ -79,7 +79,7 @@ class Disks extends \App\AbstractSensor
 
     public static function fromRecord($record) : array
     {
-        $partitions = self::parse($record->disks);
+        $partitions = self::parse($record->data["disks"]);
         $time = $record->time;
         foreach ($partitions as $partition) {
             $partition->time = $time;

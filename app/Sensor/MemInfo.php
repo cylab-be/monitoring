@@ -14,7 +14,6 @@ class MemInfo extends AbstractSensor
 
     public function report(array $records) : string
     {
-
         return view("agent.meminfo", []);
     }
 
@@ -22,7 +21,7 @@ class MemInfo extends AbstractSensor
     {
         $used = [];
         foreach ($records as $record) {
-            $meminfo = $this->parseMeminfo($record->memory);
+            $meminfo = $this->parseMeminfo($record->data["memory"]);
             $used[] = new Point(
                 $record->time * 1000,
                 $meminfo->used() / 1000
@@ -36,7 +35,7 @@ class MemInfo extends AbstractSensor
     {
         $points = [];
         foreach ($records as $record) {
-            $meminfo = $this->parseMeminfo($record->memory);
+            $meminfo = $this->parseMeminfo($record->data["memory"]);
             $points[] = new Point(
                 $record->time * 1000,
                 $meminfo->cached / 1000
@@ -49,7 +48,7 @@ class MemInfo extends AbstractSensor
     public function status(array $records) : int
     {
         foreach ($records as $record) {
-            $mem = $this->parseMeminfo($record->memory);
+            $mem = $this->parseMeminfo($record->data["memory"]);
             if ($mem->usedRatio() > 0.8) {
                 return  \App\Status::WARNING;
             }
@@ -63,7 +62,7 @@ class MemInfo extends AbstractSensor
     const MEMFREE = "/^MemFree:\\s+([0-9]+) kB$/m";
     const MEMCACHED = "/^Cached:\\s+([0-9]+) kB$/m";
 
-    public function parseMeminfo($string)
+    public function parseMeminfo(string $string) : Memory
     {
         return new Memory(
             $this->pregMatchOne(self::MEMTOTAL, $string),

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Server;
-use App\Mongo;
+use App\Record;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +19,12 @@ Route::post('record/{server}', function (Request $request, Server $server) {
     if ($server->token !== $request->get("token", "")) {
         abort(403);
     }
-
-    $data = $request->all();
-    $data["server_id"] = $server->id;
-    $data["time"] = time();
-
-    $collection = Mongo::get()->monitoring->records;
-    $collection->insertOne($data);
+    
+    $record = new Record();
+    $record->server_id = $server->id;
+    $record->time = time();
+    $record->data = $request->all();
+    $record->save();
 
     return "ok";
 });

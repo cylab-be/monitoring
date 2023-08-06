@@ -15,12 +15,12 @@ class USBtemperature extends \App\AbstractSensor
     public function report(array $records) : string
     {
         $record = end($records);
-        if (! isset($record["TEMPer"])) {
+        if (! isset($record->data["TEMPer"])) {
             return "<p>No data available...</p>"
                 . "<p>Maybe <code>TEMPer</code> is not installed.</p>"
                 . "<p>You can install it following the tutorial on the Gitlab repository</p>";
         }
-        $temper = self::parse($record['TEMPer']);
+        $temper = self::parse($record->data['TEMPer']);
         $return= "<p>Ambient temperature (USB TEMPer) : " . $temper->temp[1] . "." . $temper->temp[2] . " °C " . "</p>";
         return $return;
     }
@@ -28,11 +28,11 @@ class USBtemperature extends \App\AbstractSensor
     public function status(array $records) : int
     {
         $record = end($records);
-        if (! isset($record["TEMPer"])) {
+        if (! isset($record->data["TEMPer"])) {
             return \App\Status::UNKNOWN;
         }
         $status = \App\Status::OK;
-        $USBTemp = self::parse($record['TEMPer']);
+        $USBTemp = self::parse($record->data['TEMPer']);
         if ((int)($USBTemp->temp[1]) > 60) {
             $status = \App\Status::WARNING;
         }
