@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\User;
 use App\Organization;
 use App\Server;
+use App\Record;
 use App\ServerInfo;
 use App\Sensor\Disks;
 use App\Sensor\CPUtemperature;
@@ -17,16 +18,6 @@ class ExampleTest extends TestCase
 {
 
     use RefreshDatabase;
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
-    {
-        $this->assertTrue(true);
-    }
 
     public function testClassInstance()
     {
@@ -151,7 +142,7 @@ class ExampleTest extends TestCase
     public function testMeminfo()
     {
         $string = file_get_contents(__DIR__ . "/meminfo");
-        $mem_total = (new ServerInfo(null))->parseMeminfo($string);
+        $mem_total = (new ServerInfo(new Record()))->parseMeminfo($string);
         $this->assertEquals("15954328", $mem_total);
     }
 
@@ -161,7 +152,7 @@ class ExampleTest extends TestCase
     public function testCpuinfo()
     {
         $string = file_get_contents(__DIR__ . "/cpuinfo");
-        $cpuinfo = (new ServerInfo(null))->parseCpuinfo($string);
+        $cpuinfo = (new ServerInfo(new Record()))->parseCpuinfo($string);
         $this->assertEquals(8, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
@@ -172,13 +163,13 @@ class ExampleTest extends TestCase
     public function testUptime()
     {
         $string = "24439.45 190434.65";
-        $uptime = (new ServerInfo(null))->parseUptime($string);
+        $uptime = (new ServerInfo(new Record()))->parseUptime($string);
         $this->assertEquals("6 hours", $uptime);
     }
 
     public function testUUID()
     {
-        $uuid = (new ServerInfo(null))->parseUUID(file_get_contents(__DIR__ . "/system"));
+        $uuid = (new ServerInfo(new Record()))->parseUUID(file_get_contents(__DIR__ . "/system"));
         $this->assertEquals("74F7C34C-2924-11B2-A85C-DC427DCA7109", $uuid);
     }
 
@@ -188,7 +179,7 @@ class ExampleTest extends TestCase
     public function testCpuinfoSingleCPU()
     {
         $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
-        $cpuinfo = (new ServerInfo(null))->parseCpuinfo($string);
+        $cpuinfo = (new ServerInfo(new Record()))->parseCpuinfo($string);
         $this->assertEquals(1, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
@@ -196,14 +187,14 @@ class ExampleTest extends TestCase
     public function testManufacturer()
     {
         $string = file_get_contents(__DIR__ . "/system");
-        $manufacturer = (new ServerInfo(null))->parseManufacturer($string);
+        $manufacturer = (new ServerInfo(new Record()))->parseManufacturer($string);
         $this->assertEquals("LENOVO", $manufacturer);
     }
 
     public function testProductName()
     {
         $string = file_get_contents(__DIR__ . "/system");
-        $manufacturer = (new ServerInfo(null))->parseProductName($string);
+        $manufacturer = (new ServerInfo(new Record()))->parseProductName($string);
         $this->assertEquals("20J60018MB", $manufacturer);
     }
 
@@ -240,6 +231,14 @@ class ExampleTest extends TestCase
         $server->save();
 
         $server_id = $server->id;
+        
+        $record = new Record();
+        $record->server_id = $server_id;
+        $record->time = time();
+        $record->data = array();
+        $record->save();
+        
+        $record_id = $record->id;
 
         $user = new User();
         $user->name = "Test";
@@ -248,16 +247,16 @@ class ExampleTest extends TestCase
         $user->save();
         $organization->users()->attach($user->id);
 
-        $this->assertEquals($server_id, \App\StatusChange::getLastChangeForServer(1)->server_id);
-
         // Insert a fake status change
         $change = new \App\StatusChange();
         $change->status = \App\Status::ERROR;
+        $change->time = time();
         $change->server_id = $server_id;
+        $change->record_id = $record_id;
         $change->save();
 
-        // Check if a new StatusChange was inserted in Mongo
-        $last_change = \App\StatusChange::getLastChangeForServer($server_id);
+        // Check if a new StatusChange was correctly saved
+        $last_change = $server->lastChange();
         $this->assertEquals(
             $change->status,
             $last_change->status
@@ -273,6 +272,8 @@ class ExampleTest extends TestCase
             $change = new \App\StatusChange();
             $change->status = 155;
             $change->server_id = $server_id;
+            $change->time = time() + $i;
+            $change->record_id = $record_id;
             $change->save();
 
             // Run change detection
