@@ -2,7 +2,7 @@
 
 namespace App\Sensor;
 
-use \App\AbstractSensor;
+use \App\Sensor;
 use \App\Record;
 
 /**
@@ -10,7 +10,7 @@ use \App\Record;
  *
  * @author tibo
  */
-class Ifconfig extends AbstractSensor
+class Ifconfig extends Sensor
 {
 
     public function report(array $records) : string

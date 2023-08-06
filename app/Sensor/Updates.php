@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Updates extends \App\AbstractSensor
+class Updates extends \App\Sensor
 {
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";

@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Perccli extends \App\AbstractSensor
+class Perccli extends \App\Sensor
 {
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 

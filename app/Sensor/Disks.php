@@ -2,12 +2,14 @@
 
 namespace App\Sensor;
 
+use \App\Sensor;
+
 /**
  * Description of Update
  *
  * @author tibo
  */
-class Disks extends \App\AbstractSensor
+class Disks extends Sensor
 {
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";

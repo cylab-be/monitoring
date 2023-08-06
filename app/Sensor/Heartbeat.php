@@ -2,12 +2,14 @@
 
 namespace App\Sensor;
 
+use \App\Sensor;
+
 /**
  * Description of Reboot
  *
  * @author tibo
  */
-class Heartbeat extends \App\AbstractSensor
+class Heartbeat extends Sensor
 {
     //put your code here
     public function report(array $records) : string

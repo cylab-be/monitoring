@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Inodes extends \App\AbstractSensor
+class Inodes extends \App\Sensor
 {
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";

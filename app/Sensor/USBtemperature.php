@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author helha
  */
-class USBtemperature extends \App\AbstractSensor
+class USBtemperature extends \App\Sensor
 {
     //get device responce (8 bytes) :
     const REGEXP = "/^(80 80)\s*([A-z\/0-9]+) \s*([A-z\/0-9]+)/m";

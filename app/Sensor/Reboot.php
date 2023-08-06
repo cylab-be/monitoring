@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class Reboot extends \App\AbstractSensor
+class Reboot extends \App\Sensor
 {
     
     public function report(array $records) : string

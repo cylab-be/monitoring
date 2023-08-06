@@ -2,12 +2,14 @@
 
 namespace App\Sensor;
 
+use \App\Sensor;
+
 /**
      * Description of Update
  *
  * @author helha
  */
-class CPUtemperature extends \App\AbstractSensor
+class CPUtemperature extends Sensor
 {
 
     const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";

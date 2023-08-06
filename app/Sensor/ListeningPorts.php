@@ -7,7 +7,7 @@ namespace App\Sensor;
  *
  * @author tibo
  */
-class ListeningPorts extends \App\AbstractSensor
+class ListeningPorts extends \App\Sensor
 {
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";

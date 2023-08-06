@@ -2,7 +2,7 @@
 
 namespace App\Sensor;
 
-use \App\AbstractSensor;
+use \App\Sensor;
 use \App\Status;
 
 /**
@@ -10,7 +10,7 @@ use \App\Status;
  *
  * @author tibo
  */
-class LoadAvg extends AbstractSensor
+class LoadAvg extends Sensor
 {
 
     /**

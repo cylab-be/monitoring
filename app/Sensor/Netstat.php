@@ -2,14 +2,14 @@
 
 namespace App\Sensor;
 
-use \App\AbstractSensor;
+use \App\Sensor;
 
 /**
  * Parse netstat
  *
  * @author tibo
  */
-class Netstat extends AbstractSensor
+class Netstat extends Sensor
 {
 
     public function report(array $records) : string

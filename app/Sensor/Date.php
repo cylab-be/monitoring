@@ -2,6 +2,7 @@
 
 namespace App\Sensor;
 
+use \App\Sensor;
 use App\Record;
 use App\Status;
 
@@ -10,7 +11,7 @@ use App\Status;
  *
  * @author tibo
  */
-class Date extends \App\AbstractSensor
+class Date extends Sensor
 {
     public function report(array $records) : string
     {

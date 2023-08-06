@@ -2,7 +2,9 @@
 
 namespace App\Sensor;
 
-class DiskEvolution extends \App\AbstractSensor
+use \App\Sensor;
+
+class DiskEvolution extends Sensor
 {
     public function report(array $records) : string
     {

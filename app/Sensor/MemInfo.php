@@ -2,14 +2,14 @@
 
 namespace App\Sensor;
 
-use \App\AbstractSensor;
+use \App\Sensor;
 
 /**
  * Description of MemInfo
  *
  * @author tibo
  */
-class MemInfo extends AbstractSensor
+class MemInfo extends Sensor
 {
 
     public function report(array $records) : string

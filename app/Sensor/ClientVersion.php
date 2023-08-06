@@ -2,6 +2,8 @@
 
 namespace App\Sensor;
 
+use \App\Sensor;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -10,7 +12,7 @@ use GuzzleHttp\Exception\RequestException;
  *
  * @author tibo
  */
-class ClientVersion extends \App\AbstractSensor
+class ClientVersion extends Sensor
 {
 
     const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
