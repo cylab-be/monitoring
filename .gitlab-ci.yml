@@ -26,9 +26,9 @@ test:php72:
     - vendor/bin/phpstan analyze --memory-limit=512M
 
 test:dependencies:
-  image: cylab/php72
+  image: cylab/php74
   script:
-    # in cylab/php72, security-checker is already installed...
+    # in cylab/php74, security-checker is already installed...
     - ~/.composer/vendor/bin/security-checker security:check composer.lock
 
 test:gitleaks:
