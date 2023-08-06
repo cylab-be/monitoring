@@ -13,6 +13,9 @@ class ServerInfo
 
     private $record;
 
+    /**
+     * @param Record $record
+     */
     public function __construct(Record $record)
     {
         $this->record = $record;
@@ -183,11 +186,5 @@ class ServerInfo
         // $sensor = new \App\Sensor\ClientVersion();
         // return $sensor->installedVersion([$this->record]);
         return "";
-    }
-
-    public function lastClientUrl()
-    {
-        $client_sensor = new \App\Sensor\ClientVersion();
-        return $client_sensor->latestUrl();
     }
 }

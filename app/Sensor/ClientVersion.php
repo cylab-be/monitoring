@@ -16,7 +16,7 @@ class ClientVersion extends \App\AbstractSensor
     const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
     private static $manifest = null;
 
-    public function manifest()
+    public static function manifest()
     {
         if (!is_null(self::$manifest)) {
             return self::$manifest;
@@ -44,12 +44,12 @@ class ClientVersion extends \App\AbstractSensor
      */
     public function latestVersion() : string
     {
-        return $this->manifest()["version"];
+        return self::manifest()["version"];
     }
 
-    public function latestUrl() : string
+    public static function latestUrl() : string
     {
-        return $this->manifest()["url"];
+        return self::manifest()["url"];
     }
 
     public function report(array $records) : string

@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Record;
+use App\Status;
 
 /**
  * Description of Reboot
@@ -18,16 +19,20 @@ class Date extends \App\AbstractSensor
 
     public function status(array $records) : int
     {
+        if (count($records) == 0) {
+            return Status::UNKNOWN;
+        }
+        
         $delta = $this->delta(end($records));
         if ($delta == null) {
-            return \App\Status::UNKNOWN;
+            return Status::UNKNOWN;
         }
 
         if (abs($delta) > 10) {
-            return \App\Status::WARNING;
+            return Status::WARNING;
         }
 
-        return \App\Status::OK;
+        return Status::OK;
     }
 
     public function delta(Record $record)

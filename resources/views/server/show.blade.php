@@ -13,6 +13,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
+                    @if ($server->hasData())
                     <p>{!! $server->status()->badge() !!}</p>
 
                     <p>
@@ -24,17 +25,17 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     <p>Client version: {{ $server->info()->clientVersion() }}</p>
 
                     <p>Uptime: {{ $server->info()->uptime() }}</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
+                    
                     <p>{{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}</p>
                     <p><small>{{ $server->info()->uuid() }}</small></p>
                     <p>{{ $server->info()->cpuinfo()["cpu"] }}
                         ({{ $server->info()->cpuinfo()["threads"] }} threads)</p>
                     <p>Memory: {{ $server->info()->meminfo() }}</p>
                     <p>{{ $server->info()->lsb() }}</p>
+                    
+                    @else
+                    <p>No information to show for now...</p>
+                    @endif
                 </div>
             </div>
 
@@ -113,7 +114,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
                 <div class="card-body">
                     <p>Download client application:</p>
-                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ $server->info()->lastClientUrl() }}
+                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ \App\Sensor\ClientVersion::latestUrl() }}
 unzip monitor-*.zip
 </code></pre>
                     <p>Move it to /usr/bin:</p>
