@@ -95,7 +95,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
                 <div class="card-body">
                     <table class='table table-sm'>
-                        @foreach($server->getChanges() as $change)
+                        @foreach($server->lastChanges() as $change)
                         <tr>
                             <td>{{ $change->getTimeCarbon()->toDateTimeString() }}</td>
                             <td>{!! $change->status()->badge() !!}</td>

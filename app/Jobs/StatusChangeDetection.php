@@ -44,8 +44,20 @@ class StatusChangeDetection implements ShouldQueue
 
     public function detectChangeForServer(Server $server)
     {
-        $last_change = StatusChange::getLastChangeForServer($server->id);
+        $last_change = $server->lastChange();
         $current_status = $server->status();
+        
+        // probably a new server:
+        // never been a change detection before
+        if ($last_change === null) {
+            $change = new StatusChange();
+            $change->server_id = $server->id;
+            $change->time = time();
+            $change->status = $current_status->code();
+            $change->record_id = $server->lastRecord()->id;
+            $change->save();
+            return;
+        }
 
         if ($last_change->status == $current_status->code()) {
             // no change
@@ -56,6 +68,7 @@ class StatusChangeDetection implements ShouldQueue
         $change->server_id = $server->id;
         $change->time = time();
         $change->status = $current_status->code();
+        $change->record_id = $server->lastRecord()->id;
         $change->save();
 
         $this->sendNotificationIfRequired($change);

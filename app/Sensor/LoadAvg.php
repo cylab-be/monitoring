@@ -14,7 +14,7 @@ class LoadAvg extends AbstractSensor
 {
 
     /**
-     * 
+     *
      * @param array<Record> $records
      * @return string
      */
@@ -27,8 +27,9 @@ class LoadAvg extends AbstractSensor
         $current_load = $this->parse($record->data["loadavg"]);
 
         return view(
-                "agent.loadavg",
-                ["current_load" => $current_load]);
+            "agent.loadavg",
+            ["current_load" => $current_load]
+        );
     }
 
     public function loadPoints(array $records)

@@ -97,7 +97,6 @@ class Server extends Model
         }
 
         return $this->records_1day;
-
     }
 
     public function hasData() : bool
@@ -159,15 +158,19 @@ class Server extends Model
         }
         return $sensors;
     }
-
-    public function getChanges($count = 10)
+    
+    public function changes()
     {
-        return [];
-        //return StatusChange::getLastChangesForServer($this->id, $count);
+        return $this->hasMany(StatusChange::class);
     }
 
-    public static function id(int $id) : Server
+    public function lastChanges($count = 10)
     {
-        return self::where("id", $id)->first();
+        return $this->changes()->orderBy("time", "desc")->limit($count)->get();
+    }
+    
+    public function lastChange() : ?StatusChange
+    {
+        return $this->changes()->latest("time")->first();
     }
 }
