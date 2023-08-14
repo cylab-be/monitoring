@@ -16,9 +16,9 @@ class CreateTableStatusChanges extends Migration
         Schema::create('status_changes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer("time")->index();
-            $table->integer("server_id");
+            $table->unsignedInteger("server_id");
             $table->integer("status");
-            $table->integer("record_id");
+            $table->unsignedBigInteger("record_id");
             
             $table->foreign("server_id")->references("id")->on("servers");
             $table->foreign("record_id")->references("id")->on("records");

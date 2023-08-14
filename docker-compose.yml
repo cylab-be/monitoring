@@ -1,0 +1,74 @@
+#
+# monitoring
+#
+# this docker-compose can be used to run a development environment
+#
+
+version: "3.7"
+
+services:
+  web:
+    image: cylab/laravel-dev
+    depends_on:
+      - redis
+      - mysql
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+    env_file: env.dev
+    environment:
+      WAIT_HOSTS: mysql:3306
+
+  queue:
+    image: cylab/laravel-dev
+    depends_on:
+      - web
+    volumes:
+      - .:/var/www/html
+    command: ["php", "artisan", "queue:work", "--verbose", "--tries=3", "--timeout=60"]
+    restart: unless-stopped
+    env_file: env.dev
+    environment:
+      WAIT_HOSTS: web:80
+
+  scheduler:
+    image: cylab/laravel-dev
+    depends_on:
+      - web
+    volumes:
+      - .:/var/www/html
+    command: ["/scheduler.sh"]
+    env_file: env.dev
+    environment:
+      WAIT_HOSTS: web:80
+
+  node:
+    image: node:16.15.0-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    entrypoint: /bin/sh -c "npm install && npm run watch-poll"
+    depends_on:
+      - web
+
+  redis:
+    image: redis:4-alpine
+    volumes:
+      - ./volumes/redis:/data
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+

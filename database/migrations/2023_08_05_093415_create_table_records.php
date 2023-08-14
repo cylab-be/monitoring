@@ -16,7 +16,7 @@ class CreateTableRecords extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer("time")->index();
-            $table->integer("server_id");
+            $table->unsignedInteger("server_id");
             $table->longText("data");
 
             $table->foreign("server_id")->references("id")->on("servers");

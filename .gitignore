@@ -13,5 +13,7 @@ npm-debug.log
 yarn-error.log
 .env
 
+/volumes/
+
 monitor
 monitor-*.zip
