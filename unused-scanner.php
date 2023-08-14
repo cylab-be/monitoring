@@ -17,10 +17,11 @@ return [
   'scanDirectories' => $scanDirectories,
   'scanFiles' => $scanFiles,
   'skipPackages' => [
-     "laravel/framework",
-     "guzzlehttp/guzzle", // unused in app/Sensor/ClientVersion, but not detected
-     "fideloper/proxy",   // used by laravel
-     "predis/predis",     // to use Redis for cache and sessions
-     "doctrine/dbal"]     // to run some migrations
+    "laravel/framework",
+    "guzzlehttp/guzzle", // unused in app/Sensor/ClientVersion, but not detected
+    "fideloper/proxy",   // used by laravel
+    "laravel/tinker",    // REPL interpreter, required by Laravel (and I don't know why)
+    "predis/predis",     // to use Redis for cache and sessions
+    "doctrine/dbal"]     // to run some migrations
 ];
 
