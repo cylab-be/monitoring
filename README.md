@@ -3,40 +3,22 @@
 [![pipeline status](https://gitlab.cylab.be/cylab/monitoring/badges/master/pipeline.svg)](https://gitlab.cylab.be/cylab/monitoring/-/commits/master)
 [![coverage report](https://gitlab.cylab.be/cylab/monitoring/badges/master/coverage.svg)](https://gitlab.cylab.be/cylab/monitoring/-/commits/master)
 
+A simple monitoring tool where monitored servers "push" their state to the monitoring interface.
+
+![](./monitoring.png)
+
 ## Contributing
 
-To run this tool localy, you will need:
+The easiest way to run the development environment is using docker compose.
 
-### Installation
+Once docker is installed, you can start the dev environment with
 
-```
-composer install
-touch storage/app/db.sqlite
-cp env.dev .env
-php artisan migrate
-php artisan key:generate
+```bash
+docker compose up
 ```
 
-To check your installation is correct, you can run the phpunit tests:
+After a few seconds, the monitoring interface will be available at ```http://127.0.0.1:8080/```
 
-```
-./vendor/bin/phpunit
-```
+The dev stack also includes mailhog, so you can inspect sent emails at ```http://127.0.0.1:8025```
 
-
-### Frontend
-
-To build CSS and JS code:
-
-```
-npm install
-npm run watch
-```
-
-### Launch monitoring
-
-```
-php artisan serve
-```
-
-Then, see your monitoring interface at http://127.0.0.1:8000/
+You can check https://cylab.be/blog/190/run-a-development-environment-for-laravel-with-docker-compose for more info...
