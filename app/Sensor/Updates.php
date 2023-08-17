@@ -3,7 +3,7 @@
 namespace App\Sensor;
 
 /**
- * Description of Update
+ * Check if (security) updates are available.
  *
  * @author tibo
  */

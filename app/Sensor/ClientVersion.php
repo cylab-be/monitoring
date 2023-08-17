@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 /**
- * Description of Reboot
+ * Check if the latest version of the client is installed.
  *
  * @author tibo
  */
