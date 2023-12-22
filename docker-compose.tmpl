@@ -21,9 +21,9 @@ services:
       WAIT_HOSTS: mysql:3306
     env_file: env
     labels:
-      - traefik.http.routers.amc.rule=Host(`monitoring.cylab.be`)
-      - traefik.http.routers.amc.tls=true
-      - traefik.http.routers.amc.tls.certresolver=letsencrypt
+      - traefik.http.routers.monitoring.rule=Host(`monitoring.cylab.be`)
+      - traefik.http.routers.monitoring.tls=true
+      - traefik.http.routers.monitoring.tls.certresolver=letsencrypt
 
   redis:
     image: redis:4-alpine
