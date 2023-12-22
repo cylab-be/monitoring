@@ -11,6 +11,15 @@
 |
 */
 
+// https://cylab.be/blog/122/using-https-over-a-reverse-proxy-in-laravel
+$app_url = config("app.url");
+if (app()->environment('prod') && !empty($app_url)) {
+    $schema = explode(':', $app_url)[0];
+    URL::forceRootUrl($app_url);
+    URL::forceScheme($schema);
+}
+
+
 Route::get('/', function () {
     return view('index');
 });
