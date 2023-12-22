@@ -1,0 +1,41 @@
+#
+# docker-compose.tmpl
+# https://cylab.be/blog/229/continuous-deployment-with-gitlab-and-docker
+# $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+#
+
+version: "3.7"
+
+services:
+  web:
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    depends_on:
+      - redis
+      - mysql
+    ports:
+      - "80"
+    volumes:
+      - ./volumes/web:/var/www/html/storage
+    restart: "unless-stopped"
+    environment:
+      WAIT_HOSTS: mysql:3306
+    env_file: env
+    labels:
+      - traefik.http.routers.amc.rule=Host(`monitoring.cylab.be`)
+      - traefik.http.routers.amc.tls=true
+      - traefik.http.routers.amc.tls.certresolver=letsencrypt
+
+  redis:
+    image: redis:4-alpine
+    volumes:
+      - ./volumes/redis:/data
+    restart: "unless-stopped"
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+    restart: "unless-stopped"

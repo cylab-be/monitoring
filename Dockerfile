@@ -5,7 +5,7 @@
 
 #### Step 1 : composer
 
-FROM cylab/php74 AS composer
+FROM cylab/php:7.4 AS composer
 
 COPY . /var/www/html
 WORKDIR /var/www/html
