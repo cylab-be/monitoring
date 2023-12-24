@@ -25,6 +25,19 @@ services:
       - traefik.http.routers.monitoring.tls=true
       - traefik.http.routers.monitoring.tls.certresolver=letsencrypt
 
+  scheduler:
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    depends_on:
+      - redis
+      - mysql
+    volumes:
+      - ./volumes/web:/var/www/html/storage
+    restart: "unless-stopped"
+    environment:
+      WAIT_HOSTS: mysql:3306
+    env_file: env
+    command: /scheduler.sh
+
   redis:
     image: redis:4-alpine
     volumes:
