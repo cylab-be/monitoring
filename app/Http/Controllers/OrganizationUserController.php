@@ -77,7 +77,14 @@ class OrganizationUserController extends Controller
     {
     }
 
-    public function destroy($id)
+    /**
+     * Remove (detach) this user from the organization
+     * @param Organization $organization
+     * @param User $user
+     */
+    public function destroy(Organization $organization, User $user)
     {
+        $organization->users()->detach($user->id);
+        return redirect(action("OrganizationController@show", ["organization" => $organization]));
     }
 }
