@@ -21,7 +21,7 @@ RUN npm --version && npm install && npm run prod
 
 #### Step 3 : the actual docker image
 
-FROM cylab/laravel74
+FROM cylab/laravel:7.4
 
 # Custom logs : request time, laravel session
 COPY ./docker/logs.conf /etc/apache2/conf-available/logs.conf
@@ -30,6 +30,9 @@ RUN a2enconf logs
 # Increase upload limit
 RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 20M/g' /usr/local/etc/php/php.ini && \
     sed -i 's/post_max_size = 8M/post_max_size = 20M/g' /usr/local/etc/php/php.ini
+
+# Increase memory limit
+RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/etc/php/php.ini
 
 COPY . /var/www/html
 COPY ./docker/env.default /var/www/html/.env
