@@ -18,10 +18,6 @@ class OrganizationUserController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-    }
-
     /** Show form **/
     public function create(Organization $organization)
     {
@@ -63,18 +59,6 @@ class OrganizationUserController extends Controller
         Mail::to($user->email)->send(new OrganizationUserInvitation($organization, $user));
         $organization->users()->attach($user->id);
         return redirect(route("dashboard"));
-    }
-
-    public function show($id)
-    {
-    }
-
-    public function edit($id)
-    {
-    }
-
-    public function update($id)
-    {
     }
 
     /**

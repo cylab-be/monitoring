@@ -51,5 +51,5 @@ Route::get(
     }
 )->name("organization.public.dashboard");
 Route::resource('app/organizations', 'OrganizationController');
-Route::resource("app/organizations.user", "OrganizationUserController");
+Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
 Route::resource('app/servers', 'ServerController');
