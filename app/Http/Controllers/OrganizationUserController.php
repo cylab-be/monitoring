@@ -53,12 +53,12 @@ class OrganizationUserController extends Controller
 
         if ($user->ownsOrganization($organization)) {
             // user is already part of organization...
-            return redirect(route("dashboard"));
+            return redirect(action("OrganizationController@show", ["organization" => $organization]));
         }
 
         Mail::to($user->email)->send(new OrganizationUserInvitation($organization, $user));
         $organization->users()->attach($user->id);
-        return redirect(route("dashboard"));
+        return redirect(action("OrganizationController@show", ["organization" => $organization]));
     }
 
     /**
