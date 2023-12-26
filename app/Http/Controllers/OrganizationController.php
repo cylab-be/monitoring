@@ -119,11 +119,7 @@ class OrganizationController extends Controller
         return redirect(action('OrganizationController@index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     */
+
     public function destroy(Organization $organization)
     {
         $this->authorize("destroy", $organization);

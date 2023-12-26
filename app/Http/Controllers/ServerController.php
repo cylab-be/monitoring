@@ -90,11 +90,6 @@ class ServerController extends Controller
         return redirect(action("ServerController@show", ["server" => $server]));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     */
     public function destroy(Server $server)
     {
         $this->authorize("destroy", $server);
