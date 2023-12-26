@@ -39,7 +39,9 @@
                 <ul class="navbar-nav ml-auto">
                     @guest
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                    @if Route::has('register')
                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                    @endif
                     @else
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle"
