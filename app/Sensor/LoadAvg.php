@@ -46,12 +46,22 @@ class LoadAvg extends Sensor
 
     public function status(array $records) : int
     {
-        $max = $this->server()->info()->cpuinfo()["threads"];
+        $threshold = $this->server()->info()->cpuinfo()["threads"];
+        
+        $max = 0;
         foreach ($records as $record) {
             $load = $this->parse($record->data["loadavg"]);
             if ($load > $max) {
-                return Status::WARNING;
+                $max = $load;
             }
+        }
+        
+        if ($max > 2 * $threshold) {
+            return Status::ERROR;
+        }
+
+        if ($max > $threshold) {
+            return Status::WARNING;
         }
 
         return Status::OK;
