@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Server;
-use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ServerController extends Controller
 {
@@ -14,26 +16,11 @@ class ServerController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    private function rules() : array
     {
-        return Validator::make($data, [
-            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255'
-        ]);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     */
-    public function index()
-    {
-        // return view("server.index", array("servers" => Server::all()->sortBy("name")));
+        return [
+            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255',
+            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys())];
     }
 
     /**
@@ -43,6 +30,7 @@ class ServerController extends Controller
      */
     public function create()
     {
+        $this->authorize("create", Server::class);
         return view("server.edit", ["server" => new Server()]);
     }
 
@@ -53,6 +41,7 @@ class ServerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize("create", Server::class);
         return $this->saveAndRedirect($request, new Server());
     }
 
@@ -63,6 +52,7 @@ class ServerController extends Controller
      */
     public function show(Server $server)
     {
+        $this->authorize("show", $server);
         return view("server.show", ["server" => $server]);
     }
 
@@ -73,6 +63,7 @@ class ServerController extends Controller
      */
     public function edit(Server $server)
     {
+        $this->authorize("update", $server);
         return view("server.edit", array("server" => $server));
     }
 
@@ -84,12 +75,13 @@ class ServerController extends Controller
      */
     public function update(Request $request, Server $server)
     {
+        $this->authorize("update", $server);
         return $this->saveAndRedirect($request, $server);
     }
 
     private function saveAndRedirect(Request $request, Server $server)
     {
-        $this->validator($request->all())->validate();
+        $request->validate($this->rules());
 
         $server->name = $request->name;
         $server->organization_id = $request->organization_id;
@@ -103,9 +95,10 @@ class ServerController extends Controller
      *
      * @param  int  $id
      */
-    public function destroy($id)
+    public function destroy(Server $server)
     {
-        Server::find($id)->delete();
+        $this->authorize("destroy", $server);
+        $server->delete();
         return back();
     }
 }
