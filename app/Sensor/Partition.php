@@ -27,11 +27,11 @@ class Partition
     
     public function usedGB() : int
     {
-        return round($this->used / 1E6);
+        return (int) round($this->used / 1E6);
     }
     
     public function sizeGB() : int
     {
-        return round($this->blocks / 1E6);
+        return (int) round($this->blocks / 1E6);
     }
 }
