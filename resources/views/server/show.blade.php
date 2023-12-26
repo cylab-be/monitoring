@@ -30,7 +30,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     <p><small>{{ $server->info()->uuid() }}</small></p>
                     <p>{{ $server->info()->cpuinfo()["cpu"] }}
                         ({{ $server->info()->cpuinfo()["threads"] }} threads)</p>
-                    <p>Memory: {{ $server->info()->meminfo() }}</p>
+                    <p>Memory: {{ $server->info()->memoryTotalForHumans() }}</p>
                     <p>{{ $server->info()->lsb() }}</p>
                     
                     @else

@@ -14,6 +14,7 @@ yarn-error.log
 .env
 
 /volumes/
+/target/
 
 monitor
 monitor-*.zip
