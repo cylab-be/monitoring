@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Auth::routes();
+Auth::routes(['register' => config("app.allow_registration")]);
 
 Route::get("home", function () {
     return redirect(action("OrganizationController@index"));

@@ -14,6 +14,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Monitoring'),
+    
+    'allow_registration' => env("APP_ALLOW_REGISTRATION", true),
 
     'proxy' => env('PROXY', null),
 
