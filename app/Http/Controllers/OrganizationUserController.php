@@ -21,6 +21,7 @@ class OrganizationUserController extends Controller
     /** Show form **/
     public function create(Organization $organization)
     {
+        $this->authorize("update", $organization);
         return view("organization.user.create", ["organization" => $organization]);
     }
 
@@ -34,10 +35,7 @@ class OrganizationUserController extends Controller
     /** add user to organization **/
     public function store(Organization $organization, Request $request)
     {
-        $current_user = Auth::user();
-        if (! $current_user->ownsOrganization($organization)) {
-            return redirect(route("dashboard"));
-        }
+        $this->authorize("update", $organization);
 
         $user = User::findByEmail($request->input("email"));
 
@@ -68,6 +66,7 @@ class OrganizationUserController extends Controller
      */
     public function destroy(Organization $organization, User $user)
     {
+        $this->authorize("update", $organization);
         $organization->users()->detach($user->id);
         return redirect(action("OrganizationController@show", ["organization" => $organization]));
     }

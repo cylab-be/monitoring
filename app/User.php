@@ -59,6 +59,8 @@ class User extends Authenticatable
 
     public function ownsOrganization(Organization $organization)
     {
+        // return $this->organizations->contains($organization);
+        
         foreach ($this->organizations as $o) {
             if ($o->id == $organization->id) {
                 return true;

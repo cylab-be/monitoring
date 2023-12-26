@@ -31,6 +31,7 @@ class OrganizationController extends Controller
 
     public function index()
     {
+        $this->authorize("index", Organization::class);
         return view(
             "organization.index",
             array("organizations" => Auth::user()->organizations->sortBy("name"))
@@ -44,6 +45,7 @@ class OrganizationController extends Controller
      */
     public function create()
     {
+        $this->authorize("create", Organization::class);
         return view("organization.edit", ["organization" => new Organization()]);
     }
 
@@ -54,6 +56,7 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize("create", Organization::class);
         $this->validator($request->all())->validate();
 
         $organization = new Organization();
@@ -71,16 +74,19 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
+        $this->authorize("show", $organization);
         return view("organization.show", array("organization" => $organization));
     }
 
     public function dashboard(Organization $organization)
     {
+        $this->authorize("show", $organization);
         return view("organization.dashboard", ["organization" => $organization]);
     }
 
     public function resetToken(Organization $organization)
     {
+        $this->authorize("update", $organization);
         $organization->dashboard_token = \str_random(20);
         $organization->save();
         return redirect(action('OrganizationController@show', ["organization" => $organization]));
@@ -93,6 +99,7 @@ class OrganizationController extends Controller
      */
     public function edit(Organization $organization)
     {
+        $this->authorize("update", $organization);
         return view("organization.edit", array("organization" => $organization));
     }
 
@@ -104,6 +111,7 @@ class OrganizationController extends Controller
      */
     public function update(Request $request, Organization $organization)
     {
+        $this->authorize("update", $organization);
         $this->validator($request->all())->validate();
 
         $organization->name = $request->name;
@@ -116,9 +124,10 @@ class OrganizationController extends Controller
      *
      * @param  int  $id
      */
-    public function destroy($id)
+    public function destroy(Organization $organization)
     {
-        Organization::find($id)->delete();
+        $this->authorize("destroy", $organization);
+        $organization->delete();
         return redirect(action("OrganizationController@index"));
     }
 }
