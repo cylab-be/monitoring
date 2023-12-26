@@ -12,7 +12,7 @@ cache:
 # Test with PHP7.4 
 test:php74:
   stage: test
-  image: cylab/php74
+  image: cylab/php:7.4
   before_script:
     # Install all project dependencies
     - COMPOSER_CACHE_DIR=./composer-cache composer install
