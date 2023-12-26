@@ -27,9 +27,9 @@ test:php74:
     - vendor/bin/unused_scanner unused-scanner.php
 
 test:dependencies:
-  image: cylab/php74
+  image: cylab/php:7.4
   script:
-    # in cylab/php74, security-checker is already installed...
+    # in cylab/php:7.4, security-checker is already installed...
     - ~/.composer/vendor/bin/security-checker security:check composer.lock
 
 test:gitleaks:
