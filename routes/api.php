@@ -46,19 +46,6 @@ Route::get(
 );
 
 Route::get(
-    'sensor/{server}/{token}/diskevolution',
-    function (Server $server, string $token) {
-        if ($server->read_token != $token) {
-            abort(403);
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        $sensor = new \App\Sensor\DiskEvolution();
-        return $sensor->points($server->lastRecords1Day());
-    }
-);
-
-Route::get(
     'sensor/{server}/{token}/load',
     function (Server $server, string $token) {
         if ($server->read_token != $token) {
