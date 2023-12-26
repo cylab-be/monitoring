@@ -22,15 +22,7 @@ class Disks extends Sensor
         }
 
         $partitions = self::parse($record->data["disks"]);
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
-        foreach ($partitions as $partition) {
-            $return .= "<tr><td>" . $partition->filesystem . "</td><td>"
-                    . $partition->mounted . "</td><td>" . $partition->usedPercent()
-                    . "%</td></tr>";
-        }
-        $return .= "</table>";
-        return $return;
+        return view("sensor.disks", ["partitions" => $partitions]);
     }
 
     public function status(array $records) : int

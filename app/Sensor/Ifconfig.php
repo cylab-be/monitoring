@@ -21,8 +21,7 @@ class Ifconfig extends Sensor
         }
 
         $interfaces = $this->parseIfconfigRecord($record);
-        return view("agent.ifconfig", [
-            "interfaces" => $interfaces]);
+        return view("agent.ifconfig", ["interfaces" => $interfaces]);
     }
 
     public function points(array $records)

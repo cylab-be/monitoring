@@ -24,4 +24,14 @@ class Partition
     {
         return round(100.0 * $this->used / $this->blocks);
     }
+    
+    public function usedGB() : int
+    {
+        return round($this->used / 1E6);
+    }
+    
+    public function sizeGB() : int
+    {
+        return round($this->blocks / 1E6);
+    }
 }
