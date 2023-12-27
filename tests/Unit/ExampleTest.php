@@ -42,14 +42,6 @@ class ExampleTest extends TestCase
     }
 
 
-    public function testClientVersion()
-    {
-        $server = new \App\Server();
-        $client_version = new \App\Sensor\ClientVersion($server);
-        $this->assertStringMatchesFormat('%d.%d.%d', $client_version->latestVersion());
-    }
-
-
     /**
      * @group status-change
      */

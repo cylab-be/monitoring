@@ -2,10 +2,8 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
-
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use App\Sensor;
+use App\Jobs\FetchClientManifest;
 
 /**
  * Check if the latest version of the client is installed.
@@ -14,50 +12,10 @@ use GuzzleHttp\Exception\RequestException;
  */
 class ClientVersion extends Sensor
 {
-
-    const MANIFEST = "https://download.cylab.be/monitor-php-client/manifest.json";
-    private static $manifest = null;
-
-    public static function manifest()
-    {
-        if (!is_null(self::$manifest)) {
-            return self::$manifest;
-        }
-
-        $options = ['timeout' => 5.0];
-        $client = new Client($options);
-
-        try {
-            $json = $client->get(self::MANIFEST)->getBody();
-            self::$manifest = json_decode($json, true)[0];
-        } catch (RequestException $e) {
-            self::$manifest = ["version" => "unknown",
-                "url" => "??"];
-        }
-
-        return self::$manifest;
-    }
-
-    /**
-     * Fetch the latest available version (e.g. "1.2.3")
-     *
-     * @throws \RuntimeException if a network problem occurs
-     * @return string the latest available version (e.g. "1.2.3")
-     */
-    public function latestVersion() : string
-    {
-        return self::manifest()["version"];
-    }
-
-    public static function latestUrl() : string
-    {
-        return self::manifest()["url"];
-    }
-
     public function report(array $records) : string
     {
         return "<p>Installed version: " . $this->installedVersion($records) . "</p>"
-        . "<p>Latest client version: " . $this->latestVersion() . "</p>";
+        . "<p>Latest client version: " . FetchClientManifest::version() . "</p>";
     }
 
     public function installedVersion(array $records)
@@ -72,9 +30,8 @@ class ClientVersion extends Sensor
 
     public function status(array $records) : int
     {
-        try {
-            $latest_version = $this->latestVersion();
-        } catch (\Exception $ex) {
+        $latest_version = FetchClientManifest::version();
+        if ($latest_version == null) {
             return \App\Status::UNKNOWN;
         }
 

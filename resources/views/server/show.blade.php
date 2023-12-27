@@ -114,7 +114,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </div>
                 <div class="card-body">
                     <p>Download client application:</p>
-                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ \App\Sensor\ClientVersion::latestUrl() }}
+                    <pre style="font-size: 75%; overflow: hidden"><code>wget {{ \App\Jobs\FetchClientManifest::url() }}
 unzip monitor-*.zip
 </code></pre>
                     <p>Move it to /usr/bin:</p>
