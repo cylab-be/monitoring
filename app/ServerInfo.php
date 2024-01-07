@@ -84,10 +84,15 @@ class ServerInfo
     {
         return $this->cpuinfo;
     }
+    
+    public function vCores() : int
+    {
+        return $this->cpuinfo()["threads"];
+    }
 
     public function memoryTotalForHumans()
     {
-        return round($this->memoryTotal() / 1024 / 1024) . " GB";
+        return round($this->memoryTotal() / 1024 / 1024) . "GB";
     }
 
     /**

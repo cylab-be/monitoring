@@ -39,7 +39,9 @@
             </td>
             <td>{!! $server->status()->badge() !!}</td>
             <td>{{ $server->info()->lastRecordTime()->diffForHumans() }}</td>
-            <td>{{ $server->info()->lsb() }}</td>
+            <td>{{ $server->info()->memoryTotalForHumans() }}</td>
+            <td>{{ $server->info()->vCores() }} vCores</td>
+            <td class="text-right">{{ $server->info()->lsb() }}</td>
         </tr>
         @endforeach
     </table>

@@ -28,8 +28,10 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     
                     <p>{{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}</p>
                     <p><small>{{ $server->info()->uuid() }}</small></p>
-                    <p>{{ $server->info()->cpuinfo()["cpu"] }}
-                        ({{ $server->info()->cpuinfo()["threads"] }} threads)</p>
+                    <p>
+                        {{ $server->info()->cpuinfo()["cpu"] }}<br>
+                        {{ $server->info()->vCores() }} vCores
+                    </p>
                     <p>Memory: {{ $server->info()->memoryTotalForHumans() }}</p>
                     <p>{{ $server->info()->lsb() }}</p>
                     
