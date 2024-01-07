@@ -18,7 +18,7 @@ class CPUtemperature implements Sensor
 {
     // Match a CPU line like
     // Package id 0:  +39.0°C  (high = +84.0°C, crit = +100.0°C)
-    const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
+    const REGEXPCPU = "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
     
     // Mach a core line
     // Core 0:        +38.0°C  (high = +84.0°C, crit = +100.0°C)
