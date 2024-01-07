@@ -2,37 +2,52 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
-use \App\Status;
+use App\Record;
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Description of LoadAvg
  *
  * @author tibo
  */
-class LoadAvg extends Sensor
+class LoadAvg implements Sensor
 {
-
-    /**
-     *
-     * @param array<\App\Record> $records
-     * @return string
-     */
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
-        if (! isset($record->data['loadavg'])) {
-            return "<p>No data available...</p>";
+        $threshold = $serverinfo->cpuinfo()["threads"];
+        $report = new Report("Load Average");
+        
+        if (! isset($records->last()->data['loadavg'])) {
+            return $report->setHTML("<p>No data available...</p>");
         }
-        $current_load = $this->parse($record->data["loadavg"]);
+        
+        $current_load = $this->parse($records->last()->data["loadavg"]);
+        $report->setHTML(view("agent.loadavg", ["current_load" => $current_load]));
+        
+        $max_load = $records
+                ->map(function (Record $record) {
+                    $this->parse($record->data["loadavg"]);
+                })
+                ->max();
+        
+        if ($max_load > 2 * $threshold) {
+            return $report->setStatus(Status::error());
+        }
 
-        return view(
-            "agent.loadavg",
-            ["current_load" => $current_load]
-        );
+        if ($max_load > $threshold) {
+            return $report->setStatus(Status::warning());
+        }
+
+        return $report->setStatus(Status::ok());
     }
 
-    public function loadPoints(array $records)
+    public function loadPoints(Collection $records)
     {
         $points = [];
         foreach ($records as $record) {
@@ -42,29 +57,6 @@ class LoadAvg extends Sensor
             );
         }
         return $points;
-    }
-
-    public function status(array $records) : int
-    {
-        $threshold = $this->server()->info()->cpuinfo()["threads"];
-        
-        $max = 0;
-        foreach ($records as $record) {
-            $load = $this->parse($record->data["loadavg"]);
-            if ($load > $max) {
-                $max = $load;
-            }
-        }
-        
-        if ($max > 2 * $threshold) {
-            return Status::ERROR;
-        }
-
-        if ($max > $threshold) {
-            return Status::WARNING;
-        }
-
-        return Status::OK;
     }
 
     public function parse(string $string) : string

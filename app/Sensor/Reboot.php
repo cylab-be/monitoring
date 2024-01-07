@@ -2,51 +2,36 @@
 
 namespace App\Sensor;
 
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Description of Reboot
  *
  * @author tibo
  */
-class Reboot extends \App\Sensor
+class Reboot implements \App\Sensor
 {
-    
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        return "<p>Reboot required: "
-            . $this->statusHTML($records)
-            . "</p>";
-    }
-
-    public function statusHTML(array $records)
-    {
-        switch ($this->status($records)) {
-            case \App\Status::OK:
-                return "no";
-
-            case \App\Status::WARNING:
-                return "yes";
-
-            default:
-                return "?";
-        }
-    }
-
-    public function status(array $records) : int
-    {
-        $record = end($records);
+        $report = new Report("Reboot required");
+        
+        $record = $records->last();
+        
         if (! isset($record->data['reboot'])) {
-            return \App\Status::UNKNOWN;
+            return $report->setStatus(Status::unknown())
+                    ->setHTML("<p>No data available!</p>");
         }
 
         if ($record->data["reboot"]) {
-            return \App\Status::WARNING;
+            return $report->setStatus(Status::warning())
+                    ->setHTML("<p>Reboot required: yes</p>");
         }
 
-        return \App\Status::OK;
-    }
-
-    public function name(): string
-    {
-        return "Reboot required";
+        return $report->setStatus(Status::ok())
+                ->setHtml("<p>Reboot required: no</p>");
     }
 }

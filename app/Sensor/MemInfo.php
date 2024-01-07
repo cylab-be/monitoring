@@ -2,22 +2,37 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Description of MemInfo
  *
  * @author tibo
  */
-class MemInfo extends Sensor
+class MemInfo implements Sensor
 {
-
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        return view("agent.meminfo", []);
+        $report = new Report("MemInfo");
+        $report->setHTML(view("agent.meminfo"));
+        
+        foreach ($records as $record) {
+            $mem = $this->parseMeminfo($record->data["memory"]);
+            if ($mem->usedRatio() > 0.8) {
+                return $report->setStatus(Status::WARNING);
+            }
+        }
+
+        return $report->setStatus(Status::ok());
     }
 
-    public function usedMemoryPoints(array $records)
+
+    public function usedMemoryPoints(Collection $records)
     {
         $used = [];
         foreach ($records as $record) {
@@ -31,7 +46,7 @@ class MemInfo extends Sensor
         return $used;
     }
 
-    public function cachedMemoryPoints(array $records)
+    public function cachedMemoryPoints(Collection $records)
     {
         $points = [];
         foreach ($records as $record) {
@@ -43,18 +58,6 @@ class MemInfo extends Sensor
         }
 
         return $points;
-    }
-
-    public function status(array $records) : int
-    {
-        foreach ($records as $record) {
-            $mem = $this->parseMeminfo($record->data["memory"]);
-            if ($mem->usedRatio() > 0.8) {
-                return  \App\Status::WARNING;
-            }
-        }
-
-        return \App\Status::OK;
     }
 
     // used = total - free - cached

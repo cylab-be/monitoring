@@ -2,22 +2,33 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Parse netstat
  *
  * @author tibo
  */
-class Netstat extends Sensor
+class Netstat implements Sensor
 {
-
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        return view("agent.netstat", []);
+        $report = new Report("Netstat : retransmitted TCP segments");
+        $report->setHTML(view("agent.netstat"))
+                ->setStatus(Status::ok());
+        
+        return $report;
     }
 
-    public function points(array $records) : array
+
+
+    public function points(Collection $records) : array
     {
         if (count($records) == 0) {
             return [];
@@ -46,11 +57,6 @@ class Netstat extends Sensor
         }
 
         return [$dataset];
-    }
-
-    public function status(array $records) : int
-    {
-        return \App\Status::OK;
     }
 
     const TCP_SENT = '/^    (\d+) segments sent out/m';

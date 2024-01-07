@@ -2,29 +2,36 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
-use \App\Record;
+use App\Sensor;
+use App\Status;
+use App\Record;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Description of MemInfo
  *
  * @author tibo
  */
-class Ifconfig extends Sensor
+class Ifconfig implements Sensor
 {
-
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
-        if (! isset($record->data['ifconfig'])) {
-            return "<p>No data available...</p>";
+        $report = new Report("Ifconfig");
+        
+        $last_record = $records->last();
+        if (! isset($last_record->data['ifconfig'])) {
+            return $report->setHTML("<p>No data available...</p>");
         }
 
-        $interfaces = $this->parseIfconfigRecord($record);
-        return view("agent.ifconfig", ["interfaces" => $interfaces]);
+        $interfaces = $this->parseIfconfigRecord($last_record);
+        return $report->setStatus(Status::ok())
+                ->setHTML(view("agent.ifconfig", ["interfaces" => $interfaces]));
     }
 
-    public function points(array $records)
+    public function points(Collection $records)
     {
         // Compute the time ordered list of arrays of interfaces
         $interfaces = [];
@@ -85,11 +92,6 @@ class Ifconfig extends Sensor
         return array_values($dataset);
     }
 
-    public function status(array $records) : int
-    {
-        return \App\Status::OK;
-    }
-
     const IFNAME = '/^(?|(\S+)\s+Link encap:|(\S+): flags)/m';
     const IPV4 = '/^\s+inet (?>addr:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/m';
     const RXTX = '/^\s+RX bytes:(\d+) .*TX bytes:(\d+)/m';
@@ -114,7 +116,6 @@ class Ifconfig extends Sensor
      */
     public function parseIfconfig(string $string) : array
     {
-
         $allowed_prefixes = ["en", "eth", "wl", "venet"];
 
         if ($string == null) {

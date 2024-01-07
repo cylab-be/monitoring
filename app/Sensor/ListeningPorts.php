@@ -2,24 +2,32 @@
 
 namespace App\Sensor;
 
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Parse the output of netstat to list listening ports.
  *
  * @author tibo
  */
-class ListeningPorts extends \App\Sensor
+class ListeningPorts implements Sensor
 {
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";
-
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("Listening Ports");
+        $record = $records->last();
 
         // "netstat-listen-tcp" "netstat-listen-udp"
         if (! isset($record->data["netstat-listen-udp"])
                 && ! isset($record->data["netstat-listen-tcp"])) {
-            return "<p>No data available...</p>";
+            return $report->setHTML("<p>No data available...</p>");
         }
 
         $ports = array_merge(
@@ -33,29 +41,9 @@ class ListeningPorts extends \App\Sensor
                     return $port1->port - $port2->port;
             }
         );
-
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr>"
-                . "<th>Port</th>"
-                . "<th>Proto</th>"
-                . "<th>Bind address</th>"
-                . "<th>Process</th>"
-                . "</tr>";
-        foreach ($ports as $port) {
-            $return .= "<tr>"
-                    . "<td>" . $port->port . "</td>"
-                    . "<td>" . $port->proto . "</td>"
-                    . "<td>" . $port->bind . "</td>"
-                    . "<td>" . $port->process . "</td>"
-                    . "</tr>";
-        }
-        $return .= "</table>";
-        return $return;
-    }
-
-    public function status(array $records) : int
-    {
-        return \App\Status::OK;
+        
+        return $report->setStatus(Status::ok())
+                ->setHTML(view("sensor.listeningports", ["ports" => $ports]));
     }
 
     /**

@@ -19,7 +19,7 @@ class Status
         $this->code = $code;
     }
 
-    public function name() : string
+    public function __toString() : string
     {
         switch ($this->code) {
             case 0:
@@ -52,18 +52,6 @@ class Status
         }
     }
 
-    public static function max(array $statuses) : Status
-    {
-        $max = new Status(self::UNKNOWN);
-        foreach ($statuses as $status) {
-            if ($status->code() > $max->code()) {
-                $max = $status;
-            }
-        }
-
-        return $max;
-    }
-
     public function color() : string
     {
         switch ($this->code) {
@@ -76,5 +64,40 @@ class Status
             default:
                 return 'secondary';
         }
+    }
+    
+    /**
+     *
+     * @param array<HasStatus> $items
+     * @return Status
+     */
+    public static function max(array $items) : Status
+    {
+        return max(array_map(
+            function (HasStatus $item) {
+                return $item->status();
+            },
+            $items
+        ));
+    }
+    
+    public static function ok() : Status
+    {
+        return new Status(0);
+    }
+    
+    public static function warning() : Status
+    {
+        return new Status(10);
+    }
+    
+    public static function error() : Status
+    {
+        return new Status(20);
+    }
+    
+    public static function unknown() : Status
+    {
+        return new Status(-1);
     }
 }

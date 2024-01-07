@@ -2,44 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
+
 /**
- * Base (abstract) class for sensors.
+ * Sensors must analyze a collection of Record, and produce a Report.
  *
  * @author tibo
  */
-abstract class Sensor
+interface Sensor
 {
-
-    private $server;
-
-    public function __construct(?Server $server = null)
-    {
-        $this->server = $server;
-    }
-
-    protected function server() : Server
-    {
-        return $this->server;
-    }
-
-    /**
-     * Get the name of the sensor. Can be overridden by sub-classes to provide
-     * a more meaningful name.
-     *
-     * @return string
-     */
-    public function name() : string
-    {
-        return (new \ReflectionClass($this))->getShortName();
-    }
-    
-    /**
-     * Compute the status code from an array of Record.
-     */
-    abstract public function status(array $records) : int;
-    
-    /**
-     * Create the HTML report describing the result of this sensor's analysis.
-     */
-    abstract public function report(array $records) : string;
+    public function analyze(Collection $records, ServerInfo $serverinfo) : Report;
 }

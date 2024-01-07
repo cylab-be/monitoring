@@ -2,54 +2,39 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
+use App\Sensor;
+use App\ServerInfo;
+use App\Report;
+use App\Status;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Description of Update
  *
  * @author tibo
  */
-class Disks extends Sensor
+class Disks implements Sensor
 {
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
-
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("Partitions");
+        
+        $record = $records->last();
         if (! isset($record->data['disks'])) {
-            return "<p>No data available...</p>";
+            return $report->setHTML("<p>No data available...</p>");
         }
 
-        $partitions = self::parse($record->data["disks"]);
-        return view("sensor.disks", ["partitions" => $partitions]);
+        $partitions = $this->parse($record->data["disks"]);
+        $report->setHTML(view("sensor.disks", ["partitions" => $partitions]));
+        
+        return $report->setStatus(Status::max($partitions));
     }
 
-    public function status(array $records) : int
-    {
-        $record = end($records);
-        if (! isset($record->data['disks'])) {
-            return \App\Status::UNKNOWN;
-        }
-
-        $all_status = [];
-        foreach (self::parse($record->data["disks"]) as $partition) {
-            /* @var $partition Partition */
-            $status = \App\Status::OK;
-            if ($partition->usedPercent() > 80) {
-                $status = \App\Status::WARNING;
-            } elseif ($partition->usedPercent() > 95) {
-                $status = \App\Status::ERROR;
-            }
-            $all_status[] = $status;
-        }
-
-        return max($all_status);
-    }
-
-    public static $skip_fs = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop'];
-
-    public static function parse(string $string) : array
+    public function parse(string $string) : array
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
@@ -57,7 +42,7 @@ class Disks extends Sensor
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
-            if (self::shouldSkip($fs)) {
+            if ($this->shouldSkip($fs)) {
                 continue;
             }
 
@@ -71,9 +56,9 @@ class Disks extends Sensor
         return $partitions;
     }
 
-    public static function fromRecord($record) : array
+    public function fromRecord($record) : array
     {
-        $partitions = self::parse($record->data["disks"]);
+        $partitions = $this->parse($record->data["disks"]);
         $time = $record->time;
         foreach ($partitions as $partition) {
             $partition->time = $time;
@@ -81,11 +66,13 @@ class Disks extends Sensor
 
         return $partitions;
     }
-
-    public static function shouldSkip(string $fs) : bool
+    
+    const SKIP_FS = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop'];
+    
+    public function shouldSkip(string $fs) : bool
     {
-        foreach (self::$skip_fs as $should_skip) {
-            if (self::startsWith($should_skip, $fs)) {
+        foreach (self::SKIP_FS as $should_skip) {
+            if ($this->startsWith($should_skip, $fs)) {
                 return true;
             }
         }
@@ -93,7 +80,7 @@ class Disks extends Sensor
         return false;
     }
 
-    public static function startsWith(string $needle, string $haystack) : bool
+    public function startsWith(string $needle, string $haystack) : bool
     {
         return substr($haystack, 0, strlen($needle)) === $needle;
     }

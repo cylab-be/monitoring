@@ -2,61 +2,35 @@
 
 namespace App\Sensor;
 
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Description of Ssacli
  *
  * @author tibo
  */
-class Ssacli extends \App\Sensor
+class Ssacli implements Sensor
 {
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("HP ssacli");
+        
+        $record = $records->last();
         if (! isset($record->data['ssacli'])) {
-            return "<p>No data available...</p>";
+            return $report->setHTML("<p>No data available...</p>");
         }
-
+        
         $disks = $this->parse($record->data["ssacli"]);
-        $return = "<table class='table table-sm'>"
-                . "<tr>"
-                . "<th>Port</th>"
-                . "<th>Box</th>"
-                . "<th>Bay</th>"
-                . "<th>Type</th>"
-                . "<th>Size</th>"
-                . "<th>Status</th>"
-                . "</tr>";
-        foreach ($disks as $disk) {
-            $return .= "<tr>"
-                    . "<td>" . $disk->port . "</td>"
-                    . "<td>" . $disk->box . "</td>"
-                    . "<td>" . $disk->bay . "</td>"
-                    . "<td>" . $disk->type . "</td>"
-                    . "<td>" . $disk->size . "</td>"
-                    . "<td>" . $disk->status . "</td>"
-                    . "</tr>";
-        }
-        $return .= "</table>";
-        return $return;
-    }
-
-    public function status(array $records) : int
-    {
-        $record = end($records);
-        if (! isset($record->data['ssacli'])) {
-            return \App\Status::UNKNOWN;
-        }
-
-        $disks = $this->parse($record->data["ssacli"]);
-        foreach ($disks as $disk) {
-            if ($disk->status != "OK") {
-                return \App\Status::WARNING;
-            }
-        }
-
-        return \App\Status::OK;
+        $report->setHTML(view("sensor.ssacli", ["disks" => $disks]));
+        
+        return $report->setStatus(Status::max($disks));
     }
 
     /**
@@ -77,7 +51,7 @@ class Ssacli extends \App\Sensor
             $disk->bay = $values[3][$i];
             $disk->type = $values[4][$i];
             $disk->size = $values[5][$i];
-            $disk->status = $values[6][$i];
+            $disk->status = ($values[6][$i] == "OK") ? Status::ok() : Status::warning();
             $disks[] = $disk;
         }
         return $disks;

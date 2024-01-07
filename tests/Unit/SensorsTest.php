@@ -3,12 +3,14 @@
 namespace Tests\Unit;
 
 use App\Server;
+use App\Status;
+
 use App\Sensor\Disks;
 use App\Sensor\CPUtemperature;
-use App\Sensor\USBtemperature;
 use App\Sensor\Ifconfig;
 use App\Sensor\Updates;
 use App\Sensor\Netstat;
+use App\Sensor\Temper;
 
 use Tests\TestCase;
 
@@ -26,7 +28,7 @@ class SensorsTest extends TestCase
     public function testIfconfig()
     {
         $string = file_get_contents(__DIR__ . "/ifconfig");
-        $sensor = new Ifconfig(new Server());
+        $sensor = new Ifconfig();
         $interfaces = $sensor->parseIfconfig($string);
         $this->assertEquals(2, count($interfaces));
         $this->assertEquals("enp0s31f6", $interfaces[0]->name);
@@ -44,7 +46,7 @@ class SensorsTest extends TestCase
     public function testIfconfig1804()
     {
         $string = file_get_contents(__DIR__ . "/ifconfig1804");
-        $sensor = new Ifconfig(new Server());
+        $sensor = new Ifconfig();
         $interfaces = $sensor->parseIfconfig($string);
         $this->assertEquals(2, count($interfaces));
         $this->assertEquals("eno1", $interfaces[0]->name);
@@ -60,7 +62,7 @@ class SensorsTest extends TestCase
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");
-        $sensor = new Disks(new Server());
+        $sensor = new Disks();
         $disks = $sensor->parse($string);
         $this->assertEquals(2, count($disks));
         $this->assertEquals("/dev/sda1", $disks[0]->filesystem);
@@ -70,7 +72,7 @@ class SensorsTest extends TestCase
     public function testNetstatListening()
     {
         $string = file_get_contents(__DIR__ . "/netstat-tcp");
-        $sensor = new \App\Sensor\ListeningPorts(new Server());
+        $sensor = new \App\Sensor\ListeningPorts();
         $ports = $sensor->parse($string);
         $this->assertEquals(16, count($ports));
         $this->assertEquals("31933/cloud-backup-", $ports[4]->process);
@@ -81,7 +83,7 @@ class SensorsTest extends TestCase
     public function testSsacli()
     {
         $string = file_get_contents(__DIR__ . "/ssacli");
-        $sensor = new \App\Sensor\Ssacli(new Server());
+        $sensor = new \App\Sensor\Ssacli();
         $disks = $sensor->parse($string);
         $this->assertEquals("OK", $disks[0]->status);
     }
@@ -89,16 +91,17 @@ class SensorsTest extends TestCase
     public function testPerccli()
     {
         $string = file_get_contents(__DIR__ . "/perccli");
-        $sensor = new \App\Sensor\Perccli(new Server());
+        $sensor = new \App\Sensor\Perccli();
         $disks = $sensor->parse($string);
-        $this->assertEquals("Onln", $disks[0]->status);
+        
+        $this->assertEquals(Status::ok(), $disks[0]->status);
         $this->assertEquals("SSD", $disks[0]->type);
         $this->assertEquals("446.625 GB", $disks[0]->size);
     }
 
     public function testUpdates()
     {
-        $sensor = new Updates(new Server());
+        $sensor = new Updates();
 
         $string1 = "6 packages can be updated.
 2 updates are security updates.";
@@ -131,11 +134,12 @@ class SensorsTest extends TestCase
     public function testCPUtemp()
     {
         $string = file_get_contents(__DIR__ . "/sensors");
-        $sensor = new CPUtemperature(new Server());
-        $CPUTEMPS = $sensor->parse($string);
-        $this->assertEquals(4, count($CPUTEMPS));
-        $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
-        $this->assertEquals("34.0", $CPUTEMPS[3]->value);
+        $sensor = new CPUtemperature();
+        
+        $cpus = $sensor->parse($string);
+        $this->assertEquals(4, count($cpus[0]->cores));
+        $this->assertEquals("Core 3", $cpus[0]->cores[3]->name);
+        $this->assertEquals("34.0", $cpus[0]->cores[3]->value);
     }
     /**
      * @group USBtemp
@@ -143,23 +147,9 @@ class SensorsTest extends TestCase
     public function testTEMPer()
     {
         $string = file_get_contents(__DIR__ . "/TEMPer");
-        $TEMPer = new USBtemperature(new Server());
-        $USBTemp = $TEMPer->parse($string);
-        $this->assertEquals("09", $USBTemp->part1);
-        $this->assertEquals("47", $USBTemp->part2);
-        $this->assertEquals("23", $USBTemp->temp[1]);
-        $this->assertEquals("75", $USBTemp->temp[2]);
-    }
-    /**
-     * @group multicpu
-     */
-    public function testmultiCPUtemp()
-    {
-        $string = file_get_contents(__DIR__ . "/sensors");
-        $sensor = new CPUtemperature(new Server());
-        $CPUTEMPS = $sensor->parseCPUtemperature($string);
-        $this->assertEquals(4, count($CPUTEMPS));
-        $this->assertEquals("Core 3", $CPUTEMPS[3]->name);
-        $this->assertEquals("34.0", $CPUTEMPS[3]->corevalue);
+        
+        $temper = new Temper();
+        $t = $temper->convert($string);
+        $this->assertEquals(23.75, $t);
     }
 }

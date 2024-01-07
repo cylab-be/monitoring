@@ -2,43 +2,44 @@
 
 namespace App\Sensor;
 
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Check if (security) updates are available.
  *
  * @author tibo
  */
-class Updates extends \App\Sensor
+class Updates implements Sensor
 {
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
-
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("Updates available");
+        
+        $record = $records->last();
         if (! isset($record->data['updates'])) {
-            return "<p>No data available...</p>";
+            return $report->setHTML("<p>No data available...</p>");
         }
 
-        return "<p>" . nl2br($record->data["updates"]) . "</p>";
-    }
-
-    public function status(array $records) : int
-    {
-        $record = end($records);
-        if (! isset($record->data['updates'])) {
-            return \App\Status::UNKNOWN;
-        }
-
+        $report->setHTML("<p>" . nl2br($record->data["updates"]) . "</p>");
+        
         $status = $this->parse($record->data["updates"]);
         if ($status == null) {
-            return \App\Status::UNKNOWN;
+            return $report->setStatus(Status::unknown());
         }
 
         if ($status["security"] != 0) {
-            return \App\Status::WARNING;
+            return $report->setStatus(Status::warning());
         }
 
-        return \App\Status::OK;
+        return $report->setStatus(Status::ok());
     }
 
     public function parse($string)

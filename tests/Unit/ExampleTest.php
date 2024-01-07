@@ -6,6 +6,8 @@ use App\User;
 use App\Organization;
 use App\Server;
 use App\Record;
+use App\Status;
+
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -39,6 +41,20 @@ class ExampleTest extends TestCase
             "Org",
             $user->organizations()->first()->name
         );
+    }
+    
+    /**
+     * @group status
+     */
+    public function testStatusComparison()
+    {
+        $warning = Status::warning();
+        $error = Status::error();
+        
+        $this->assertGreaterThan($warning, $error);
+        $this->assertTrue($error > $warning);
+        
+        $this->assertEquals(Status::error(), max($warning, $error));
     }
 
 

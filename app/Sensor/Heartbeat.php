@@ -2,51 +2,36 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
+
+use Carbon\Carbon;
 
 /**
  * Description of Reboot
  *
  * @author tibo
  */
-class Heartbeat extends Sensor
+class Heartbeat implements Sensor
 {
-    //put your code here
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        return "<p>Last heartbeat received "
-        . $this->lastRecordTime(end($records))->diffForHumans() . "</p>";
-    }
-
-    /**
-     *
-     * @return \Carbon\Carbon
-     */
-    public function lastRecordTime($record) : \Carbon\Carbon
-    {
-        if ($record === null) {
-            return \Carbon\Carbon::createFromTimestamp(0);
-        }
-
-        return \Carbon\Carbon::createFromTimestamp($record->time);
-    }
-
-
-    public function status(array $records) : int
-    {
-        $record = end($records);
-
-        if ($record === null) {
-            $delta = PHP_INT_MAX;
-        } else {
-            $delta = \time() - $record->time;
-        }
-
+        $report = new Report("Heartbeat");
+        
+        $record = $records->last();
+        $report->setHTML("<p>Last heartbeat received "
+            . Carbon::createFromTimestamp($record->time)->diffForHumans() . "</p>");
+        
+        $delta = \time() - $record->time;
         // > 15 minutes
         if ($delta > 900) {
-            return \App\Status::ERROR;
+            return $report->setStatus(Status::error());
         }
-
-        return \App\Status::OK;
+        
+        return $report->setStatus(Status::ok());
     }
 }

@@ -1,19 +1,16 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace App\Sensor;
+
+use App\Status;
+use App\HasStatus;
 
 /**
  * Description of InodesDisk
  *
  * @author tibo
  */
-class InodesDisk
+class InodesDisk implements HasStatus
 {
     public $filesystem = "";
     public $inodes = 0;
@@ -23,5 +20,18 @@ class InodesDisk
     public function usedPercent()
     {
         return round(100.0 * $this->used / $this->inodes);
+    }
+    
+    public function status() : Status
+    {
+        if ($this->usedPercent() > 95) {
+            return Status::error();
+        }
+        
+        if ($this->usedPercent() > 80) {
+            return Status::warning();
+        }
+        
+        return Status::ok();
     }
 }

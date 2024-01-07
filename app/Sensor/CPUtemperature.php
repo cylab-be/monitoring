@@ -2,145 +2,71 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
+use App\Sensor;
+use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
      * Description of Update
  *
  * @author helha
  */
-class CPUtemperature extends Sensor
+class CPUtemperature implements Sensor
 {
-
-    const REGEXP = "/^(Core \d+):\s+\+(\d+\.\d+)/m";
+    // Match a CPU line like
+    // Package id 0:  +39.0°C  (high = +84.0°C, crit = +100.0°C)
     const REGEXPCPU= "/^(Package id)+\s+(\d):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
+    
+    // Mach a core line
+    // Core 0:        +38.0°C  (high = +84.0°C, crit = +100.0°C)
+    const REGEXPCORE = "/^(Core \d+):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
 
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("CPU temperature");
+        
+        $record = $records->last();
         if (! isset($record->data["cpu-temperature"])) {
-            return "<p>No data available...</p>"
+            return $report->setHTML("<p>No data available...</p>"
                 . "<p>Maybe <code>sensors</code> is not installed.</p>"
-                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>";
+                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>");
         }
-        $Cores = self::parseCPUtemperature($record->data['cpu-temperature']);
-        $CPUS = self::parseCPU($record->data['cpu-temperature']);
         
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr><th>Name</th><th>Temperature (°C)</th><th>T°crit (°C)</th></tr>";
+        $cpus = $this->parse($record->data['cpu-temperature']);
+        $report->setHTML(view("sensor.cputemperature", ["cpus" => $cpus]));
+        $report->setStatus(Status::max($cpus));
         
-        foreach ($CPUS as $CPU) {
-            $return .= "<tr><td>" . "<b>" ."CPU " . $CPU->number . "</td><td>"
-                    . "<b>" . $CPU->value  . "</td><td>" . "<b>" . $CPU->critvalue . "</td></tr>";
-            foreach ($Cores as $Core) {
-                if ($Core->number == $CPU->number) {
-                    $return .= "<tr><td>" . $Core->name . "</td><td>"
-                            . $Core->corevalue  . "</td><td>" . " " . "</td></tr>";
-                }
-            }
-        }
-        $return .= "</table>";
-        return $return;
+        return $report;
     }
 
-    public function status(array $records) : int
+    public function parse(string $string)
     {
-        $record = end($records);
-        if (! isset($record->data["cpu-temperature"])) {
-            return \App\Status::UNKNOWN;
-        }
-
-        $all_status = [];
-        foreach (self::parseCPU($record->data['cpu-temperature']) as $CPU) {
-            /* @var $CPU Cpu */
-            $status = \App\Status::OK;
-            if ($CPU->value > $CPU->critvalue) {
-                $status = \App\Status::WARNING;
-            }
-            foreach (self::parseCPUtemperature($record->data['cpu-temperature']) as $Core) {
-                if ($Core->number == $CPU->number) {
-                    if ($Core->value > $CPU->critvalue) {
-                        $status = \App\Status::WARNING;
-                    }
-                }
-            }
-            $all_status[] = $status;
-        }
-
-        if (count($all_status) < 1) {
-            return \App\Status::UNKNOWN;
-        }
-
-        return max($all_status);
-    }
-
-    public static function parse(string $string) //cores only
-    {
-        $values = array();
-        preg_match_all(self::REGEXP, $string, $values);
-        $temperatures = array();
-        $count = count($values[1]);
-        for ($i = 0; $i < $count; $i++) {
-            $CPUTemp = new Temperature();
-            $CPUTemp->name = $values[1][$i];
-            $CPUTemp->value = $values[2][$i];
-            $temperatures[] = $CPUTemp;
-        }
-        return $temperatures;
-    }
-
-    public static function parseCPU(string $string) //cpus only
-    {
-        $values = array();
-        preg_match_all(self::REGEXPCPU, $string, $values);
-        $CPUS = array();
-        $count = count($values[1]);
-        for ($i = 0; $i < $count; $i++) {
-            $CPU = new Cpu();
-            $CPU->number = $values[2][$i];
-            $CPU->value = $values[3][$i];
-            $CPU->critvalue = $values[4][$i];
-            $CPUS[] = $CPU;
-        }
-        return $CPUS;
-    }
-    public function parseCPUtemperature(string $string) //cores (to associate with cpus only in report() )
-    {
-        if ($string == null) {
-            return [];
-        }
-
-        $current_cpu = new Cpu();
-        $CPUS=[];
-        $Cores=[];
-        $lines=explode("\n", $string);
+        $cpus = [];
+        $cpu = null;
+        
+        $lines = explode("\n", $string);
         foreach ($lines as $line) {
-            $matchesCPU = array();
-            if (preg_match(self::REGEXPCPU, $line, $matchesCPU) === 1) {
-                $current_cpu = new Cpu();
-                $current_cpu->number = $matchesCPU[2];
-                $CPUS[]=$current_cpu;
+            $match = [];
+            
+            // this line corresponds to a CPU definition
+            if (preg_match(self::REGEXPCPU, $line, $match) === 1) {
+                $cpu = new Cpu($match[2], $match[3], $match[4]);
+                $cpus[] = $cpu;
                 continue;
             }
-            $matchesCore = array();
-            if (preg_match(self::REGEXP, $line, $matchesCore) === 1) {
-                $Core=new Temperature();
-                $Core->name = $matchesCore[1];
-                $Core->corevalue = $matchesCore[2];
-                $Core->number = $current_cpu->number;
-                $Cores[] = $Core;
+            
+            // line correponds to a core definition
+            if (preg_match(self::REGEXPCORE, $line, $match) === 1) {
+                $core = new Core($match[1], $match[2], $match[3]);
+                // append to current CPU
+                $cpu->cores[] = $core;
                 continue;
             }
         }
-        return $Cores;
-    }
-    public function pregMatchOne($pattern, $string)
-    {
-        $matches = array();
-        if (preg_match($pattern, $string, $matches) === 1) {
-            return $matches[1];
-        }
-
-        return false;
+        return $cpus;
     }
 }

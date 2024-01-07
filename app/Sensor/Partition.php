@@ -2,12 +2,15 @@
 
 namespace App\Sensor;
 
+use App\Status;
+use App\HasStatus;
+
 /**
  * Description of Partition
  *
  * @author tibo
  */
-class Partition
+class Partition implements HasStatus
 {
     public $filesystem = "";
     public $blocks = 0;
@@ -33,5 +36,16 @@ class Partition
     public function sizeGB() : int
     {
         return (int) round($this->blocks / 1E6);
+    }
+    
+    public function status() : Status
+    {
+        if ($this->usedPercent() > 80) {
+            return Status::warning();
+        } elseif ($this->usedPercent() > 95) {
+            return Status::error();
+        }
+        
+        return Status::ok();
     }
 }

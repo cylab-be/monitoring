@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -56,7 +57,6 @@ class Server extends Model
         \App\Sensor\Date::class,
         \App\Sensor\ClientVersion::class,
         \App\Sensor\Heartbeat::class,
-        // \App\Sensor\DiskEvolution::class,
         \App\Sensor\CPUtemperature::class,
         \App\Sensor\USBtemperature::class
     ];
@@ -89,11 +89,14 @@ class Server extends Model
     /**
      * Get the last day of data.
      */
-    public function lastRecords1Day() : array
+    public function lastRecords1Day() : Collection
     {
         if ($this->records_1day == null) {
             $start = time() - 24 * 3600;
-            $this->records_1day = $this->records()->where("time", ">", $start)->get()->all();
+            $this->records_1day = $this->records()
+                    ->where("time", ">", $start)
+                    ->orderBy("time")
+                    ->get();
         }
 
         return $this->records_1day;
@@ -119,44 +122,43 @@ class Server extends Model
      */
     public function status() : Status
     {
-        return Status::max($this->statusArray());
-    }
-
-    public function statusArray()
-    {
-        $status_array = [];
-        foreach ($this->getSensors() as $sensor) {
-            $sensor_name = $sensor->id();
-            try {
-                $status_array[$sensor_name] = $sensor->status();
-            } catch (\Exception $ex) {
-                $status_array[$sensor_name] = Status::UNKNOWN;
-                Log::error("Sensor $sensor_name failed : " . $ex->getTraceAsString());
-            }
-        }
-        return $status_array;
+        return Status::max($this->reports());
     }
 
     public function getSensorsNOK()
     {
         $sensorsNOK = [];
-        foreach ($this->getSensors() as $sensor) {
+        foreach ($this->reports() as $sensor) {
             if ($sensor->status()->code() > 0) {
                 $sensorsNOK[] = $sensor;
             }
         }
         return $sensorsNOK;
     }
+    
+    private $reports = null;
 
-    public function getSensors()
+    public function reports()
     {
-        $records = $this->lastRecords1Day();
+        if (is_null($this->reports)) {
+            $records = $this->lastRecords1Day();
+            $serverinfo = $this->info();
 
-        $sensors = [];
-        foreach (self::$sensors as $sensor) {
-            $sensors[] = new SensorWrapper(new $sensor($this), $records);
+            $this->reports = [];
+            foreach (self::$sensors as $sensor) {
+                try {
+                     $report = (new $sensor)->analyze($records, $serverinfo);
+                     $this->reports[] = $report;
+                } catch (\Exception $ex) {
+                    Log::error('Sensor failed : ' . $ex->getTraceAsString());
+                    $report = new Report($sensor, Status::unknown());
+                    $report->setHTML("<p>Agent crashed...</p>");
+                    $this->reports[] = $report;
+                }
+            }
         }
-        return $sensors;
+        
+        return $this->reports;
     }
     
     public function changes()

@@ -2,55 +2,37 @@
 
 namespace App\Sensor;
 
+use App\Sensor;
+use App\ServerInfo;
+use App\Report;
+use App\Status;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Description of Update
  *
  * @author tibo
  */
-class Inodes extends \App\Sensor
+class Inodes implements Sensor
 {
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
-
-    public function report(array $records) : string
+    
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $record = end($records);
+        $report = new Report("Inodes");
+        
+        $record = $records->last();
+        
         if (! isset($record->data['inodes'])) {
-            return "<p>No data available...</p>";
+            return $report->setHTML("<p>No data available...</p>");
         }
 
         $disks = $this->parse($record->data["inodes"]);
-        $return = "<table class='table table-sm'>";
-        $return .= "<tr><th></th><th></th><th>Usage</th></tr>";
-        foreach ($disks as $disk) {
-            $return .= "<tr><td>" . $disk->filesystem . "</td><td>"
-                    . $disk->mounted . "</td><td>" . $disk->usedPercent()
-                    . "%</td></tr>";
-        }
-        $return .= "</table>";
-        return $return;
-    }
-
-    public function status(array $records) : int
-    {
-        $record = end($records);
-        if (! isset($record->data['inodes'])) {
-            return \App\Status::UNKNOWN;
-        }
-
-        $all_status = [];
-        foreach ($this->parse($record->data["inodes"]) as $disk) {
-            /* @var $disk InodesDisk */
-            $status = \App\Status::OK;
-            if ($disk->usedPercent() > 80) {
-                $status = \App\Status::WARNING;
-            } elseif ($disk->usedPercent() > 95) {
-                $status = \App\Status::ERROR;
-            }
-            $all_status[] = $status;
-        }
-
-        return max($all_status);
+        $report->setHTML(view("sensor.inodes", ["disks" => $disks]));
+        
+        return $report->setStatus(Status::max($disks));
     }
 
     public function parse(string $string)
@@ -59,9 +41,13 @@ class Inodes extends \App\Sensor
         preg_match_all(self::REGEXP, $string, $values);
         $disks = array();
         $count = count($values[1]);
+        
+        $disks_sensor = new Disks();
+        
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
-            if (Disks::shouldSkip($fs)) {
+            
+            if ($disks_sensor->shouldSkip($fs)) {
                 continue;
             }
 

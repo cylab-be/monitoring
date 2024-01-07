@@ -75,7 +75,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </h1>
 
             @if ($server->hasData())
-            @foreach ($server->getSensors() as $sensor)
+            @foreach ($server->reports() as $sensor)
             <div class="card">
                 <div class="card-header">
                     {{ $sensor->name() }}
@@ -85,7 +85,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                     </div>
                 </div>
                 <div class="card-body">
-                    {!! $sensor->report() !!}
+                    {!! $sensor->html() !!}
                 </div>
             </div>
             @endforeach

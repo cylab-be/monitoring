@@ -2,14 +2,23 @@
 
 namespace App\Sensor;
 
+use App\Status;
+
 /**
  * Description of Cpu
  *
  * @author helha
  */
-class Cpu
+class Cpu extends Core
 {
-    public $number = ""; //eg : 1,2,3,4,...
-    public $value= ""; //eg : 38.0
-    public $critvalue= ""; //eg : 76.0
+
+    public $cores = [];
+
+    public function status() : Status
+    {
+        return max(
+            Status::max($this->cores),
+            parent::status()
+        );
+    }
 }

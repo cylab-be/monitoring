@@ -2,46 +2,37 @@
 
 namespace App\Sensor;
 
-use \App\Sensor;
-use App\Record;
+use App\Sensor;
 use App\Status;
+use App\ServerInfo;
+use App\Report;
+
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Description of Reboot
  *
  * @author tibo
  */
-class Date extends Sensor
+class Date implements Sensor
 {
-    public function report(array $records) : string
+    public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        return "<p>Time drift: " . $this->delta(end($records)) . " seconds</p>";
-    }
-
-    public function status(array $records) : int
-    {
-        if (count($records) == 0) {
-            return Status::UNKNOWN;
+        $report = new Report("Time drift");
+        /** @var \App\Record $last_record */
+        $last_record = $records->last();
+        
+        if (! isset($last_record->data["date"])) {
+            return $report->setHTML("<p>No data available ...</p>");
         }
         
-        $delta = $this->delta(end($records));
-        if ($delta == null) {
-            return Status::UNKNOWN;
-        }
-
+        $delta = $last_record->data["date"] - $last_record->time;
+        $report->setHTML("<p>Time drift: $delta seconds</p>");
+        
         if (abs($delta) > 10) {
-            return Status::WARNING;
+            return $report->setStatus(Status::warning());
         }
 
-        return Status::OK;
-    }
-
-    public function delta(Record $record)
-    {
-        if (! isset($record->data["date"])) {
-            return null;
-        }
-
-        return $record->data["date"] - $record->time;
+        return $report->setStatus(Status::ok());
     }
 }
