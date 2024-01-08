@@ -110,7 +110,7 @@ class Ifconfig implements Sensor
 
     /**
      * Parse the result of the ifconfig command, skipping every virtual
-     * interfaces (docker, br, lo)
+     * interfaces (docker, br, lo) and return an array of NetworkInterface
      * @param string $string
      * @return \App\Sensor\NetworkInterface[]
      */

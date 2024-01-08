@@ -42,6 +42,10 @@
                     <i class="fas fa-memory ml-3"></i> {{ $server->info()->memoryTotalForHumans() }}
                     <i class="fas fa-server ml-3"></i> {{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}
                     <i class="fas fa-terminal ml-3"></i> {{ $server->info()->lsb() }}
+                    <i class="fas fa-network-wired ml-3"></i>
+                    @foreach ($server->info()->addresses() as $address)
+                    <a href="ssh://{{ $address }}">{{ $address }}</a> 
+                    @endforeach
                 </small>
                 
             </td>

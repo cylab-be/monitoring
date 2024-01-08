@@ -83,4 +83,14 @@ class ServerInfoParser
         preg_match($REGEX, $string, $matches);
         return $matches[1];
     }
+    
+    public function parseAddresses(string $string) : array
+    {
+        $ifconfig = new \App\Sensor\Ifconfig();
+        $interfaces = $ifconfig->parseIfconfig($string);
+        return array_map(
+                function(Sensor\NetworkInterface $interface) {return $interface->address; },
+                $interfaces);
+        
+    }
 }

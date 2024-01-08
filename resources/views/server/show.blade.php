@@ -32,6 +32,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                         {{ $server->info()->cpuinfo()["cpu"] }}<br>
                         {{ $server->info()->vCores() }} vCores
                     </p>
+                    
                     <p>Memory: {{ $server->info()->memoryTotalForHumans() }}</p>
                     <p>{{ $server->info()->lsb() }}</p>
                     

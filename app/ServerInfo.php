@@ -18,6 +18,7 @@ class ServerInfo
     public $lsb;
     public $manufacturer;
     public $product_name;
+    public $addresses;
     
     private $parser;
     private $record;
@@ -38,6 +39,7 @@ class ServerInfo
         $this->cpuinfo = $this->parseCpuinfo();
         $this->memory_total = $this->parseMemoryTotal();
         $this->client_version = $this->parseClientVersion();
+        $this->addresses = $this->parseAddresses();
     }
     /**
      * Human readable uptime.
@@ -155,6 +157,20 @@ class ServerInfo
     public function productName()
     {
         return $this->product_name;
+    }
+    
+    public function parseAddresses() : array
+    {
+        if (! isset($this->record->data["ifconfig"])) {
+            return [];
+        }
+        
+        return $this->parser->parseAddresses($this->record->data["ifconfig"]);
+    }
+    
+    public function addresses() : array
+    {
+        return $this->addresses;
     }
 
     /**
