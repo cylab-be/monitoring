@@ -73,6 +73,10 @@ class Status
      */
     public static function max(array $items) : Status
     {
+        if (count($items) == 0) {
+            return Status::unknown();
+        }
+        
         return max(array_map(
             function (HasStatus $item) {
                 return $item->status();
