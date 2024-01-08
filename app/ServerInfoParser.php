@@ -89,8 +89,10 @@ class ServerInfoParser
         $ifconfig = new \App\Sensor\Ifconfig();
         $interfaces = $ifconfig->parseIfconfig($string);
         return array_map(
-                function(Sensor\NetworkInterface $interface) {return $interface->address; },
-                $interfaces);
-        
+            function (Sensor\NetworkInterface $interface) {
+                return $interface->address;
+            },
+            $interfaces
+        );
     }
 }
