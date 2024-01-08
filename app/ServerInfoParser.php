@@ -66,6 +66,7 @@ class ServerInfoParser
     public function parseManufacturer(string $string) : string
     {
         $REGEX = "/^\s*Manufacturer: (.*)$/m";
+        
         $matches = [];
         preg_match($REGEX, $string, $matches);
 

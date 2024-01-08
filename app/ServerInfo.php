@@ -33,6 +33,7 @@ class ServerInfo
         $this->uptime = $this->parseUptime();
         $this->uuid = $this->parseUUID();
         $this->lsb = $this->parseLsb();
+        $this->manufacturer = $this->parseManufacturer();
         $this->product_name = $this->parseProductName();
         $this->cpuinfo = $this->parseCpuinfo();
         $this->memory_total = $this->parseMemoryTotal();
@@ -92,7 +93,7 @@ class ServerInfo
 
     public function memoryTotalForHumans()
     {
-        return round($this->memoryTotal() / 1024 / 1024) . "GB";
+        return round($this->memoryTotal() / 1024 / 1000) . " GB";
     }
 
     /**

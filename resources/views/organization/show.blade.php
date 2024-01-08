@@ -32,16 +32,24 @@
         @foreach($organization->servers->sortBy("name") as $server)
         <tr>
             <td>
-                <a class="text-decoration-none"
+                <a class="text-decoration-none h5"
                    href="{{ action('ServerController@show', ['server' => $server]) }}">
                     {{ $server->name }}
-                </a>
+                </a><br>
+                
+                <small class="text-muted">
+                    <i class="fas fa-microchip"></i> {{ $server->info()->vCores() }} vCores
+                    <i class="fas fa-memory ml-3"></i> {{ $server->info()->memoryTotalForHumans() }}
+                    <i class="fas fa-server ml-3"></i> {{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}
+                    <i class="fas fa-terminal ml-3"></i> {{ $server->info()->lsb() }}
+                </small>
+                
             </td>
-            <td>{!! $server->status()->badge() !!}</td>
-            <td>{{ $server->info()->lastRecordTime()->diffForHumans() }}</td>
-            <td>{{ $server->info()->memoryTotalForHumans() }}</td>
-            <td>{{ $server->info()->vCores() }} vCores</td>
-            <td class="text-right">{{ $server->info()->lsb() }}</td>
+            <td></td>
+            <td class="text-right">
+                {!! $server->status()->badge() !!}
+                {{ $server->info()->lastRecordTime()->diffForHumans() }}
+            </td>
         </tr>
         @endforeach
     </table>
