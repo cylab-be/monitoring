@@ -12,7 +12,7 @@
     @endforeach
 </table>
 
-<canvas id="ifconfig-chart" width='400' height='300'></canvas>
+<canvas id="ifconfig-chart" width='400' height='200'></canvas>
 <script>
     window.addEventListener('load', function() {
         window.monitorIfconfigChart(document.getElementById('ifconfig-chart'));
