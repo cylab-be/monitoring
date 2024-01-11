@@ -36,6 +36,10 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 @foreach ($server->info()->addresses() as $address)
                 <a href="ssh://{{ $address }}">{{ $address }}</a> 
                 @endforeach
+                
+                <a href="https://cylab.be/blog/318/create-a-handler-for-opening-special-urls-like-ssh">
+                    <i class="fas fa-question-circle"></i>
+                </a>
             </p>
 
             <p>Uptime: {{ $server->info()->uptime() }}</p>
