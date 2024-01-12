@@ -149,7 +149,7 @@ class Server extends Model
                 try {
                      $report = (new $sensor)->analyze($records, $serverinfo);
                      $this->reports[] = $report;
-                } catch (\Exception $ex) {
+                } catch (\Throwable $ex) {
                     Log::error('Sensor failed : ' . $ex->getTraceAsString());
                     $report = new Report($sensor, Status::unknown());
                     $report->setHTML("<p>Agent crashed...</p>");
