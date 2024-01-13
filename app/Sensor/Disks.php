@@ -10,7 +10,7 @@ use App\Status;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Description of Update
+ * Monitor disk usage
  *
  * @author tibo
  */
@@ -67,7 +67,7 @@ class Disks implements Sensor
         return $partitions;
     }
     
-    const SKIP_FS = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop'];
+    const SKIP_FS = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop', "devfs"];
     
     public function shouldSkip(string $fs) : bool
     {
