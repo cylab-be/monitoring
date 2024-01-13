@@ -2,14 +2,14 @@
 <tr>
     <th></th>
     <th></th>
-    <th>Usage</th>
+    <th class="text-right">Usage</th>
 </tr>
 
 @foreach ($disks as $disk)
 <tr>
     <td>{{ $disk->filesystem }}</td>
     <td>{{ $disk->mounted }}</td>
-    <td>{{ $disk->usedPercent() }}%</td>
+    <td class="text-right">{{ $disk->usedPercent() }}%</td>
 </tr>
 @endforeach
 </table>
