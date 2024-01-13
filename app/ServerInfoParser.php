@@ -88,11 +88,14 @@ class ServerInfoParser
     {
         $ifconfig = new \App\Sensor\Ifconfig();
         $interfaces = $ifconfig->parseIfconfig($string);
-        return array_map(
+        $ips = array_map(
             function (Sensor\NetworkInterface $interface) {
                 return $interface->address;
             },
             $interfaces
         );
+
+        // remove empty values
+        return array_filter($ips, 'strlen');
     }
 }
