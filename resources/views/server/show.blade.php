@@ -34,7 +34,9 @@ window.monitorServerToken = "{{ $server->read_token }}";
             <p>
                 <i class="fas fa-network-wired"></i>
                 @foreach ($server->info()->addresses() as $address)
-                <a href="ssh://{{ $address }}">{{ $address }}</a> 
+                {{ $address }}
+                <a class="badge badge-primary" href="ssh://{{ $address }}">ssh</a>
+                <a class="badge badge-primary" target="_blanck" href="http://{{ $address }}">http</a> 
                 @endforeach
                 
                 <a href="https://cylab.be/blog/318/create-a-handler-for-opening-special-urls-like-ssh">
