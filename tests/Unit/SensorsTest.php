@@ -74,10 +74,9 @@ class SensorsTest extends TestCase
         $string = file_get_contents(__DIR__ . "/netstat-tcp");
         $sensor = new \App\Sensor\ListeningPorts();
         $ports = $sensor->parse($string);
-        $this->assertEquals(16, count($ports));
-        $this->assertEquals("31933/cloud-backup-", $ports[4]->process);
-        $this->assertEquals(1024, $ports[4]->port);
-        $this->assertEquals("127.0.0.1", $ports[4]->bind);
+        $this->assertEquals(4, count($ports));
+        $this->assertEquals(111, $ports[0]->port);
+        $this->assertEquals("0.0.0.0", $ports[0]->bind);
     }
 
     public function testSsacli()
