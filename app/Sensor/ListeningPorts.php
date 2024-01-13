@@ -76,6 +76,6 @@ class ListeningPorts implements Sensor
             $port->process = $values[4][$i];
             $ports[] = $port;
         }
-        return $ports;
+        return array_unique($ports);
     }
 }
