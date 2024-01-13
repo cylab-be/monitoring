@@ -16,7 +16,7 @@ class ListeningPort
     
     public function __toString()
     {
-        $this->port . " | " .
+        return $this->port . " | " .
                 $this->proto . " | " .
                 $this->bind . " | " .
                 $this->process;
