@@ -63,9 +63,15 @@ class ListeningPorts implements Sensor
         $ports = [];
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
+            // bind address
+            $bind = trim($values[2][$i]);
+            if ($bind == "127.0.0.1" || $bind == "::1") {
+                continue;
+            }
+            
             $port = new ListeningPort();
             $port->proto = $values[1][$i];
-            $port->bind = $values[2][$i];
+            $port->bind = $bind;
             $port->port = $values[3][$i];
             $port->process = $values[4][$i];
             $ports[] = $port;
