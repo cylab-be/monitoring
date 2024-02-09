@@ -33,6 +33,36 @@ class Server extends Model
 {
 
     protected $fillable = ["token"];
+    
+    // don't show tokens when serializing to json
+    protected $hidden = ['token', 'read_token'];
+    
+    // add attributes when serializing to json
+    // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
+    protected $appends = ['url', 'status', 'failing_sensors'];
+    
+    public function getUrlAttribute() : string
+    {
+        return action("ServerController@show", ["server" => $this]);
+    }
+    
+    public function getStatusAttribute() : array
+    {
+        return $this->status()->jsonSerialize();
+    }
+    
+    public function getFailingSensorsAttribute() : array
+    {
+        $failing_sensors = [];
+        
+        foreach ($this->getSensorsNOK() as $sensor) {
+            $failing_sensors[] = $sensor->name();
+        }
+        
+        return $failing_sensors;
+    }
+    
+    
 
     /**
      * Last record from this server (used for caching).
@@ -125,7 +155,7 @@ class Server extends Model
         return Status::max($this->reports());
     }
 
-    public function getSensorsNOK()
+    public function getSensorsNOK() : array
     {
         $sensorsNOK = [];
         foreach ($this->reports() as $sensor) {

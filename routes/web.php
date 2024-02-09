@@ -46,6 +46,12 @@ Route::get(
     'OrganizationDashboardController@dashboard'
 )->name("organization.public.dashboard");
 
+// public json dashboard
+Route::get(
+    'app/organizations/{organization}/{token}/dashboard.json',
+    'OrganizationDashboardController@json'
+);
+
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
 Route::resource('app/servers', 'ServerController')->except(["index"]);

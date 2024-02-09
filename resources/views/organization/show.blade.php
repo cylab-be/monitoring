@@ -13,14 +13,16 @@
         <a class="btn btn-primary btn-sm"
            href="{{ action("OrganizationController@dashboard",
                        ["organization" => $organization]) }}">
-            Dashboard <i class="fas fa-lock ml-2"></i>
+            <i class="fas fa-tachometer-alt"></i> Dashboard
         </a>
+        
         <a class="btn btn-primary btn-sm"
-           href="{{ route("organization.public.dashboard", [
+           href="{{ action("OrganizationDashboardController@json", [
                "organization" => $organization,
-                "token" => $organization->dashboard_token]) }}">
-            Public dashboard <i class="fas fa-globe ml-2"></i>
+               "token" => $organization->dashboard_token]) }}">
+            <i class="fas fa-code"></i> JSON
         </a>
+        
         <a class="btn btn-primary btn-sm"
            href="{{ action("OrganizationController@resetToken", [
                "organization" => $organization]) }}">

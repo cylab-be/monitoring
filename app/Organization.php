@@ -28,7 +28,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Organization extends Model
 {
-
+    // don't show dashboard token when serializing to json
+    protected $hidden = ['dashboard_token'];
+    
+    // add servers when serializing to json
+    // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
+    protected $appends = ['servers'];
+    
+    protected function getServersAttribute()
+    {
+        return $this->servers()->orderBy("name")->get();
+    }
+        
 
     public function users()
     {

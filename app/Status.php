@@ -32,6 +32,13 @@ class Status
                 return "Unknown";
         }
     }
+    
+    public function jsonSerialize() : array
+    {
+        return [
+            "code" => $this->code,
+            "name" => $this->__toString()];
+    }
 
     public function code() : int
     {
