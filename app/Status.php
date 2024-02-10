@@ -37,7 +37,8 @@ class Status
     {
         return [
             "code" => $this->code,
-            "name" => $this->__toString()];
+            "name" => $this->__toString(),
+            "color" => $this->color()];
     }
 
     public function code() : int

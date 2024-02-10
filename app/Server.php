@@ -39,7 +39,7 @@ class Server extends Model
     
     // add attributes when serializing to json
     // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
-    protected $appends = ['url', 'status', 'failing_sensors'];
+    protected $appends = ['url', 'status', 'failing_sensors', 'last_record_time'];
     
     public function getUrlAttribute() : string
     {
@@ -62,6 +62,10 @@ class Server extends Model
         return $failing_sensors;
     }
     
+    public function getLastRecordTime() : int
+    {
+        return $this->info()->lastRecordTime()->timestamp;
+    }
     
 
     /**
