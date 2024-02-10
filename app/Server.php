@@ -62,7 +62,7 @@ class Server extends Model
         return $failing_sensors;
     }
     
-    public function getLastRecordTime() : int
+    public function getLastRecordTimeAttribute() : int
     {
         return $this->info()->lastRecordTime()->timestamp;
     }
