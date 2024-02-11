@@ -76,25 +76,6 @@ class Server extends Model
     private $records_1day = null;
     private $info = null;
 
-    private static $sensors = [
-        \App\Sensor\LoadAvg::class,
-        \App\Sensor\MemInfo::class,
-        \App\Sensor\Ifconfig::class,
-        \App\Sensor\Netstat::class,
-        \App\Sensor\ListeningPorts::class,
-        \App\Sensor\Reboot::class,
-        \App\Sensor\Updates::class,
-        \App\Sensor\Disks::class,
-        \App\Sensor\Inodes::class,
-        \App\Sensor\Ssacli::class,
-        \App\Sensor\Perccli::class,
-        \App\Sensor\Date::class,
-        \App\Sensor\ClientVersion::class,
-        \App\Sensor\Heartbeat::class,
-        \App\Sensor\CPUtemperature::class,
-        \App\Sensor\USBtemperature::class
-    ];
-
     public function __construct(array $attributes = array())
     {
         $attributes["token"] = str_random(32);
@@ -109,6 +90,11 @@ class Server extends Model
     public function records()
     {
         return $this->hasMany(Record::class);
+    }
+    
+    public function sensors() : array
+    {
+        return SensorHandler::get()->sensors();
     }
 
     public function lastRecord() : ?Record
@@ -179,13 +165,13 @@ class Server extends Model
             $serverinfo = $this->info();
 
             $this->reports = [];
-            foreach (self::$sensors as $sensor) {
+            foreach ($this->sensors() as $sensor) {
                 try {
-                     $report = (new $sensor)->analyze($records, $serverinfo);
+                     $report = $sensor->analyze($records, $serverinfo);
                      $this->reports[] = $report;
                 } catch (\Throwable $ex) {
                     Log::error('Sensor failed : ' . $ex->getTraceAsString());
-                    $report = new Report($sensor, Status::unknown());
+                    $report = new Report(get_class($sensor), Status::unknown());
                     $report->setHTML("<p>Agent crashed...</p>");
                     $this->reports[] = $report;
                 }
