@@ -94,7 +94,6 @@ class ExampleTest extends TestCase
         $change->status = \App\Status::ERROR;
         $change->time = time();
         $change->server_id = $server_id;
-        $change->record_id = $record_id;
         $change->save();
 
         // Check if a new StatusChange was correctly saved
@@ -105,8 +104,8 @@ class ExampleTest extends TestCase
         );
         
         // Run change detection
-        //$change_detection_job = new \App\Jobs\StatusChangeDetection();
-        //$change_detection_job->detectChangeForServer($server);
+        $change_detection_job = new \App\Jobs\StatusChangeDetection();
+        $change_detection_job->detectChangeForServer($server);
 
 
         // Insert multiple status changes to simulate bouncing
@@ -115,7 +114,6 @@ class ExampleTest extends TestCase
             $change->status = 155;
             $change->server_id = $server_id;
             $change->time = time() + $i;
-            $change->record_id = $record_id;
             $change->save();
 
             // Run change detection

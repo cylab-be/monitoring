@@ -45,11 +45,7 @@ class StatusChangeDetection implements ShouldQueue
             $change = new StatusChange();
             $change->server_id = $server->id;
             $change->time = time();
-            $change->status = $current_status->code();
-            
-            // currently unused...
-            $change->record_id = 1;
-            
+            $change->status = $current_status->code();            
             $change->save();
             return;
         }
@@ -66,9 +62,6 @@ class StatusChangeDetection implements ShouldQueue
         $change->server_id = $server->id;
         $change->time = time();
         $change->status = $current_status->code();
-        
-        // currently unused...
-        $change->record_id = 1;
         $change->save();
 
         $this->sendNotificationIfRequired($change);
