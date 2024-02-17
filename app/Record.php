@@ -21,9 +21,9 @@ class Record extends Model
         return $this->belongsTo(Server::class);
     }
     
-    public function save(array $options = []) {
+    public function save(array $options = [])
+    {
         if (parent::save($options)) {
-        
             AgentScheduler::get()->notify($this);
             return true;
         }

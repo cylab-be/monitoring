@@ -16,14 +16,14 @@ class RunAgent implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
     /**
-     * 
+     *
      * @var Sensor
      */
     public $agent;
     
     
     /**
-     * 
+     *
      * @var Server
      */
     public $server;

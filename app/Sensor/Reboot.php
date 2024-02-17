@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Reboot implements Sensor
 {
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("reboot", "reboot");
     }

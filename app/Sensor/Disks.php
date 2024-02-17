@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
  */
 class Disks implements Sensor
 {
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("disks", "disks");
     }
@@ -38,7 +38,7 @@ class Disks implements Sensor
     }
 
     /**
-     * 
+     *
      * @param string $string
      * @return Collection<Partition>
      */

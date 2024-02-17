@@ -88,7 +88,7 @@ class Server extends Model
     public function lastRecord(string $label) : ?Record
     {
         return $this->records()
-                ->where ("label", $label)
+                ->where("label", $label)
                 ->orderBy("time", "desc")->first();
     }
 
@@ -103,7 +103,6 @@ class Server extends Model
                 ->where("time", ">", $start)
                 ->orderBy("time")
                 ->get();
-        
     }
 
     public function hasData() : bool
@@ -160,7 +159,7 @@ class Server extends Model
         return $reports->filter();
     }
     
-    public function lastReport (string $label) : ?Report
+    public function lastReport(string $label) : ?Report
     {
         $start = time() - 24 * 3600;
         return $this->reports()

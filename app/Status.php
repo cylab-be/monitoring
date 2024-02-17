@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Collection;
-
 /**
  * Wrapper around a status code
  */
@@ -87,7 +85,7 @@ class Status
             return self::maxArray($items);
         }
         
-       return self::maxCollection($items);
+        return self::maxCollection($items);
     }
     
     private static function maxArray(array $items) : Status

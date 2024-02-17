@@ -34,7 +34,7 @@ class CPUtemperature implements Sensor
     {
         $report = (new Report())->setTitle("CPU temperature");
         
-        $record = $records->last();        
+        $record = $records->last();
         $cpus = $this->parse($record->data);
         $report->setHTML(view("sensor.cputemperature", ["cpus" => $cpus]));
         $report->setStatus(Status::max($cpus));

@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class USBtemperature implements Sensor
 {
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("usb-temperature", "TEMPer");
     }

@@ -24,7 +24,7 @@ class ServerInfo
     private $parser;
     
     /**
-     * 
+     *
      * @var Server
      */
     private $server;

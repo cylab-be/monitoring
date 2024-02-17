@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $time
  * @property integer $server_id
  * @property string $label
- * 
+ *
  * Properties set by analysis agent:
  * @property int $status_code
  * @property string $title
  * @property string $html
- * 
+ *
  * @author tibo
  */
 class Report extends Model implements HasStatus

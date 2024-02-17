@@ -19,7 +19,7 @@ class AgentScheduler
 {
     
     /**
-     * 
+     *
      * @var LazyCollection<Sensor>
      */
     private $sensors;
@@ -46,7 +46,7 @@ class AgentScheduler
     }
     
     /**
-     * 
+     *
      * @return LazyCollection<Sensor>
      */
     public function sensors() : LazyCollection
@@ -55,7 +55,7 @@ class AgentScheduler
     }
     
     /**
-     * 
+     *
      * @return LazyCollection<Sensor>
      */
     public function autodiscover() : LazyCollection
@@ -74,7 +74,7 @@ class AgentScheduler
     }
     
     /**
-     * 
+     *
      * @param LazyCollection<Sensor> $sensors
      * @return array
      */
@@ -92,12 +92,14 @@ class AgentScheduler
     
     /**
      * Get the list of defined agent labels.
-     * 
+     *
      * @return array
      */
     public function agentLabel() : array
     {
-        return $this->sensors->map(function(Sensor $sensor) {return $sensor->config()->label; })->toArray();
+        return $this->sensors->map(function (Sensor $sensor) {
+            return $sensor->config()->label;
+        })->toArray();
     }
     
     // ------------------ SCHEDULING of agents

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
 class Netstat implements Sensor
 {
     
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("netstat-retransmitted", "netstat-statistics");
     }

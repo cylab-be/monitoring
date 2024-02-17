@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Ssacli implements Sensor
 {
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("ssacli", "ssacli");
     }
@@ -28,7 +28,7 @@ class Ssacli implements Sensor
     {
         $report = (new Report())->setTitle("HP ssacli");
         
-        $record = $records->last();        
+        $record = $records->last();
         $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.ssacli", ["disks" => $disks]));
         

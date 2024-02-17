@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Ifconfig implements Sensor
 {
-    public function config(): SensorConfig 
+    public function config(): SensorConfig
     {
         return new SensorConfig("ifconfig", "ifconfig");
     }

@@ -7,7 +7,8 @@ use App\Record;
 
 use Illuminate\Http\Request;
 
-class ApiController extends Controller {
+class ApiController extends Controller
+{
 
     public function echo(Request $request, Server $server)
     {
@@ -58,7 +59,7 @@ class ApiController extends Controller {
             "max" => $server->info()->cpuinfo()["threads"]];
     }
     
-    public function ifconfig (Server $server, string $token)
+    public function ifconfig(Server $server, string $token)
     {
         if ($server->read_token != $token) {
             abort(403);
@@ -69,7 +70,7 @@ class ApiController extends Controller {
         return $sensor->points($server->lastRecords("ifconfig"));
     }
     
-    public function netstat (Server $server, string $token)
+    public function netstat(Server $server, string $token)
     {
         if ($server->read_token != $token) {
             abort(403);
