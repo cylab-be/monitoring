@@ -11,5 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
  */
 interface Sensor
 {
+    public function config() : SensorConfig;
     public function analyze(Collection $records, ServerInfo $serverinfo) : Report;
 }

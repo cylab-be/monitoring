@@ -3,11 +3,13 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\ServerInfo;
 use App\Report;
 use App\Status;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 
 /**
  * Monitor disk usage
@@ -16,29 +18,37 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Disks implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("disks", "disks");
+    }
+    
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(DatabaseCollection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Partitions");
+        $report = (new Report())->setTitle("Partitions");
         
         $record = $records->last();
-        if (! isset($record->data['disks'])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-
-        $partitions = $this->parse($record->data["disks"]);
+        $partitions = $this->parse($record->data);
         $report->setHTML(view("sensor.disks", ["partitions" => $partitions]));
         
         return $report->setStatus(Status::max($partitions));
     }
 
-    public function parse(string $string) : array
+    /**
+     * 
+     * @param string $string
+     * @return Collection<Partition>
+     */
+    public function parse(string $string) : Collection
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
-        $partitions = array();
+        
+        
+        $partitions = new Collection();
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
@@ -51,14 +61,14 @@ class Disks implements Sensor
             $partition->blocks = $values[2][$i];
             $partition->used = $values[3][$i];
             $partition->mounted = $values[6][$i];
-            $partitions[] = $partition;
+            $partitions->push($partition);
         }
         return $partitions;
     }
 
-    public function fromRecord($record) : array
+    public function fromRecord($record) : Collection
     {
-        $partitions = $this->parse($record->data["disks"]);
+        $partitions = $this->parse($record->data);
         $time = $record->time;
         foreach ($partitions as $partition) {
             $partition->time = $time;

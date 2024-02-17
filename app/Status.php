@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
+
 /**
  * Wrapper around a status code
  */
@@ -76,21 +78,41 @@ class Status
     
     /**
      *
-     * @param array<HasStatus> $items
+     * @param Collection<HasStatus>|array<HasStatus> $items
      * @return Status
      */
-    public static function max(array $items) : Status
+    public static function max($items) : Status
+    {
+        if (is_array($items)) {
+            return self::maxArray($items);
+        }
+        
+       return self::maxCollection($items);
+    }
+    
+    private static function maxArray(array $items) : Status
     {
         if (count($items) == 0) {
             return Status::unknown();
         }
-        
+
         return max(array_map(
             function (HasStatus $item) {
                 return $item->status();
             },
             $items
         ));
+    }
+    
+    private static function maxCollection($items) : Status
+    {
+        if ($items->count() == 0) {
+            return Status::unknown();
+        }
+
+        return $items->max(function (HasStatus $item) {
+                return $item->status();
+        });
     }
     
     public static function ok() : Status

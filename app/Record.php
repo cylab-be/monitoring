@@ -9,23 +9,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $time
  * @property int $server_id
  * @property Server $server
- * @property array $data
+ * @property string $data
+ * @property string $label
  */
 class Record extends Model
 {
     public $timestamps = false;
     
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'data' => 'array',
-    ];
-    
     public function server()
     {
         return $this->belongsTo(Server::class);
+    }
+    
+    public function save(array $options = []) {
+        if (parent::save($options)) {
+        
+            AgentScheduler::get()->notify($this);
+            return true;
+        }
+        
+        return false;
     }
 }

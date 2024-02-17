@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -16,18 +17,19 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Ssacli implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("ssacli", "ssacli");
+    }
+    
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("HP ssacli");
+        $report = (new Report())->setTitle("HP ssacli");
         
-        $record = $records->last();
-        if (! isset($record->data['ssacli'])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-        
-        $disks = $this->parse($record->data["ssacli"]);
+        $record = $records->last();        
+        $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.ssacli", ["disks" => $disks]));
         
         return $report->setStatus(Status::max($disks));

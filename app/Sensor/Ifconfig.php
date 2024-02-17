@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\Record;
 use App\ServerInfo;
@@ -17,15 +18,16 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Ifconfig implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("ifconfig", "ifconfig");
+    }
+    
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Ifconfig");
+        $report = (new Report())->setTitle("Ifconfig");
         
         $last_record = $records->last();
-        if (! isset($last_record->data['ifconfig'])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-
         $interfaces = $this->parseIfconfigRecord($last_record);
         return $report->setStatus(Status::ok())
                 ->setHTML(view("agent.ifconfig", ["interfaces" => $interfaces]));
@@ -100,7 +102,7 @@ class Ifconfig implements Sensor
 
     public function parseIfconfigRecord(Record $record)
     {
-        $interfaces = $this->parseIfconfig($record->data["ifconfig"]);
+        $interfaces = $this->parseIfconfig($record->data);
         foreach ($interfaces as $interface) {
             $interface->time = $record->time;
         }

@@ -15,11 +15,18 @@ class ApiController extends Controller {
             abort(403);
         }
 
-        $record = new Record();
-        $record->server_id = $server->id;
-        $record->time = time();
-        $record->data = $request->all();
-        $record->save();
+        foreach ($request->all() as $label => $data) {
+            if (is_null($data)) {
+                continue;
+            }
+            
+            $record = new Record();
+            $record->server_id = $server->id;
+            $record->time = time();
+            $record->label = $label;
+            $record->data = $data;
+            $record->save();
+        }
 
         return "ok";
     }
@@ -33,8 +40,8 @@ class ApiController extends Controller {
         header('Access-Control-Allow-Origin: *');
         $meminfo = new \App\Sensor\MemInfo();
         return [
-            "used" => $meminfo->usedMemoryPoints($server->lastRecords1Day()),
-            "cached" => $meminfo->cachedMemoryPoints($server->lastRecords1Day()),
+            "used" => $meminfo->usedMemoryPoints($server->lastRecords("memory")),
+            "cached" => $meminfo->cachedMemoryPoints($server->lastRecords("memory")),
             "total" => $server->info()->memoryTotal() / 1000];
     }
 
@@ -47,7 +54,7 @@ class ApiController extends Controller {
         header('Access-Control-Allow-Origin: *');
         $sensor = new \App\Sensor\LoadAvg();
         return [
-            "points" => $sensor->loadPoints($server->lastRecords1Day()),
+            "points" => $sensor->loadPoints($server->lastRecords("loadavg")),
             "max" => $server->info()->cpuinfo()["threads"]];
     }
     
@@ -59,7 +66,7 @@ class ApiController extends Controller {
 
         header('Access-Control-Allow-Origin: *');
         $sensor = new \App\Sensor\Ifconfig();
-        return $sensor->points($server->lastRecords1Day());
+        return $sensor->points($server->lastRecords("ifconfig"));
     }
     
     public function netstat (Server $server, string $token)
@@ -70,6 +77,6 @@ class ApiController extends Controller {
 
         header('Access-Control-Allow-Origin: *');
         $sensor = new \App\Sensor\Netstat();
-        return $sensor->points($server->lastRecords1Day());
+        return $sensor->points($server->lastRecords("netstat-statistics"));
     }
 }

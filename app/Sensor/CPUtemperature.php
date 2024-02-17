@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -24,19 +25,17 @@ class CPUtemperature implements Sensor
     // Core 0:        +38.0°C  (high = +84.0°C, crit = +100.0°C)
     const REGEXPCORE = "/^(Core \d+):\s+\+(\d+\.\d+)°C\s+\(high\s=\s\+\d+\.\d°C,\scrit\s=\s\+(\d+\.\d+)°C\)/m";
 
+    public function config(): SensorConfig
+    {
+        return new SensorConfig("cpu-temperature", "cpu-temperature");
+    }
     
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("CPU temperature");
+        $report = (new Report())->setTitle("CPU temperature");
         
-        $record = $records->last();
-        if (! isset($record->data["cpu-temperature"])) {
-            return $report->setHTML("<p>No data available...</p>"
-                . "<p>Maybe <code>sensors</code> is not installed.</p>"
-                . "<p>You can install it with <code>sudo apt install lm-sensors</code></p>");
-        }
-        
-        $cpus = $this->parse($record->data['cpu-temperature']);
+        $record = $records->last();        
+        $cpus = $this->parse($record->data);
         $report->setHTML(view("sensor.cputemperature", ["cpus" => $cpus]));
         $report->setStatus(Status::max($cpus));
         

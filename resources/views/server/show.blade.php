@@ -53,18 +53,17 @@ window.monitorServerToken = "{{ $server->read_token }}";
         </div>
     </div>
 
-    @if ($server->hasData())
-    @foreach ($server->reports() as $sensor)
+    @foreach ($server->lastReports() as $report)
     <div class="card">
         <div class="card-header">
-            {{ $sensor->name() }}
+            {{ $report->title() }}
 
             <div class="float-right">
-                {!! $sensor->status()->badge() !!}
+                {!! $report->status()->badge() !!}
             </div>
         </div>
         <div class="card-body">
-            {!! $sensor->html() !!}
+            {!! $report->html() !!}
         </div>
     </div>
     @endforeach
@@ -84,8 +83,6 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </table>
         </div>
     </div>
-
-    @endif
 
     <div class="card">
         <div class="card-header">

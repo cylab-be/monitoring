@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\SensorHandler;
+use App\AgentScheduler;
 
 use Tests\TestCase;
 
@@ -16,7 +16,9 @@ class SensorManagementTest extends TestCase
 {
     public function testAutodiscover()
     {
-        $manager = SensorHandler::get();
-        var_dump($manager->autodiscover());
+        $manager = AgentScheduler::get();
+        $sensors = $manager->autodiscover();
+        
+        $this->assertTrue($sensors->count() > 5);
     }
 }

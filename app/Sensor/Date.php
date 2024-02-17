@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -16,17 +17,18 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Date implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("date", "date");
+    }
+    
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Time drift");
+        $report = (new Report())->setTitle("Time drift");
         /** @var \App\Record $last_record */
         $last_record = $records->last();
         
-        if (! isset($last_record->data["date"])) {
-            return $report->setHTML("<p>No data available ...</p>");
-        }
-        
-        $delta = $last_record->data["date"] - $last_record->time;
+        $delta = (int) $last_record->data - $last_record->time;
         $report->setHTML("<p>Time drift: $delta seconds</p>");
         
         if (abs($delta) > 10) {

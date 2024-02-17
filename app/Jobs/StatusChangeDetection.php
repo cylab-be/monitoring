@@ -46,7 +46,10 @@ class StatusChangeDetection implements ShouldQueue
             $change->server_id = $server->id;
             $change->time = time();
             $change->status = $current_status->code();
-            $change->record_id = $server->lastRecord()->id;
+            
+            // currently unused...
+            $change->record_id = 1;
+            
             $change->save();
             return;
         }
@@ -56,13 +59,16 @@ class StatusChangeDetection implements ShouldQueue
             return;
         }
         
-        Log::notice("Status of server changed to " . $current_status->code() . " for server #" . $server->id);
+        Log::notice("Status of server changed to " . $current_status->code() . 
+                " for server #" . $server->id);
 
         $change = new StatusChange();
         $change->server_id = $server->id;
         $change->time = time();
         $change->status = $current_status->code();
-        $change->record_id = $server->lastRecord()->id;
+        
+        // currently unused...
+        $change->record_id = 1;
         $change->save();
 
         $this->sendNotificationIfRequired($change);

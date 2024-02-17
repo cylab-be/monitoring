@@ -3,12 +3,13 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\ServerInfo;
 use App\Report;
 use App\Status;
 
-use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 /**
  * Description of Update
  *
@@ -16,30 +17,30 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Inodes implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("inodes", "inodes");
+    }
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(DatabaseCollection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Inodes");
+        $report = (new Report())->setTitle("Inodes");
         
         $record = $records->last();
-        
-        if (! isset($record->data['inodes'])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-
-        $disks = $this->parse($record->data["inodes"]);
+        $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.inodes", ["disks" => $disks]));
         
         return $report->setStatus(Status::max($disks));
     }
 
-    public function parse(string $string)
+    public function parse(string $string) : Collection
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
-        $disks = array();
+        
+        $disks = new Collection();
         $count = count($values[1]);
         
         $disks_sensor = new Disks();
@@ -56,7 +57,7 @@ class Inodes implements Sensor
             $disk->inodes = $values[2][$i];
             $disk->used = $values[3][$i];
             $disk->mounted = $values[6][$i];
-            $disks[] = $disk;
+            $disks->push($disk);
         }
         return $disks;
     }

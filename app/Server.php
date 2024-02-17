@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 
 /**
  * App\Server
@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Log;
  */
 class Server extends Model
 {
-
+    
     protected $fillable = ["token"];
     
     // don't show tokens when serializing to json
@@ -67,13 +67,6 @@ class Server extends Model
         return $this->info()->lastRecordTime()->timestamp;
     }
     
-
-    /**
-     * Last record from this server (used for caching).
-     * @var String
-     */
-    private $last_record = null;
-    private $records_1day = null;
     private $info = null;
 
     public function __construct(array $attributes = array())
@@ -91,46 +84,39 @@ class Server extends Model
     {
         return $this->hasMany(Record::class);
     }
-    
-    public function sensors() : array
-    {
-        return SensorHandler::get()->sensors();
-    }
 
-    public function lastRecord() : ?Record
+    public function lastRecord(string $label) : ?Record
     {
-        if ($this->last_record == null) {
-            $this->last_record = $this->records()->orderBy("time", "desc")->first();
-        }
-
-        return $this->last_record;
+        return $this->records()
+                ->where ("label", $label)
+                ->orderBy("time", "desc")->first();
     }
 
     /**
      * Get the last day of data.
      */
-    public function lastRecords1Day() : Collection
+    public function lastRecords(string $label) : DatabaseCollection
     {
-        if ($this->records_1day == null) {
-            $start = time() - 24 * 3600;
-            $this->records_1day = $this->records()
-                    ->where("time", ">", $start)
-                    ->orderBy("time")
-                    ->get();
-        }
-
-        return $this->records_1day;
+        $start = time() - 24 * 3600;
+        return $this->records()
+                ->where("label", $label)
+                ->where("time", ">", $start)
+                ->orderBy("time")
+                ->get();
+        
     }
 
     public function hasData() : bool
     {
-        return $this->lastRecord() != null;
+        return true;
+        //return false;
+        //return $this->lastRecord() != null;
     }
 
     public function info() : ServerInfo
     {
         if (is_null($this->info)) {
-            $this->info = new ServerInfo($this->lastRecord());
+            $this->info = new ServerInfo($this);
         }
 
         return $this->info;
@@ -142,7 +128,7 @@ class Server extends Model
      */
     public function status() : Status
     {
-        return Status::max($this->reports());
+        return Status::max($this->lastReports());
     }
 
     public function getSensorsNOK() : array
@@ -156,29 +142,32 @@ class Server extends Model
         return $sensorsNOK;
     }
     
-    private $reports = null;
-
     public function reports()
     {
-        if (is_null($this->reports)) {
-            $records = $this->lastRecords1Day();
-            $serverinfo = $this->info();
-
-            $this->reports = [];
-            foreach ($this->sensors() as $sensor) {
-                try {
-                     $report = $sensor->analyze($records, $serverinfo);
-                     $this->reports[] = $report;
-                } catch (\Throwable $ex) {
-                    Log::error('Sensor failed : ' . $ex->getTraceAsString());
-                    $report = new Report(get_class($sensor), Status::unknown());
-                    $report->setHTML("<p>Agent crashed...</p>");
-                    $this->reports[] = $report;
-                }
-            }
+        return $this->hasMany(Report::class);
+    }
+    
+    
+    /**
+     * Get the last report for each label.
+     */
+    public function lastReports()
+    {
+        $reports = new Collection();
+        foreach (AgentScheduler::get()->agentLabel() as $label) {
+            $reports->push($this->lastReport($label));
         }
-        
-        return $this->reports;
+        return $reports->filter();
+    }
+    
+    public function lastReport (string $label) : ?Report
+    {
+        $start = time() - 24 * 3600;
+        return $this->reports()
+                ->where("label", $label)
+                ->where("time", ">", $start)
+                ->orderByDesc("time")
+                ->first();
     }
     
     public function changes()

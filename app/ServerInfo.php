@@ -19,17 +19,23 @@ class ServerInfo
     public $manufacturer;
     public $product_name;
     public $addresses;
+    public $last_record_time;
     
     private $parser;
-    private $record;
     
     /**
-     * @param Record $record
+     * 
+     * @var Server
      */
-    public function __construct(Record $record)
+    private $server;
+    
+    /**
+     * @param Server $server
+     */
+    public function __construct(Server $server)
     {
         $this->parser = new ServerInfoParser();
-        $this->record = $record;
+        $this->server = $server;
         
         $this->uptime = $this->parseUptime();
         $this->uuid = $this->parseUUID();
@@ -39,6 +45,8 @@ class ServerInfo
         $this->cpuinfo = $this->parseCpuinfo();
         $this->memory_total = $this->parseMemoryTotal();
         $this->client_version = $this->parseClientVersion();
+        $this->last_record_time = $this->parseLastRecordTime();
+        
         $this->addresses = $this->parseAddresses();
     }
     /**
@@ -48,11 +56,13 @@ class ServerInfo
      */
     public function parseUptime() : string
     {
-        if (! isset($this->record->data["upaimte"])) {
+        $record = $this->server->lastRecord("upaimte");
+        
+        if (is_null($record)) {
             return "unknown";
         }
 
-        return $this->parser->parseUptime($this->record->data["upaimte"]);
+        return $this->parser->parseUptime($record->data);
     }
     
     public function uptime() : string
@@ -62,11 +72,12 @@ class ServerInfo
 
     public function parseUuid()
     {
-        if (! isset($this->record->data["system"])) {
+        $record = $this->server->lastRecord("system");
+        if (is_null($record)) {
             return "unknown";
         }
         
-        return $this->parser->parseUUID($this->record->data["system"]);
+        return $this->parser->parseUUID($record->data);
     }
     
     public function uuid() : string
@@ -76,11 +87,12 @@ class ServerInfo
 
     public function parseCpuinfo() : array
     {
-        if (! isset($this->record->data["cpu"])) {
+        $record = $this->server->lastRecord("cpu");
+        if (is_null($record)) {
             return ["threads" => 0, "cpu" => "unknown"];
         }
 
-        return $this->parser->parseCpuinfo($this->record->data["cpu"]);
+        return $this->parser->parseCpuinfo($record->data);
     }
     
     public function cpuinfo()
@@ -104,11 +116,12 @@ class ServerInfo
      */
     public function parseMemoryTotal()
     {
-        if (! isset($this->record->data["memory"])) {
+        $record = $this->server->lastRecord("memory");
+        if (is_null($record)) {
             return 0;
         }
 
-        return $this->parser->parseMeminfo($this->record->data["memory"]);
+        return $this->parser->parseMeminfo($record->data);
     }
     
     public function memoryTotal()
@@ -118,11 +131,12 @@ class ServerInfo
     
     public function parseLsb()
     {
-        if (! isset($this->record->data["lsb"])) {
+        $record = $this->server->lastRecord("lsb");
+        if (is_null($record)) {
             return "unknown";
         }
 
-        return $this->parser->parseLsb($this->record->data["lsb"]);
+        return $this->parser->parseLsb($record->data);
     }
     
     public function lsb()
@@ -133,11 +147,12 @@ class ServerInfo
 
     public function parseManufacturer()
     {
-        if (! isset($this->record->data["system"])) {
+        $record = $this->server->lastRecord("system");
+        if (is_null($record)) {
             return "unknown";
         }
 
-        return $this->parser->parseManufacturer($this->record->data["system"]);
+        return $this->parser->parseManufacturer($record->data);
     }
     
     public function manufacturer()
@@ -147,11 +162,12 @@ class ServerInfo
 
     public function parseProductName()
     {
-        if (! isset($this->record->data["system"])) {
+        $record = $this->server->lastRecord("system");
+        if (is_null($record)) {
             return "unknown";
         }
 
-        return $this->parser->parseProductName($this->record->data["system"]);
+        return $this->parser->parseProductName($record->data);
     }
     
     public function productName()
@@ -161,11 +177,12 @@ class ServerInfo
     
     public function parseAddresses() : array
     {
-        if (! isset($this->record->data["ifconfig"])) {
+        $record = $this->server->lastRecord("ifconfig");
+        if (is_null($record)) {
             return [];
         }
         
-        return $this->parser->parseAddresses($this->record->data["ifconfig"]);
+        return $this->parser->parseAddresses($record->data);
     }
     
     public function addresses() : array
@@ -173,13 +190,23 @@ class ServerInfo
         return $this->addresses;
     }
 
+    public function parseLastRecordTime() : Carbon
+    {
+        $record = $this->server->lastRecord("version");
+        if (is_null($record)) {
+            return new Carbon();
+        }
+        
+        return Carbon::createFromTimestamp($record->time);
+    }
+    
     /**
      *
      * @return \Carbon\Carbon
      */
     public function lastRecordTime() : Carbon
     {
-        return Carbon::createFromTimestamp($this->record->time);
+        return $this->last_record_time;
     }
 
     public function parseClientVersion() : string

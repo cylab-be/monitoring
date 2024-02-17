@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -16,13 +17,18 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class MemInfo implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("memory", "memory");
+    }
+    
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("MemInfo");
+        $report = (new Report())->setTitle("MemInfo");
         $report->setHTML(view("agent.meminfo"));
         
         foreach ($records as $record) {
-            $mem = $this->parseMeminfo($record->data["memory"]);
+            $mem = $this->parseMeminfo($record->data);
             if ($mem->usedRatio() > 0.8) {
                 return $report->setStatus(Status::WARNING);
             }
@@ -36,7 +42,7 @@ class MemInfo implements Sensor
     {
         $used = [];
         foreach ($records as $record) {
-            $meminfo = $this->parseMeminfo($record->data["memory"]);
+            $meminfo = $this->parseMeminfo($record->data);
             $used[] = new Point(
                 $record->time * 1000,
                 $meminfo->used() / 1000
@@ -50,7 +56,7 @@ class MemInfo implements Sensor
     {
         $points = [];
         foreach ($records as $record) {
-            $meminfo = $this->parseMeminfo($record->data["memory"]);
+            $meminfo = $this->parseMeminfo($record->data);
             $points[] = new Point(
                 $record->time * 1000,
                 $meminfo->cached / 1000

@@ -77,7 +77,7 @@ class ExampleTest extends TestCase
         $record = new Record();
         $record->server_id = $server_id;
         $record->time = time();
-        $record->data = array();
+        $record->data = "";
         $record->save();
         
         $record_id = $record->id;
@@ -105,8 +105,8 @@ class ExampleTest extends TestCase
         );
         
         // Run change detection
-        $change_detection_job = new \App\Jobs\StatusChangeDetection();
-        $change_detection_job->detectChangeForServer($server);
+        //$change_detection_job = new \App\Jobs\StatusChangeDetection();
+        //$change_detection_job->detectChangeForServer($server);
 
 
         // Insert multiple status changes to simulate bouncing

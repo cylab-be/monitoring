@@ -2,38 +2,46 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Status report
  *
+ * Properties set by scheduler:
+ * @property integer $time
+ * @property integer $server_id
+ * @property string $label
+ * 
+ * Properties set by analysis agent:
+ * @property int $status_code
+ * @property string $title
+ * @property string $html
+ * 
  * @author tibo
  */
-class Report implements HasStatus
+class Report extends Model implements HasStatus
 {
-
-    private $name;
-    private $status;
-    private $html = "";
     
-    /**
-     * Name is mandatory.
-     * Default status is "Unknown"
-     */
-    public function __construct(string $name, ?Status $status = null, ?string $html = "")
+    public $timestamps = false;
+    
+    
+    public function __construct(array $attributes = [])
     {
-        $this->name = $name;
-        $this->status = $status;
-        $this->html = $html;
+        // defautl value
+        $this->status_code = -1;
         
-        if ($status == null) {
-            $this->status = Status::unknown();
-        } else {
-            $this->status = $status;
-        }
+        parent::__construct($attributes);
+    }
+    
+    public function setTitle(string $title) : Report
+    {
+        $this->title = $title;
+        return $this;
     }
     
     public function setStatus(Status $status) : Report
     {
-        $this->status = $status;
+        $this->status_code = $status->code();
         return $this;
     }
     
@@ -43,14 +51,14 @@ class Report implements HasStatus
         return $this;
     }
     
-    public function name() : string
-    {
-        return $this->name;
-    }
-    
     public function status() : Status
     {
-        return $this->status;
+        return new Status($this->status_code);
+    }
+    
+    public function title() : string
+    {
+        return $this->title;
     }
     
     public function html() : string

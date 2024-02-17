@@ -5,6 +5,7 @@ namespace App\Sensor;
 use App\Jobs\FetchClientManifest;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -18,12 +19,17 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class ClientVersion implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("client-version", "version");
+    }
+    
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
         $latest_version = FetchClientManifest::version();
         $installed_version = $this->installedVersion($records);
         
-        $report = new Report("Client Version");
+        $report = (new Report())->setTitle("Client Version");
         $report->setHTML(
             "<p>Installed version: $installed_version</p>" .
             "<p>Latest client version: $latest_version</p>"
@@ -47,6 +53,6 @@ class ClientVersion implements Sensor
             return "none";
         }
 
-        return $last_record->data["version"];
+        return $last_record->data;
     }
 }

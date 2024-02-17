@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -16,18 +17,19 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Perccli implements Sensor
 {
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("perccli", "perccli");
+    }
+    
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("DELL perccli");
+        $report = (new Report())->setTitle("DELL perccli");
         
-        $record = end($records);
-        if (! isset($record->data['perccli'])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-        
-        $drives = $this->parse($record->data["perccli"]);
+        $record = $records->last();
+        $drives = $this->parse($record->data);
         $report->setHTML(view("sensor.perccli", ["drives" => $drives]));
         
         return $report->setStatus(Status::max($drives));

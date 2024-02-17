@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -16,25 +17,20 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class ListeningPorts implements Sensor
 {
+    
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("listening-tcp", "netstat-listen-tcp");
+    }
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";
     
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Listening Ports");
+        $report = (new Report())->setTitle("Listening Ports");
         $record = $records->last();
 
-        // "netstat-listen-tcp" "netstat-listen-udp"
-        if (! isset($record->data["netstat-listen-udp"])
-                && ! isset($record->data["netstat-listen-tcp"])) {
-            return $report->setHTML("<p>No data available...</p>");
-        }
-
-        $ports = array_merge(
-            $this->parse($record->data["netstat-listen-tcp"]),
-            $this->parse($record->data["netstat-listen-udp"])
-        );
-
+        $ports = $this->parse($record->data);
         usort(
             $ports,
             function (ListeningPort $port1, ListeningPort $port2) {

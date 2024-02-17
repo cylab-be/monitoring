@@ -3,6 +3,7 @@
 namespace App\Sensor;
 
 use App\Sensor;
+use App\SensorConfig;
 use App\Status;
 use App\ServerInfo;
 use App\Report;
@@ -17,9 +18,14 @@ use Illuminate\Database\Eloquent\Collection;
 class Netstat implements Sensor
 {
     
+    public function config(): SensorConfig 
+    {
+        return new SensorConfig("netstat-retransmitted", "netstat-statistics");
+    }
+    
     public function analyze(Collection $records, ServerInfo $serverinfo): Report
     {
-        $report = new Report("Netstat : retransmitted TCP segments");
+        $report = (new Report())->setTitle("Netstat : retransmitted TCP segments");
         $report->setHTML(view("agent.netstat"))
                 ->setStatus(Status::ok());
         
@@ -36,7 +42,7 @@ class Netstat implements Sensor
 
         $reports = [];
         foreach ($records as $record) {
-            $report = $this->parse($record->data['netstat-statistics']);
+            $report = $this->parse($record->data);
             $report->time = $record->time;
             $reports[] = $report;
         }
