@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Collection;
-
 /**
  * Wrapper around a status code
  */
@@ -78,7 +76,7 @@ class Status
     
     /**
      *
-     * @param Collection<HasStatus>|array<HasStatus> $items
+     * @param \Illuminate\Support\Collection<HasStatus>|array<HasStatus> $items
      * @return Status
      */
     public static function max($items) : Status
