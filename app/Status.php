@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
+
 /**
  * Wrapper around a status code
  */

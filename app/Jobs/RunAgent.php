@@ -49,7 +49,6 @@ class RunAgent implements ShouldQueue
         $trigger_label = $this->agent->config()->trigger_label;
         $records = $this->server->lastRecords($trigger_label);
         
-        /** @var Sensor $agent */
         $report = $this->agent->analyze($records, $this->server->info());
         $report->time = time();
         $report->server_id = $this->server->id;
