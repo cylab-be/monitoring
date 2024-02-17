@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Jobs\RunAgent;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
 use Symfony\Component\Finder\SplFileInfo;
@@ -102,7 +104,6 @@ class AgentScheduler
     
     public function notify(Record $record)
     {
-        $server_info = $record->server->info();
         $trigger_label = $record->label;
         
         if (! isset($this->triggers[$trigger_label])) {
@@ -115,13 +116,7 @@ class AgentScheduler
         }
         
         foreach ($this->triggers[$trigger_label] as $agent) {
-            /** @var Sensor $agent */                    
-            $report = $agent->analyze($records, $server_info);
-            $report->time = time();
-            $report->server_id = $record->server_id;
-            $report->label = $agent->config()->label;
-            $report->save();
+            RunAgent::dispatch($agent, $record->server);
         }
-        
     }
 }
