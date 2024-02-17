@@ -13,6 +13,12 @@ cache:
 test:php74:
   stage: test
   image: cylab/php:7.4
+  services:
+    - mysql:5.7
+  variables:
+    # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+    MYSQL_DATABASE: laravel
+    MYSQL_ROOT_PASSWORD: root
   before_script:
     # Install all project dependencies
     - COMPOSER_CACHE_DIR=./composer-cache composer install
