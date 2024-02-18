@@ -118,7 +118,7 @@ class AgentScheduler
         }
         
         foreach ($this->triggers[$trigger_label] as $agent) {
-            RunAgent::dispatch($agent, $record->server);
+            RunAgent::dispatch($agent, $record);
         }
     }
 }

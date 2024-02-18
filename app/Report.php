@@ -33,6 +33,11 @@ class Report extends Model implements HasStatus
         parent::__construct($attributes);
     }
     
+    public function record()
+    {
+        return $this->belongsTo(Record::class);
+    }
+    
     public function setTitle(string $title) : Report
     {
         $this->title = $title;

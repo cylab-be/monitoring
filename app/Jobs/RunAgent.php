@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Sensor;
-use App\Server;
+use App\Record;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,19 +24,19 @@ class RunAgent implements ShouldQueue
     
     /**
      *
-     * @var Server
+     * @var Record
      */
-    public $server;
+    public $record;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Sensor $agent, Server $server)
+    public function __construct(Sensor $agent, Record $record)
     {
         $this->agent = $agent;
-        $this->server = $server;
+        $this->record = $record;
     }
 
     /**
@@ -47,12 +47,16 @@ class RunAgent implements ShouldQueue
     public function handle()
     {
         $trigger_label = $this->agent->config()->trigger_label;
-        $records = $this->server->lastRecords($trigger_label);
+        $record = $this->record;
+        $server = $this->record->server;
         
-        $report = $this->agent->analyze($records, $this->server->info());
+        $records = $server->lastRecords($trigger_label);
+        
+        $report = $this->agent->analyze($records, $server->info());
         $report->time = time();
-        $report->server_id = $this->server->id;
+        $report->server_id = $server->id;
         $report->label = $this->agent->config()->label;
+        $report->record_id = $record->id;
         $report->save();
     }
 }

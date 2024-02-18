@@ -194,7 +194,7 @@ class ServerInfo
     {
         $record = $this->server->lastRecord("version");
         if (is_null($record)) {
-            return new Carbon();
+            return Carbon::createFromTimestamp(0);
         }
         
         return Carbon::createFromTimestamp($record->time);

@@ -59,6 +59,10 @@ window.monitorServerToken = "{{ $server->read_token }}";
             {{ $report->title() }}
 
             <div class="float-right">
+                <a class="badge badge-secondary"
+                   href="{{ action("RecordController@show", ["record" => $report->record]) }}">
+                    <i class="fas fa-search"></i>
+                </a>
                 {!! $report->status()->badge() !!}
             </div>
         </div>

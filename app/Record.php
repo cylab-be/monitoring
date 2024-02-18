@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,5 +30,10 @@ class Record extends Model
         }
         
         return false;
+    }
+    
+    public function time() : Carbon
+    {
+        return Carbon::createFromTimestamp($this->time);
     }
 }
