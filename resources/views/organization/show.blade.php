@@ -54,7 +54,7 @@
             <td></td>
             <td class="text-right">
                 {!! $server->status()->badge() !!}
-                {{ $server->info()->lastRecordTime()->diffForHumans() }}
+                {{ $server->lastSummary()->time()->diffForHumans() }}
             </td>
         </tr>
         @endforeach

@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $servers_count = 10;
-        $days = 1;
+        $servers_count = 12;
+        $days = 2;
         
         $email = Str::lower(Str::random(8)) . "@example.com";
         $password = "password";

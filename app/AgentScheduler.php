@@ -121,4 +121,17 @@ class AgentScheduler
             RunAgent::dispatch($agent, $record);
         }
     }
+    
+    public function notifyReport(Report $report)
+    {
+        $server = $report->server;
+        $reports = $server->lastReports();
+        
+        $summary = new ReportSummary();
+        $summary->time = time();
+        $summary->server_id = $server->id;
+        $summary->setReports($reports);
+        $summary->status_code = Status::max($reports)->code();
+        $summary->save();
+    }
 }

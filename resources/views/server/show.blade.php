@@ -20,8 +20,8 @@ window.monitorServerToken = "{{ $server->read_token }}";
             @if ($server->hasData())
             <p>
                 {!! $server->status()->badge() !!}
-                {{ $server->info()->lastRecordTime()->toDateTimeString() }}
-                ({{ $server->info()->lastRecordTime()->diffForHumans() }})
+                {{ $server->lastSummary()->time()->toDateTimeString() }}
+                ({{ $server->lastSummary()->time()->diffForHumans() }})
             </p>
             
             <p>
@@ -53,14 +53,14 @@ window.monitorServerToken = "{{ $server->read_token }}";
         </div>
     </div>
 
-    @foreach ($server->lastReports() as $report)
+    @foreach ($server->lastSummary()->reports() as $report)
     <div class="card">
         <div class="card-header">
             {{ $report->title() }}
 
             <div class="float-right">
                 <a class="badge badge-secondary"
-                   href="{{ action("RecordController@show", ["record" => $report->record]) }}">
+                   href="{{ action("RecordController@show", ["record" => $report->record_id]) }}">
                     <i class="fas fa-search"></i>
                 </a>
                 {!! $report->status()->badge() !!}

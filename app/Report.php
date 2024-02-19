@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * Properties set by scheduler:
  * @property integer $time
  * @property integer $server_id
+ * @property Server $server
  * @property string $label
  *
  * Properties set by analysis agent:
@@ -33,9 +34,24 @@ class Report extends Model implements HasStatus
         parent::__construct($attributes);
     }
     
+    public function save(array $options = [])
+    {
+        if (parent::save($options)) {
+            AgentScheduler::get()->notifyReport($this);
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function record()
     {
         return $this->belongsTo(Record::class);
+    }
+    
+    public function server()
+    {
+        return $this->belongsTo(Server::class);
     }
     
     public function setTitle(string $title) : Report

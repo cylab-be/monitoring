@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Carbon\Carbon;
-
 /**
  * Parse a record and store info about the server.
  */
@@ -45,8 +43,6 @@ class ServerInfo
         $this->cpuinfo = $this->parseCpuinfo();
         $this->memory_total = $this->parseMemoryTotal();
         $this->client_version = $this->parseClientVersion();
-        $this->last_record_time = $this->parseLastRecordTime();
-        
         $this->addresses = $this->parseAddresses();
     }
     /**
@@ -188,25 +184,6 @@ class ServerInfo
     public function addresses() : array
     {
         return $this->addresses;
-    }
-
-    public function parseLastRecordTime() : Carbon
-    {
-        $record = $this->server->lastRecord("version");
-        if (is_null($record)) {
-            return Carbon::createFromTimestamp(0);
-        }
-        
-        return Carbon::createFromTimestamp($record->time);
-    }
-    
-    /**
-     *
-     * @return \Carbon\Carbon
-     */
-    public function lastRecordTime() : Carbon
-    {
-        return $this->last_record_time;
     }
 
     public function parseClientVersion() : string

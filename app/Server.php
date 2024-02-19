@@ -64,7 +64,7 @@ class Server extends Model
     
     public function getLastRecordTimeAttribute() : int
     {
-        return $this->info()->lastRecordTime()->timestamp;
+        return $this->lastSummary()->time;
     }
     
     private $info = null;
@@ -127,18 +127,21 @@ class Server extends Model
      */
     public function status() : Status
     {
-        return Status::max($this->lastReports());
+        return $this->lastSummary()->status();
     }
 
-    public function getSensorsNOK() : array
+    public function getSensorsNOK() : Collection
     {
-        $sensorsNOK = [];
-        foreach ($this->reports() as $sensor) {
-            if ($sensor->status()->code() > 0) {
-                $sensorsNOK[] = $sensor;
-            }
+        $summary = $this->lastSummary();
+        if ($summary->status_code == 0) {
+            return new Collection();
         }
-        return $sensorsNOK;
+        
+        return $summary->reports()->filter(
+            function (Report $report) {
+                return $report->status_code > 0;
+            }
+        );
     }
     
     public function reports()
@@ -149,6 +152,8 @@ class Server extends Model
     
     /**
      * Get the last report for each label.
+     *
+     * @return Collection<Report> last report for each label
      */
     public function lastReports()
     {
@@ -165,8 +170,24 @@ class Server extends Model
         return $this->reports()
                 ->where("label", $label)
                 ->where("time", ">", $start)
-                ->orderByDesc("time")
+                ->orderByDesc("id")
                 ->first();
+    }
+    
+    public function summaries()
+    {
+        return $this->hasMany(ReportSummary::class);
+    }
+    
+    private $last_summary = null;
+    
+    public function lastSummary() : ReportSummary
+    {
+        if (is_null($this->last_summary)) {
+            $this->last_summary = $this->summaries()->orderByDesc("id")->first();
+        }
+        
+        return $this->last_summary;
     }
     
     public function changes()
