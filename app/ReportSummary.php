@@ -5,7 +5,8 @@ namespace App;
 use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $server_id
@@ -34,9 +35,9 @@ class ReportSummary extends Model
     
     /**
      *
-     * @return Collection<Report>
+     * @return DatabaseCollection<Report>
      */
-    public function reports() : Collection
+    public function reports() : DatabaseCollection
     {
         return Report::find($this->reports);
     }
