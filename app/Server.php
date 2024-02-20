@@ -55,8 +55,8 @@ class Server extends Model
     {
         $failing_sensors = [];
         
-        foreach ($this->getSensorsNOK() as $sensor) {
-            $failing_sensors[] = $sensor->name();
+        foreach ($this->getSensorsNOK() as $report) {
+            $failing_sensors[] = $report->title;
         }
         
         return $failing_sensors;
@@ -123,6 +123,10 @@ class Server extends Model
         return $this->lastSummary()->status();
     }
 
+    /**
+     * 
+     * @return Collection<Report>
+     */
     public function getSensorsNOK() : Collection
     {
         $summary = $this->lastSummary();
