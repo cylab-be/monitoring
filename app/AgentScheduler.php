@@ -6,6 +6,7 @@ use App\Jobs\RunAgent;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Collection;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -125,7 +126,7 @@ class AgentScheduler
     public function notifyReport(Report $report)
     {
         $server = $report->server;
-        $reports = $server->lastReports();
+        $reports = $this->lastReportsOf($server);
         
         $summary = new ReportSummary();
         $summary->time = time();
@@ -133,5 +134,29 @@ class AgentScheduler
         $summary->setReports($reports);
         $summary->status_code = Status::max($reports)->code();
         $summary->save();
+    }
+    
+    /**
+     * Get the last report for each label.
+     *
+     * @return Collection<Report> last report for each label
+     */
+    public function lastReportsOf(Server $server) : Collection
+    {
+        $reports = new Collection();
+        foreach ($this->agentLabel() as $label) {
+            $reports->push($this->lastReportOf($server, $label));
+        }
+        return $reports->filter();
+    }
+    
+    public function lastReportOf(Server $server, string $label) : ?Report
+    {
+        $start = time() - 24 * 3600;
+        return $server->reports()
+                ->where("label", $label)
+                ->where("time", ">", $start)
+                ->orderByDesc("id")
+                ->first();
     }
 }

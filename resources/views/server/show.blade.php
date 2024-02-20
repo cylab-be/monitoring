@@ -17,7 +17,6 @@ window.monitorServerToken = "{{ $server->read_token }}";
     
     <div class="card">
         <div class="card-body">
-            @if ($server->hasData())
             <p>
                 {!! $server->status()->badge() !!}
                 {{ $server->lastSummary()->time()->toDateTimeString() }}
@@ -45,11 +44,6 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </p>
 
             <p>Uptime: {{ $server->info()->uptime() }}</p>
-
-
-            @else
-            <p>No information to show for now...</p>
-            @endif
         </div>
     </div>
 

@@ -54,4 +54,16 @@ class ReportSummary extends Model
     {
         return Carbon::createFromTimestamp($this->time);
     }
+    
+    public static function default(Server $server) : ReportSummary
+    {
+        $summary = new ReportSummary();
+        $summary->server = $server;
+        $summary->server_id = $server->id;
+        $summary->time = 0;
+        $summary->status_code = -1;
+        $summary->reports = [];
+        
+        return $summary;
+    }
 }

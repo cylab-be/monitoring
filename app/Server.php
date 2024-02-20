@@ -105,13 +105,6 @@ class Server extends Model
                 ->get();
     }
 
-    public function hasData() : bool
-    {
-        return true;
-        //return false;
-        //return $this->lastRecord() != null;
-    }
-
     public function info() : ServerInfo
     {
         if (is_null($this->info)) {
@@ -133,6 +126,7 @@ class Server extends Model
     public function getSensorsNOK() : Collection
     {
         $summary = $this->lastSummary();
+        
         if ($summary->status_code == 0) {
             return new Collection();
         }
@@ -150,30 +144,6 @@ class Server extends Model
     }
     
     
-    /**
-     * Get the last report for each label.
-     *
-     * @return Collection<Report> last report for each label
-     */
-    public function lastReports()
-    {
-        $reports = new Collection();
-        foreach (AgentScheduler::get()->agentLabel() as $label) {
-            $reports->push($this->lastReport($label));
-        }
-        return $reports->filter();
-    }
-    
-    public function lastReport(string $label) : ?Report
-    {
-        $start = time() - 24 * 3600;
-        return $this->reports()
-                ->where("label", $label)
-                ->where("time", ">", $start)
-                ->orderByDesc("id")
-                ->first();
-    }
-    
     public function summaries()
     {
         return $this->hasMany(ReportSummary::class);
@@ -183,10 +153,18 @@ class Server extends Model
     
     public function lastSummary() : ReportSummary
     {
-        if (is_null($this->last_summary)) {
-            $this->last_summary = $this->summaries()->orderByDesc("id")->first();
+        if (! is_null($this->last_summary)) {
+            return $this->last_summary;
         }
         
+        // try to fetch from DB
+        $summary = $this->summaries()->orderByDesc("id")->first();
+        if (! is_null($summary)) {
+            $this->last_summary = $summary;
+            return $this->last_summary;
+        }
+        
+        $this->last_summary = ReportSummary::default($this);
         return $this->last_summary;
     }
     
