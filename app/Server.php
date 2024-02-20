@@ -124,7 +124,7 @@ class Server extends Model
     }
 
     /**
-     * 
+     *
      * @return Collection<Report>
      */
     public function getSensorsNOK() : Collection
