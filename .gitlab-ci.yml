@@ -24,13 +24,16 @@ test:php74:
     - COMPOSER_CACHE_DIR=./composer-cache composer install
     # setup Laravel
     - cp env.test .env
-    - touch storage/app/db.sqlite
     - php artisan migrate
   script:
     - vendor/bin/phpunit --coverage-text --colors=never
     - vendor/bin/phpcs
     - vendor/bin/phpstan analyze --memory-limit=512M
     - vendor/bin/unused_scanner unused-scanner.php
+  artifacts:
+    paths:
+      - storage/logs/*.log
+    when: always
 
 test:dependencies:
   image: cylab/php:7.4
