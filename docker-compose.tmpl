@@ -28,15 +28,26 @@ services:
   scheduler:
     image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     depends_on:
-      - redis
-      - mysql
+      - web
     volumes:
       - ./volumes/web:/var/www/html/storage
     restart: "unless-stopped"
     environment:
-      WAIT_HOSTS: mysql:3306
+      WAIT_HOSTS: web:80
     env_file: env
     command: /scheduler.sh
+
+  queue:
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    depends_on:
+      - web
+    volumes:
+      - ./volumes/web:/var/www/html/storage
+    command: ["php", "artisan", "queue:work", "--verbose", "--tries=3", "--timeout=60"]
+    env_file: env
+    restart: "unless-stopped"
+    environment:
+      WAIT_HOSTS: web:80
 
   redis:
     image: redis:4-alpine
