@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Record;
+use App\Report;
+use App\ReportSummary;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,7 +28,15 @@ class CleanOldData implements ShouldQueue
      */
     public function handle()
     {
-        $count = Record::where("time", "<", time() - self::RETENTION)->delete();
+        $max_age = time() - self::RETENTION;
+        
+        $count = Record::where("time", "<", $max_age)->delete();
         Log::info("Deleted $count records");
+        
+        $count = Report::where("time", "<", $max_age)->delete();
+        Log::info("Deleted $count reports");
+        
+        $count = ReportSummary::where("time", "<", $max_age)->delete();
+        Log::info("Deleted $count report summaries");
     }
 }
