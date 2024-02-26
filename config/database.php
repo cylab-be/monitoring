@@ -125,6 +125,11 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
+            
+            // fix redis connection errors
+            // (which cause laravel to use sync queue)
+            // https://stackoverflow.com/questions/11776029/predis-is-giving-error-while-reading-line-from-server#comment57725826_11931651
+            'read_write_timeout' => 60,
         ],
 
     ],
