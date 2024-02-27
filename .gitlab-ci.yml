@@ -94,4 +94,4 @@ deploy:
     # docker login and restart services
     - ssh monitoring@$SERVER "cd /home/monitoring; 
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY;
-        docker compose up -d"
+        docker compose up -d --scale queue=4"
