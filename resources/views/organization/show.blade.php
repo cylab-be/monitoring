@@ -37,19 +37,7 @@
                 <a class="text-decoration-none h5"
                    href="{{ action('ServerController@show', ['server' => $server]) }}">
                     {{ $server->name }}
-                </a><br>
-                
-                <small class="text-muted">
-                    <i class="fas fa-microchip"></i> {{ $server->info()->vCores() }} vCores
-                    <i class="fas fa-memory ml-3"></i> {{ $server->info()->memoryTotalForHumans() }}
-                    <i class="fas fa-server ml-3"></i> {{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}
-                    <i class="fas fa-terminal ml-3"></i> {{ $server->info()->lsb() }}
-                    <i class="fas fa-network-wired ml-3"></i>
-                    @foreach ($server->info()->addresses() as $address)
-                    <a href="ssh://{{ $address }}">{{ $address }}</a> 
-                    @endforeach
-                </small>
-                
+                </a>
             </td>
             <td></td>
             <td class="text-right">
