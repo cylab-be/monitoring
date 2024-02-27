@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 
 class StatusChangeDetection implements ShouldQueue
 {
@@ -25,7 +24,7 @@ class StatusChangeDetection implements ShouldQueue
      */
     public function handle()
     {
-        Log::notice("Check for status changes...");
+        logger()->notice("Check for status changes...");
         foreach (Organization::all() as $organization) {
             /* @var $organization \App\Organization */
             foreach ($organization->servers as $server) {
@@ -55,8 +54,7 @@ class StatusChangeDetection implements ShouldQueue
             return;
         }
         
-        Log::notice("Status of server changed to " . $current_status->code() .
-                " for server #" . $server->id);
+        logger()->notice("Status of server #" . $server->id . " changed to " . $current_status->code());
 
         $change = new StatusChange();
         $change->server_id = $server->id;

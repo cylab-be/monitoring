@@ -10,7 +10,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class FetchClientManifest implements ShouldQueue
 {
@@ -26,7 +25,7 @@ class FetchClientManifest implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("Fetch client manifest");
+        logger()->info("Fetch client manifest");
         
         $MANIFEST_URL = "https://download.cylab.be/monitor-php-client/manifest.json";
         $options = ['timeout' => 5.0];

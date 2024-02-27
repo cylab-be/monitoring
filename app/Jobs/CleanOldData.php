@@ -11,7 +11,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class CleanOldData implements ShouldQueue
 {
@@ -31,12 +30,12 @@ class CleanOldData implements ShouldQueue
         $max_age = time() - self::RETENTION;
         
         $count = Record::where("time", "<", $max_age)->delete();
-        Log::info("Deleted $count records");
+        logger()->info("Deleted $count records");
         
         $count = Report::where("time", "<", $max_age)->delete();
-        Log::info("Deleted $count reports");
+        logger()->info("Deleted $count reports");
         
         $count = ReportSummary::where("time", "<", $max_age)->delete();
-        Log::info("Deleted $count report summaries");
+        logger()->info("Deleted $count report summaries");
     }
 }
