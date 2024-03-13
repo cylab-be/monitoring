@@ -93,7 +93,13 @@ class ServerController extends Controller
     public function destroy(Server $server)
     {
         $this->authorize("destroy", $server);
+        
+        // delete child DB records
+        $server->changes()->delete();
+        $server->records()->delete();
+        $server->reports()->delete();
+        $server->summaries()->delete();
         $server->delete();
-        return back();
+        return redirect(action("OrganizationController@show", ["organization" => $server->organization]));
     }
 }
