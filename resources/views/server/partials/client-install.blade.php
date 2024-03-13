@@ -16,7 +16,7 @@ unzip monitor-*.zip
 </code></pre>
 
         <p>Add a cron entry to run it automatically:</p>
-        <pre><code>echo "*/5 * * * * root /usr/bin/monitor sleep {{ $server->id % 240 }}  && ping -i {{ $server->id }} -t {{ $server->token }} -s {{ config("app.url") }}" | \
+        <pre><code>echo "*/5 * * * * root sleep {{ $server->id % 240 }}  && /usr/bin/monitor ping -i {{ $server->id }} -t {{ $server->token }} -s {{ config("app.url") }}" | \
 sudo tee -a /etc/crontab
 </code></pre>
     </div>
