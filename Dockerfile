@@ -13,7 +13,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 #### Step 2 : node
 
-FROM node:16.15.0-alpine AS node
+FROM node:16-alpine AS node
 
 COPY . /var/www/html
 WORKDIR /var/www/html
