@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
  * @property string $description
  * @property string $token
  * @property string $read_token
- * @property-read \App\Organization $organization
+ * @property \App\Organization $organization
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server query()
