@@ -32,7 +32,10 @@ class ServerController extends Controller
     public function create()
     {
         $this->authorize("create", Server::class);
-        return view("server.edit", ["server" => new Server()]);
+        
+        $server = new Server();
+        $server->organization = Auth::user()->organizations->first();
+        return view("server.edit", ["server" => $server]);
     }
 
     /**

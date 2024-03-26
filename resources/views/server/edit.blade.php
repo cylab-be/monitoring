@@ -26,8 +26,9 @@
                                        class="form-control{{ $errors->has('organization_id') ? ' is-invalid' : '' }}"
                                        name="organization_id"
                                        required autofocus>
+                                    <option value="{{ $server->organization->id }}">{{ $server->organization->name }}</option>
                                     @foreach (Auth::user()->organizations as $organization)
-                                    <option value="{{ $organization->id }}" {{ old('organization_id', $server->organization_id) == $organization->id ? "selected" : "" }}">{{ $organization->name }}</option>
+                                    <option value="{{ $organization->id }}">{{ $organization->name }}</option>
                                     @endforeach
 
                                 </select>
@@ -64,6 +65,7 @@
                                 <textarea id="description"
                                        class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
                                        name="description"
+                                       placeholder="You can use Markdown here..."
                                        rows="10">{{ old('description', $server->description) }}</textarea>
 
                                 @if ($errors->has('description'))
