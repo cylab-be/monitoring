@@ -46,6 +46,12 @@ window.monitorServerToken = "{{ $server->read_token }}";
             <p>Uptime: {{ $server->info()->uptime() }}</p>
         </div>
     </div>
+    
+    <div class="card">
+        <div class="card-body">
+            {!! $server->descriptionAsHTML() !!}
+        </div>
+    </div>
 
     @foreach ($server->lastSummary()->reports() as $report)
     <div class="card">

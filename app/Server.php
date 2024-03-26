@@ -2,6 +2,8 @@
 
 namespace App;
 
+use League\CommonMark\CommonMarkConverter;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
@@ -14,6 +16,7 @@ use Illuminate\Support\Collection;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
+ * @property string $description
  * @property string $token
  * @property string $read_token
  * @property-read \App\Organization $organization
@@ -66,6 +69,8 @@ class Server extends Model
     {
         return $this->lastSummary()->time;
     }
+    
+    // -------------------------------------
     
     private $info = null;
 
@@ -185,5 +190,11 @@ class Server extends Model
     public function lastChange() : ?StatusChange
     {
         return $this->changes()->latest("time")->first();
+    }
+    
+    public function descriptionAsHTML() : string
+    {
+        $converter = new CommonMarkConverter();
+        return $converter->convertToHtml($this->description ?? '');
     }
 }

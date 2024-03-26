@@ -56,6 +56,23 @@
                                 @endif
                             </div>
                         </div>
+                        
+                        <div class="form-group row">
+                            <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
+
+                            <div class="col-md-6">
+                                <textarea id="description"
+                                       class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
+                                       name="description"
+                                       rows="10">{{ old('description', $server->description) }}</textarea>
+
+                                @if ($errors->has('description'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
