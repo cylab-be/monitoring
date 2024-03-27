@@ -77,6 +77,12 @@ class OrganizationController extends Controller
         $this->authorize("show", $organization);
         return view("organization.show", array("organization" => $organization));
     }
+    
+    public function rack(Organization $organization)
+    {
+        $this->authorize("show", $organization);
+        return view("organization.rack", ["organization" => $organization]);
+    }
 
     public function dashboard(Organization $organization)
     {

@@ -51,7 +51,7 @@ Route::get(
     'app/organizations/{organization}/{token}/dashboard.json',
     'OrganizationDashboardController@json'
 );
-
+Route::get('app/organizations/{organization}/rack', 'OrganizationController@rack');
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
 Route::resource('app/servers', 'ServerController')->except(["index"]);
