@@ -71,7 +71,7 @@
             @continue
         @endif
         <div class="server size-{{ $server->size }}u"
-             style="bottom: {{ 2*$server->position }}rem;">
+             style="bottom: {{ 2*($server->position - 1) }}rem;">
             <p>
                 <a href="{{ $server->getUrlAttribute() }}"
                    class="text-decoration-none">
