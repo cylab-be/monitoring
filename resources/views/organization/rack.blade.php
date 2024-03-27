@@ -41,6 +41,10 @@
         height: 96rem
     }
     
+    div.size-42u {
+        height: 84rem
+    }
+    
     div.slot {
         position: absolute;
         width: 100%;
@@ -59,7 +63,7 @@
 </style>
 
 <div class="container">
-    <div class="rack size-48u">
+    <div class="rack size-42u">
         @for ($i = 0; $i < 42; $i++)
         <div class="slot" style="bottom: {{ 2*$i }}rem">
             {{ $i + 1 }}
