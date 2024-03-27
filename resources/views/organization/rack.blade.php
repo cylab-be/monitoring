@@ -29,6 +29,14 @@
         height: 4rem;
     }
     
+    div.size-3u {
+        height: 6rem;
+    }
+    
+    div.size-4u {
+        height: 8rem;
+    }
+    
     div.size-48u {
         height: 96rem
     }
@@ -45,13 +53,17 @@
         word-wrap: break-word;
         background-color: rgba(0, 0, 0, 0.01);
         border: 1px solid rgba(0, 0, 0, 0.05);
+        
+        color: rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <div class="container">
     <div class="rack size-48u">
         @for ($i = 0; $i < 48; $i++)
-        <div class="slot" style="bottom: {{ 2*$i }}rem"></div>
+        <div class="slot" style="bottom: {{ 2*$i }}rem">
+            {{ $i + 1 }}
+        </div>
         @endfor
         
         @foreach ($organization->servers as $server)
