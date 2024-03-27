@@ -28,6 +28,11 @@
                "organization" => $organization]) }}">
             <i class="fas fa-redo-alt"></i> Reset dashboard token
         </a>
+        
+        <a class="btn btn-primary btn-sm"
+           href="{{ action("OrganizationController@rack", ["organization" => $organization]) }}">
+            <i class="fas fa-server"></i> Rack view
+        </a>
     </p>
     
     <table class="table table-striped my-5">

@@ -21,7 +21,9 @@ class ServerController extends Controller
         return [
             'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255',
             "organization_id" => Rule::in(Auth::user()->organizations->modelKeys()),
-            "description" => 'nullable|string'];
+            "description" => 'nullable|string',
+            "size" => "nullable|int|min:0|max:48",
+            "position" => "nullable|int|min:0|max:48"];
     }
 
     /**
@@ -90,6 +92,8 @@ class ServerController extends Controller
         $server->name = $request->name;
         $server->organization_id = $request->organization_id;
         $server->description = $request->description;
+        $server->size = $request->size;
+        $server->position = $request->position;
         $server->save();
 
         return redirect(action("ServerController@show", ["server" => $server]));

@@ -17,6 +17,8 @@ use Illuminate\Support\Collection;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
  * @property string $description
+ * @property int $size rack size, expressed in "U"
+ * @property int $position position in rack, expressed in "U", starting from the bottom
  * @property string $token
  * @property string $read_token
  * @property \App\Organization $organization

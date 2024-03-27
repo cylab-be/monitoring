@@ -2,6 +2,12 @@
 
 @section('content')
 <style>
+    div.rack {
+        position: relative; 
+        width: 100%; 
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
     div.server {
         position: absolute;
         width: 100%;
@@ -15,30 +21,54 @@
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
     
-    div.1u {
+    div.size-1u {
         height: 2rem;
     }
     
-    div.2u {
+    div.size-2u {
         height: 4rem;
+    }
+    
+    div.size-48u {
+        height: 96rem
+    }
+    
+    div.slot {
+        position: absolute;
+        width: 100%;
+        height: 2rem;
+        
+        padding: 0.2rem;
+        
+        display: flex;
+        flex-direction: column;
+        word-wrap: break-word;
+        background-color: rgba(0, 0, 0, 0.01);
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
 </style>
 
 <div class="container">
-
-    <h1>{{ $organization->name }}</h1>
-    
-    <div style="position: relative; width: 100%; height: 96rem">
+    <div class="rack size-48u">
+        @for ($i = 0; $i < 48; $i++)
+        <div class="slot" style="bottom: {{ 2*$i }}rem"></div>
+        @endfor
         
-        <div class="server 1u"
-             style="bottom: 2rem;">
-            Server 02
+        @foreach ($organization->servers as $server)
+        @if ($server->size == 0)
+            @continue
+        @endif
+        <div class="server size-{{ $server->size }}u"
+             style="bottom: {{ 2*$server->position }}rem;">
+            <p>
+                <a href="{{ $server->getUrlAttribute() }}"
+                   class="text-decoration-none">
+                    {{ $server->name }}
+                </a>
+                {!! $server->status()->badge() !!}
+            </p>
         </div>
-        
-        <div class="server 1u"
-             style="bottom: 0rem;">
-            Server 01
-        </div>
+        @endforeach
     </div>
 
 </div>
