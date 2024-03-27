@@ -50,6 +50,10 @@ window.monitorServerToken = "{{ $server->read_token }}";
     <div class="card">
         <div class="card-body">
             {!! $server->descriptionAsHTML() !!}
+            
+            <div class="bottom-right">
+                <a href="{{ action('ServerController@edit', ['server' => $server]) }}"><i class="fas fa-edit"></i></a>
+            </div>
         </div>
     </div>
 
@@ -102,7 +106,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             <div>
                 <a class="btn btn-primary btn-sm"
                    href="{{ action('ServerController@edit', ['server' => $server]) }}">
-                    <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                    <i class="fas fa-pencil-alt"></i> Edit
                 </a>
 
                 <form method="POST"
