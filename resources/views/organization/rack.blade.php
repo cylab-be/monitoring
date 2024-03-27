@@ -60,7 +60,7 @@
 
 <div class="container">
     <div class="rack size-48u">
-        @for ($i = 0; $i < 48; $i++)
+        @for ($i = 0; $i < 42; $i++)
         <div class="slot" style="bottom: {{ 2*$i }}rem">
             {{ $i + 1 }}
         </div>
