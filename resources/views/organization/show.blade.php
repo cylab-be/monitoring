@@ -30,7 +30,7 @@
         </a>
         
         <a class="btn btn-primary btn-sm"
-           href="{{ action("OrganizationController@rack", ["organization" => $organization]) }}">
+           href="{{ action("RackController@index", ["organization" => $organization]) }}">
             <i class="fas fa-server"></i> Rack view
         </a>
     </p>

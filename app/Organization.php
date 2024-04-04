@@ -43,12 +43,18 @@ class Organization extends Model
 
     public function users()
     {
-        return $this->belongsToMany("App\User");
+        return $this->belongsToMany(User::class);
     }
 
     public function servers()
     {
-        return $this->hasMany("App\Server");
+        return $this->hasMany(Server::class);
+    }
+    
+    
+    public function racks()
+    {
+        return $this->hasMany(Rack::class);
     }
 
     public function url() : string

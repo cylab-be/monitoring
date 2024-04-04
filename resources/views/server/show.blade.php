@@ -44,6 +44,16 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </p>
 
             <p>Uptime: {{ $server->info()->uptime() }}</p>
+            
+            @if (! is_null($server->rack_id))
+            <p>
+                Rack
+                <b>
+                    {{ $server->rack->name }}#{{ $server->position }} 
+                    [{{ $server->size }}u]
+                </b>
+            </p>
+            @endif
         </div>
     </div>
     

@@ -199,4 +199,9 @@ class Server extends Model
         $converter = new CommonMarkConverter();
         return $converter->convertToHtml($this->description ?? '');
     }
+    
+    public function rack()
+    {
+        return $this->belongsTo(Rack::class);
+    }
 }

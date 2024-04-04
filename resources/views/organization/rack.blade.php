@@ -1,20 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid pb-4">
+<div class="container-fluid pb-4 text-center">
     
-    <div class="rack size-42u">
-        @for ($i = 0; $i < 42; $i++)
-        <div class="slot" style="bottom: {{ 2*$i }}rem">
+    @foreach ($organization->racks as $rack)
+    <div class="rack size-{{ $rack->height + 1 }}u">
+        <div class="slot" style="top: 0">
+            {{ $rack->name }}
+        </div>
+        
+        @for ($i = 0; $i < $rack->height; $i++)
+        <div class="slot text-left" style="bottom: {{ 2*$i }}rem">
             {{ $i + 1 }}
         </div>
         @endfor
 
-        @foreach ($organization->servers as $server)
+        @foreach ($rack->servers as $server)
         @if ($server->size == 0)
             @continue
         @endif
-        <div class="server size-{{ $server->size }}u"
+        <div class="server text-left size-{{ $server->size }}u"
              style="bottom: {{ 2*($server->position - 1) }}rem;">
             <p>
                 <a href="{{ $server->getUrlAttribute() }}"
@@ -26,13 +31,6 @@
         </div>
         @endforeach
     </div>
-
-    <div class="rack size-12u">
-        @for ($i = 0; $i < 12; $i++)
-        <div class="slot" style="bottom: {{ 2*$i }}rem">
-            {{ $i + 1 }}
-        </div>
-        @endfor
-    </div>
+    @endforeach
 </div>
 @endsection

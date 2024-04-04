@@ -28,10 +28,9 @@
                                 @foreach (Auth::user()->organizations as $organization)
                                 <option value="{{ $organization->id }}">{{ $organization->name }}</option>
                                 @endforeach
-
                             </select>
 
-                            @if ($errors->has('name'))
+                            @if ($errors->has('organization_id'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('organization_id') }}</strong>
                                 </span>
@@ -65,6 +64,26 @@
                             @if ($errors->has('description'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('description') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="rack_id">Rack</label>
+
+                            <select id="rack_id"
+                                   class="form-control{{ $errors->has('rack_id') ? ' is-invalid' : '' }}"
+                                   name="rack_id">
+                                
+                                <option value="0">--</option>
+                                @foreach ($organization->racks as $rack)
+                                <option value="{{ $rack->id }}">{{ $rack->name }}</option>
+                                @endforeach
+                            </select>
+
+                            @if ($errors->has('organization_id'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('organization_id') }}</strong>
                                 </span>
                             @endif
                         </div>
