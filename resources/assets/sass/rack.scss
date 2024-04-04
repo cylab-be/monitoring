@@ -1,8 +1,8 @@
 div.rack-container {
     position: relative; 
     padding-bottom: 0rem; 
-    border-bottom: 1px solid gray;
-    box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.2);
+    
+    
 }
 
 div.rack {
@@ -10,6 +10,7 @@ div.rack {
     display: inline-block;
     width: 300px; 
     border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.2);
 }
 
 div.server {
