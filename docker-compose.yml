@@ -4,8 +4,6 @@
 # this docker-compose can be used to run a development environment
 #
 
-version: "3.7"
-
 services:
   web:
     image: cylab/laravel-dev
