@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container-fluid pb-4 text-center">
-    
     @foreach ($organization->racks as $rack)
     <div class="rack size-{{ $rack->height + 1 }}u">
         <div class="slot" style="top: 0">
@@ -26,7 +25,7 @@
                    class="text-decoration-none">
                     {{ $server->name }}
                 </a>
-                {!! $server->status()->badge() !!}
+                {!! $server->status()->badgeIfExists() !!}
             </p>
         </div>
         @endforeach
