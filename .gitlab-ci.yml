@@ -13,6 +13,7 @@ cache:
 test:php74:
   stage: test
   image: cylab/php:7.4
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   services:
     - mysql:5.7
   variables:
