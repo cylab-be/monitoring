@@ -37,4 +37,24 @@ class ExampleTest extends TestCase
 
         $this->post('/api/record/' . $server->id, $data)->assertResponseOk();
     }
+    
+    public function testRegisterAndManageServers()
+    {
+        $this->visit("/register")
+                ->type("dummy", "name")
+                ->type("dummy@example.com", "email")
+                ->type("abc123!", "password")
+                ->type("abc123!", "password_confirmation")
+                ->press("Register")
+                ->assertResponseOk()
+                // on the "Organizations" page
+                ->see("dummy")
+                ->click("dummy")
+                // add a server
+                ->click("New server")
+                ->type("srv01", "name")
+                ->press("Save")
+                ->assertResponseOk();
+                
+    }
 }
