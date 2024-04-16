@@ -55,6 +55,5 @@ class ExampleTest extends TestCase
                 ->type("srv01", "name")
                 ->press("Save")
                 ->assertResponseOk();
-                
     }
 }
