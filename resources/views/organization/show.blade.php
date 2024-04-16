@@ -33,6 +33,11 @@
            href="{{ action("RackController@index", ["organization" => $organization]) }}">
             <i class="fas fa-server"></i> Rack view
         </a>
+        
+        <a href="{{ action("RackController@create", ["organization" => $organization]) }}" 
+           class="btn btn-primary btn-sm">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> New rack
+        </a>
     </p>
     
     <table class="table table-striped my-5">
