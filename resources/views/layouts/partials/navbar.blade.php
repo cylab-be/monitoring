@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-primary navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ route("dashboard") }}">
             <i class="fa d-inline fa-lg fa-line-chart"></i> <b>Monitoring</b>
         </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -11,9 +11,7 @@
 
         <div class="collapse navbar-collapse text-center" id="navbar2SupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("dashboard") }}">Dashboard</a>
-                </li>
+
             </ul>
 
             <ul class="navbar-nav ml-auto">
