@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
-<div class="container-fluid pb-4 text-center">
+<div class="container-fluid py-4 text-center">
     @foreach ($organization->racks as $rack)
     <div class="rack size-{{ $rack->height + 1 }}u">
         <div class="slot" style="top: 0">
@@ -32,4 +32,21 @@
     </div>
     @endforeach
 </div>
+
+<div class="text-muted bottom-right">
+    Reload in <span id="reload-countdown">300</span> seconds
+</div>
+
+<script type="text/javascript">
+    var reload_countdown = 300;
+    setInterval(function() {
+        reload_countdown -= 1;
+        $('#reload-countdown').text(reload_countdown);
+
+        if (reload_countdown === 0) {
+            console.log('reload...');
+            location.reload();
+        }
+    }, 1000);
+</script>
 @endsection
