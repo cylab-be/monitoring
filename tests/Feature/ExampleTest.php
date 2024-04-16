@@ -16,10 +16,10 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        $this->get('/')->assertStatus(200);
+        $this->get('/')->assertResponseOk();
     }
 
-    public function testRecord()
+    public function testPing()
     {
         $organization = new Organization();
         $organization->name = "TEST";
@@ -29,12 +29,12 @@ class ExampleTest extends TestCase
         $server->name = "srv01";
         $organization->servers()->save($server);
 
-        $this->post('/api/record/' . $server->id, [])->assertStatus(403);
-        $this->post('/api/record/' . $server->id, ["token" => "abc123"])->assertStatus(403);
+        $this->post('/api/record/' . $server->id, [])->assertResponseStatus(403);
+        $this->post('/api/record/' . $server->id, ["token" => "abc123"])->assertResponseStatus(403);
 
         $data = json_decode(file_get_contents(__DIR__ . "/ping.json"), true);
         $data["token"] = $server->token;
 
-        $this->post('/api/record/' . $server->id, $data)->assertStatus(200);
+        $this->post('/api/record/' . $server->id, $data)->assertResponseOk();
     }
 }
