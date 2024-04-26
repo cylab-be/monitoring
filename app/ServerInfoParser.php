@@ -51,7 +51,7 @@ class ServerInfoParser
         if (preg_match($REGEX, $string, $matches) === 1) {
             $result["cpu"] = $matches[1];
             return $result;
-        } 
+        }
         
         return $result;
     }
