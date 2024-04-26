@@ -6,7 +6,7 @@
 
 services:
   web:
-    image: cylab/laravel-dev
+    image: cylab/laravel-dev:7.4
     depends_on:
       - redis
       - mysql
@@ -19,7 +19,7 @@ services:
       WAIT_HOSTS: mysql:3306
 
   queue:
-    image: cylab/laravel-dev
+    image: cylab/laravel-dev:7.4
     depends_on:
       - web
     volumes:
@@ -31,7 +31,7 @@ services:
       WAIT_HOSTS: web:80
 
   scheduler:
-    image: cylab/laravel-dev
+    image: cylab/laravel-dev:7.4
     depends_on:
       - web
     volumes:
