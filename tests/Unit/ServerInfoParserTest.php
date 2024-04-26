@@ -30,6 +30,28 @@ class ServerInfoParserTest extends TestCase
         $this->assertEquals(8, $cpuinfo["threads"]);
         $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
+    
+    /**
+     * @group cpuinfo
+     */
+    public function testCpuinfoRaspberry()
+    {
+        $string = file_get_contents(__DIR__ . "/cpuinfo-raspberry");
+        $cpuinfo = (new ServerInfoParser())->parseCpuinfo($string);
+        $this->assertEquals(4, $cpuinfo["threads"]);
+        $this->assertEquals("Raspberry Pi 4 Model B Rev 1.1", $cpuinfo["cpu"]);
+    }
+    
+    /**
+     * @group cpuinfo
+     */
+    public function testCpuinfoSingleCPU()
+    {
+        $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
+        $cpuinfo = (new ServerInfoParser())->parseCpuinfo($string);
+        $this->assertEquals(1, $cpuinfo["threads"]);
+        $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
+    }
 
     /**
      * @group uptime
@@ -45,17 +67,6 @@ class ServerInfoParserTest extends TestCase
     {
         $uuid = (new ServerInfoParser())->parseUUID(file_get_contents(__DIR__ . "/system"));
         $this->assertEquals("74F7C34C-2924-11B2-A85C-DC427DCA7109", $uuid);
-    }
-
-    /**
-     * @group cpuinfo
-     */
-    public function testCpuinfoSingleCPU()
-    {
-        $string = file_get_contents(__DIR__ . "/cpuinfo_1cpu");
-        $cpuinfo = (new ServerInfoParser())->parseCpuinfo($string);
-        $this->assertEquals(1, $cpuinfo["threads"]);
-        $this->assertEquals("Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz", $cpuinfo["cpu"]);
     }
 
     public function testManufacturer()

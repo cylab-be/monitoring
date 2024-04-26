@@ -32,12 +32,27 @@ class ServerInfoParser
     
     public function parseCpuinfo(string $string) : array
     {
+        // count the number of vCores
+        $REGEX = "/^processor	: (.+)$/m";
+        $result["threads"] = preg_match_all($REGEX, $string);
+        $result["cpu"] = "undefined";
+        
+        // try to extract the CPU model
         $REGEX = "/^model name	: (.+)$/m";
         $matches = array();
-        preg_match_all($REGEX, $string, $matches);
-
-        $result["threads"] = count($matches[0]);
-        $result["cpu"] = $matches[1][0];
+        if (preg_match($REGEX, $string, $matches) === 1) {
+            $result["cpu"] = $matches[1];
+            return $result;
+        }
+        
+        // for raspberry pi
+        $REGEX = '/^Model\s*: (.+)$/m';
+        $matches = array();
+        if (preg_match($REGEX, $string, $matches) === 1) {
+            $result["cpu"] = $matches[1];
+            return $result;
+        } 
+        
         return $result;
     }
     
