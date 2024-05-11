@@ -11,7 +11,8 @@ window.monitorServerToken = "{{ $server->read_token }}";
 <div class="container">
     
     <h1>
-        <a href="{{ $server->organization->url() }}">{{ $server->organization->name }}</a>
+        <a class="text-decoration-none"
+            href="{{ $server->organization->url() }}">{{ $server->organization->name }}</a>
         / {{ $server->name }}
     </h1>
     

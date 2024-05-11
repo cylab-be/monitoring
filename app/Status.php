@@ -59,6 +59,19 @@ class Status
                 return '<span class="badge badge-secondary">Unknown</span>';
         }
     }
+    
+    /**
+     * Show badge if status is something else then "unknown"
+     * @return string
+     */
+    public function badgeIfExists() : string
+    {
+        if ($this->code == self::UNKNOWN) {
+            return "";
+        }
+        
+        return $this->badge();
+    }
 
     public function color() : string
     {

@@ -1,0 +1,9 @@
+{
+    "token": "will-be-replaced",
+    "version": "0.1.2",
+    "uname": "Linux think 4.15.0-24-generic #26~16.04.1-Ubuntu SMP Fri Jun 15 14:35:08 UTC 2018 x86_64 x86_64 x86_64 GNU\/Linux",
+    "loadavg": "0.83 0.87 0.70 2\/1747 25404",
+    "reboot": true,
+    "disks": "Filesystem      1K-blocks    Used  Available Use% Mounted on\nudev             12238236       0   12238236   0% \/dev\ntmpfs             2451716  264052    2187664  11% \/run\n\/dev\/sda1      1128926648 6545484 1065011924   1% \/\ntmpfs            12258572       4   12258568   1% \/dev\/shm\ntmpfs                5120       0       5120   0% \/run\/lock\ntmpfs            12258572       0   12258572   0% \/sys\/fs\/cgroup\ntmpfs             2451716       0    2451716   0% \/run\/user\/1000\n172.20.0.4:\/srv\/nfs\/cylab03 1729930240 94934016 1547097088   6% \/mnt\/nfs",
+    "updates": "\n6 packages can be updated.\n0 updates are security updates.\n"
+}

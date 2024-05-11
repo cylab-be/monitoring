@@ -120,7 +120,7 @@ class Ifconfig implements Sensor
     {
         $allowed_prefixes = [
             "en", "eth", "wl", "venet", "igb", "ax", "tun",
-            "bge", "ovpns"];
+            "bge", "ovpns", "igc"];
 
         if ($string == null) {
             return [];

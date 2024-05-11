@@ -18,7 +18,12 @@
         </tr>
         @foreach($organizations as $organization)
         <tr>
-            <td>{{ $organization->name }}</td>
+            <td>
+                <a href="{{ action('OrganizationController@show', ['organization' => $organization]) }}"
+                   class="text-decoration-none">
+                    {{ $organization->name }}
+                </a>
+            </td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
                    href="{{ action('OrganizationController@show', ['organization' => $organization]) }}">

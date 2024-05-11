@@ -20,12 +20,12 @@
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "insolita/unused-scanner": "^2.4",
+        "laravel/browser-kit-testing": "^5.0",
         "mockery/mockery": "~1.0",
         "nunomaduro/larastan": "^1.0.4",
-        "phpunit/phpunit": "~7.0",
+        "phpunit/phpunit": "^9.0",
         "slevomat/coding-standard": "^6.1",
-        "squizlabs/php_codesniffer": "^3.7",
-        "tdebatty/laravel-resource-generator": "^6.2"
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "autoload": {
         "classmap": [
