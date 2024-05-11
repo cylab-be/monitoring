@@ -101,6 +101,14 @@ class ServerController extends Controller
             $server->rack_id = null;
         }
         
+        if ($server->size == null) {
+            $server->size = 0;
+        }
+        
+        if ($server->position == null) {
+            $server->position = 0;
+        }
+        
         $server->save();
 
         return redirect(action("ServerController@show", ["server" => $server]));
