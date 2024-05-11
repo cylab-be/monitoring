@@ -28,6 +28,13 @@ class RackController extends Controller
             "rack" => new Rack(),
             "organization" => $organization]);
     }
+    
+    public function edit(Organization $organization, Rack $rack)
+    {
+        return view("rack.edit", [
+            "rack" => $rack,
+            "organization" => $organization]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,6 +44,11 @@ class RackController extends Controller
     public function store(Organization $organization, Request $request)
     {
         return $this->save($organization, $request, new Rack());
+    }
+    
+    public function update(Organization $organization, Rack $rack, Request $request)
+    {
+        return $this->save($organization, $request, $rack);
     }
     
     public function save(Organization $organization, Request $request, Rack $rack)

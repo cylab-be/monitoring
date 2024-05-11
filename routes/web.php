@@ -54,7 +54,7 @@ Route::get(
 
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
-Route::resource("app/organizations.rack", 'RackController')->only(["index", "create", "store", "destroy"]);
+Route::resource("app/organizations.rack", 'RackController');
 Route::resource('app/servers', 'ServerController')->except(["index"]);
 
 Route::get("app/records/{record}", "RecordController@show");

@@ -10,7 +10,7 @@
             <form method="POST" action="{{ action("RackController@store", ["organization" => $organization]) }}">
             @else
             <form method="POST"
-                  action="{{ action("RackController@update", ["rack" => $rack]) }}">
+                  action="{{ action("RackController@update", ["organization" => $organization, "rack" => $rack]) }}">
             {{ method_field("PUT") }}
             @endif
                 {{ csrf_field() }}
