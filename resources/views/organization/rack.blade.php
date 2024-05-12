@@ -41,7 +41,7 @@
     @endforeach
 </div>
 
-<div class="text-muted bottom-right">
+<div class="text-muted bottom-right-fixed">
     Reload in <span id="reload-countdown">300</span> seconds
 </div>
 
