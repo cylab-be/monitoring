@@ -5,6 +5,9 @@
            class="form-control{{ $errors->has('rack_id') ? ' is-invalid' : '' }}"
            name="rack_id">
 
+        @if ($server->rack)
+        <option value="{{ $server->rack->id }}">{{ $server->rack->name }}</option>
+        @endif
         <option value="0">--</option>
         @foreach ($organization->racks as $rack)
         <option value="{{ $rack->id }}">{{ $rack->name }}</option>
