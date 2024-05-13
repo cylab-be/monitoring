@@ -4,11 +4,10 @@ namespace App\Sensor;
 
 use App\Sensor;
 use App\SensorConfig;
-use App\ServerInfo;
 use App\Report;
 use App\Status;
+use App\Record;
 
-use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 
 /**
@@ -25,11 +24,10 @@ class Inodes implements Sensor
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
     
-    public function analyze(DatabaseCollection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Inodes");
         
-        $record = $records->last();
         $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.inodes", ["disks" => $disks]));
         

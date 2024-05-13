@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\StatusChangeDetection;
 use App\Jobs\FetchClientManifest;
 use App\Jobs\CleanOldData;
+use App\Jobs\TriggerHeartbeatAgents;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new StatusChangeDetection())->everyFiveMinutes();
         $schedule->job(new FetchClientManifest())->hourly();
         $schedule->job(new CleanOldData())->hourly();
+        $schedule->job(new TriggerHeartbeatAgents())->everyFiveMinutes();
     }
 
     /**

@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Description of Reboot
@@ -22,11 +20,10 @@ class Reboot implements Sensor
         return new SensorConfig("reboot", "reboot");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Reboot required");
         
-        $record = $records->last();
         if ($record->data) {
             return $report->setStatus(Status::warning())
                     ->setHTML("<p>Reboot required: yes</p>");

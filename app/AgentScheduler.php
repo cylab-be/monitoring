@@ -114,11 +114,6 @@ class AgentScheduler
             return;
         }
         
-        $records = $record->server->lastRecords($trigger_label);
-        if ($records->isEmpty()) {
-            return;
-        }
-        
         foreach ($this->triggers[$trigger_label] as $agent) {
             /** @var Sensor $agent */
             logger()->info("Dispatch agent " . $agent->config()->label .

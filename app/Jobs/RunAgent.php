@@ -50,15 +50,11 @@ class RunAgent implements ShouldQueue
         logger()->info("Start agent $label for server #" . $this->record->server_id);
         $start = microtime(true);
         
-        $trigger_label = $this->agent->config()->trigger_label;
         $record = $this->record;
-        $server = $this->record->server;
         
-        $records = $server->lastRecords($trigger_label);
-        
-        $report = $this->agent->analyze($records, $server->info());
+        $report = $this->agent->analyze($record);
         $report->time = time();
-        $report->server_id = $server->id;
+        $report->server_id = $record->server_id;
         $report->label = $this->agent->config()->label;
         $report->record_id = $record->id;
         $report->save();

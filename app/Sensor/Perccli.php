@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Description of Ssacli
@@ -24,11 +22,10 @@ class Perccli implements Sensor
     
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("DELL perccli");
         
-        $record = $records->last();
         $drives = $this->parse($record->data);
         $report->setHTML(view("sensor.perccli", ["drives" => $drives]));
         

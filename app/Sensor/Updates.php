@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Check if (security) updates are available.
@@ -25,12 +23,11 @@ class Updates implements Sensor
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Updates available");
-        
-        $record = $records->last();
-        $report->setHTML("<p>" . nl2br($record->data) . "</p>");
+        $report = (new Report())
+                ->setTitle("Updates available")
+                ->setHTML("<p>" . nl2br($record->data) . "</p>");
         
         $status = $this->parse($record->data);
         if ($status == null) {

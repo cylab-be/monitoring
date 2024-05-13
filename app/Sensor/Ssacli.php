@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Description of Ssacli
@@ -24,11 +22,10 @@ class Ssacli implements Sensor
     
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("HP ssacli");
         
-        $record = $records->last();
         $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.ssacli", ["disks" => $disks]));
         

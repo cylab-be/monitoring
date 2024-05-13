@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Collection;
-
 /**
  * Sensors must analyze a collection of Record, and produce a Report.
  *
@@ -12,5 +10,5 @@ use Illuminate\Database\Eloquent\Collection;
 interface Sensor
 {
     public function config() : SensorConfig;
-    public function analyze(Collection $records, ServerInfo $serverinfo) : Report;
+    public function analyze(Record $record) : Report;
 }

@@ -7,10 +7,8 @@ use App\Jobs\FetchClientManifest;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Check if the latest version of the client is installed.
@@ -24,10 +22,10 @@ class ClientVersion implements Sensor
         return new SensorConfig("client-version", "version");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $latest_version = FetchClientManifest::version();
-        $installed_version = $this->installedVersion($records);
+        $installed_version = $record->data;
         
         $report = (new Report())->setTitle("Client Version");
         $report->setHTML(
@@ -44,15 +42,5 @@ class ClientVersion implements Sensor
         }
 
         return $report;
-    }
-    
-    public function installedVersion(Collection $records) : string
-    {
-        $last_record = $records->last();
-        if ($last_record == null) {
-            return "none";
-        }
-
-        return $last_record->data;
     }
 }

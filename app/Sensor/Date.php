@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
  * Description of Reboot
@@ -22,13 +20,12 @@ class Date implements Sensor
         return new SensorConfig("date", "date");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Time drift");
-        /** @var \App\Record $last_record */
-        $last_record = $records->last();
+        /** @var \App\Record $record */
         
-        $delta = (int) $last_record->data - $last_record->time;
+        $delta = (int) $record->data - $record->time;
         $report->setHTML("<p>Time drift: $delta seconds</p>");
         
         if (abs($delta) > 10) {

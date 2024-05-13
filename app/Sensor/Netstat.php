@@ -5,8 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
+use App\Record;
 
 use Illuminate\Database\Eloquent\Collection;
 
@@ -23,7 +23,7 @@ class Netstat implements Sensor
         return new SensorConfig("netstat-retransmitted", "netstat-statistics");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Netstat : retransmitted TCP segments");
         $report->setHTML(view("agent.netstat"))

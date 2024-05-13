@@ -2,12 +2,11 @@
 
 namespace App\Sensor;
 
-use App\Record;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
+use App\Record;
 
 use Illuminate\Database\Eloquent\Collection;
 
@@ -24,14 +23,17 @@ class LoadAvg implements Sensor
     }
     
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
-        $threshold = $serverinfo->cpuinfo()["threads"];
+        $server = $record->server;
+        
+        $threshold = $server->info()->cpuinfo()["threads"];
         $report = (new Report())->setTitle("Load Average");
         
-        $current_load = $this->parse($records->last()->data);
+        $current_load = $this->parse($record->data);
         $report->setHTML(view("agent.loadavg", ["current_load" => $current_load]));
         
+        $records = $server->lastRecords($record->label);
         $max_load = $records
                 ->map(function (Record $record) {
                     $this->parse($record->data);

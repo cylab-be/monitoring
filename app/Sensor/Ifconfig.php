@@ -5,9 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\Record;
-use App\ServerInfo;
 use App\Report;
+use App\Record;
 
 use Illuminate\Database\Eloquent\Collection;
 
@@ -23,12 +22,11 @@ class Ifconfig implements Sensor
         return new SensorConfig("ifconfig", "ifconfig");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Ifconfig");
         
-        $last_record = $records->last();
-        $interfaces = $this->parseIfconfigRecord($last_record);
+        $interfaces = $this->parseIfconfigRecord($record);
         return $report->setStatus(Status::ok())
                 ->setHTML(view("agent.ifconfig", ["interfaces" => $interfaces]));
     }

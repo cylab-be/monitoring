@@ -5,10 +5,8 @@ namespace App\Sensor;
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
-use App\ServerInfo;
 use App\Report;
-
-use Illuminate\Database\Eloquent\Collection;
+use App\Record;
 
 /**
      * Description of Update
@@ -30,11 +28,10 @@ class CPUtemperature implements Sensor
         return new SensorConfig("cpu-temperature", "cpu-temperature");
     }
     
-    public function analyze(Collection $records, ServerInfo $serverinfo): Report
+    public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("CPU temperature");
         
-        $record = $records->last();
         $cpus = $this->parse($record->data);
         $report->setHTML(view("sensor.cputemperature", ["cpus" => $cpus]));
         $report->setStatus(Status::max($cpus));
