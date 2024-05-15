@@ -5,6 +5,8 @@ namespace App;
 use App\Jobs\RunAgent;
 use App\Sensor\Heartbeat;
 
+use App\Sensor\StatusChangeDetector;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Collection;
@@ -122,6 +124,16 @@ class AgentScheduler
         // special one : trigger heartbeat
         $agent = new Heartbeat();
         RunAgent::dispatch($agent, $record);
+    }
+    
+    public function notifySummary(ReportSummary $summary)
+    {
+        (new StatusChangeDetector())->analyze($summary);
+    }
+    
+    public function notifyStatusChange(StatusChange $change)
+    {
+        (new Sensor\ChangeAlert())->analyze($change);
     }
     
     public function notifyReport(Report $report)

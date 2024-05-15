@@ -31,10 +31,9 @@ class StatusBouncing extends Mailable
     {
         return $this->markdown('emails.server.bouncing')
                 ->with(["change" => $this->change])
-                ->from("monitor@web-d.be")
                 ->subject(
-                    $this->change->server()->organization->name . " / "
-                    . $this->change->server()->name . " : Status bouncing"
+                    $this->change->server->organization->name . " / "
+                    . $this->change->server->name . " : Status bouncing"
                 );
     }
 }

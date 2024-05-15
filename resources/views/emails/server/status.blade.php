@@ -1,11 +1,11 @@
 @component('mail::message')
-# {{ $change->server()->organization->name }} / {{ $change->server()->name }} : status change
+# {{ $change->server->organization->name }} / {{ $change->server->name }}
 
-Your server **{{ $change->server()->organization->name }} / {{ $change->server()->name }}**
-went **{{ $change->status()->name() }}**
+Your server **{{ $change->server->organization->name }} / {{ $change->server->name }}**
+went **{{ $change->status() }}**
 
-{{ action("ServerController@show", ["server" => $change->server()]) }}
+@component('mail::button', ['url' => action("ServerController@show", ["server" => $change->server])])
+    Inspect
+@endcomponent
 
-
-{{ config('app.name') }}
 @endcomponent

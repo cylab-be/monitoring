@@ -12,6 +12,7 @@ use \Carbon\Carbon;
  * @property int $server_id
  * @property int $status
  * @property int $record_id
+ * @property Server $server
  *
  * @author tibo
  */
@@ -32,5 +33,14 @@ class StatusChange extends Model
     public function server()
     {
         return $this->belongsTo(Server::class);
+    }
+    
+    public function save(array $options = [])
+    {
+        logger()->info("Status of server #" . $this->server_id . " changed to " . $this->status);
+        parent::save($options);
+        
+        AgentScheduler::get()->notifyStatusChange($this);
+        return true;
     }
 }

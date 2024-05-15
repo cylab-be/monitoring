@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 
 /**
+ * Aggregates the last reports to get a global server status.
+ *
  * @property int $server_id
  * @property Server $server
  * @property int $time
@@ -49,6 +51,15 @@ class ReportSummary extends Model
     public function setReports(Collection $reports)
     {
         $this->reports = $reports->pluck("id")->toArray();
+    }
+    
+    public function save(array $options = [])
+    {
+        parent::save($options);
+        
+        AgentScheduler::get()->notifySummary($this);
+        
+        return true;
     }
     
     public function time() : Carbon
