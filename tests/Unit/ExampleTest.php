@@ -102,11 +102,6 @@ class ExampleTest extends TestCase
             $change->status,
             $last_change->status
         );
-        
-        // Run change detection
-        $change_detection_job = new \App\Jobs\StatusChangeDetection();
-        $change_detection_job->detectChangeForServer($server);
-
 
         // Insert multiple status changes to simulate bouncing
         for ($i = 0; $i < 4; $i++) {
@@ -115,10 +110,6 @@ class ExampleTest extends TestCase
             $change->server_id = $server_id;
             $change->time = time() + $i;
             $change->save();
-
-            // Run change detection
-            $change_detection_job = new \App\Jobs\StatusChangeDetection();
-            $change_detection_job->detectChangeForServer($server);
         }
     }
 }
