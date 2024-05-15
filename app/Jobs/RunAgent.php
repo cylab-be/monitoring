@@ -41,7 +41,7 @@ class RunAgent implements ShouldQueue
         $this->record = $record;
         
         logger()->info("Dispatch agent " . $agent->config()->label .
-                " for server #" . $record->server_id);        
+                " for server #" . $record->server_id);
         logger()->info("Queue size: " . Queue::size());
     }
 
