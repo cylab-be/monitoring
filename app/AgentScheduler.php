@@ -3,9 +3,9 @@
 namespace App;
 
 use App\Jobs\RunAgent;
+use App\Sensor\Heartbeat;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Collection;
 use Symfony\Component\Finder\SplFileInfo;
@@ -116,11 +116,12 @@ class AgentScheduler
         
         foreach ($this->triggers[$trigger_label] as $agent) {
             /** @var Sensor $agent */
-            logger()->info("Dispatch agent " . $agent->config()->label .
-                    " for server #" . $record->server_id);
             RunAgent::dispatch($agent, $record);
-            logger()->info("Queue size: " . Queue::size());
         }
+        
+        // special one : trigger heartbeat
+        $agent = new Heartbeat();
+        RunAgent::dispatch($agent, $record);
     }
     
     public function notifyReport(Report $report)

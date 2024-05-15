@@ -34,8 +34,6 @@ class TriggerHeartbeatAgents implements ShouldQueue
             }
             
             $agent = new Heartbeat();
-            logger()->info("Dispatch agent " . $agent->config()->label .
-                    " for server #" . $last_record->server_id);
             RunAgent::dispatch($agent, $last_record);
         }
     }

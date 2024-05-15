@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Queue;
 
 class RunAgent implements ShouldQueue
 {
@@ -30,6 +31,7 @@ class RunAgent implements ShouldQueue
 
     /**
      * Create a new job instance.
+     * Executed in the main process.
      *
      * @return void
      */
@@ -37,10 +39,14 @@ class RunAgent implements ShouldQueue
     {
         $this->agent = $agent;
         $this->record = $record;
+        
+        logger()->info("Dispatch agent " . $agent->config()->label .
+                " for server #" . $record->server_id);        
+        logger()->info("Queue size: " . Queue::size());
     }
 
     /**
-     * Execute the job.
+     * Execute the job in the background worker.
      *
      * @return void
      */
