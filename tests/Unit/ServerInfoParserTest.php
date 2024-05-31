@@ -4,8 +4,6 @@ namespace Tests\Unit;
 
 use App\ServerInfoParser;
 
-use Tests\TestCase;
-
 /**
  * Description of ServerInfoParserTest
  *
