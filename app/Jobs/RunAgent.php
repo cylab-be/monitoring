@@ -59,11 +59,14 @@ class RunAgent implements ShouldQueue
         $record = $this->record;
         
         $report = $this->agent->analyze($record);
-        $report->time = time();
-        $report->server_id = $record->server_id;
-        $report->label = $this->agent->config()->label;
-        $report->record_id = $record->id;
-        $report->save();
+        
+        if (!is_null($report)) {
+            $report->time = time();
+            $report->server_id = $record->server_id;
+            $report->label = $this->agent->config()->label;
+            $report->record_id = $record->id;
+            $report->save();
+        }
         
         $runtime = round((microtime(true) - $start) * 1000);
         logger()->info("End agent $label | Execution time: $runtime ms");

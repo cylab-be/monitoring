@@ -10,5 +10,5 @@ namespace App;
 interface Sensor
 {
     public function config() : SensorConfig;
-    public function analyze(Record $record) : Report;
+    public function analyze(Record $record) : ?Report;
 }
