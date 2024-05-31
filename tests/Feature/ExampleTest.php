@@ -28,6 +28,7 @@ class ExampleTest extends TestCase
         $server = new Server();
         $server->name = "srv01";
         $organization->servers()->save($server);
+        $server->info()->create();
 
         $this->post('/api/record/' . $server->id, [])->assertResponseStatus(403);
         $this->post('/api/record/' . $server->id, ["token" => "abc123"])->assertResponseStatus(403);
