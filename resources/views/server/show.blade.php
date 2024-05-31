@@ -31,9 +31,11 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}
             </p>
             
+            @if ($server->info->uuid)
             <p>
                 <i class="far fa-id-card"></i> {{ $server->info->uuid }}
             </p>
+            @endif
             
             <p>
                 <i class="fas fa-network-wired"></i>
