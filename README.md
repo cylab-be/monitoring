@@ -14,6 +14,12 @@ The easiest way to run the development environment is using docker compose.
 Once docker is installed, you can start the dev environment with
 
 ```bash
+cp env.dev .env
+
+# modify .env if needed
+# (specially UID and GID)
+nano .env
+
 docker compose up
 ```
 
@@ -21,4 +27,4 @@ After a few seconds, the monitoring interface will be available at ```http://127
 
 The dev stack also includes mailhog, so you can inspect sent emails at ```http://127.0.0.1:8025```
 
-You can check https://cylab.be/blog/190/run-a-development-environment-for-laravel-with-docker-compose for more info...
+More info: https://cylab.be/blog/336/use-docker-compose-to-create-a-dev-environment-for-laravel

@@ -1,0 +1,24 @@
+#
+# Dockerfile.dev
+#
+# used to build the development containers
+# see docker-compose.yml
+# https://cylab.be/blog/336/use-docker-compose-to-create-a-dev-environment-for-laravel-6-7-and-8
+#
+
+FROM cylab/laravel-dev:7.4
+
+# If you modifify this file, don't forget to
+# docker compose up --build
+
+# Add your dependencies. For example:
+
+# Install php-imagick
+#RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
+#RUN printf "\n" | pecl install imagick
+#RUN docker-php-ext-enable imagick
+
+# Install PHP GD
+#RUN apt-get update && apt-get install -y  libfreetype6-dev libmcrypt-dev libpng-dev libjpeg-dev libpng-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
+#RUN docker-php-ext-configure gd --with-jpeg --with-freetype
+#RUN docker-php-ext-install -j$(nproc) gd

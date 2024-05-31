@@ -1,12 +1,17 @@
 #
-# monitoring
+# docker-compose.yaml
 #
-# this docker-compose can be used to run a development environment
+# to create a development environment with docker-compose
+# https://cylab.be/blog/336/use-docker-compose-to-create-a-dev-environment-for-laravel
 #
 
 services:
   web:
-    image: cylab/laravel-dev:7.4
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # defined in .env
+    user: "${UID}:${GID}"
     depends_on:
       - redis
       - mysql
@@ -14,42 +19,51 @@ services:
       - 8080:80
     volumes:
       - .:/var/www/html
-    env_file: env.dev
+    env_file: .env
     environment:
       WAIT_HOSTS: mysql:3306
+      APACHE_RUN_USER: "#${UID}"
+      APACHE_RUN_GROUP: "#${GID}"
 
   queue:
-    image: cylab/laravel-dev:7.4
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # defined in .env
+    user: "${UID}:${GID}"
     depends_on:
       - web
     volumes:
       - .:/var/www/html
-    command: ["php", "artisan", "queue:work", "--verbose", "--tries=3", "--timeout=60"]
-    restart: unless-stopped
-    env_file: env.dev
+    command: ["/queue.sh"]
+    env_file: .env
     environment:
       WAIT_HOSTS: web:80
 
   scheduler:
-    image: cylab/laravel-dev:7.4
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # defined in .env
+    user: "${UID}:${GID}"
     depends_on:
       - web
     volumes:
       - .:/var/www/html
     command: ["/scheduler.sh"]
-    env_file: env.dev
+    env_file: .env
     environment:
       WAIT_HOSTS: web:80
 
+
   node:
-    image: node:16-alpine
+    image: node:16.15.0-alpine
+    # defined in .env
+    user: "${UID}:${GID}"
     working_dir: /app
     volumes:
       - .:/app
-    # https://stackoverflow.com/a/72060809
-    entrypoint: /bin/sh -c "mkdir /tmp/npm && npm config set cache /tmp/npm --global && chown -R 1000:1000 /tmp/npm && npm install && npm run watch-poll"
-    depends_on:
-      - web
+    entrypoint: /bin/sh -c "npm install && npm run watch-poll"
 
   redis:
     image: redis:4-alpine
