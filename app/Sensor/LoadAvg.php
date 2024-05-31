@@ -27,7 +27,7 @@ class LoadAvg implements Sensor
     {
         $server = $record->server;
         
-        $threshold = $server->info()->cpuinfo()["threads"];
+        $threshold = $server->info->vCores();
         $report = (new Report())->setTitle("Load Average");
         
         $current_load = $this->parse($record->data);

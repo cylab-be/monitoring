@@ -43,7 +43,7 @@ class ApiController extends Controller
         return [
             "used" => $meminfo->usedMemoryPoints($server->lastRecords("memory")),
             "cached" => $meminfo->cachedMemoryPoints($server->lastRecords("memory")),
-            "total" => $server->info()->memoryTotal() / 1000];
+            "total" => $server->info->memory / 1000];
     }
 
     public function load(Server $server, string $token)
@@ -56,7 +56,7 @@ class ApiController extends Controller
         $sensor = new \App\Sensor\LoadAvg();
         return [
             "points" => $sensor->loadPoints($server->lastRecords("loadavg")),
-            "max" => $server->info()->cpuinfo()["threads"]];
+            "max" => $server->info->vCores()];
     }
     
     public function ifconfig(Server $server, string $token)

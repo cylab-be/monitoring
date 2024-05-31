@@ -112,6 +112,10 @@ class ServerController extends Controller
         }
         
         $server->save();
+        
+        if (is_null($server->info)) {
+            $server->info()->create();
+        }
 
         return redirect(action("ServerController@show", ["server" => $server]));
     }

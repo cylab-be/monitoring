@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
  * @property int $position position in rack, expressed in "U", starting from the bottom
  * @property string $token
  * @property string $read_token
+ * @property ?\App\ServerInfo $info
  * @property \App\Organization $organization
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
@@ -74,8 +75,6 @@ class Server extends Model
     
     // -------------------------------------
     
-    private $info = null;
-
     public function __construct(array $attributes = array())
     {
         $attributes["token"] = str_random(32);
@@ -112,13 +111,9 @@ class Server extends Model
                 ->get();
     }
 
-    public function info() : ServerInfo
+    public function info()
     {
-        if (is_null($this->info)) {
-            $this->info = new ServerInfo($this);
-        }
-
-        return $this->info;
+        return $this->hasOne(ServerInfo::class);
     }
 
     /**

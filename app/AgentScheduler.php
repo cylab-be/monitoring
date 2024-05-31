@@ -73,6 +73,11 @@ class AgentScheduler
                 return;
             }
             
+            $reflection = new \ReflectionClass($class_name);
+            if ($reflection->isAbstract()) {
+                return;
+            }
+            
             return new $class_name;
         })->filter();
     }

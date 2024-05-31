@@ -25,15 +25,19 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </p>
             
             <p>
-                <i class="fas fa-microchip"></i> {{ $server->info()->cpuinfo()["cpu"] }} | {{ $server->info()->vCores() }} vCores
-                <i class="fas fa-memory ml-3"></i> {{ $server->info()->memoryTotalForHumans() }}
-                <i class="fas fa-server ml-3"></i> {{ $server->info()->manufacturer() }} {{ $server->info()->productName() }}
-                <i class="fas fa-terminal ml-3"></i> {{ $server->info()->lsb() }}
+                <i class="fas fa-microchip"></i> {{ $server->info->cpuName() }} | {{ $server->info->vCores() }} vCores
+                <i class="fas fa-memory ml-3"></i> {{ $server->info->memoryTotalForHumans() }}
+                <i class="fas fa-server ml-3"></i> {{ $server->info->manufacturer }} {{ $server->info->product }}
+                <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}
+            </p>
+            
+            <p>
+                <i class="far fa-id-card"></i> {{ $server->info->uuid }}
             </p>
             
             <p>
                 <i class="fas fa-network-wired"></i>
-                @foreach ($server->info()->addresses() as $address)
+                @foreach ($server->info->addresses as $address)
                 {{ $address }}
                 <a class="badge badge-primary" href="ssh://{{ $address }}">ssh</a>
                 <a class="badge badge-primary" target="_blanck" href="http://{{ $address }}">http</a> 
@@ -44,7 +48,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </a>
             </p>
 
-            <p>Uptime: {{ $server->info()->uptime() }}</p>
+            <p>Uptime: {{ $server->info->uptimeForHumans() }}</p>
             
             @if (! is_null($server->rack_id))
             <p>
