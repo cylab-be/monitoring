@@ -11,7 +11,7 @@ use Tests\TestCase;
  *
  * @author tibo
  */
-class ServerInfoParserTest extends TestCase
+class ServerInfoParserTest
 {
     public function testMeminfo()
     {
