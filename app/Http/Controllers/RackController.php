@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class RackController extends Controller
 {
+    public function __construct()
+    {
+        // Uncomment to require authentication
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *

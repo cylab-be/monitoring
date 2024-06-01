@@ -4,8 +4,8 @@
 <div class="container">
     
     <p>
-        <span class="badge badge-secondary">#{{ $record->id }}</span>
-        <span class="badge badge-primary">{{ $record->label }}</span>
+        <span class="badge badge-secondary">@ {{ $record->id }}</span>
+        <span class="badge badge-primary"># {{ $record->label }}</span>
         <a class="badge badge-primary"
            href="{{ action("ServerController@show", ["server" => $record->server]) }}">
             <i class="fas fa-desktop"></i> {{ $record->server->name }}
