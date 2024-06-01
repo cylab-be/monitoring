@@ -27,24 +27,30 @@ class LoadAvg implements Sensor
     {
         $server = $record->server;
         
-        $threshold = $server->info->vCores();
-        $report = (new Report())->setTitle("Load Average");
+        $warning_threshold = $server->info->vCores();
+        $error_threshold = 2 * $warning_threshold;
         
         $current_load = $this->parse($record->data);
-        $report->setHTML(view("agent.loadavg", ["current_load" => $current_load]));
         
         $records = $server->lastRecords($record->label);
         $max_load = $records
                 ->map(function (Record $record) {
-                    $this->parse($record->data);
+                    return $this->parse($record->data);
                 })
                 ->max();
+                
+        $report = (new Report())->setTitle("Load");
+        $report->setHTML(view("agent.loadavg", [
+            "current_load" => $current_load,
+            "warning_threshold" => $warning_threshold,
+            "error_threshold" => $error_threshold,
+            "max_load" => $max_load]));
         
-        if ($max_load > 2 * $threshold) {
+        if ($max_load > $error_threshold) {
             return $report->setStatus(Status::error());
         }
 
-        if ($max_load > $threshold) {
+        if ($max_load > $warning_threshold) {
             return $report->setStatus(Status::warning());
         }
 
@@ -63,8 +69,8 @@ class LoadAvg implements Sensor
         return $points;
     }
 
-    public function parse(string $string) : string
+    public function parse(string $string) : float
     {
-        return current(explode(" ", $string));
+        return floatval(current(explode(" ", $string)));
     }
 }
