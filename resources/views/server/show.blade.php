@@ -61,6 +61,13 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 </b>
             </p>
             @endif
+            
+            <p class="mb-0">
+                <a class="btn btn-sm btn-secondary"
+                   href="{{ action("ServerController@records", ["server" => $server]) }}">
+                    <i class="fas fa-search"></i> Inspect records
+                </a>
+            </p>
         </div>
     </div>
     

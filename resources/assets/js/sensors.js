@@ -1,3 +1,4 @@
+"use strict";
 
 /*
  * Common stuff for all sensors
@@ -22,10 +23,9 @@ window.colorNames = Object.keys(window.chartColors);
 /*
  * Ifconfig
  */
-
 window.monitorIfconfigChart = function(element) {
-    var ctx = element.getContext('2d');
-    var config = {
+    let ctx = element.getContext('2d');
+    let config = {
         type: 'line',
         data: {
             datasets: []

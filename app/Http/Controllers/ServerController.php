@@ -62,6 +62,18 @@ class ServerController extends Controller
         $this->authorize("show", $server);
         return view("server.show", ["server" => $server]);
     }
+    
+    /**
+     * Display the latest records of a server
+     * @param Server $server
+     */
+    public function records(Server $server)
+    {
+        $this->authorize("show", $server);
+        return view("server.records", [
+            "server" => $server,
+            "records" => $server->records()->orderByDesc("id")->simplePaginate(100)]);
+    }
 
     /**
      * Show the form for editing the specified resource.
