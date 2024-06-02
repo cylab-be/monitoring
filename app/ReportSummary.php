@@ -41,7 +41,11 @@ class ReportSummary extends Model
      */
     public function reports() : DatabaseCollection
     {
-        return Report::find($this->reports);
+        // this will show errors first, then warnings etc.
+        // and sorted by title
+        return Report::find($this->reports)
+                ->sortBy("title")
+                ->sortByDesc("status_code");
     }
     
     /**
