@@ -28,6 +28,10 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 <i class="fas fa-microchip"></i> {{ $server->info->cpuName() }} | {{ $server->info->vCores() }} vCores
                 <i class="fas fa-memory ml-3"></i> {{ $server->info->memoryTotalForHumans() }}
                 <i class="fas fa-server ml-3"></i> {{ $server->info->manufacturer }} {{ $server->info->product }}
+            </p>
+            
+            <p>
+                <i class="fas fa-heart"></i> {{ $server->info->kernel }}
                 <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}
             </p>
             

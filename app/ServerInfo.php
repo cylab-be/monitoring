@@ -17,6 +17,7 @@ use Carbon\Carbon;
  * @property string $client_version
  * @property array $cpuinfo
  * @property array $addresses
+ * @property string $kernel
  */
 class ServerInfo extends Model
 {
