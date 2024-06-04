@@ -16,26 +16,9 @@ class ServerInfoCPU extends ServerInfoParser
     {
         // count the number of vCores
         $REGEX = "/^processor	: (.+)$/m";
-        $result["threads"] = preg_match_all($REGEX, $string);
-        $result["name"] = "undefined";
-        
-        // try to extract the CPU model
-        $REGEX = "/^model name	: (.+)$/m";
-        $matches = array();
-        if (preg_match($REGEX, $string, $matches) === 1) {
-            $result["name"] = $matches[1];
-            $info->cpuinfo = $result;
-            return;
-        }
-        
-        // for raspberry pi
-        $REGEX = '/^Model\s*: (.+)$/m';
-        $matches = array();
-        if (preg_match($REGEX, $string, $matches) === 1) {
-            $result["name"] = $matches[1];
-            $info->cpuinfo =  $result;
-            return;
-        }
+        $cpuinfo = $info->cpuinfo;
+        $cpuinfo["threads"] = preg_match_all($REGEX, $string);
+        $info->cpuinfo = $cpuinfo;
     }
 
     public function config(): SensorConfig
