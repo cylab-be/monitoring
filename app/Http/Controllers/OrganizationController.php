@@ -143,8 +143,18 @@ class OrganizationController extends Controller
                 $networks[$network][$address] = $server;
             }
         }
-        ksort($networks);
+        $this->natksortRecursive($networks);
         return view("organization.networks", ["networks" => $networks]);
+    }
+
+    public function natksortRecursive(&$arr)
+    {
+        ksort($arr, SORT_NATURAL);
+        foreach ($arr as &$subarr) {
+            if (is_array($subarr)) {
+                $this->natksortRecursive($subarr);
+            }
+        }
     }
 
     /**

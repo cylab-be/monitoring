@@ -8,7 +8,7 @@
 
     <p>
         @foreach ($networks as $subnet => $addresses)
-        <a href="#subnet-{{ $subnet }}" class="btn btn-primary btn-sm">{{ $subnet }}</a>
+        <a href="#subnet-{{ $subnet }}" class="btn btn-primary btn-sm mt-1">{{ $subnet }}</a>
         @endforeach
     </p>
 
