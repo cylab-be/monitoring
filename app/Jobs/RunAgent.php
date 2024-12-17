@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Queue;
 class RunAgent implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    
+
     /**
      *
      * @var Sensor
      */
     public $agent;
-    
-    
+
+
     /**
      *
      * @var Record
@@ -39,7 +39,7 @@ class RunAgent implements ShouldQueue
     {
         $this->agent = $agent;
         $this->record = $record;
-        
+
         logger()->info("Dispatch agent " . $agent->config()->label .
                 " for server #" . $record->server_id);
         logger()->info("Queue size: " . Queue::size());
@@ -55,11 +55,10 @@ class RunAgent implements ShouldQueue
         $label = $this->agent->config()->label;
         logger()->info("Start agent $label for server #" . $this->record->server_id);
         $start = microtime(true);
-        
+
         $record = $this->record;
-        
         $report = $this->agent->analyze($record);
-        
+
         if (!is_null($report)) {
             $report->time = time();
             $report->server_id = $record->server_id;
@@ -67,7 +66,7 @@ class RunAgent implements ShouldQueue
             $report->record_id = $record->id;
             $report->save();
         }
-        
+
         $runtime = round((microtime(true) - $start) * 1000);
         logger()->info("End agent $label | Execution time: $runtime ms");
     }
