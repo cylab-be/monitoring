@@ -6,7 +6,7 @@
     <h1>{{ $organization->name }}</h1>
 
     <p>
-        <a href="{{ action('ServerController@create') }}" 
+        <a href="{{ action('ServerController@create') }}"
            class="btn btn-primary btn-sm">
             <i class="fa fa-plus-circle" aria-hidden="true"></i> New server
         </a>
@@ -15,31 +15,36 @@
                        ["organization" => $organization]) }}">
             <i class="fas fa-tachometer-alt"></i> Dashboard
         </a>
-        
+
         <a class="btn btn-primary btn-sm"
            href="{{ action("OrganizationDashboardController@json", [
                "organization" => $organization,
                "token" => $organization->dashboard_token]) }}">
             <i class="fas fa-code"></i> JSON
         </a>
-        
+
         <a class="btn btn-primary btn-sm"
            href="{{ action("OrganizationController@resetToken", [
                "organization" => $organization]) }}">
             <i class="fas fa-redo-alt"></i> Reset dashboard token
         </a>
-        
+
         <a class="btn btn-primary btn-sm"
            href="{{ action("RackController@index", ["organization" => $organization]) }}">
             <i class="fas fa-server"></i> Rack view
         </a>
-        
-        <a href="{{ action("RackController@create", ["organization" => $organization]) }}" 
+
+        <a href="{{ action("RackController@create", ["organization" => $organization]) }}"
            class="btn btn-primary btn-sm">
             <i class="fa fa-plus-circle" aria-hidden="true"></i> New rack
         </a>
+
+        <a href="{{ route("organization.networks", ["organization" => $organization])  }}"
+            class="btn btn-primary btn-sm">
+            <i class="fas fa-network-wired"></i> Networks view
+        </a>
     </p>
-    
+
     <table class="table table-striped my-5">
         @foreach($organization->servers->sortBy("name") as $server)
         <tr>
@@ -48,7 +53,7 @@
                    href="{{ action('ServerController@show', ['server' => $server]) }}">
                     {{ $server->name }}
                 </a><br>
-                
+
                 <div class="small text-muted">
                     <i class="fas fa-microchip"></i> {{ $server->info->cpuName() }} | {{ $server->info->vCores() }} vCores
                     <i class="fas fa-memory ml-3"></i> {{ $server->info->memoryTotalForHumans() }}
@@ -65,7 +70,7 @@
                 </div>
                 @endif
             </td>
-            
+
             <td class="text-right">
                 {!! $server->status()->badge() !!}
                 {{ $server->lastSummary()->time()->diffForHumans() }}

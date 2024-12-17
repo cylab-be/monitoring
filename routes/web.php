@@ -52,6 +52,8 @@ Route::get(
     'OrganizationDashboardController@json'
 );
 
+Route::get('app/organizations/{organization}/networks', 'OrganizationController@networks')
+        ->name("organization.networks");
 Route::resource('app/organizations', 'OrganizationController');
 Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
 Route::resource("app/organizations.rack", 'RackController');

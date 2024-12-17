@@ -126,4 +126,22 @@ class OrganizationController extends Controller
         $organization->delete();
         return redirect(action("OrganizationController@index"));
     }
+
+    /**
+     * Networks view
+     * @param Organization $organization
+     */
+    public function networks(Organization $organization)
+    {
+        $this->authorize("show", $organization);
+
+        $addresses = [];
+        foreach ($organization->servers as $server) {
+            foreach ($server->info->addresses as $address) {
+                $addresses[$address] = $server;
+            }
+        }
+        ksort($addresses);
+        return view("organization.networks", ["addresses" => $addresses]);
+    }
 }
