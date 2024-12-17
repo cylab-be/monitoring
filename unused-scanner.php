@@ -18,6 +18,7 @@ return [
   'scanFiles' => $scanFiles,
   'skipPackages' => [
     "laravel/framework",
+    "laravel/ui",
     "guzzlehttp/guzzle", // unused in app/Sensor/ClientVersion, but not detected
     "fideloper/proxy",   // used by laravel
     "laravel/tinker",    // REPL interpreter, required by Laravel (and I don't know why)
