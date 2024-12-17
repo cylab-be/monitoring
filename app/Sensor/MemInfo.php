@@ -21,17 +21,17 @@ class MemInfo implements Sensor
     {
         return new SensorConfig("memory", "memory");
     }
-    
+
     public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Memory Usage");
         $report->setHTML(view("agent.meminfo"));
-        
+
         $records = $record->server->lastRecords($record->label);
         foreach ($records as $record) {
             $mem = $this->parseMeminfo($record->data);
             if ($mem->usedRatio() > 0.8) {
-                return $report->setStatus(Status::WARNING);
+                return $report->setStatus(Status::warning());
             }
         }
 
