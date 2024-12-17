@@ -135,13 +135,33 @@ class OrganizationController extends Controller
     {
         $this->authorize("show", $organization);
 
-        $addresses = [];
+        $networks = [];
         foreach ($organization->servers as $server) {
             foreach ($server->info->addresses as $address) {
-                $addresses[$address] = $server;
+                // for now I assume 24 bits subnet masks
+                $network = $this->extractSubnet($address, 24);
+                $networks[$network][$address] = $server;
             }
         }
-        ksort($addresses);
-        return view("organization.networks", ["addresses" => $addresses]);
+        ksort($networks);
+        return view("organization.networks", ["networks" => $networks]);
+    }
+
+    /**
+     * Extract subnet address from IP and mask length
+     * E.g. extractSubnet("192.168.178.2", 24) => "192.168.178.0"
+     *
+     * @param string $ip
+     * @param int $len
+     * @return string
+     */
+    private function extractSubnet(string $ip, int $len) : string
+    {
+        #list($ip, $len) = explode('/', $ip);
+
+        $ip_long = ip2long($ip);
+        $subnet_mask = (0xffffffff >> (32 - $len)) << (32 - $len);
+        $subnet = long2ip($ip_long & $subnet_mask);
+        return $subnet;
     }
 }
