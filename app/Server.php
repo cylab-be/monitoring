@@ -46,6 +46,7 @@ class Server extends Model
     // define attributes that can be appended when serializing to json
     // used in OrganizationDashboardController@json
     // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
+    protected $appends = ['url', 'status', 'failing_sensors', 'last_record_time'];
 
     public function getUrlAttribute() : string
     {
