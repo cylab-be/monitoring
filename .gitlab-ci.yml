@@ -74,6 +74,9 @@ build:
 
 deploy:
   stage: deploy
+  only:
+    # only deploy when we push on the master branch
+    - master
   image: alpine
   before_script:
     # install envsubst and ssh-add
