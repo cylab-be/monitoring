@@ -39,6 +39,8 @@ services:
 
   queue:
     image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    deploy:
+      replicas: 4
     depends_on:
       - web
     volumes:
