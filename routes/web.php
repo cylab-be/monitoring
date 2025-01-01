@@ -35,7 +35,7 @@ Route::get("home", function () {
     return redirect(action("OrganizationController@index"));
 });
 
-Route::get("app/status", function() {
+Route::get("app/status", function () {
     return view("status");
 })->name("status");
 
