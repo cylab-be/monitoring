@@ -139,16 +139,27 @@ window.monitorLoadChart = function(element) {
             };
         config.data.datasets.push(new_dataset);
 
-        var new_annotation = {
+        let annotation_warning = {
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y-axis-0',
                 value: data.max,
+                borderColor: 'orange',
+                borderWidth: 2
+        };
+        config.options.annotation.annotations.push(annotation_warning);
+
+        let annotation_error = {
+                drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: 2 * data.max,
                 borderColor: 'red',
                 borderWidth: 2
         };
-        config.options.annotation.annotations.push(new_annotation);
+        config.options.annotation.annotations.push(annotation_error);
         window.loadChart.update();
     });
 };
