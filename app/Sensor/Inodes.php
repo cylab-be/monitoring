@@ -23,14 +23,14 @@ class Inodes implements Sensor
     }
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
-    
+
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Inodes");
-        
+        $report = (new Report())->setTitle("Storage : Inodes");
+
         $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.inodes", ["disks" => $disks]));
-        
+
         return $report->setStatus(Status::max($disks));
     }
 
@@ -38,15 +38,15 @@ class Inodes implements Sensor
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
-        
+
         $disks = new Collection();
         $count = count($values[1]);
-        
+
         $disks_sensor = new Disks();
-        
+
         for ($i = 0; $i < $count; $i++) {
             $fs = $values[1][$i];
-            
+
             if ($disks_sensor->shouldSkip($fs)) {
                 continue;
             }

@@ -21,11 +21,11 @@ class Ifconfig implements Sensor
     {
         return new SensorConfig("ifconfig", "ifconfig");
     }
-    
+
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Ifconfig");
-        
+        $report = (new Report())->setTitle("Network : Traffic");
+
         $interfaces = $this->parseIfconfigRecord($record);
         return $report->setStatus(Status::ok())
                 ->setHTML(view("agent.ifconfig", ["interfaces" => $interfaces]));

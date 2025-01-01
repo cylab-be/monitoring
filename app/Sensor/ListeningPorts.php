@@ -15,17 +15,17 @@ use App\Record;
  */
 class ListeningPorts implements Sensor
 {
-    
+
     public function config(): SensorConfig
     {
         return new SensorConfig("listening-tcp", "netstat-listen-tcp");
     }
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";
-    
+
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Listening Ports");
+        $report = (new Report())->setTitle("Network : Listening Ports");
 
         $ports = $this->parse($record->data);
         usort(
@@ -34,7 +34,7 @@ class ListeningPorts implements Sensor
                     return $port1->port - $port2->port;
             }
         );
-        
+
         return $report->setStatus(Status::ok())
                 ->setHTML(view("sensor.listeningports", ["ports" => $ports]));
     }
@@ -61,7 +61,7 @@ class ListeningPorts implements Sensor
             if ($bind == "127.0.0.1" || $bind == "::1") {
                 continue;
             }
-            
+
             $port = new ListeningPort();
             $port->proto = $values[1][$i];
             $port->bind = $bind;

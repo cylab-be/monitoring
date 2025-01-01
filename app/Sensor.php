@@ -3,7 +3,7 @@
 namespace App;
 
 /**
- * Sensors must analyze a collection of Record, and produce a Report.
+ * Sensors must analyze a collection of Record, and if needed produce a Report.
  *
  * @author tibo
  */

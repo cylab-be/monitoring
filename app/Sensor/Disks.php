@@ -21,17 +21,17 @@ class Disks implements Sensor
     {
         return new SensorConfig("disks", "disks");
     }
-    
+
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";
-    
+
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Partitions");
-        
+        $report = (new Report())->setTitle("Storage : Partitions");
+
         $partitions = $this->parse($record->data);
         $report->setHTML(view("sensor.disks", ["partitions" => $partitions]));
-        
+
         return $report->setStatus(Status::max($partitions));
     }
 
@@ -44,8 +44,8 @@ class Disks implements Sensor
     {
         $values = array();
         preg_match_all(self::REGEXP, $string, $values);
-        
-        
+
+
         $partitions = new Collection();
         $count = count($values[1]);
         for ($i = 0; $i < $count; $i++) {
@@ -74,9 +74,9 @@ class Disks implements Sensor
 
         return $partitions;
     }
-    
+
     const SKIP_FS = ["none", "tmpfs", "shm", "udev", "overlay", '/dev/loop', "devfs"];
-    
+
     public function shouldSkip(string $fs) : bool
     {
         foreach (self::SKIP_FS as $should_skip) {

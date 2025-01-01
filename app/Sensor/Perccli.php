@@ -19,16 +19,16 @@ class Perccli implements Sensor
     {
         return new SensorConfig("perccli", "perccli");
     }
-    
+
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";
 
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("DELL perccli");
-        
+        $report = (new Report())->setTitle("Storage : DELL perccli");
+
         $drives = $this->parse($record->data);
         $report->setHTML(view("sensor.perccli", ["drives" => $drives]));
-        
+
         return $report->setStatus(Status::max($drives));
     }
 

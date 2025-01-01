@@ -19,16 +19,16 @@ class Ssacli implements Sensor
     {
         return new SensorConfig("ssacli", "ssacli");
     }
-    
+
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";
 
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("HP ssacli");
-        
+        $report = (new Report())->setTitle("Storage : HP ssacli");
+
         $disks = $this->parse($record->data);
         $report->setHTML(view("sensor.ssacli", ["disks" => $disks]));
-        
+
         return $report->setStatus(Status::max($disks));
     }
 

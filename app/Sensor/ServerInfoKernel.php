@@ -19,6 +19,6 @@ class ServerInfoKernel extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("", "uname");
+        return new SensorConfig("ServerInfoKernel", "uname");
     }
 }

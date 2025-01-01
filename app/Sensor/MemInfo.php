@@ -24,7 +24,7 @@ class MemInfo implements Sensor
 
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Memory Usage");
+        $report = (new Report())->setTitle("Memory : Usage");
         $report->setHTML(view("agent.meminfo"));
 
         $records = $record->server->lastRecords($record->label);

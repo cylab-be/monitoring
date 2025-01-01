@@ -30,6 +30,6 @@ class ServerInfoAddresses extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("", "ifconfig");
+        return new SensorConfig("ServerInfoAddresses", "ifconfig");
     }
 }

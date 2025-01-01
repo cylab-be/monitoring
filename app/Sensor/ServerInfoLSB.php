@@ -23,6 +23,6 @@ class ServerInfoLSB extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("", "lsb");
+        return new SensorConfig("ServerInfoLSB", "lsb");
     }
 }

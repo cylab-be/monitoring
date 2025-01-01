@@ -23,6 +23,6 @@ class ServerInfoCPU extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("", "cpu");
+        return new SensorConfig("ServerInfoCPU", "cpu");
     }
 }

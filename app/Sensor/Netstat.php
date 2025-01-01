@@ -17,18 +17,18 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Netstat implements Sensor
 {
-    
+
     public function config(): SensorConfig
     {
         return new SensorConfig("netstat-retransmitted", "netstat-statistics");
     }
-    
+
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Netstat : retransmitted TCP segments");
+        $report = (new Report())->setTitle("Network : Retransmitted TCP segments");
         $report->setHTML(view("agent.netstat"))
                 ->setStatus(Status::ok());
-        
+
         return $report;
     }
 

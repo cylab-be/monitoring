@@ -16,7 +16,7 @@ class ServerInfoProduct extends ServerInfoParser
     public function analyzeString(string $string, ServerInfo $info)
     {
         $REGEX = "/^\s*Product Name: (.*)$/m";
-        
+
         $matches = [];
         preg_match($REGEX, $string, $matches);
         $info->product = $matches[1] ?? "unknown";
@@ -24,6 +24,6 @@ class ServerInfoProduct extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("", "system");
+        return new SensorConfig("ServerInfoProduct", "system");
     }
 }

@@ -21,31 +21,31 @@ class LoadAvg implements Sensor
     {
         return new SensorConfig("loadavg", "loadavg");
     }
-    
-    
+
+
     public function analyze(Record $record): Report
     {
         $server = $record->server;
-        
+
         $warning_threshold = $server->info->vCores();
         $error_threshold = 2 * $warning_threshold;
-        
+
         $current_load = $this->parse($record->data);
-        
+
         $records = $server->lastRecords($record->label);
         $max_load = $records
                 ->map(function (Record $record) {
                     return $this->parse($record->data);
                 })
                 ->max();
-                
-        $report = (new Report())->setTitle("Load");
+
+        $report = (new Report())->setTitle("CPU : Load");
         $report->setHTML(view("agent.loadavg", [
             "current_load" => $current_load,
             "warning_threshold" => $warning_threshold,
             "error_threshold" => $error_threshold,
             "max_load" => $max_load]));
-        
+
         if ($max_load > $error_threshold) {
             return $report->setStatus(Status::error());
         }
