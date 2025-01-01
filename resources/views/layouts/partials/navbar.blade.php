@@ -11,7 +11,7 @@
 
         <div class="collapse navbar-collapse text-center" id="navbar2SupportedContent">
             <ul class="navbar-nav mr-auto">
-
+                <li class="nav-item"><a class="nav-link" href="{{ route('status') }}">Status</a></li>
             </ul>
 
             <ul class="navbar-nav ml-auto">

@@ -35,6 +35,10 @@ Route::get("home", function () {
     return redirect(action("OrganizationController@index"));
 });
 
+Route::get("app/status", function() {
+    return view("status");
+})->name("status");
+
 Route::get('app/dashboard', function () {
     return redirect(action("OrganizationController@index"));
 })->name('dashboard');
