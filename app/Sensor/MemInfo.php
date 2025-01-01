@@ -32,7 +32,7 @@ class MemInfo implements Sensor
         $records = $record->server->lastRecords($record->label);
         foreach ($records as $record) {
             $mem = $this->parseMeminfo($record->data);
-            if ($mem->usedRatio() > self::$WARNING_RATIO) {
+            if ($mem->usedRatio() > self::WARNING_RATIO) {
                 return $report->setStatus(Status::warning());
             }
         }
