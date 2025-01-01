@@ -22,7 +22,8 @@
                 <a href="{{ action('OrganizationController@show', ['organization' => $organization]) }}"
                    class="text-decoration-none">
                     {{ $organization->name }}
-                </a>
+                </a><br>
+                <i class="fas fa-server"></i> {{ $organization->servers()->count() }} servers
             </td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
