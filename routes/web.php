@@ -21,6 +21,11 @@ if (app()->environment('prod') && !empty($app_url)) {
 
 
 Route::get('/', function () {
+
+    // already logged in
+    if (auth()->user()) {
+        return redirect(action("OrganizationController@index"));
+    }
     return view('index');
 });
 
