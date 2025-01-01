@@ -154,9 +154,8 @@ window.monitorLoadChart = function(element) {
 };
 
 /*
- * Memory
+ * Draw the memory chart
  */
-
 window.monitorMemChart = function(element) {
     var ctx = element.getContext('2d');
     var config = {
@@ -217,7 +216,7 @@ window.monitorMemChart = function(element) {
             };
         config.data.datasets.push(new_dataset);
 
-        var new_annotation = {
+        let annotation_max = {
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
                 type: 'line',
                 mode: 'horizontal',
@@ -226,7 +225,18 @@ window.monitorMemChart = function(element) {
                 borderColor: 'red',
                 borderWidth: 2
         };
-        config.options.annotation.annotations.push(new_annotation);
+        config.options.annotation.annotations.push(annotation_max);
+
+        let annotation_warning = {
+                drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: 0.9 * data.total,
+                borderColor: 'orange',
+                borderWidth: 2
+        };
+        config.options.annotation.annotations.push(annotation_warning);
 
         window.memChart.update();
     });

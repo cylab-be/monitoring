@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class MemInfo implements Sensor
 {
+    const WARNING_RATIO = 0.9;
+
     public function config(): SensorConfig
     {
         return new SensorConfig("memory", "memory");
@@ -30,7 +32,7 @@ class MemInfo implements Sensor
         $records = $record->server->lastRecords($record->label);
         foreach ($records as $record) {
             $mem = $this->parseMeminfo($record->data);
-            if ($mem->usedRatio() > 0.8) {
+            if ($mem->usedRatio() > self::$WARNING_RATIO) {
                 return $report->setStatus(Status::warning());
             }
         }
