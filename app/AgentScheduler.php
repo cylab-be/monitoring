@@ -3,12 +3,13 @@
 namespace App;
 
 use App\Jobs\RunAgent;
-
+use App\Server;
 use App\Sensor\StatusChangeDetector;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Queue;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -110,10 +111,19 @@ class AgentScheduler
         })->toArray();
     }
 
+    public function throttlingTreshold() : int
+    {
+        return max(2, Server::count()) * 2 *  $this->sensors()->count();
+    }
+
     // ------------------ SCHEDULING of agents
 
     public function notify(Record $record)
     {
+        if (Queue::size() > $this->throttlingTreshold()) {
+            return;
+        }
+
         $trigger_label = $record->label;
 
         if (! isset($this->triggers[$trigger_label])) {
