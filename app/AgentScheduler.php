@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Jobs\RunAgent;
-use App\Sensor\Heartbeat;
 
 use App\Sensor\StatusChangeDetector;
 
