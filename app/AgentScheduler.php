@@ -21,34 +21,34 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class AgentScheduler
 {
-    
+
     /**
      *
      * @var LazyCollection<Sensor>
      */
     private $sensors;
-    
+
     // associative array
     // trigger_label => array<Sensor>
     private array $triggers;
-    
+
     private function __construct()
     {
         $this->sensors = $this->autodiscover();
         $this->triggers = $this->register($this->sensors);
     }
-    
+
     private static $instance;
-    
+
     public static function get() : AgentScheduler
     {
         if (self::$instance == null) {
             self::$instance = new self();
         }
-        
+
         return self::$instance;
     }
-    
+
     /**
      *
      * @return LazyCollection<Sensor>
@@ -57,7 +57,7 @@ class AgentScheduler
     {
         return $this->sensors;
     }
-    
+
     /**
      *
      * @return LazyCollection<Sensor>
@@ -66,22 +66,22 @@ class AgentScheduler
     {
         $ROOT = __DIR__ . "/Sensor/";
         return LazyCollection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) {
-            
+
             $interface_name = "\App\Sensor";
             $class_name = '\App\Sensor\\' . $file->getFilenameWithoutExtension();
             if (!is_a($class_name, $interface_name, true)) {
                 return;
             }
-            
+
             $reflection = new \ReflectionClass($class_name);
             if ($reflection->isAbstract()) {
                 return;
             }
-            
+
             return new $class_name;
         })->filter();
     }
-    
+
     /**
      *
      * @param LazyCollection<Sensor> $sensors
@@ -98,7 +98,7 @@ class AgentScheduler
         }
         return $triggers;
     }
-    
+
     /**
      * Get the list of defined agent labels.
      *
@@ -110,42 +110,38 @@ class AgentScheduler
             return $sensor->config()->label;
         })->toArray();
     }
-    
+
     // ------------------ SCHEDULING of agents
-    
+
     public function notify(Record $record)
     {
         $trigger_label = $record->label;
-        
+
         if (! isset($this->triggers[$trigger_label])) {
             return;
         }
-        
+
         foreach ($this->triggers[$trigger_label] as $agent) {
             /** @var Sensor $agent */
             RunAgent::dispatch($agent, $record);
         }
-        
-        // special one : trigger heartbeat
-        $agent = new Heartbeat();
-        RunAgent::dispatch($agent, $record);
     }
-    
+
     public function notifySummary(ReportSummary $summary)
     {
         (new StatusChangeDetector())->analyze($summary);
     }
-    
+
     public function notifyStatusChange(StatusChange $change)
     {
         (new Sensor\ChangeAlert())->analyze($change);
     }
-    
+
     public function notifyReport(Report $report)
     {
         $server = $report->server;
         $reports = $this->lastReportsOf($server);
-        
+
         $summary = new ReportSummary();
         $summary->time = time();
         $summary->server_id = $server->id;
@@ -153,7 +149,7 @@ class AgentScheduler
         $summary->status_code = Status::max($reports)->code();
         $summary->save();
     }
-    
+
     /**
      * Get the last report for each label.
      *
@@ -167,7 +163,7 @@ class AgentScheduler
         }
         return $reports->filter();
     }
-    
+
     public function lastReportOf(Server $server, string $label) : ?Report
     {
         $start = time() - 24 * 3600;
