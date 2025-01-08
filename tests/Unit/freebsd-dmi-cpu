@@ -1,0 +1,34 @@
+# dmidecode 3.6
+# SMBIOS entry point at 0x75cc4000
+Found SMBIOS entry point in EFI, reading table from /dev/mem.
+SMBIOS 3.5 present.
+
+Handle 0x004A, DMI type 4, 48 bytes
+Processor Information
+	Socket Designation: U3E1
+	Type: Central Processor
+	Family: Other
+	Manufacturer: Intel(R) Corporation
+	ID: E0 06 0B 00 FF FB EB BF
+	Version: Intel(R) N100
+	Voltage: 1.0 V
+	External Clock: 100 MHz
+	Max Speed: 3400 MHz
+	Current Speed: 2871 MHz
+	Status: Populated, Enabled
+	Upgrade: Other
+	L1 Cache Handle: 0x0047
+	L2 Cache Handle: 0x0048
+	L3 Cache Handle: 0x0049
+	Serial Number: To Be Filled By O.E.M.
+	Asset Tag: To Be Filled By O.E.M.
+	Part Number: To Be Filled By O.E.M.
+	Core Count: 4
+	Core Enabled: 4
+	Thread Count: 4
+	Characteristics:
+		64-bit capable
+		Multi-Core
+		Execute Protection
+		Enhanced Virtualization
+		Power/Performance Control
