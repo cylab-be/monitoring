@@ -23,10 +23,13 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
 
         preg_match_all($REGEX, $string, $matches);
 
-        var_dump($matches);
-
         foreach ($matches[1] as $match) {
             $count += $match[0];
+        }
+        
+        // if regex does not match, or dmi info is empty...
+        if ($count == 0) {
+            return;
         }
 
         $cpuinfo["threads"] = $count;
