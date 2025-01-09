@@ -34,12 +34,26 @@ class ServerinfoTest extends TestCase
      * @group cpu
      * @group freebsd-cpu
      */
-    public function testThreadsFreeBSD()
+    public function testThreadsFreebsd()
     {
         $string = file_get_contents(__DIR__ . "/freebsd-dmi-cpu");
         $sensor = new ServerInfoFreeBSDCPU();
         $info = new ServerInfo();
         $sensor->analyzeString($string, $info);
         $this->assertEquals(4, $info->vCores());
+    }
+    
+    /**
+     * Test CPU cores extraction for a system with multiple processors and many threads
+     * 
+     * @group cpu
+     */
+    public function testThreadsMulti()
+    {
+        $string = file_get_contents(__DIR__ . "/dmi-cpu");
+        $sensor = new ServerInfoFreeBSDCPU();
+        $info = new ServerInfo();
+        $sensor->analyzeString($string, $info);
+        $this->assertEquals(64, $info->vCores());
     }
 }

@@ -24,7 +24,7 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
         preg_match_all($REGEX, $string, $matches);
 
         foreach ($matches[1] as $match) {
-            $count += $match[0];
+            $count += $match;
         }
         
         // if regex does not match, or dmi info is empty...
