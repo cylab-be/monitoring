@@ -15,7 +15,7 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
     public function analyzeString(string $string, ServerInfo $info)
     {
         // count the number of vCores
-        $REGEX = "/^	Thread Count: (\d+)/m";
+        $REGEX = "/^\tThread Count: (\d+)$/m";
 
         $count = 0;
         $matches = [];
