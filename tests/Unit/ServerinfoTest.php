@@ -45,7 +45,7 @@ class ServerinfoTest extends TestCase
     
     /**
      * Test CPU cores extraction for a system with multiple processors and many threads
-     * 
+     *
      * @group cpu
      */
     public function testThreadsMulti()
