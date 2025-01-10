@@ -40,7 +40,7 @@ class RunAgent implements ShouldQueue
         $this->agent = $agent;
         $this->record = $record;
 
-        logger()->info("Dispatch agent " . $agent->config()->label .
+        logger()->info("Dispatch agent " . get_class($agent) .
                 " for server #" . $record->server_id);
         logger()->info("Queue size: " . Queue::size());
     }
@@ -52,8 +52,8 @@ class RunAgent implements ShouldQueue
      */
     public function handle()
     {
-        $label = $this->agent->config()->label;
-        logger()->info("Start agent $label for server #" . $this->record->server_id);
+        logger()->info("Start agent " . get_class($this->agent) .
+                " for server #" . $this->record->server_id);
         $start = microtime(true);
 
         $record = $this->record;
@@ -68,6 +68,6 @@ class RunAgent implements ShouldQueue
         }
 
         $runtime = round((microtime(true) - $start) * 1000);
-        logger()->info("End agent $label | Execution time: $runtime ms");
+        logger()->info("End agent " . get_class($this->agent) . " | Execution time: $runtime ms");
     }
 }
