@@ -19,6 +19,9 @@ class ServerInfoKernel extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoKernel", "uname");
+        return new SensorConfig(
+                "ServerInfoKernel",
+                "uname",
+                "Show kernel version using uname");
     }
 }

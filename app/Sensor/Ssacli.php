@@ -17,7 +17,10 @@ class Ssacli implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("ssacli", "ssacli");
+        return new SensorConfig(
+                "ssacli",
+                "ssacli",
+                "Parse ssacli on HP RAID controllers to check the status of physical disks");
     }
 
     const REGEXP = "/\s*physicaldrive .*\(port (.*):box (\d*):bay (\d*), (.*), (.*), (\w*)\)/";

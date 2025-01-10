@@ -36,6 +36,9 @@ class ServerInfoMemoryDMI extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoMemoryDMI", "memory-dmi");
+        return new SensorConfig(
+                "ServerInfoMemoryDMI",
+                "memory-dmi",
+                "Extract total memory from DMI memory");
     }
 }

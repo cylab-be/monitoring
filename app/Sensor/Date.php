@@ -17,7 +17,10 @@ class Date implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("date", "date");
+        return new SensorConfig(
+                "date",
+                "date",
+                "Check if the server clock is correctly configured");
     }
     
     public function analyze(Record $record): Report

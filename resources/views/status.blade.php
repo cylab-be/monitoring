@@ -32,6 +32,7 @@ $scheduler = \App\AgentScheduler::get();
         @foreach ($scheduler->sensors() as $sensor)
         <tr>
             <td>{{ get_class($sensor) }}</td>
+            <td>{{ Str::limit($sensor->config()->description, 100) }}</td>
         </tr>
         @endforeach
     </table>

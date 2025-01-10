@@ -19,7 +19,10 @@ class Inodes implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("inodes", "inodes");
+        return new SensorConfig(
+                "inodes",
+                "inodes",
+                "Use df -i command to check the number of available inodes");
     }
 
     const REGEXP = "/\\n([A-z\/0-9:\\-\\.]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)%\s*([A-z\/0-9]+)/";

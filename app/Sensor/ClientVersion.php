@@ -19,7 +19,10 @@ class ClientVersion implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("client-version", "version");
+        return new SensorConfig(
+                "client-version",
+                "version",
+                "Check that the latest version of monitoring client is installed");
     }
     
     public function analyze(Record $record): Report

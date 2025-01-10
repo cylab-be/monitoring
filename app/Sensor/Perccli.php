@@ -17,7 +17,10 @@ class Perccli implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("perccli", "perccli");
+        return new SensorConfig(
+                "perccli",
+                "perccli",
+                "Parse perccli commnand on DELL RAID controllers to extract status of physical disks");
     }
 
     const REGEXP = "/(\d+:\d+)\s+\d+\s+(\w+)\s+\d+\s+(.*(GB|TB))\s+\w+\s+(\w+)/";

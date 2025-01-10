@@ -17,7 +17,10 @@ class USBtemperature implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("usb-temperature", "TEMPer");
+        return new SensorConfig(
+                "usb-temperature",
+                "TEMPer",
+                "Uses hid-query to read the value of a TEMPer USB device");
     }
 
     public function analyze(Record $record): Report

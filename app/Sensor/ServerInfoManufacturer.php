@@ -24,6 +24,9 @@ class ServerInfoManufacturer extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoManufacturer", "system");
+        return new SensorConfig(
+                "ServerInfoManufacturer",
+                "system",
+                "Use DMI system to extract manufacturer");
     }
 }

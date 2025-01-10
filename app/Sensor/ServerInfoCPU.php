@@ -6,8 +6,7 @@ use App\SensorConfig;
 use App\ServerInfo;
 
 /**
- * Description of ServerInfoCPU
- *
+ * 
  * @author tibo
  */
 class ServerInfoCPU extends ServerInfoParser
@@ -23,6 +22,9 @@ class ServerInfoCPU extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoCPU", "cpu");
+        return new SensorConfig(
+                "ServerInfoCPU",
+                "cpu",
+                "Extract CPU threads from /proc/cpuinfo");
     }
 }

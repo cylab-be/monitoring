@@ -23,6 +23,9 @@ class ServerInfoMemory extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoMemory", "memory");
+        return new SensorConfig(
+                "ServerInfoMemory",
+                "memory",
+                "Parses /proc/meminfo to extract total available memory");
     }
 }

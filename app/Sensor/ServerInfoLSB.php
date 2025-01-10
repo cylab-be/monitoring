@@ -23,6 +23,9 @@ class ServerInfoLSB extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoLSB", "lsb");
+        return new SensorConfig(
+                "ServerInfoLSB",
+                "lsb",
+                "Show distribution name using lsb_info");
     }
 }

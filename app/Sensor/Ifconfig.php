@@ -19,7 +19,10 @@ class Ifconfig implements Sensor
 {
     public function config(): SensorConfig
     {
-        return new SensorConfig("ifconfig", "ifconfig");
+        return new SensorConfig(
+                "ifconfig",
+                "ifconfig",
+                "Use ifconfig command to graph network traffic");
     }
 
     public function analyze(Record $record): Report

@@ -43,6 +43,9 @@ class Heartbeat implements Sensor
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("heartbeat", "will-be-triggered-by-scheduler");
+        return new SensorConfig(
+                "heartbeat",
+                "will-be-triggered-by-scheduler",
+                "Check when the last info was received from server");
     }
 }

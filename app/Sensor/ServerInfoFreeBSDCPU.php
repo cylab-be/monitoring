@@ -38,6 +38,9 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("ServerInfoFreeBSDCPU", "cpu-dmi");
+        return new SensorConfig(
+                "ServerInfoFreeBSDCPU",
+                "cpu-dmi",
+                "Extract CPU threads from DMI cpu, supports FreeBSD");
     }
 }
