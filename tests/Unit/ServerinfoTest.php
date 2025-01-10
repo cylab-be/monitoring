@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Sensor\MemoryTypes;
 use App\ServerInfo;
 use App\Sensor\ServerInfoFreeBSDCPU;
+use App\Sensor\ServerInfoMemoryDMI;
 
 use Tests\TestCase;
 
@@ -27,6 +28,20 @@ class ServerinfoTest extends TestCase
         $dims = $sensor->parse($string);
         $this->assertEquals(4, count($dims));
         $this->assertEquals(32, $dims[0]->size);
+    }
+    
+    /**
+     * @group memory
+     */
+    public function testMemoryDmi()
+    {
+        $string = file_get_contents(__DIR__ . "/memory-dmi");
+        
+        $info = new ServerInfo();
+        $sensor = new ServerInfoMemoryDMI();
+        $sensor->analyzeString($string, $info);
+        // 64GB
+        $this->assertEquals(67108864, $info->memory);
     }
 
     /**
