@@ -25,8 +25,9 @@ class ServerInfoProduct extends ServerInfoParser
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "ServerInfoProduct",
-                "system",
-                "Use DMI system to show product name");
+            "ServerInfoProduct",
+            "system",
+            "Use DMI system to show product name"
+        );
     }
 }

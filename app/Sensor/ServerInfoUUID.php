@@ -15,9 +15,10 @@ class ServerInfoUUID extends ServerInfoParser
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "ServerInfoUUID",
-                "system",
-                "Use DMI system to extract system UUID");
+            "ServerInfoUUID",
+            "system",
+            "Use DMI system to extract system UUID"
+        );
     }
 
     public function analyzeString(string $string, ServerInfo $info)

@@ -22,9 +22,10 @@ class MemInfo implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "memory",
-                "memory",
-                "Parse /proc/meminfo to extract and graph memory usage");
+            "memory",
+            "memory",
+            "Parse /proc/meminfo to extract and graph memory usage"
+        );
     }
 
     public function analyze(Record $record): Report

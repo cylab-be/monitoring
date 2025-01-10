@@ -26,9 +26,10 @@ class CPUtemperature implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "cpu-temperature",
-                "cpu-temperature",
-                "Uses lm-sensors package to extract CPU temperature");
+            "cpu-temperature",
+            "cpu-temperature",
+            "Uses lm-sensors package to extract CPU temperature"
+        );
     }
 
     public function analyze(Record $record): Report

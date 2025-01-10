@@ -31,8 +31,9 @@ class ServerInfoAddresses extends ServerInfoParser
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "ServerInfoAddresses",
-                "ifconfig",
-                "Parse ifconfig command to extract IPv4 addresses of the server");
+            "ServerInfoAddresses",
+            "ifconfig",
+            "Parse ifconfig command to extract IPv4 addresses of the server"
+        );
     }
 }

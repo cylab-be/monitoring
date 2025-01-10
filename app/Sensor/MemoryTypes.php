@@ -41,9 +41,10 @@ class MemoryTypes implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "memory-types",
-                "memory-dmi",
-                "Parse DMI memory info to list installed memory modules and available slots");
+            "memory-types",
+            "memory-dmi",
+            "Parse DMI memory info to list installed memory modules and available slots"
+        );
     }
 
     public function parse(string $string)

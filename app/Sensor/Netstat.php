@@ -21,9 +21,10 @@ class Netstat implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "netstat-retransmitted",
-                "netstat-statistics",
-                "Parse netstat -s to graph ratio of retransmitted TCP segments");
+            "netstat-retransmitted",
+            "netstat-statistics",
+            "Parse netstat -s to graph ratio of retransmitted TCP segments"
+        );
     }
 
     public function analyze(Record $record): Report

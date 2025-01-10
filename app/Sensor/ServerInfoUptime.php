@@ -22,8 +22,9 @@ class ServerInfoUptime extends ServerInfoParser
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "ServerInfoUptime",
-                "upaimte",
-                "Parse /proc/uptime");
+            "ServerInfoUptime",
+            "upaimte",
+            "Parse /proc/uptime"
+        );
     }
 }

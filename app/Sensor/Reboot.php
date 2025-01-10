@@ -18,9 +18,10 @@ class Reboot implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "reboot",
-                "reboot",
-                "Check if /var/run/reboot-required exists (on Debian based distros)");
+            "reboot",
+            "reboot",
+            "Check if /var/run/reboot-required exists (on Debian based distros)"
+        );
     }
     
     public function analyze(Record $record): Report

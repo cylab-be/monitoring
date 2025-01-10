@@ -19,9 +19,10 @@ class ListeningPorts implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "listening-tcp",
-                "netstat-listen-tcp",
-                "Use netstat -antp command to list listening TCP ports");
+            "listening-tcp",
+            "netstat-listen-tcp",
+            "Use netstat -antp command to list listening TCP ports"
+        );
     }
 
     const REGEXP = "/(tcp6|tcp|udp6|udp)\s*\d\s*\d\s*(\S*):(\d*).*LISTEN\s*(\S*)/m";

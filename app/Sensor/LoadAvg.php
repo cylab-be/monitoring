@@ -20,9 +20,10 @@ class LoadAvg implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "loadavg",
-                "loadavg",
-                "Parse /proc/loadavg to check CPU load");
+            "loadavg",
+            "loadavg",
+            "Parse /proc/loadavg to check CPU load"
+        );
     }
 
 

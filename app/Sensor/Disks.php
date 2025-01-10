@@ -20,9 +20,10 @@ class Disks implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "disks",
-                "disks",
-                "Uses df command to check storage partitions usage");
+            "disks",
+            "disks",
+            "Uses df command to check storage partitions usage"
+        );
     }
 
 

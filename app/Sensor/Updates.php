@@ -19,9 +19,10 @@ class Updates implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-                "updates",
-                "updates",
-                "Parse /var/lib/update-notifier/updates-available to check if updates are available");
+            "updates",
+            "updates",
+            "Parse /var/lib/update-notifier/updates-available to check if updates are available"
+        );
     }
 
     const REGEXP = "/(\d+)\spackages? can be updated\.\n(\d+)\supdates? (is a|are) security updates?./";
