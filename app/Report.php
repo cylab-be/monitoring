@@ -86,4 +86,9 @@ class Report extends Model implements HasStatus
     {
         return $this->html;
     }
+    
+    public function time() : string
+    {
+        return date("Y-m-d H:i:s", $this->time);
+    }
 }
