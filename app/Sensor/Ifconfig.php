@@ -121,8 +121,8 @@ class Ifconfig implements Sensor
     public function parseIfconfig(string $string) : array
     {
         $allowed_prefixes = [
-            "en", "eth", "wl", "venet", "igb", "ax", "tun",
-            "bge", "ovpns", "igc"];
+            "eno", "ens", "eth", "wl", "venet", "igb", "ax", "tun",
+            "bge", "ovpns", "igc", "ixl"];
 
         if ($string == null) {
             return [];
