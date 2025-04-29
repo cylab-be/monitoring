@@ -27,6 +27,12 @@ class ServerController extends Controller
             "position" => "nullable|int|min:0|max:48"];
     }
 
+    public function index()
+    {
+        $organization = $this->organization();
+        return view("server.index", ["organization" => $organization]);
+    }
+
     /**
      * Show the form for creating a new resource.
      * We use the same view for create and update => provide an empty Server.
@@ -35,7 +41,7 @@ class ServerController extends Controller
     public function create()
     {
         $this->authorize("create", Server::class);
-        
+
         $server = new Server();
         $server->organization = Auth::user()->organizations->first();
         return view("server.edit", ["server" => $server]);
@@ -62,7 +68,7 @@ class ServerController extends Controller
         $this->authorize("show", $server);
         return view("server.show", ["server" => $server]);
     }
-    
+
     /**
      * Display the latest records of a server
      * @param Server $server
@@ -105,26 +111,26 @@ class ServerController extends Controller
         $server->name = $request->name;
         $server->organization_id = $request->organization_id;
         $server->description = $request->description;
-        
+
         // optional fields
         $server->size = $request->input("size", 0);
         $server->position = $request->input("position", 0);
         $server->rack_id = $request->rack_id;
-        
+
         if ($server->rack_id == 0) {
             $server->rack_id = null;
         }
-        
+
         if ($server->size == null) {
             $server->size = 0;
         }
-        
+
         if ($server->position == null) {
             $server->position = 0;
         }
-        
+
         $server->save();
-        
+
         if (is_null($server->info)) {
             $server->info()->create();
         }
@@ -135,7 +141,7 @@ class ServerController extends Controller
     public function destroy(Server $server)
     {
         $this->authorize("destroy", $server);
-        
+
         // delete child DB records
         $server->changes()->delete();
         $server->records()->delete();

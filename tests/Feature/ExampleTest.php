@@ -38,7 +38,7 @@ class ExampleTest extends TestCase
 
         $this->post('/api/record/' . $server->id, $data)->assertResponseOk();
     }
-    
+
     public function testRegisterAndManageServers()
     {
         $this->visit("/register")
@@ -52,7 +52,7 @@ class ExampleTest extends TestCase
                 ->see("dummy")
                 ->click("dummy")
                 // add a server
-                ->click("New server")
+                ->click("New")
                 ->type("srv01", "name")
                 ->press("Save")
                 ->assertResponseOk();

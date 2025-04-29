@@ -78,8 +78,9 @@ class OrganizationController extends Controller
         return view("organization.show", array("organization" => $organization));
     }
 
-    public function dashboard(Organization $organization)
+    public function dashboard()
     {
+        $organization = $this->organization();
         $this->authorize("show", $organization);
         return view("organization.dashboard", ["organization" => $organization]);
     }
@@ -125,6 +126,13 @@ class OrganizationController extends Controller
         $this->authorize("destroy", $organization);
         $organization->delete();
         return redirect(action("OrganizationController@index"));
+    }
+
+    public function select(Organization $organization)
+    {
+        $this->authorize("show", $organization);
+        session()->put("organization_id", $organization->id);
+        return redirect(route("servers.index"));
     }
 
     /**

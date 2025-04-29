@@ -1,56 +1,81 @@
-<nav class="navbar navbar-expand-md bg-primary navbar-dark">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route("dashboard") }}">
-            <i class="fa d-inline fa-lg fa-line-chart"></i> <b>Monitoring</b>
-        </a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+@php
+$organization = \App\Organization::find(session()->get("organization_id"));
+@endphp
+<div class="container-fluid p-3  h-100 bg-dark text-white">
+    @auth
+    <ul class="nav nav-pills flex-column mb-auto" id="nav-main">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white"
+               href="{{ action('OrganizationController@index') }}"
+               id="navbarDropdownTools" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               title="Current organization">
+                <i class="d-inline fa fa-bookmark"></i>&nbsp;
+                {{ isset($organization) ? $organization->name : 'Select organization' }}
+            </a>
 
-        <div class="collapse navbar-collapse text-center" id="navbar2SupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('status') }}">Status</a></li>
-            </ul>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganizations">
+                @foreach (Auth::user()->organizations as $current)
+                <a class="dropdown-item"
+                   href="{{ route("organizations.select", ["organization" => $current]) }}">
+                    {{ $current->name }}
+                </a>
+                @endforeach
+            </div>
+        </li>
 
-            <ul class="navbar-nav ml-auto">
-                @guest
-                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                @if (Route::has('register'))
-                <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                @endif
-                @else
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       href="{{ action('OrganizationController@index') }}"
-                       id="navbarDropdownTools" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa d-inline fa-lg fa-bookmark-o"></i>&nbsp;My organizations
-                    </a>
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route("organizations.dashboard") }}">
+                <i class="fas fa-tachometer-alt w-1-5"></i> Dashboard
+            </a>
+        </li>
 
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganizations">
-                        @foreach (Auth::user()->organizations as $organization)
-                        <a class="dropdown-item"
-                           href="{{ action("OrganizationController@show", ["organization" => $organization]) }}">
-                            {{ $organization->name }}
-                        </a>
-                        @endforeach
-                    </div>
-                </li>
-                <li>
-                    <a class="nav-link" href="{{ route('logout') }}"
-                       onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route("servers.index") }}">
+                <i class="fas fa-server w-1-5"></i> Servers
+            </a>
+        </li>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                          style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                </li>
-                @endguest
-            </ul>
-        </div>
-    </div>
-</nav>
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route("racks.index") }}">
+                <i class="fas fa-server  w-1-5"></i> Racks
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white" href="/">
+                <i class="fas fa-network-wired w-1-5"></i> Subnets
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-pills flex-column mb-0 text-white">
+        <hr>
+
+        <li class="nav-item">
+            <a class="nav-link text-white" href="/">
+                <i class="fa-solid fa-gauge-high w-1-5"></i> Organizations
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route('status') }}">
+                Status
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route("logout") }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="fas fa-sign-out-alt w-1-5"></i> Logout
+            </a>
+        </li>
+
+        <form id="logout-form" action="{{ route("logout") }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </ul>
+    @endif
+</div>

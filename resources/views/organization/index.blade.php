@@ -19,20 +19,27 @@
         @foreach($organizations as $organization)
         <tr>
             <td>
-                <a href="{{ action('OrganizationController@show', ['organization' => $organization]) }}"
+                <a href="{{ route('organizations.select', ['organization' => $organization]) }}"
                    class="text-decoration-none">
                     {{ $organization->name }}
                 </a><br>
                 <i class="fas fa-server"></i> {{ $organization->servers()->count() }} servers
+                <i class="fas fa-server"></i> {{ $organization->racks()->count() }} racks
+                <i class="fas fa-users"></i> {{ $organization->users()->count() }} users
             </td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
-                   href="{{ action('OrganizationController@show', ['organization' => $organization]) }}">
-                     Show
+                   href="{{ route('organizations.select', ['organization' => $organization]) }}">
+                     Select
                 </a>
 
                 <a class="btn btn-primary btn-sm"
-                   href="{{ action('OrganizationController@edit', ['organization' => $organization]) }}">
+                   href="{{ route('organizations.show', ['organization' => $organization]) }}">
+                     Details
+                </a>
+
+                <a class="btn btn-primary btn-sm"
+                   href="{{ route('organizations.edit', ['organization' => $organization]) }}">
                      Edit
                 </a>
 

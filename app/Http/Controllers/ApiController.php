@@ -16,11 +16,14 @@ class ApiController extends Controller
             abort(403);
         }
 
+        // disabel debugbar
+        app('debugbar')->disable();
+
         foreach ($request->all() as $label => $data) {
             if (is_null($data)) {
                 continue;
             }
-            
+
             $record = new Record();
             $record->server_id = $server->id;
             $record->time = time();
@@ -58,7 +61,7 @@ class ApiController extends Controller
             "points" => $sensor->loadPoints($server->lastRecords("loadavg")),
             "max" => $server->info->vCores()];
     }
-    
+
     public function ifconfig(Server $server, string $token)
     {
         if ($server->read_token != $token) {
@@ -69,7 +72,7 @@ class ApiController extends Controller
         $sensor = new \App\Sensor\Ifconfig();
         return $sensor->points($server->lastRecords("ifconfig"));
     }
-    
+
     public function netstat(Server $server, string $token)
     {
         if ($server->read_token != $token) {

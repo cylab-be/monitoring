@@ -21,53 +21,50 @@ if (app()->environment('prod') && !empty($app_url)) {
 
 
 Route::get('/', function () {
-
     // already logged in
     if (auth()->user()) {
-        return redirect(action("OrganizationController@index"));
+        return redirect(route("organizations.index"));
     }
     return view('index');
 });
 
 Auth::routes(['register' => config("app.allow_registration")]);
 
-Route::get("home", function () {
-    return redirect(action("OrganizationController@index"));
-});
-
-Route::get("app/status", function () {
-    return view("status");
-})->name("status");
-
-Route::get('app/dashboard', function () {
-    return redirect(action("OrganizationController@index"));
-})->name('dashboard');
-
-Route::get('app/organizations/{organization}/dashboard', 'OrganizationController@dashboard');
-Route::get(
-    'app/organizations/{organization}/reset-token',
-    'OrganizationController@resetToken'
-);
-
-// public dashboard
-Route::get(
-    'app/organizations/{organization}/dashboard/{token}',
-    'OrganizationDashboardController@dashboard'
-)->name("organization.public.dashboard");
-
 // public json dashboard
 Route::get(
-    'app/organizations/{organization}/{token}/dashboard.json',
+    '/app/organizations/{organization}/{token}/dashboard.json',
     'OrganizationDashboardController@json'
-);
+)->name("organizations.json");
 
-Route::get('app/organizations/{organization}/networks', 'OrganizationController@networks')
-        ->name("organization.networks");
-Route::resource('app/organizations', 'OrganizationController');
-Route::resource("app/organizations.user", "OrganizationUserController")->only(["create", "store", "destroy"]);
-Route::resource("app/organizations.rack", 'RackController');
+Route::middleware(['auth'])
+    ->group(function () {
+        Route::get("/home", function () {
+            return redirect(route("organizations.index"));
+        })->name("home");
 
-Route::resource('app/servers', 'ServerController')->except(["index"]);
-Route::get("app/servers/{server}/records", "ServerController@records");
+        Route::get("/status", function () {
+            return view("status");
+        })->name("status");
 
-Route::get("app/records/{record}", "RecordController@show");
+
+        Route::resource('/organizations', 'OrganizationController');
+        Route::get("/organizations/{organization}/select", 'OrganizationController@select')
+                ->name("organizations.select");
+
+        Route::get('/organizations/{organization}/reset-token', 'OrganizationController@resetToken')
+                ->name("organizations.reset-token");
+
+        Route::resource("/organizations.users", "OrganizationUserController")->only(["create", "store", "destroy"]);
+
+        // For all routes and resources below, an organization must be selected
+        // and stored in the session
+        Route::get('/dashboard', 'OrganizationController@dashboard')->name("organizations.dashboard");
+
+        Route::resource('/servers', 'ServerController');
+        Route::get("/servers/{server}/records", "ServerController@records")->name("servers.records");
+
+        Route::get("/racks/dashboard", 'RackController@dashboard')->name("racks.dashboard");
+        Route::resource("/racks", 'RackController');
+
+        Route::get("/records/{record}", "RecordController@show")->name("records.show");
+    });

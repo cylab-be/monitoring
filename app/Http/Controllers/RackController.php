@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Rack;
-use App\Organization;
 use Illuminate\Http\Request;
 
 class RackController extends Controller
@@ -13,30 +12,40 @@ class RackController extends Controller
         // Uncomment to require authentication
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      */
-    public function index(Organization $organization)
+    public function index()
     {
+        $organization = $this->organization();
         $this->authorize("show", $organization);
-        return view("organization.rack", ["organization" => $organization]);
+        return view("rack.index", ["organization" => $organization]);
+    }
+
+    public function dashboard()
+    {
+        $organization = $this->organization();
+        $this->authorize("show", $organization);
+        return view("rack.dashboard", ["organization" => $organization]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
      */
-    public function create(Organization $organization)
+    public function create()
     {
+        $organization = $this->organization();
         return view("rack.edit", [
             "rack" => new Rack(),
             "organization" => $organization]);
     }
-    
-    public function edit(Organization $organization, Rack $rack)
+
+    public function edit(Rack $rack)
     {
+        $organization = $this->organization();
         return view("rack.edit", [
             "rack" => $rack,
             "organization" => $organization]);
@@ -47,29 +56,31 @@ class RackController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function store(Organization $organization, Request $request)
+    public function store(Request $request)
     {
-        return $this->save($organization, $request, new Rack());
+        $organization = $this->organization();
+        $rack = new Rack();
+        $rack->organization_id = $organization->id;
+        return $this->save($request, $rack);
     }
-    
-    public function update(Organization $organization, Rack $rack, Request $request)
+
+    public function update(Rack $rack, Request $request)
     {
-        return $this->save($organization, $request, $rack);
+        return $this->save($request, $rack);
     }
-    
-    public function save(Organization $organization, Request $request, Rack $rack)
+
+    public function save(Request $request, Rack $rack)
     {
         $request->validate([
             "name" => "required|string",
             "height" => "required|integer|min:1|max:50"
         ]);
-        
+
         $rack->name = $request->name;
         $rack->height = $request->height;
-        $rack->organization_id = $organization->id;
         $rack->save();
-        
-        return redirect(action("RackController@index", ["organization" => $organization]));
+
+        return redirect(route("racks.index"));
     }
 
     /**

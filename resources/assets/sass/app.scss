@@ -30,6 +30,17 @@ nav.navbar {
     margin-bottom: 30px;
 }
 
+hr {
+    color: inherit;
+    background-color: currentColor;
+    opacity: 0.25;
+    width: 100%;
+}
+
+hr:not([size]) {
+    height: 1px;
+}
+
 .card {
     margin-top:2px;
     margin-bottom: 10px;

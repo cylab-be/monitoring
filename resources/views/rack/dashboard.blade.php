@@ -6,16 +6,8 @@
     <div class="rack size-{{ $rack->height + 1 }}u">
         <div class="slot" style="top: 0">
             {{ $rack->name }}
-            
-            <div class="bottom-right">
-                <a href="{{ action('RackController@edit', 
-                            ['organization' => $rack->organization_id,
-                             'rack' => $rack]) }}">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </div>
         </div>
-        
+
         @for ($i = 0; $i < $rack->height; $i++)
         <div class="slot text-left" style="bottom: {{ 2*$i }}rem">
             {{ $i + 1 }}

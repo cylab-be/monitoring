@@ -7,10 +7,10 @@
 
         <div class="card-body">
             @if (!$rack->exists)
-            <form method="POST" action="{{ action("RackController@store", ["organization" => $organization]) }}">
+            <form method="POST" action="{{ route("racks.store") }}">
             @else
             <form method="POST"
-                  action="{{ action("RackController@update", ["organization" => $organization, "rack" => $rack]) }}">
+                  action="{{ route("racks.update", ["rack" => $rack]) }}">
             {{ method_field("PUT") }}
             @endif
                 {{ csrf_field() }}
