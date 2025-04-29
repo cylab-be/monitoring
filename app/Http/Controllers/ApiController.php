@@ -16,9 +16,6 @@ class ApiController extends Controller
             abort(403);
         }
 
-        // disabel debugbar
-        app('debugbar')->disable();
-
         foreach ($request->all() as $label => $data) {
             if (is_null($data)) {
                 continue;
