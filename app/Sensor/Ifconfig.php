@@ -17,6 +17,16 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Ifconfig implements Sensor
 {
+    /**
+     * List of interface name prefixes.
+     */
+    const PREFIXES_WHITELIST = [
+        "eno", "ens", "enp", "eth", "wl", "venet", "igb", "ax", "tun",
+        "bge",
+        "ovpns", // OpenVPN (OpnSENSE, FreeBSD)
+        "wg", // Wireguard (OpnSENSE, FreeBSD)
+        "igc", "ixl"];
+    
     public function config(): SensorConfig
     {
         return new SensorConfig(
@@ -120,10 +130,6 @@ class Ifconfig implements Sensor
      */
     public function parseIfconfig(string $string) : array
     {
-        $allowed_prefixes = [
-            "eno", "ens", "enp", "eth", "wl", "venet", "igb", "ax", "tun",
-            "bge", "ovpns", "igc", "ixl"];
-
         if ($string == null) {
             return [];
         }
@@ -169,7 +175,7 @@ class Ifconfig implements Sensor
         // filter out uninteresting interfaces
         $filtered = [];
         foreach ($interfaces as $interface) {
-            if (\starts_with($interface->name, $allowed_prefixes)) {
+            if (\starts_with($interface->name, self::PREFIXES_WHITELIST)) {
                 $filtered[] = $interface;
             }
         }
