@@ -65,6 +65,8 @@ Route::middleware(['auth'])
 
         Route::get("/racks/dashboard", 'RackController@dashboard')->name("racks.dashboard");
         Route::resource("/racks", 'RackController');
+        
+        Route::resource("/subnets", 'SubnetController');
 
         Route::get("/records/{record}", "RecordController@show")->name("records.show");
     });

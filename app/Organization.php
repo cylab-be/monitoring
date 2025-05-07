@@ -56,6 +56,11 @@ class Organization extends Model
     {
         return $this->hasMany(Rack::class);
     }
+    
+    public function subnets()
+    {
+        return $this->hasMany(Subnet::class);
+    }
 
     public function url() : string
     {

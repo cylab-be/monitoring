@@ -45,7 +45,8 @@ $organization = \App\Organization::find(session()->get("organization_id"));
         </li>
 
         <li class="nav-item">
-            <a class="nav-link text-white" href="/">
+            <a class="nav-link text-white" 
+               href="{{ route("subnets.index") }}">
                 <i class="fas fa-network-wired w-1-5"></i> Subnets
             </a>
         </li>
