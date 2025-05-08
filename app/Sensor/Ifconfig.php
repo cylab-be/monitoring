@@ -23,7 +23,7 @@ class Ifconfig implements Sensor
     const PREFIXES_WHITELIST = [
         "eno", "ens", "enp", "eth", "wl", "venet", "igb", "ax", "tun",
         "bge",
-        "ovpns", // OpenVPN (OpnSENSE, FreeBSD)
+        "ovpn", // OpenVPN (OpnSENSE, FreeBSD)
         "wg", // Wireguard (OpnSENSE, FreeBSD)
         "igc", "ixl"];
     
