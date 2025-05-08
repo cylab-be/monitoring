@@ -14,10 +14,17 @@
         @foreach($organization->subnets->sortBy("name") as $subnet)
         <tr>
             <td>
-                {{ $subnet->name }}<br>
+                <a href="{{ route("subnets.show", ["subnet" => $subnet]) }}"
+                   class="text-decoration-none">
+                    {{ $subnet->name }}
+                </a><br>
                 <span class="badge badge-primary">
                     <i class="fas fa-network-wired"></i>
                     {{ $subnet->address }}/{{ $subnet->mask }}
+                </span>
+                
+                <span class="badge badge-primary">
+                    {{ $subnet->servers()->count() }} devices
                 </span>
             </td>
 

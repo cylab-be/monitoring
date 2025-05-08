@@ -33,7 +33,7 @@ $organization = \App\Organization::find(session()->get("organization_id"));
         <li class="nav-item">
             <a class="nav-link text-white"
                href="{{ route("servers.index") }}">
-                <i class="fas fa-server w-1-5"></i> Servers
+                <i class="fas fa-desktop w-1-5"></i> Devices
             </a>
         </li>
 

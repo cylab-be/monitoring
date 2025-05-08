@@ -200,4 +200,9 @@ class Server extends Model
     {
         return $this->belongsTo(Rack::class);
     }
+    
+    public function url() : string
+    {
+        return route("servers.show", ["server" => $this]);
+    }
 }

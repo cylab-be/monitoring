@@ -19,6 +19,15 @@ class SubnetController extends Controller
         $this->authorize("show", $organization);
         return view("subnet.index", ["organization" => $organization]);
     }
+    
+    public function show(Subnet $subnet)
+    {
+        $organization = $this->organization();
+        $this->authorize("show", $organization);
+        return view("subnet.show", [
+            "subnet" => $subnet,
+            "organization" => $organization]);
+    }
 
     public function create()
     {
