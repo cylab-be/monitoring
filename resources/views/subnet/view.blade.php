@@ -38,7 +38,9 @@
                     }
                 }
             ],
-            layout: {}
+            layout: {
+                name: 'breadthfirst'
+            }
         });
         
         cy.on('tap', 'node', function(evt){
