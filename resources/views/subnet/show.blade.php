@@ -13,12 +13,12 @@
                 <a href="{{ $server->url() }}"
                    class="text-decoration-none">
                 {{ $server->name }}
-                </a><br>
+                </a>
+            </td>
+            <td>
                 @foreach ($server->info->addresses as $address)
                 @if ($subnet->hasAddress($address))
-                <span class="badge badge-primary">
-                    <i class="fas fa-network-wired"></i> {{ $address }}
-                </span>
+                {{ $address }}
                 @endif                
                 @endforeach
             </td>
