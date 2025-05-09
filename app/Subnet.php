@@ -50,4 +50,40 @@ class Subnet extends Model
         $subnet &= $mask;
         return ($ip & $mask) == $subnet;
     }
+    
+    public function url() : string
+    {
+        return route("subnets.show", ["subnet" => $this]);
+    }
+    
+    public function toCytoscape() : array
+    {
+        $r = [];
+        
+        foreach ($this->servers() as $server) {
+            $r[] = ["data" => [
+                    "id" => rand(),
+                    "source" => $server->cytoId(),
+                    "target" => $this->cytoId()]];
+        }
+        
+        $r[] = [
+            "data" => [
+                "id" => $this->cytoId(),
+                "label" => $this->name,
+                "url" => $this->url(),
+                "type" => "subnet"],
+            ];
+        
+        return $r;
+    }
+    
+    /**
+     * Get a unique ID usable in Cytoscape.
+     * @return string
+     */
+    public function cytoId() : string
+    {
+        return "#subnet-" . $this->id;
+    }
 }

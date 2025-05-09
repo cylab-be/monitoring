@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
  * @property string $dashboard_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Subnet[] $subnets
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Server[] $servers
  * @property-read int|null $servers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
@@ -65,5 +66,18 @@ class Organization extends Model
     public function url() : string
     {
         return action('OrganizationController@show', ["organization" => $this]);
+    }
+    
+    public function toCytoscape() : array
+    {
+        $r = [];
+        foreach ($this->servers as $server) {
+            $r[] = $server->toCytoscape();
+        }
+        
+        foreach ($this->subnets as $subnet) {
+            $r = array_merge($r, $subnet->toCytoscape());
+        }
+        return $r;
     }
 }

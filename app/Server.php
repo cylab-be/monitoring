@@ -205,4 +205,22 @@ class Server extends Model
     {
         return route("servers.show", ["server" => $this]);
     }
+    
+    public function toCytoscape() : array
+    {
+        return ["data" => [
+            "id" => $this->cytoId(),
+            "label" => $this->name,
+            "type" => "device",
+            "url" => $this->url()]];
+    }
+    
+    /**
+     * Get a unique ID usable in Cytoscape.
+     * @return string
+     */
+    public function cytoId() : string
+    {
+        return "#server-" . $this->id;
+    }
 }

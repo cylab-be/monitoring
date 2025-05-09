@@ -20,6 +20,16 @@ class SubnetController extends Controller
         return view("subnet.index", ["organization" => $organization]);
     }
     
+    /**
+     * Vizualize subnets and devices in a graph.
+     */
+    public function view()
+    {
+        $organization = $this->organization();
+        $this->authorize("show", $organization);
+        return view("subnet.view", ["organization" => $organization]);
+    }
+    
     public function show(Subnet $subnet)
     {
         $organization = $this->organization();

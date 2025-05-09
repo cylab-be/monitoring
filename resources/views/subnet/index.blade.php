@@ -8,6 +8,10 @@
         <a href="{{ route('subnets.create') }}" class="btn btn-primary btn-sm">
             <i class="fa fa-plus-circle"></i> New
         </a>
+        
+        <a href="{{ route('subnets.view') }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-project-diagram"></i> View
+        </a>
     </p>
 
     <table class="table table-striped my-5">
