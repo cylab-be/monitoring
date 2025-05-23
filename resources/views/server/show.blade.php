@@ -9,13 +9,13 @@ window.monitorServerToken = "{{ $server->read_token }}";
 <script src="/js/sensors.js"></script>
 
 <div class="container">
-    
+
     <h1>
         <a class="text-decoration-none"
             href="{{ $server->organization->url() }}">{{ $server->organization->name }}</a>
         / {{ $server->name }}
     </h1>
-    
+
     <div class="card">
         <div class="card-body">
             <p>
@@ -23,49 +23,49 @@ window.monitorServerToken = "{{ $server->read_token }}";
                 {{ $server->lastSummary()->time()->toDateTimeString() }}
                 ({{ $server->lastSummary()->time()->diffForHumans() }})
             </p>
-            
+
             <p>
                 <i class="fas fa-microchip"></i> {{ $server->info->cpuName() }} | {{ $server->info->vCores() }} vCores
                 <i class="fas fa-memory ml-3"></i> {{ $server->info->memoryTotalForHumans() }}
                 <i class="fas fa-server ml-3"></i> {{ $server->info->manufacturer }} {{ $server->info->product }}
             </p>
-            
+
             <p>
                 <i class="fas fa-heart"></i> {{ $server->info->kernel }}
                 <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}
             </p>
-            
+
             @if ($server->info->uuid)
             <p>
                 <i class="far fa-id-card"></i> {{ $server->info->uuid }}
             </p>
             @endif
-            
+
             <p>
                 <i class="fas fa-network-wired"></i>
                 @foreach ($server->info->addresses as $address)
                 {{ $address }}
                 <a class="badge badge-primary" href="ssh://{{ $address }}">ssh</a>
-                <a class="badge badge-primary" target="_blanck" href="http://{{ $address }}">http</a> 
+                <a class="badge badge-primary" target="_blanck" href="http://{{ $address }}">http</a>
                 @endforeach
-                
+
                 <a href="https://cylab.be/blog/318/create-a-handler-for-opening-special-urls-like-ssh">
                     <i class="fas fa-question-circle"></i>
                 </a>
             </p>
 
             <p>Uptime: {{ $server->info->uptimeForHumans() }}</p>
-            
+
             @if (! is_null($server->rack_id))
             <p>
                 Rack
                 <b>
-                    {{ $server->rack->name }}#{{ $server->position }} 
+                    {{ $server->rack->name }}#{{ $server->position }}
                     [{{ $server->size }}u]
                 </b>
             </p>
             @endif
-            
+
             <p class="mb-0">
                 <a class="btn btn-sm btn-secondary"
                    href="{{ action("ServerController@records", ["server" => $server]) }}">
@@ -74,11 +74,11 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </p>
         </div>
     </div>
-    
+
     <div class="card">
         <div class="card-body">
             {!! $server->descriptionAsHTML() !!}
-            
+
             <div class="bottom-right">
                 <a href="{{ action('ServerController@edit', ['server' => $server]) }}"><i class="fas fa-edit"></i></a>
             </div>
@@ -102,7 +102,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             </div>
         </div>
         <div class="card-body">
-            {!! $report->html() !!}
+            {!! $report->html !!}
         </div>
     </div>
     @endforeach
@@ -124,7 +124,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
     </div>
 
     @include("server.partials.client-install")
-    
+
     <div class="card">
         <div class="card-header">
             Danger zone
