@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Server</div>
+                <div class="card-header">Device</div>
 
                 <div class="card-body">
                     @if (!$server->exists)
@@ -51,7 +51,7 @@
                                 </span>
                             @endif
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="description" >Description</label>
 
@@ -67,7 +67,7 @@
                                 </span>
                             @endif
                         </div>
-                        
+
                         {{-- only show rack configuration for updating servers --}}
                         @if ($server->exists)
                         @include("server.partials.rack")
