@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * App\Organization
@@ -31,16 +32,16 @@ class Organization extends Model
 {
     // don't show dashboard token when serializing to json
     protected $hidden = ['dashboard_token'];
-    
+
     // add servers when serializing to json
     // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
     protected $appends = ['servers'];
-    
+
     protected function getServersAttribute()
     {
         return $this->servers()->orderBy("name")->get();
     }
-        
+
 
     public function users()
     {
@@ -51,13 +52,20 @@ class Organization extends Model
     {
         return $this->hasMany(Server::class);
     }
-    
-    
+
+    public function devicesByStatus() : Collection
+    {
+        return $this->servers->sort(function (Server $device1, Server $device2) {
+            return $device1->lastSummary()->status_code < $device2->lastSummary()->status_code;
+        });
+    }
+
+
     public function racks()
     {
         return $this->hasMany(Rack::class);
     }
-    
+
     public function subnets()
     {
         return $this->hasMany(Subnet::class);
@@ -67,14 +75,14 @@ class Organization extends Model
     {
         return action('OrganizationController@show', ["organization" => $this]);
     }
-    
+
     public function toCytoscape() : array
     {
         $r = [];
         foreach ($this->servers as $server) {
             $r[] = $server->toCytoscape();
         }
-        
+
         foreach ($this->subnets as $subnet) {
             $r = array_merge($r, $subnet->toCytoscape());
         }

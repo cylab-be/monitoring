@@ -6,7 +6,7 @@
     <h1>{{ $organization->name }}</h1>
 
     <div class="row">
-        @foreach($organization->servers->sortBy("name") as $server)
+        @foreach($organization->devicesByStatus() as $server)
         <div class="col-md-3">
             <div class="card card-border-3 border-{{ $server->status()->color() }}">
                 <div class="card-header">
