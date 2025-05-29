@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class MemInfo implements Sensor
 {
-    const WARNING_RATIO = 0.9;
+    const WARNING_RATIO = 0.95;
 
     public function config(): SensorConfig
     {
