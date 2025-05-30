@@ -50,7 +50,7 @@ class Server extends Model
 
     public function getUrlAttribute() : string
     {
-        return action("ServerController@show", ["server" => $this, "organization" => $this->organization]);
+        return action("ServerController@show", ["server" => $this]);
     }
 
     public function getStatusAttribute() : array
