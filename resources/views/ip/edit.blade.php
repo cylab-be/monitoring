@@ -2,66 +2,47 @@
 
 @section('content')
 <div class="container">
-    <div class="card">
-        <div class="card-header">Subnet</div>
 
+    <h1>{{ $ip->server->name }}</h1>
+
+    <div class="card">
         <div class="card-body">
-            @if (!$subnet->exists)
-            <form method="POST" action="{{ route("subnets.store") }}">
-            @else
-            <form method="POST"
-                  action="{{ route("subnets.update", ["subnet" => $subnet]) }}">
-            {{ method_field("PUT") }}
-            @endif
+            <form method="POST" action="{{ route("ips.store") }}">
+
                 {{ csrf_field() }}
 
-                @include("organization.partials.select", ["model" => $subnet])
+                <input type="hidden" name="server_id" id="server_id" value="{{ $ip->server->id }}">
 
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="ip">IP</label>
 
-                    <input id="name" type="text"
-                           class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                           name="name"
-                           value="{{ old('name', $subnet->name) }}" autofocus>
+                    <input id="ip" type="text"
+                           class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}"
+                           name="ip"
+                           value="{{ old('ip', $ip->ip) }}"
+                           autofocus required>
 
-                    @if ($errors->has('name'))
+                    @if ($errors->has('ip'))
                         <span class="invalid-feedback">
-                            <strong>{{ $errors->first('name') }}</strong>
+                            <strong>{{ $errors->first('ip') }}</strong>
                         </span>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="comment">Comment</label>
 
-                    <input id="address" type="text"
-                           class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}"
-                           name="address"
-                           value="{{ old('address', $subnet->address) }}">
+                    <input id="comment" type="text"
+                           class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}"
+                           name="comment"
+                           value="{{ old('comment', $ip->comment) }}">
 
-                    @if ($errors->has('address'))
+                    @if ($errors->has('ip'))
                         <span class="invalid-feedback">
-                            <strong>{{ $errors->first('address') }}</strong>
+                            <strong>{{ $errors->first('ip') }}</strong>
                         </span>
                     @endif
                 </div>
-
-                <div class="form-group">
-                    <label for="mask">Mask</label>
-
-                    <input id="mask" type="text"
-                           class="form-control{{ $errors->has('mask') ? ' is-invalid' : '' }}"
-                           name="mask"
-                           value="{{ old('mask', $subnet->mask) }}">
-
-                    @if ($errors->has('mask'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('mask') }}</strong>
-                        </span>
-                    @endif
-                </div>
-
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-sm">

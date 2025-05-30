@@ -23,6 +23,7 @@ use Illuminate\Support\Collection;
  * @property string $read_token
  * @property ?\App\ServerInfo $info
  * @property \App\Organization $organization
+ * @property DatabaseCollection|array $ips
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server query()
@@ -199,6 +200,11 @@ class Server extends Model
     public function rack()
     {
         return $this->belongsTo(Rack::class);
+    }
+
+    public function ips()
+    {
+        return $this->hasMany(Ip::class);
     }
 
     public function url() : string

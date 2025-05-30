@@ -26,7 +26,7 @@ class Subnet extends Model
 
         $servers = $this->organization->servers;
         foreach ($servers as $server) {
-            $addresses = $server->info->addresses;
+            $addresses = $server->info->addresses();
             foreach ($addresses as $address) {
                 if ($this->hasAddress($address)) {
                     $connected->push([$server, $address]);

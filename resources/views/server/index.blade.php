@@ -27,9 +27,9 @@
                     <i class="fas fa-heart"></i> {{ $server->info->kernel }}
                     <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}<br>
 
-                    @if ($server->info->addresses)
+                    @if (count($server->info->addresses()))
                     <i class="fas fa-network-wired"></i>
-                    @foreach ($server->info->addresses as $address)
+                    @foreach ($server->info->addresses() as $address)
                     {{ $address }}
                     @endforeach
                 </div>

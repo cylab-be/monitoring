@@ -64,6 +64,11 @@ Route::middleware(['auth'])
         Route::get("servers/{server}/records", "ServerController@records")->name("servers.records");
         Route::resource('servers', 'ServerController')->except(["index", "create"]);
 
+        // manual IP addresses
+        Route::get("servers/{server}/ips/create", "IpController@create")->name("ips.create");
+        Route::post("ips", "IpController@store")->name("ips.store");
+        Route::delete("ips/{ip}", "IpController@destroy")->name("ips.destroy");
+
         // device records
         Route::get("/records/{record}", "RecordController@show")->name("records.show");
 

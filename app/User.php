@@ -60,7 +60,7 @@ class User extends Authenticatable
     public function ownsOrganization(Organization $organization)
     {
         // return $this->organizations->contains($organization);
-        
+
         foreach ($this->organizations as $o) {
             if ($o->id == $organization->id) {
                 return true;
@@ -73,5 +73,16 @@ class User extends Authenticatable
     public static function findByEmail($email)
     {
         return self::where("email", $email)->first();
+    }
+
+    public function serverIds() : array
+    {
+        $ids = [];
+        foreach ($this->organizations as $organization) {
+            foreach ($organization->servers as $server) {
+                $ids[] = $server->id;
+            }
+        }
+        return $ids;
     }
 }

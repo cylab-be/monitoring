@@ -51,4 +51,17 @@ class ServerInfo extends Model
     {
         return Carbon::now()->subSeconds($this->uptime)->diffForHumans(null, CarbonInterface::DIFF_ABSOLUTE);
     }
+
+    /**
+     * Full list of IP addresses : manual IPs + autodetected
+     * @return array
+     */
+    public function addresses() : array
+    {
+        $addresses = $this->addresses;
+        foreach ($this->server->ips as $ip) {
+            $addresses[] = $ip->ip;
+        }
+        return $addresses;
+    }
 }
