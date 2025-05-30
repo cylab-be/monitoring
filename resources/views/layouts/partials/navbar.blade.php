@@ -20,7 +20,7 @@
             </div>
         </li>
 
-        @if (isset($organization))
+        @if (isset($organization) && $organization->exists)
         <li class="nav-item">
             <a class="nav-link text-white"
                href="{{ route("organizations.dashboard", ["organization" => $organization]) }}">
