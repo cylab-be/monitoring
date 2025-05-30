@@ -60,7 +60,7 @@ class Subnet extends Model
     {
         $r = [];
 
-        foreach ($this->servers() as $server) {
+        foreach ($this->servers() as [$server, $ip]) {
             $r[] = ["data" => [
                     "id" => rand(),
                     "source" => $server->cytoId(),
