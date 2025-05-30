@@ -7,7 +7,7 @@
     <p>{{ $subnet->address }}/{{ $subnet->mask }}</p>
 
     <table class="table table-striped my-5">
-        @foreach($subnet->servers() as $server)
+        @foreach($subnet->servers() as [$server, $ip])
         <tr>
             <td>
                 <a href="{{ $server->url() }}"
@@ -16,11 +16,7 @@
                 </a>
             </td>
             <td>
-                @foreach ($server->info->addresses as $address)
-                @if ($subnet->hasAddress($address))
-                {{ $address }}
-                @endif                
-                @endforeach
+                {{ $ip }}
             </td>
         </tr>
         @endforeach

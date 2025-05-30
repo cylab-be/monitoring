@@ -14,8 +14,8 @@ class Subnet extends Model
     {
         return $this->belongsTo(Organization::class);
     }
-    
-    
+
+
     /**
      * Servers connected to this subnet.
      * @return Collection<Server>
@@ -23,20 +23,20 @@ class Subnet extends Model
     public function servers() : Collection
     {
         $connected = new Collection();
-        
+
         $servers = $this->organization->servers;
         foreach ($servers as $server) {
             $addresses = $server->info->addresses;
             foreach ($addresses as $address) {
                 if ($this->hasAddress($address)) {
-                    $connected->push($server);
+                    $connected->push([$server, $address]);
                 }
             }
         }
-        
+
         return $connected;
     }
-    
+
     /**
      * Test if the address belongs to this subnet.
      * @param string $ip
@@ -50,23 +50,23 @@ class Subnet extends Model
         $subnet &= $mask;
         return ($ip & $mask) == $subnet;
     }
-    
+
     public function url() : string
     {
         return route("subnets.show", ["subnet" => $this]);
     }
-    
+
     public function toCytoscape() : array
     {
         $r = [];
-        
+
         foreach ($this->servers() as $server) {
             $r[] = ["data" => [
                     "id" => rand(),
                     "source" => $server->cytoId(),
                     "target" => $this->cytoId()]];
         }
-        
+
         $r[] = [
             "data" => [
                 "id" => $this->cytoId(),
@@ -74,10 +74,10 @@ class Subnet extends Model
                 "url" => $this->url(),
                 "type" => "subnet"],
             ];
-        
+
         return $r;
     }
-    
+
     /**
      * Get a unique ID usable in Cytoscape.
      * @return string
