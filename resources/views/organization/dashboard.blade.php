@@ -11,7 +11,10 @@
             <div class="card card-border-3 border-{{ $server->status()->color() }}">
                 <div class="card-header">
                     <h5 class="card-title">
+                        <a class="text-dark"
+                           href="{{ $server->getUrlAttribute() }}">
                         {{ $server->name }}
+                        </a>
                     </h5>
                 </div>
 
@@ -27,13 +30,6 @@
                             Last updated {{ $server->lastSummary()->time()->diffForHumans() }}
                         </small>
                     </p>
-                </div>
-
-                <div class="card-footer">
-                    <a class="btn btn-secondary btn-sm"
-                       href="{{ $server->getUrlAttribute() }}">
-                        View
-                    </a>
                 </div>
             </div>
         </div>
