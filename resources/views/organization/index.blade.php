@@ -23,8 +23,9 @@
                    class="text-decoration-none">
                     {{ $organization->name }}
                 </a><br>
-                <i class="fas fa-server"></i> {{ $organization->servers()->count() }} servers
+                <i class="fas fa-desktop"></i> {{ $organization->servers()->count() }} devices
                 <i class="fas fa-server"></i> {{ $organization->racks()->count() }} racks
+                <i class="fas fa-network-wired"></i> {{ $organization->subnets()->count() }} subnets
                 <i class="fas fa-users"></i> {{ $organization->users()->count() }} users
             </td>
             <td class="text-right">
