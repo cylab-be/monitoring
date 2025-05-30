@@ -19,7 +19,7 @@
         @foreach($organizations as $organization)
         <tr>
             <td>
-                <a href="{{ route('organizations.select', ['organization' => $organization]) }}"
+                <a href="{{ route('servers.index', ['organization' => $organization]) }}"
                    class="text-decoration-none">
                     {{ $organization->name }}
                 </a><br>
@@ -29,8 +29,8 @@
             </td>
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
-                   href="{{ route('organizations.select', ['organization' => $organization]) }}">
-                     Select
+                   href="{{ route('servers.index', ['organization' => $organization]) }}">
+                     Devices
                 </a>
 
                 <a class="btn btn-primary btn-sm"

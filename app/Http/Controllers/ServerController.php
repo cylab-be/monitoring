@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Server;
+use App\Organization;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,100 +17,67 @@ class ServerController extends Controller
         $this->middleware('auth');
     }
 
-    private function rules() : array
-    {
-        return [
-            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255',
-            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys()),
-            "description" => 'nullable|string',
-            "rack_id" => "nullable|integer",
-            "size" => "nullable|int|min:0|max:48",
-            "position" => "nullable|int|min:0|max:48"];
-    }
+    // ------------------ VIEWS
 
-    public function index()
+    public function index(Organization $organization)
     {
-        $organization = $this->organization();
+        $this->authorize("show", $organization);
         return view("server.index", ["organization" => $organization]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * We use the same view for create and update => provide an empty Server.
-     *
-     */
-    public function create()
+    public function create(Organization $organization)
     {
-        $this->authorize("create", Server::class);
-
         $server = new Server();
-        $server->organization = Auth::user()->organizations->first();
-        return view("server.edit", ["server" => $server]);
+        $server->organization = $organization;
+        $this->authorize("save", $server);
+        return view("server.edit", ["server" => $server, "organization" => $organization]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     */
-    public function store(Request $request)
-    {
-        $this->authorize("create", Server::class);
-        return $this->saveAndRedirect($request, new Server());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Server $server
-     */
     public function show(Server $server)
     {
         $this->authorize("show", $server);
-        return view("server.show", ["server" => $server]);
+        return view("server.show", ["server" => $server, "organization" => $server->organization]);
     }
 
-    /**
-     * Display the latest records of a server
-     * @param Server $server
-     */
+    public function edit(Server $server)
+    {
+        $this->authorize("save", $server);
+        return view("server.edit", ["server" => $server, "organization" => $server->organization]);
+    }
+
     public function records(Server $server)
     {
         $this->authorize("show", $server);
         return view("server.records", [
             "server" => $server,
+            "organization" => $server->organization,
             "records" => $server->records()->orderByDesc("id")->simplePaginate(100)]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Server $server
-     */
-    public function edit(Server $server)
+    // ------------------ ACTIONS
+
+    public function store(Request $request)
     {
-        $this->authorize("update", $server);
-        return view("server.edit", array("server" => $server));
+        return $this->save($request, new Server());
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Server $server
-     */
-    public function update(Request $request, Server $server)
+    public function update(Server $server, Request $request)
     {
-        $this->authorize("update", $server);
-        return $this->saveAndRedirect($request, $server);
+        return $this->save($request, $server);
     }
 
-    private function saveAndRedirect(Request $request, Server $server)
+    private function save(Request $request, Server $server)
     {
-        $request->validate($this->rules());
+        $request->validate([
+            'name' => 'required|string|regex:/^[a-zA-Z0-9\s\-\.]+$/|max:255',
+            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys()),
+            "description" => 'nullable|string',
+            "rack_id" => "nullable|integer",
+            "size" => "nullable|int|min:0|max:48",
+            "position" => "nullable|int|min:0|max:48"]);
 
         $server->name = $request->name;
-        $server->organization_id = $request->organization_id;
+        $server->organization()->associate(Organization::find($request->organization_id));
         $server->description = $request->description;
 
         // optional fields
@@ -129,13 +97,14 @@ class ServerController extends Controller
             $server->position = 0;
         }
 
+        $this->authorize("save", $server);
         $server->save();
 
         if (is_null($server->info)) {
             $server->info()->create();
         }
 
-        return redirect(action("ServerController@show", ["server" => $server]));
+        return redirect(route("servers.show", ["server" => $server]));
     }
 
     public function destroy(Server $server)
@@ -148,6 +117,6 @@ class ServerController extends Controller
         $server->reports()->delete();
         $server->summaries()->delete();
         $server->delete();
-        return redirect(action("OrganizationController@show", ["organization" => $server->organization]));
+        return redirect(route("organizations.show", ["organization" => $server->organization]));
     }
 }

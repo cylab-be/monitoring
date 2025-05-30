@@ -31,6 +31,7 @@ Route::get('/', function () {
 Auth::routes(['register' => config("app.allow_registration")]);
 
 // public json dashboard
+// maintain old URL convention
 Route::get(
     '/app/organizations/{organization}/{token}/dashboard.json',
     'OrganizationDashboardController@json'
@@ -47,27 +48,34 @@ Route::middleware(['auth'])
         })->name("status");
 
 
-        Route::resource('/organizations', 'OrganizationController');
-        Route::get("/organizations/{organization}/select", 'OrganizationController@select')
-                ->name("organizations.select");
-
-        Route::get('/organizations/{organization}/reset-token', 'OrganizationController@resetToken')
+        Route::resource('organizations', 'OrganizationController');
+        Route::get('organizations/{organization}/dashboard', 'OrganizationController@dashboard')
+                ->name("organizations.dashboard");
+        Route::get('organizations/{organization}/reset-token', 'OrganizationController@resetToken')
                 ->name("organizations.reset-token");
 
-        Route::resource("/organizations.users", "OrganizationUserController")->only(["create", "store", "destroy"]);
+        // users
+        Route::resource("organizations/{organization}/users", "OrganizationUserController")
+                ->only(["create", "store", "destroy"]);
 
-        // For all routes and resources below, an organization must be selected
-        // and stored in the session
-        Route::get('/dashboard', 'OrganizationController@dashboard')->name("organizations.dashboard");
+        // devices
+        Route::get("organizations/{organization}/servers", "ServerController@index")->name("servers.index");
+        Route::get("organizations/{organization}/servers/create", "ServerController@create")->name("servers.create");
+        Route::get("servers/{server}/records", "ServerController@records")->name("servers.records");
+        Route::resource('servers', 'ServerController')->except(["index", "create"]);
 
-        Route::resource('/servers', 'ServerController');
-        Route::get("/servers/{server}/records", "ServerController@records")->name("servers.records");
-
-        Route::get("/racks/dashboard", 'RackController@dashboard')->name("racks.dashboard");
-        Route::resource("/racks", 'RackController');
-        
-        Route::get("/subnets/view", "SubnetController@view")->name("subnets.view");
-        Route::resource("/subnets", 'SubnetController');
-
+        // device records
         Route::get("/records/{record}", "RecordController@show")->name("records.show");
+
+        // racks
+        Route::get("organizations/{organization}/racks", 'RackController@index')->name("racks.index");
+        Route::get("organizations/{organization}/racks/create", 'RackController@create')->name("racks.create");
+        Route::get("organizations/{organization}/racks/dashboard", 'RackController@dashboard')->name("racks.dashboard");
+        Route::resource("racks", 'RackController')->except(["index", "create"]);
+
+        // subnets / IPAM
+        Route::get("organizations/{organization}/subnets", 'SubnetController@index')->name("subnets.index");
+        Route::get("organizations/{organization}/subnets/create", 'SubnetController@create')->name("subnets.create");
+        Route::get("organizations/{organization}/subnets/view", "SubnetController@view")->name("subnets.view");
+        Route::resource("subnets", 'SubnetController')->except(["index", "create"]);
     });

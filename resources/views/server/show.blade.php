@@ -68,7 +68,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
 
             <p class="mb-0">
                 <a class="btn btn-sm btn-secondary"
-                   href="{{ action("ServerController@records", ["server" => $server]) }}">
+                   href="{{ action("ServerController@records", ["server" => $server, "organization" => $server->organization]) }}">
                     <i class="fas fa-search"></i> Inspect records
                 </a>
             </p>
@@ -80,7 +80,7 @@ window.monitorServerToken = "{{ $server->read_token }}";
             {!! $server->descriptionAsHTML() !!}
 
             <div class="bottom-right">
-                <a href="{{ action('ServerController@edit', ['server' => $server]) }}"><i class="fas fa-edit"></i></a>
+                <a href="{{ action('ServerController@edit', ['server' => $server, "organization" => $server->organization]) }}"><i class="fas fa-edit"></i></a>
             </div>
         </div>
     </div>
@@ -136,12 +136,12 @@ window.monitorServerToken = "{{ $server->read_token }}";
 
             <div>
                 <a class="btn btn-primary btn-sm"
-                   href="{{ action('ServerController@edit', ['server' => $server]) }}">
+                   href="{{ action('ServerController@edit', ['server' => $server, "organization" => $server->organization]) }}">
                     <i class="fas fa-pencil-alt"></i> Edit
                 </a>
 
                 <form method="POST"
-                      action="{{ action('ServerController@destroy', ['server' => $server]) }}"
+                      action="{{ action('ServerController@destroy', ['server' => $server, "organization" => $server->organization]) }}"
                       style="display: inline-block">
                     {{ csrf_field() }}
                     {{ method_field("DELETE") }}

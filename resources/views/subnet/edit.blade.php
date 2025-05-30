@@ -15,6 +15,8 @@
             @endif
                 {{ csrf_field() }}
 
+                @include("organization.partials.select", ["model" => $subnet])
+
                 <div class="form-group">
                     <label for="name">Name</label>
 
@@ -44,7 +46,7 @@
                         </span>
                     @endif
                 </div>
-                
+
                 <div class="form-group">
                     <label for="mask">Mask</label>
 
@@ -59,7 +61,7 @@
                         </span>
                     @endif
                 </div>
-                
+
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-sm">

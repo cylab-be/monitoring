@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    
+
     <p>
         <span class="badge badge-secondary">@ {{ $record->id }}</span>
         <span class="badge badge-primary"># {{ $record->label }}</span>
@@ -14,7 +14,7 @@
             <i class="far fa-clock"></i> {{ $record->time() }}
         </span>
     </p>
-    
+
     <div class="card">
         <div class="card-body">
             <pre><code class="small">{{ $record->data }}</code></pre>

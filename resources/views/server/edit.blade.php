@@ -9,33 +9,15 @@
 
                 <div class="card-body">
                     @if (!$server->exists)
-                    <form method="POST" action="{{ action("ServerController@store") }}">
+                    <form method="POST" action="{{ route("servers.store") }}">
                     @else
                     <form method="POST"
-                          action="{{ action("ServerController@update", ["server" => $server]) }}">
+                          action="{{ route("servers.update", ["server" => $server]) }}">
                         {{ method_field("PUT") }}
                     @endif
                         {{ csrf_field() }}
 
-                        <div class="form-group">
-                            <label for="organization_id">Organization</label>
-
-                            <select id="organization_id"
-                                   class="form-control{{ $errors->has('organization_id') ? ' is-invalid' : '' }}"
-                                   name="organization_id"
-                                   required autofocus>
-                                <option value="{{ $server->organization->id }}">{{ $server->organization->name }}</option>
-                                @foreach (Auth::user()->organizations as $organization)
-                                <option value="{{ $organization->id }}">{{ $organization->name }}</option>
-                                @endforeach
-                            </select>
-
-                            @if ($errors->has('organization_id'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('organization_id') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                        @include("organization.partials.select", ["model" => $server])
 
                         <div class="form-group">
                             <label for="name">Name</label>

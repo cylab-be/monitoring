@@ -1,6 +1,3 @@
-@php
-$organization = \App\Organization::find(session()->get("organization_id"));
-@endphp
 <div class="container-fluid p-3  h-100 bg-dark text-white">
     @auth
     <ul class="nav nav-pills flex-column mb-auto" id="nav-main">
@@ -10,46 +7,48 @@ $organization = \App\Organization::find(session()->get("organization_id"));
                id="navbarDropdownTools" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                title="Current organization">
                 <i class="d-inline fa fa-bookmark"></i>&nbsp;
-                {{ isset($organization) ? $organization->name : 'Select organization' }}
+                {{ isset($organization) ? $organization->name : 'Select' }}
             </a>
 
             <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganizations">
                 @foreach (Auth::user()->organizations as $current)
                 <a class="dropdown-item"
-                   href="{{ route("organizations.select", ["organization" => $current]) }}">
+                   href="{{ route("servers.index", ["organization" => $current]) }}">
                     {{ $current->name }}
                 </a>
                 @endforeach
             </div>
         </li>
 
+        @if (isset($organization))
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="{{ route("organizations.dashboard") }}">
+               href="{{ route("organizations.dashboard", ["organization" => $organization]) }}">
                 <i class="fas fa-tachometer-alt w-1-5"></i> Dashboard
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="{{ route("servers.index") }}">
+               href="{{ route("servers.index", ["organization" => $organization]) }}">
                 <i class="fas fa-desktop w-1-5"></i> Devices
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="{{ route("racks.index") }}">
+               href="{{ route("racks.index", ["organization" => $organization]) }}">
                 <i class="fas fa-server  w-1-5"></i> Racks
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link text-white" 
-               href="{{ route("subnets.index") }}">
+            <a class="nav-link text-white"
+               href="{{ route("subnets.index", ["organization" => $organization]) }}">
                 <i class="fas fa-network-wired w-1-5"></i> Subnets
             </a>
         </li>
+        @endif
     </ul>
 
     <ul class="nav nav-pills flex-column mb-0 text-white">

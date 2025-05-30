@@ -10,22 +10,16 @@ class ServerPolicy
 {
     use HandlesAuthorization;
 
-
-    public function create(User $user)
-    {
-        return true;
-    }
-    
     public function show(User $user, Server $server)
     {
         return $user->ownsOrganization($server->organization);
     }
-    
-    public function update(User $user, Server $server)
+
+    public function save(User $user, Server $server)
     {
         return $user->ownsOrganization($server->organization);
     }
-    
+
     public function destroy(User $user, Server $server)
     {
         return $user->ownsOrganization($server->organization);

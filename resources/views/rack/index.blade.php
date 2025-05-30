@@ -5,13 +5,13 @@
 <div class="container">
     <h1>Racks</h1>
     <p>
-        <a href="{{ route('racks.create') }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('racks.create', ["organization" => $organization]) }}" class="btn btn-primary btn-sm">
             <i class="fa fa-plus-circle"></i> New
         </a>
 
-        <a href="{{ route("racks.dashboard") }}"
+        <a href="{{ route("racks.dashboard", ["organization" => $organization]) }}"
             class="btn btn-primary btn-sm">
-               <i class="fas fa-search"></i> Front view
+               <i class="fas fa-search"></i> View
         </a>
     </p>
 

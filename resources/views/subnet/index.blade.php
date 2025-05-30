@@ -5,11 +5,13 @@
 <div class="container">
     <h1>Subnets</h1>
     <p>
-        <a href="{{ route('subnets.create') }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('subnets.create', ["organization" => $organization]) }}"
+           class="btn btn-primary btn-sm">
             <i class="fa fa-plus-circle"></i> New
         </a>
-        
-        <a href="{{ route('subnets.view') }}" class="btn btn-primary btn-sm">
+
+        <a href="{{ route('subnets.view', ["organization" => $organization]) }}"
+           class="btn btn-primary btn-sm">
             <i class="fas fa-project-diagram"></i> View
         </a>
     </p>
@@ -26,7 +28,7 @@
                     <i class="fas fa-network-wired"></i>
                     {{ $subnet->address }}/{{ $subnet->mask }}
                 </span>
-                
+
                 <span class="badge badge-primary">
                     {{ $subnet->servers()->count() }} devices
                 </span>

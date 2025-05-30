@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Subnet;
+use App\Organization;
+
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class SubnetController extends Controller
 {
@@ -13,80 +17,81 @@ class SubnetController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    // ------------------ VIEWS
+
+    public function index(Organization $organization)
     {
-        $organization = $this->organization();
         $this->authorize("show", $organization);
         return view("subnet.index", ["organization" => $organization]);
     }
-    
-    /**
-     * Vizualize subnets and devices in a graph.
-     */
-    public function view()
+
+    public function create(Organization $organization)
     {
-        $organization = $this->organization();
-        $this->authorize("show", $organization);
-        return view("subnet.view", ["organization" => $organization]);
-    }
-    
-    public function show(Subnet $subnet)
-    {
-        $organization = $this->organization();
-        $this->authorize("show", $organization);
-        return view("subnet.show", [
+        $this->authorize("update", $organization);
+        $subnet = new Subnet();
+        $subnet->organization()->associate($organization);
+        return view("subnet.edit", [
             "subnet" => $subnet,
             "organization" => $organization]);
     }
 
-    public function create()
+    public function show(Subnet $subnet)
     {
-        $organization = $this->organization();
-        $this->authorize("update", $organization);
-        return view("subnet.edit", [
-            "subnet" => new Subnet(),
-            "organization" => $organization]);
+        $this->authorize("show", $subnet->organization);
+        return view("subnet.show", [
+            "subnet" => $subnet,
+            "organization" => $subnet->organization]);
     }
+
 
     public function edit(Subnet $subnet)
     {
-        $organization = $this->organization();
-        $this->authorize("update", $organization);
+        $this->authorize("update", $subnet->organization);
         return view("subnet.edit", [
             "subnet" => $subnet,
-            "organization" => $organization]);
+            "organization" => $subnet->organization]);
     }
+
+    /**
+     * Vizualize subnets and devices in a graph.
+     */
+    public function view(Organization $organization)
+    {
+        $this->authorize("show", $organization);
+        return view("subnet.view", ["organization" => $organization]);
+    }
+
+    // ------------------ ACTIONS
 
     public function store(Request $request)
     {
-        $organization = $this->organization();
-        $this->authorize("update", $organization);
-        
-        $subnet = new Subnet();
-        $subnet->organization_id = $organization->id;
-        return $this->save($request, $subnet);
+        return $this->save(new Subnet(), $request);
     }
 
     public function update(Subnet $subnet, Request $request)
     {
-        $this->authorize("update", $subnet->organization);
-        return $this->save($request, $subnet);
+        return $this->save($subnet, $request);
     }
 
-    public function save(Request $request, Subnet $subnet)
+    public function save(Subnet $subnet, Request $request)
     {
+
         $request->validate([
             "name" => "required|string|max:255",
             "address" => "required|ip",
-            "mask" => "required|int|min:0|max:32"
+            "mask" => "required|int|min:0|max:32",
+            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys())
         ]);
 
         $subnet->name = $request->name;
         $subnet->address = $request->address;
         $subnet->mask = $request->mask;
+        $subnet->organization()->associate(Organization::find($request->organization_id));
+
+        $this->authorize("update", $subnet->organization);
         $subnet->save();
 
-        return redirect(route("subnets.index"));
+        return redirect(route("subnets.index", ["organization" => $subnet->organization]));
     }
 
     public function destroy(Subnet $subnet)

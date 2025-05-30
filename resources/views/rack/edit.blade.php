@@ -15,6 +15,8 @@
             @endif
                 {{ csrf_field() }}
 
+                @include("organization.partials.select", ["model" => $rack])
+
                 <div class="form-group">
                     <label for="name">Name</label>
 

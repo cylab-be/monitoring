@@ -50,7 +50,7 @@ class Server extends Model
 
     public function getUrlAttribute() : string
     {
-        return action("ServerController@show", ["server" => $this]);
+        return action("ServerController@show", ["server" => $this, "organization" => $this->organization]);
     }
 
     public function getStatusAttribute() : array
@@ -200,12 +200,12 @@ class Server extends Model
     {
         return $this->belongsTo(Rack::class);
     }
-    
+
     public function url() : string
     {
         return route("servers.show", ["server" => $this]);
     }
-    
+
     public function toCytoscape() : array
     {
         return ["data" => [
@@ -214,7 +214,7 @@ class Server extends Model
             "type" => "device",
             "url" => $this->url()]];
     }
-    
+
     /**
      * Get a unique ID usable in Cytoscape.
      * @return string
