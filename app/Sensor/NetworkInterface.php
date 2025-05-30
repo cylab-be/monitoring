@@ -10,7 +10,12 @@ namespace App\Sensor;
 class NetworkInterface
 {
     public $name;
-    public $address;
+
+    /**
+     * A single interface can have multiple IP addresses
+     * @var array
+     */
+    public $addresses = [];
     public $rx;
     public $tx;
     public $time;

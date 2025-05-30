@@ -7,7 +7,7 @@
     @foreach ($interfaces as $interface)
     <tr>
         <td>{{ $interface->name }}</td>
-        <td>{{ $interface->address }}</td>
+        <td>{{ implode(" ", $interface->addresses) }}</td>
     </tr>
     @endforeach
 </table>

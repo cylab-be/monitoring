@@ -6,23 +6,23 @@ use App\SensorConfig;
 use App\ServerInfo;
 
 /**
- * Description of ServerInfoAddresses
+ * Prase ifconfig agent to get IP addresses of server.
  *
  * @author tibo
  */
 class ServerInfoAddresses extends ServerInfoParser
 {
-    //put your code here
     public function analyzeString(string $string, ServerInfo $info)
     {
         $ifconfig = new Ifconfig();
         $interfaces = $ifconfig->parseIfconfig($string);
-        $ips = array_map(
-            function (NetworkInterface $interface) {
-                return $interface->address;
-            },
-            $interfaces
-        );
+        $ips = [];
+
+        foreach ($interfaces as $interface) {
+            foreach ($interface->addresses as $address) {
+                $ips[] = $address;
+            }
+        }
 
         // remove empty values
         $info->addresses = array_filter($ips, 'strlen');

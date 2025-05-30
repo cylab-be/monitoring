@@ -11,7 +11,7 @@ use App\Record;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Description of MemInfo
+ * Parse ifconfig command to get IP addresses and traffic
  *
  * @author tibo
  */
@@ -26,7 +26,7 @@ class Ifconfig implements Sensor
         "ovpn", // OpenVPN (OpnSENSE, FreeBSD)
         "wg", // Wireguard (OpnSENSE, FreeBSD)
         "igc", "ixl"];
-    
+
     public function config(): SensorConfig
     {
         return new SensorConfig(
@@ -150,7 +150,7 @@ class Ifconfig implements Sensor
 
             $ip = $this->pregMatchOne(self::IPV4, $line);
             if ($ip !== false) {
-                $if->address = $ip;
+                $if->addresses[] = $ip;
                 continue;
             }
 
