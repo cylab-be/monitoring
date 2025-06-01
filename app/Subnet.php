@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @property Organization $organization
@@ -85,5 +86,21 @@ class Subnet extends Model
     public function cytoId() : string
     {
         return "#subnet-" . $this->id;
+    }
+
+    /**
+     * Create Ansible inventory, in INI format
+     * @return string
+     */
+    public function toAnsibleInventory() : string
+    {
+        // ansible does not allow - . or space in group names
+        // https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#valid-variable-names
+        $inv = "[" . Str::slug($this->name, "_") . "]\n";
+        foreach ($this->servers() as [$server, $ip]) {
+            $inv .= "# " . $server->name . "\n";
+            $inv .= $ip . "\n";
+        }
+        return $inv;
     }
 }

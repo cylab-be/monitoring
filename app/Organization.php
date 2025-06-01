@@ -88,4 +88,13 @@ class Organization extends Model
         }
         return $r;
     }
+
+    public function toAnsibleInventory() : string
+    {
+        $inv = "";
+        foreach ($this->subnets as $subnet) {
+            $inv .= $subnet->toAnsibleInventory() . "\n";
+        }
+        return $inv;
+    }
 }

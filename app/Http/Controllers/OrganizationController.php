@@ -84,6 +84,12 @@ class OrganizationController extends Controller
         return view("organization.dashboard", ["organization" => $organization]);
     }
 
+    public function inventory(Organization $organization)
+    {
+        $this->authorize("show", $organization);
+        return response($organization->toAnsibleInventory(), 200)->header("Content-Type", "text/plain");
+    }
+
     public function resetToken(Organization $organization)
     {
         $this->authorize("update", $organization);

@@ -54,6 +54,12 @@ Route::middleware(['auth'])
         Route::get('organizations/{organization}/reset-token', 'OrganizationController@resetToken')
                 ->name("organizations.reset-token");
 
+
+        // ansible inventory
+        Route::get("organizations/{organization}/inventory", "OrganizationController@inventory")
+                ->name("organizations.inventory");
+
+
         // users
         Route::resource("organizations/{organization}/users", "OrganizationUserController")
                 ->only(["create", "store", "destroy"]);
