@@ -2,6 +2,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/css
+/public/js
 /storage/*.key
 /storage/debugbar/
 /vendor
@@ -16,8 +18,8 @@ yarn-error.log
 /volumes/
 /target/
 
-monitor
-monitor-*.zip
+/monitor
+/monitor-*.zip
 
 
 .phpunit.result.cache
