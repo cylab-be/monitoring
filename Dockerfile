@@ -35,7 +35,7 @@ RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 20M/g' /usr/local/e
 RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/etc/php/php.ini
 
 COPY . /var/www/html
-COPY ./docker/env.default /var/www/html/.env
+COPY ./docker/stack.env /var/www/html/.env
 
 COPY --from=composer /var/www/html/vendor /var/www/html/vendor
 

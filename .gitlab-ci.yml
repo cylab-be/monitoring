@@ -80,22 +80,6 @@ deploy:
   image: alpine
   before_script:
     # install envsubst and ssh-add
-    - apk add gettext openssh-client
+    - apk add curl
   script:
-    # create the new docker-compose.yml
-    - envsubst < docker-compose.tmpl > docker-compose.yml
-    # start ssh-agent and import ssh private key
-    - eval `ssh-agent`
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    # add server to list of known hosts
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - touch ~/.ssh/known_hosts
-    - chmod 600 ~/.ssh/known_hosts
-    - echo $SSH_HOST_KEY >> ~/.ssh/known_hosts
-    # upload docker-compose to the server
-    - scp docker-compose.yml monitoring@$SERVER:/home/monitoring/
-    # docker login and restart services
-    - ssh monitoring@$SERVER "cd /home/monitoring; 
-        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY;
-        docker compose up -d --scale queue=4"
+    - curl $DEPLOY_HOOK

@@ -1,52 +1,49 @@
 #
-# docker-compose.tmpl
-# https://cylab.be/blog/229/continuous-deployment-with-gitlab-and-docker
-# $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+# https://gitlab.cylab.be/cylab/monitoring
+# docker-compose.yaml
 #
-
-version: "3.7"
 
 services:
   web:
-    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    image: gitlab.cylab.be:8081/cylab/monitoring:latest
     depends_on:
       - redis
       - mysql
     ports:
       - "80"
     volumes:
-      - ./volumes/web:/var/www/html/storage
+      - web:/var/www/html/storage
     restart: "unless-stopped"
     environment:
       WAIT_HOSTS: mysql:3306
-    env_file: env
+    env_file: stack.env
     labels:
       - traefik.http.routers.monitoring.rule=Host(`monitoring.cylab.be`)
       - traefik.http.routers.monitoring.tls=true
       - traefik.http.routers.monitoring.tls.certresolver=letsencrypt
 
   scheduler:
-    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    image: gitlab.cylab.be:8081/cylab/monitoring:latest
     depends_on:
       - web
     volumes:
-      - ./volumes/web:/var/www/html/storage
+      - web:/var/www/html/storage
     restart: "unless-stopped"
     environment:
       WAIT_HOSTS: web:80
-    env_file: env
+    env_file: stack.env
     command: /scheduler.sh
 
   queue:
-    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    image: gitlab.cylab.be:8081/cylab/monitoring:latest
     deploy:
       replicas: 4
     depends_on:
       - web
     volumes:
-      - ./volumes/web:/var/www/html/storage
+      - web:/var/www/html/storage
     command: ["php", "artisan", "queue:work", "--verbose", "--tries=3", "--timeout=60"]
-    env_file: env
+    env_file: stack.env
     restart: "unless-stopped"
     environment:
       WAIT_HOSTS: web:80
@@ -54,15 +51,19 @@ services:
   redis:
     image: redis:4-alpine
     volumes:
-      - ./volumes/redis:/data
+      - redis:/data
     restart: "unless-stopped"
 
   mysql:
     image: mysql:5.7
     volumes:
-      - ./volumes/mysql:/var/lib/mysql
-      - ./my.cnf:/etc/my.cnf:ro
+      - mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel
     restart: "unless-stopped"
+
+volumes:
+  web:
+  mysql:
+  redis:
