@@ -3,6 +3,10 @@
         Agent installation
     </div>
     <div class="card-body">
+        <p>Install dependencies</p>
+        <pre><code>sudo apt-get install wget net-tools sysstat lm-sensors
+</code></pre>
+
         <p>Download client application:</p>
         <pre><code>wget {{ url("/monitor") }}
 chmod +x monitor
