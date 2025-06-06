@@ -82,4 +82,4 @@ deploy:
     # install envsubst and ssh-add
     - apk add curl
   script:
-    - curl $DEPLOY_HOOK
+    - curl -X POST $DEPLOY_HOOK
