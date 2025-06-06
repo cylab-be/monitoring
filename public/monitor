@@ -2,57 +2,6 @@
 
 VERSION="0.0.12"
 
-# Function to display usage
-usage() {
-  echo "Usage: $0 -i <SERVER_ID> -t <SERVER_TOKEN> -s <MONITOR_URL>"
-  exit 1
-}
-
-# Parse arguments
-while [[ "$#" -gt 0 ]]; do
-  case "$1" in
-    -s)
-      API_URL="$2"
-      shift 2
-      ;;
-    -i)
-      ID="$2"
-      shift 2
-      ;;
-    -t)
-      TOKEN="$2"
-      shift 2
-      ;;
-    -*)
-      echo "Unknown option: $1"
-      usage
-      ;;
-    *)
-      echo "Unexpected argument: $1"
-      usage
-      ;;
-  esac
-done
-
-# Ensure the API URL is provided
-if [ -z "$API_URL" ]; then
-  echo "Error: -s argument is required."
-  usage
-fi
-
-# Ensure the API URL is provided
-if [ -z "$ID" ]; then
-  echo "Error: -i argument is required."
-  usage
-fi
-
-# Ensure the API URL is provided
-if [ -z "$TOKEN" ]; then
-  echo "Error: -t argument is required."
-  usage
-fi
-
-URL="$API_URL/api/record/$ID"
 
 # Define associative array of commands
 declare -A COMMANDS
@@ -83,43 +32,108 @@ COMMANDS=(
   ["freebsd_top"]="top -n"
 )
 
-# Run commands and collect results
+# declare global variable for results
 declare -A RESULTS
-for key in "${!COMMANDS[@]}"; do
-  echo "Running $key ..."
-  output=$(${COMMANDS[$key]})
-  RESULTS["$key"]="$output"
-done
 
-# Append version and token
-RESULTS["version"]="$VERSION"
-RESULTS["token"]="$TOKEN"
+usage() {
+  echo "Usage: $0 -i <SERVER_ID> -t <SERVER_TOKEN> -s <MONITOR_URL>"
+  exit 1
+}
 
-# Build JSON dynamically using jq
-if command -v jq > /dev/null 2>&1; then
-  # Build a jq input string with key-value arguments
-  jq_args=()
-  jq_obj="{"
-  for key in "${!RESULTS[@]}"; do
-    jq_args+=(--arg "$key" "${RESULTS[$key]}")
-    jq_obj+="\"$key\": \$$key,"
+parse_args() {
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      -s)
+        API_URL="$2"
+        shift 2
+        ;;
+      -i)
+        ID="$2"
+        shift 2
+        ;;
+      -t)
+        TOKEN="$2"
+        shift 2
+        ;;
+      -*)
+        echo "Unknown option: $1"
+        usage
+        ;;
+      *)
+        echo "Unexpected argument: $1"
+        usage
+        ;;
+    esac
   done
-  jq_obj="${jq_obj%,}}"  # Remove trailing comma and close JSON object
 
-  json_payload=$(jq -n "${jq_args[@]}" "$jq_obj")
-else
-  # Manual JSON (fallback if jq not installed)
-  json_payload="{"
-  for key in "${!RESULTS[@]}"; do
-    escaped=$(echo "${RESULTS[$key]}" | sed 's/"/\\"/g')
-    json_payload+="\"$key\": \"${escaped}\","
+  # Ensure the API URL is provided
+  if [ -z "$API_URL" ]; then
+    echo "Error: -s argument is required."
+    usage
+  fi
+
+  # Ensure the API URL is provided
+  if [ -z "$ID" ]; then
+    echo "Error: -i argument is required."
+    usage
+  fi
+
+  # Ensure the API URL is provided
+  if [ -z "$TOKEN" ]; then
+    echo "Error: -t argument is required."
+    usage
+  fi
+
+  URL="$API_URL/api/record/$ID"
+}
+
+run_commands() {
+  for key in "${!COMMANDS[@]}"; do
+    echo "Running $key ..."
+    output=$(${COMMANDS[$key]})
+    RESULTS["$key"]="$output"
   done
-  json_payload="${json_payload%,}}"  # Remove trailing comma
-fi
 
-# Upload
-echo "Uploading to $URL ..."
-curl -s -X POST "$URL" \
-     -H "Content-Type: application/json" \
-     -d "$json_payload"
+  # Append version and token
+  RESULTS["version"]="$VERSION"
+  RESULTS["token"]="$TOKEN"
+}
 
+
+upload_results() {
+  # Build JSON dynamically using jq
+  if command -v jq > /dev/null 2>&1; then
+    # Build a jq input string with key-value arguments
+    jq_args=()
+    jq_obj="{"
+    for key in "${!RESULTS[@]}"; do
+      jq_args+=(--arg "$key" "${RESULTS[$key]}")
+      jq_obj+="\"$key\": \$$key,"
+    done
+    jq_obj="${jq_obj%,}}"  # Remove trailing comma and close JSON object
+
+    json_payload=$(jq -n "${jq_args[@]}" "$jq_obj")
+  else
+    # Manual JSON (fallback if jq not installed)
+    json_payload="{"
+    for key in "${!RESULTS[@]}"; do
+      escaped=$(echo "${RESULTS[$key]}" | sed 's/"/\\"/g')
+      json_payload+="\"$key\": \"${escaped}\","
+    done
+    json_payload="${json_payload%,}}"  # Remove trailing comma
+  fi
+
+  # Upload
+  echo "Uploading to $URL ..."
+  curl -s -X POST "$URL" \
+      -H "Content-Type: application/json" \
+      -d "$json_payload"
+}
+
+main() {
+  parse_args "$@"
+  run_commands
+  upload_results
+}
+
+main "$@"
