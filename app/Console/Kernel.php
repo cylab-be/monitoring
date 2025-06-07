@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Jobs\FetchClientManifest;
 use App\Jobs\CleanOldData;
 use App\Jobs\TriggerHeartbeatAgents;
 
@@ -28,7 +27,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new FetchClientManifest())->hourly();
         $schedule->job(new CleanOldData())->hourly();
         $schedule->job(new TriggerHeartbeatAgents())->everyFiveMinutes();
     }

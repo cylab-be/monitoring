@@ -2,8 +2,6 @@
 
 namespace App\Sensor;
 
-use App\Jobs\FetchClientManifest;
-
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
@@ -28,7 +26,7 @@ class ClientVersion implements Sensor
 
     public function analyze(Record $record): Report
     {
-        $latest_version = FetchClientManifest::version();
+        $latest_version = "0.0.12";
         $installed_version = $record->data;
 
         $report = (new Report())->setTitle("Client Version");

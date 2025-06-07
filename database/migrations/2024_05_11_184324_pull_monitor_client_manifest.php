@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-use App\Jobs\FetchClientManifest;
-
 class PullMonitorClientManifest extends Migration
 {
     /**
@@ -13,7 +11,8 @@ class PullMonitorClientManifest extends Migration
      */
     public function up()
     {
-        FetchClientManifest::dispatchNow();
+        // does not exist anymore...
+        // FetchClientManifest::dispatchNow();
     }
 
     /**
