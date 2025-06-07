@@ -35,9 +35,7 @@ class ClientVersion implements Sensor
             "<p>Latest client version: $latest_version</p>"
         );
 
-        if ($latest_version == null) {
-            $report->setStatus(Status::unknown());
-        } elseif ($installed_version === $latest_version) {
+        if ($installed_version === $latest_version) {
             $report->setStatus(Status::ok());
         } else {
             $report->setStatus(Status::warning());
