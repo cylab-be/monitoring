@@ -30,6 +30,15 @@ COMMANDS=(
   ["netstat_listen_tcp"]="netstat -antp | grep LISTEN"
   ["netstat_listen_udp"]="netstat -anup | grep LISTEN"
   ["freebsd_top"]="top -n"
+
+  # list docker compose stacks
+  ["docker_compose_stacks"]="docker compose ls --format json"
+
+  ["lshw"]="lshw"
+  ["ufw_status"]="ufw status verbose"
+
+  # list installed APT packages
+  #["apt_list"]="apt list --installed"
 )
 
 # declare global variable for results
@@ -131,6 +140,8 @@ upload_results() {
 }
 
 main() {
+  echo "Monitoring $VERSION"
+  echo "https://gitlab.cylab.be/cylab/monitoring"
   parse_args "$@"
   run_commands
   upload_results
