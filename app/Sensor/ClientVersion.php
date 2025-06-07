@@ -20,23 +20,23 @@ class ClientVersion implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-            "client-version",
+            "client_version",
             "version",
             "Check that the latest version of monitoring client is installed"
         );
     }
-    
+
     public function analyze(Record $record): Report
     {
         $latest_version = FetchClientManifest::version();
         $installed_version = $record->data;
-        
+
         $report = (new Report())->setTitle("Client Version");
         $report->setHTML(
             "<p>Installed version: $installed_version</p>" .
             "<p>Latest client version: $latest_version</p>"
         );
-        
+
         if ($latest_version == null) {
             $report->setStatus(Status::unknown());
         } elseif ($installed_version === $latest_version) {

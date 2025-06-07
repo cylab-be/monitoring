@@ -29,7 +29,7 @@ class ServerInfoCPUName extends ServerInfoParser
     {
         return new SensorConfig(
             "ServerInfoCPUName",
-            "cpu-dmi",
+            "cpu_dmi",
             "Extract CPU name from DMI cpu"
         );
     }

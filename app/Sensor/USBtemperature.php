@@ -18,7 +18,7 @@ class USBtemperature implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-            "usb-temperature",
+            "usb_temperature",
             "TEMPer",
             "Uses hid-query to read the value of a TEMPer USB device"
         );
@@ -27,11 +27,11 @@ class USBtemperature implements Sensor
     public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("USB Temperature");
-        
+
         $temper = new Temper();
         $value = $temper->convert($record->data);
         $report->setHTML("<p>Ambient temperature (USB TEMPer) : $value °C</p>");
-        
+
         $report->setStatus(Status::ok());
         return $report;
     }

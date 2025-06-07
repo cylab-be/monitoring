@@ -16,21 +16,21 @@ class ServerInfoMemoryDMI extends ServerInfoParser
     public function analyzeString(string $string, ServerInfo $info)
     {
         $REGEX = '/^\tSize: (\d+) GB/m';
-        
+
         $total = 0;
         $matches = [];
-        
+
         preg_match_all($REGEX, $string, $matches);
 
         foreach ($matches[1] as $match) {
             $total += $match;
         }
-        
+
         // if regex does not match or dmi info is empty...
         if ($total == 0) {
             return;
         }
-        
+
         $info->memory = $total * 1024 * 1024;
     }
 
@@ -38,7 +38,7 @@ class ServerInfoMemoryDMI extends ServerInfoParser
     {
         return new SensorConfig(
             "ServerInfoMemoryDMI",
-            "memory-dmi",
+            "memory_dmi",
             "Extract total memory from DMI memory"
         );
     }

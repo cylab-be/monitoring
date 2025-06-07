@@ -26,8 +26,8 @@ class CPUtemperature implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-            "cpu-temperature",
-            "cpu-temperature",
+            "cpu_temperature",
+            "cpu_temperature",
             "Uses lm-sensors package to extract CPU temperature"
         );
     }

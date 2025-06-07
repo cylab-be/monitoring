@@ -19,8 +19,8 @@ class ListeningPorts implements Sensor
     public function config(): SensorConfig
     {
         return new SensorConfig(
-            "listening-tcp",
-            "netstat-listen-tcp",
+            "listening_tcp",
+            "netstat_listen_tcp",
             "Use netstat -antp command to list listening TCP ports"
         );
     }

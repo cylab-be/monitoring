@@ -26,7 +26,7 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
         foreach ($matches[1] as $match) {
             $count += $match;
         }
-        
+
         // if regex does not match, or dmi info is empty...
         if ($count == 0) {
             return;
@@ -40,7 +40,7 @@ class ServerInfoFreeBSDCPU extends ServerInfoParser
     {
         return new SensorConfig(
             "ServerInfoFreeBSDCPU",
-            "cpu-dmi",
+            "cpu_dmi",
             "Extract CPU threads from DMI cpu, supports FreeBSD"
         );
     }
