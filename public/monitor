@@ -1,13 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 VERSION="0.0.12"
-
 
 # Define associative array of commands
 declare -A COMMANDS
 COMMANDS=(
   ["loadavg"]="cat /proc/loadavg"
-  ["reboot"]="test -f /var/run/reboot-required && echo '/var/run/reboot-required exists'"
+  ["reboot"]="$(test -f /var/run/reboot-required && echo '/var/run/reboot-required exists')"
   ["updates"]="cat /var/lib/update-notifier/updates-available"
   ["disks"]="df"
   ["inodes"]="df -i"
@@ -34,7 +33,7 @@ COMMANDS=(
   # list docker compose stacks
   ["docker_compose_stacks"]="docker compose ls --format json"
 
-  ["lshw"]="lshw"
+  #["lshw"]="lshw"
   ["ufw_status"]="ufw status verbose"
 
   # list installed APT packages
@@ -110,33 +109,28 @@ run_commands() {
 
 
 upload_results() {
-  # Build JSON dynamically using jq
-  if command -v jq > /dev/null 2>&1; then
-    # Build a jq input string with key-value arguments
-    jq_args=()
-    jq_obj="{"
-    for key in "${!RESULTS[@]}"; do
-      jq_args+=(--arg "$key" "${RESULTS[$key]}")
-      jq_obj+="\"$key\": \$$key,"
-    done
-    jq_obj="${jq_obj%,}}"  # Remove trailing comma and close JSON object
+  TMPFILE=$(mktemp)
 
-    json_payload=$(jq -n "${jq_args[@]}" "$jq_obj")
-  else
-    # Manual JSON (fallback if jq not installed)
-    json_payload="{"
-    for key in "${!RESULTS[@]}"; do
-      escaped=$(echo "${RESULTS[$key]}" | sed 's/"/\\"/g')
-      json_payload+="\"$key\": \"${escaped}\","
-    done
-    json_payload="${json_payload%,}}"  # Remove trailing comma
-  fi
+  # Build JSON dynamically using jq
+  # Build a jq input string with key-value arguments
+  jq_args=()
+  jq_obj="{"
+  for key in "${!RESULTS[@]}"; do
+    jq_args+=(--arg "$key" "${RESULTS[$key]}")
+    jq_obj+="\"$key\": \$$key,"
+  done
+
+  # Remove trailing comma and close JSON object
+  jq_obj="${jq_obj%,}}"  
+
+  # Dump to temp file
+  jq -n "${jq_args[@]}" "$jq_obj" > "$TMPFILE"
 
   # Upload
   echo "Uploading to $URL ..."
   curl -s -X POST "$URL" \
       -H "Content-Type: application/json" \
-      -d "$json_payload"
+      --data-binary @"$TMPFILE" > /dev/null
 }
 
 main() {
