@@ -4,7 +4,7 @@
     <tr>
         <td>
             <a class="badge badge-secondary"
-                   href="{{ action("RecordController@show", ["record" => $record, "organization" => $record->server->organization]) }}">
+                   href="{{ action("RecordController@show", ["record" => $record]) }}">
                     <i class="fas fa-search"></i>
                 </a>
         </td>
