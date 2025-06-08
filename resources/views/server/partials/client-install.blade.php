@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <p>Install dependencies</p>
-        <pre><code>sudo apt-get install wget net-tools sysstat lm-sensors
+        <pre><code>sudo apt-get install wget net-tools sysstat lm-sensors php-cli php-json php-curl
 </code></pre>
 
         <p>Download client application:</p>
