@@ -27,8 +27,6 @@ class Ifconfig implements Sensor
         "wg", // Wireguard (OpnSENSE, FreeBSD)
         "igc", "ixl"];
 
-    const COLORS = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"];
-
     public function config(): SensorConfig
     {
         return new SensorConfig(
@@ -50,22 +48,13 @@ class Ifconfig implements Sensor
                     "points" => $this->points($server->lastRecords("ifconfig"))]));
     }
 
-    public function pick2Colors(int $key) : array
-    {
-        return [
-            self::COLORS[(2 * $key) % count(self::COLORS)],
-            self::COLORS[(2 * $key + 1) % count(self::COLORS)]
-        ];
-    }
-
     /**
      * Compute datasets (array time ordered points) that can be fed to Chart.js
      *
-     * Each dataset has a label, data, backgroundColor (transparent) and borderColor.
      * @param Collection $records
      * @return array
      */
-    public function points(Collection $records)
+    public function points(Collection $records) : array
     {
         // Compute the time ordered list of interfaces
         $interfaces = [];
@@ -74,14 +63,14 @@ class Ifconfig implements Sensor
         }
 
         // Foreach interface, compute the array of points
-        $dataset = [];
+        $datasets = [];
         $current_value = [];
         foreach ($interfaces[0] as $key => $interface) {
-            $colors = $this->pick2Colors($key);
+            $colors = ColorPalette::pick2Colors($key);
 
             $iname = $interface->name;
-            $dataset[$iname . "/TX"] = new Dataset($iname . "/TX", $colors[0]);
-            $dataset[$iname . "/RX"] = new Dataset($iname . "/RX", $colors[1]);
+            $datasets[$iname . "/TX"] = new Dataset($iname . "/TX", $colors[0]);
+            $datasets[$iname . "/RX"] = new Dataset($iname . "/RX", $colors[1]);
 
             $current_value[$interface->name] = $interface;
         }
@@ -105,7 +94,7 @@ class Ifconfig implements Sensor
                     // Can happen after a reboot...
                     $delta = 0;
                 }
-                $dataset[$iname . "/RX"]->add(new Point(
+                $datasets[$iname . "/RX"]->add(new Point(
                     $interface->time * 1000,
                     round(8 / 1024 * $delta / $delta_time)
                 ));
@@ -116,7 +105,7 @@ class Ifconfig implements Sensor
                     // Can happen after a reboot...
                     $delta = 0;
                 }
-                $dataset[$iname . "/TX"]->add(new Point(
+                $datasets[$iname . "/TX"]->add(new Point(
                     $interface->time * 1000,
                     round(8 / 1024 * $delta / $delta_time)
                 ));
@@ -126,7 +115,7 @@ class Ifconfig implements Sensor
             }
         }
 
-        return array_values($dataset);
+        return array_values($datasets);
     }
 
     const IFNAME = '/^(?|(\S+)\s+Link encap:|(\S+): flags)/m';
