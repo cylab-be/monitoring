@@ -33,7 +33,6 @@ class LoadAvg implements Sensor
 
         $warning_threshold = $server->info->vCores();
         $error_threshold = 2 * $warning_threshold;
-
         $current_load = $this->parse($record->data);
 
         $records = $server->lastRecords($record->label);
@@ -48,7 +47,8 @@ class LoadAvg implements Sensor
             "current_load" => $current_load,
             "warning_threshold" => $warning_threshold,
             "error_threshold" => $error_threshold,
-            "max_load" => $max_load]));
+            "max_load" => $max_load,
+            "dataset" => $this->loadPoints($server->lastRecords("loadavg"))]));
 
         if ($max_load > $error_threshold) {
             return $report->setStatus(Status::error());
@@ -61,16 +61,16 @@ class LoadAvg implements Sensor
         return $report->setStatus(Status::ok());
     }
 
-    public function loadPoints(Collection $records)
+    public function loadPoints(Collection $records) : Dataset
     {
-        $points = [];
+        $dataset = new Dataset("Load");
         foreach ($records as $record) {
-            $points[] = new Point(
+            $dataset->add(new Point(
                 $record->time * 1000,
                 $this->parse($record->data)
-            );
+            ));
         }
-        return $points;
+        return $dataset;
     }
 
     public function parse(string $string) : float

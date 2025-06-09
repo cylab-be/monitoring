@@ -46,19 +46,6 @@ class ApiController extends Controller
             "total" => $server->info->memory / 1000];
     }
 
-    public function load(Server $server, string $token)
-    {
-        if ($server->read_token != $token) {
-            abort(403);
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        $sensor = new \App\Sensor\LoadAvg();
-        return [
-            "points" => $sensor->loadPoints($server->lastRecords("loadavg")),
-            "max" => $server->info->vCores()];
-    }
-
     public function netstat(Server $server, string $token)
     {
         if ($server->read_token != $token) {
