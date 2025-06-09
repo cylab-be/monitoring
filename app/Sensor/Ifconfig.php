@@ -27,6 +27,8 @@ class Ifconfig implements Sensor
         "wg", // Wireguard (OpnSENSE, FreeBSD)
         "igc", "ixl"];
 
+    const COLORS = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"];
+
     public function config(): SensorConfig
     {
         return new SensorConfig(
@@ -40,14 +42,32 @@ class Ifconfig implements Sensor
     {
         $report = (new Report())->setTitle("Network : Traffic");
 
+        $server = $record->server;
         $interfaces = $this->parseIfconfigRecord($record);
         return $report->setStatus(Status::ok())
-                ->setHTML(view("agent.ifconfig", ["interfaces" => $interfaces]));
+                ->setHTML(view("agent.ifconfig", [
+                    "interfaces" => $interfaces,
+                    "points" => $this->points($server->lastRecords("ifconfig"))]));
     }
 
+    public function pick2Colors(int $key) : array
+    {
+        return [
+            self::COLORS[(2 * $key) % count(self::COLORS)],
+            self::COLORS[(2 * $key + 1) % count(self::COLORS)]
+        ];
+    }
+
+    /**
+     * Compute datasets (array time ordered points) that can be fed to Chart.js
+     *
+     * Each dataset has a label, data, backgroundColor (transparent) and borderColor.
+     * @param Collection $records
+     * @return array
+     */
     public function points(Collection $records)
     {
-        // Compute the time ordered list of arrays of interfaces
+        // Compute the time ordered list of interfaces
         $interfaces = [];
         foreach ($records as $record) {
             $interfaces[] = $this->parseIfconfigRecord($record);
@@ -56,23 +76,26 @@ class Ifconfig implements Sensor
         // Foreach interface, compute the array of points
         $dataset = [];
         $current_value = [];
-        foreach ($interfaces[0] as $interface) {
-            $iname = $interface->name;
-            $dataset[$iname . "/TX"] = [
-                "name" => $iname . "/TX",
-                "points" => []
-            ];
+        foreach ($interfaces[0] as $key => $interface) {
+            $colors = $this->pick2Colors($key);
 
-            $dataset[$iname . "/RX"] = [
-                "name" => $iname . "/RX",
-                "points" => []
-            ];
+            $iname = $interface->name;
+            $dataset[$iname . "/TX"] = new Dataset($iname . "/TX", $colors[0]);
+            $dataset[$iname . "/RX"] = new Dataset($iname . "/RX", $colors[1]);
+
             $current_value[$interface->name] = $interface;
         }
 
         for ($i = 1; $i < count($interfaces); $i++) {
             foreach ($interfaces[$i] as $interface) {
                 $iname = $interface->name;
+
+                // in some cases (like VPN), the interface will be turned on and off
+                // so the current value will be sometimes available and sometimes not
+                if (! isset($current_value[$iname])) {
+                    continue;
+                }
+
                 $previous_value = $current_value[$iname];
                 $delta_time = $interface->time - $previous_value->time;
 
@@ -82,10 +105,10 @@ class Ifconfig implements Sensor
                     // Can happen after a reboot...
                     $delta = 0;
                 }
-                $dataset[$iname . "/RX"]["points"][] = new Point(
+                $dataset[$iname . "/RX"]->add(new Point(
                     $interface->time * 1000,
                     round(8 / 1024 * $delta / $delta_time)
-                );
+                ));
 
                 // TX
                 $delta = $interface->tx - $previous_value->tx;
@@ -93,10 +116,10 @@ class Ifconfig implements Sensor
                     // Can happen after a reboot...
                     $delta = 0;
                 }
-                $dataset[$iname . "/TX"]["points"][] = new Point(
+                $dataset[$iname . "/TX"]->add(new Point(
                     $interface->time * 1000,
                     round(8 / 1024 * $delta / $delta_time)
-                );
+                ));
 
                 // Keep current value for next record
                 $current_value[$iname] = $interface;

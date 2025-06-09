@@ -15,6 +15,47 @@
 <canvas id="ifconfig-chart" width='400' height='200'></canvas>
 <script>
     window.addEventListener('load', function() {
-        window.monitorIfconfigChart(document.getElementById('ifconfig-chart'));
+
+        let ctx = document.getElementById('ifconfig-chart').getContext('2d');
+        let config = {
+            type: 'line',
+            data: {
+                datasets: []
+            },
+            options: {
+                legend: {
+                    display: true,
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        display: true,
+                        scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        },
+                        scaleLabel: {
+                                display: true,
+                                labelString: '[Kbits / sec]'
+                        }
+                    }]
+                },
+                annotation: {
+                    annotations: []
+                }
+            }
+        };
+
+        let chart = new Chart(ctx, config);
+        let datasets = @json($points);
+        datasets.forEach(function(dataset, key){
+            config.data.datasets.push(dataset);
+        });
+        chart.update();
     });
 </script>

@@ -59,17 +59,6 @@ class ApiController extends Controller
             "max" => $server->info->vCores()];
     }
 
-    public function ifconfig(Server $server, string $token)
-    {
-        if ($server->read_token != $token) {
-            abort(403);
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        $sensor = new \App\Sensor\Ifconfig();
-        return $sensor->points($server->lastRecords("ifconfig"));
-    }
-
     public function netstat(Server $server, string $token)
     {
         if ($server->read_token != $token) {
