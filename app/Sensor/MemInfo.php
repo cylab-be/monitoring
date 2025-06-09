@@ -30,10 +30,19 @@ class MemInfo implements Sensor
 
     public function analyze(Record $record): Report
     {
-        $report = (new Report())->setTitle("Memory : Usage");
-        $report->setHTML(view("agent.meminfo"));
-
+        $server = $record->server;
         $records = $record->server->lastRecords($record->label);
+
+        $report = (new Report())->setTitle("Memory : Usage");
+        $report->setHTML(view("agent.meminfo", [
+            "datasets" => [
+                $this->usedMemoryPoints($records),
+                $this->cachedMemoryPoints($records)
+            ],
+            "total_memory" => $server->info->memory / 1000
+        ]));
+
+
         foreach ($records as $record) {
             $mem = $this->parseMeminfo($record->data);
             if ($mem->usedRatio() > self::WARNING_RATIO) {
@@ -45,32 +54,40 @@ class MemInfo implements Sensor
     }
 
 
-    public function usedMemoryPoints(Collection $records)
+    public function usedMemoryPoints(Collection $records) : Dataset
     {
-        $used = [];
+        $color = ColorPalette::pick1Color(0);
+
+        $dataset = new Dataset("Used", $color);
+        $dataset->backgroundColor = ColorPalette::lighten($color, 0.7);
+
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->data);
-            $used[] = new Point(
+            $dataset->add(new Point(
                 $record->time * 1000,
                 $meminfo->used() / 1000
-            );
+            ));
         }
 
-        return $used;
+        return $dataset;
     }
 
-    public function cachedMemoryPoints(Collection $records)
+    public function cachedMemoryPoints(Collection $records) : Dataset
     {
-        $points = [];
+        $color = ColorPalette::pick1Color(1);
+
+        $dataset = new Dataset("Cached", $color);
+        $dataset->backgroundColor = ColorPalette::lighten($color, 0.7);
+
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->data);
-            $points[] = new Point(
+            $dataset->add(new Point(
                 $record->time * 1000,
                 $meminfo->cached / 1000
-            );
+            ));
         }
 
-        return $points;
+        return $dataset;
     }
 
     // used = total - free - cached

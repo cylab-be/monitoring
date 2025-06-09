@@ -32,20 +32,6 @@ class ApiController extends Controller
         return "ok";
     }
 
-    public function memory(Server $server, string $token)
-    {
-        if ($server->read_token != $token) {
-            abort(403);
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        $meminfo = new \App\Sensor\MemInfo();
-        return [
-            "used" => $meminfo->usedMemoryPoints($server->lastRecords("memory")),
-            "cached" => $meminfo->cachedMemoryPoints($server->lastRecords("memory")),
-            "total" => $server->info->memory / 1000];
-    }
-
     public function netstat(Server $server, string $token)
     {
         if ($server->read_token != $token) {
