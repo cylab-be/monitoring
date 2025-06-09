@@ -57,9 +57,7 @@ class MemInfo implements Sensor
     public function usedMemoryPoints(Collection $records) : Dataset
     {
         $color = ColorPalette::pick1Color(0);
-
         $dataset = new Dataset("Used", $color);
-        $dataset->backgroundColor = ColorPalette::lighten($color, 0.7);
 
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->data);
@@ -75,9 +73,7 @@ class MemInfo implements Sensor
     public function cachedMemoryPoints(Collection $records) : Dataset
     {
         $color = ColorPalette::pick1Color(1);
-
         $dataset = new Dataset("Cached", $color);
-        $dataset->backgroundColor = ColorPalette::lighten($color, 0.7);
 
         foreach ($records as $record) {
             $meminfo = $this->parseMeminfo($record->data);

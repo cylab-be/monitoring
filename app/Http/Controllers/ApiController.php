@@ -31,15 +31,4 @@ class ApiController extends Controller
 
         return "ok";
     }
-
-    public function netstat(Server $server, string $token)
-    {
-        if ($server->read_token != $token) {
-            abort(403);
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        $sensor = new \App\Sensor\Netstat();
-        return $sensor->points($server->lastRecords("netstat-statistics"));
-    }
 }

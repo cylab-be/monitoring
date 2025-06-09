@@ -2,13 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Server;
 use App\Status;
 
 use App\Sensor\Disks;
 use App\Sensor\CPUtemperature;
 use App\Sensor\Updates;
-use App\Sensor\Netstat;
+use App\Sensor\NetstatReport;
 use App\Sensor\Temper;
 
 use Tests\TestCase;
@@ -86,9 +85,18 @@ class SensorsTest extends TestCase
     public function testNetstat()
     {
         $string = file_get_contents(__DIR__ . "/netstat");
-        $server = new Server();
-        $netstat = new Netstat($server);
-        $this->assertEquals(24004, $netstat->parse($string)->tcp_segments_retransmitted);
+        $this->assertEquals(24004, NetstatReport::parse($string)->tcp_segments_retransmitted);
+    }
+    
+    /**
+     * @group netstat
+     */
+    public function testNetstatMint()
+    {
+        $string = file_get_contents(__DIR__ . "/netstat-mint");
+        $report = NetstatReport::parse($string);
+        $this->assertEquals(50555, $report->tcp_segments_retransmitted);
+        $this->assertEquals(6161477, $report->tcp_segments_sent);
     }
 
 

@@ -1,0 +1,145 @@
+Ip:
+    Forwarding: 1
+    18991147 total packets received
+    3362267 forwarded
+    0 incoming packets discarded
+    15562362 incoming packets delivered
+    16040764 requests sent out
+    116 outgoing packets dropped
+    15392 dropped because of missing route
+    5 fragments dropped after timeout
+    875 reassemblies required
+    435 packets reassembled ok
+    5 packet reassemblies failed
+Icmp:
+    27188 ICMP messages received
+    2620 input ICMP message failed
+    ICMP input histogram:
+        destination unreachable: 19534
+        timeout in transit: 4
+        redirects: 6
+        echo requests: 14
+        echo replies: 7630
+    34841 ICMP messages sent
+    0 ICMP messages failed
+    ICMP output histogram:
+        destination unreachable: 12463
+        redirect: 4
+        echo requests: 22360
+        echo replies: 14
+IcmpMsg:
+        InType0: 7630
+        InType3: 19534
+        InType5: 6
+        InType8: 14
+        InType11: 4
+        OutType0: 14
+        OutType3: 12463
+        OutType5: 4
+        OutType8: 22360
+Tcp:
+    88578 active connection openings
+    218 passive connection openings
+    30248 failed connection attempts
+    17742 connection resets received
+    19 connections established
+    7767317 segments received
+    6161477 segments sent out
+    50555 segments retransmitted
+    448 bad segments received
+    75225 resets sent
+Udp:
+    13847089 packets received
+    11801 packets to unknown port received
+    14045 packet receive errors
+    7395948 packets sent
+    14037 receive buffer errors
+    116 send buffer errors
+    InCsumErrors: 8
+    IgnoredMulti: 212075
+UdpLite:
+TcpExt:
+    17 ICMP packets dropped because they were out-of-window
+    11587 TCP sockets finished time wait in fast timer
+    145 packetes rejected in established connections because of timestamp
+    106368 delayed acks sent
+    73 delayed acks further delayed because of locked socket
+    Quick ack mode was activated 21101 times
+    3988011 packet headers predicted
+    1245123 acknowledgments not containing data payload received
+    1135743 predicted acknowledgments
+    TCPSackRecovery: 3566
+    Detected reordering 39508 times using SACK
+    Detected reordering 136 times using time stamp
+    763 congestion windows fully recovered without slow start
+    116 congestion windows partially recovered using Hoe heuristic
+    TCPDSACKUndo: 129
+    476 congestion windows recovered without slow start after partial ack
+    TCPLostRetransmit: 23390
+    TCPSackFailures: 105
+    6 timeouts in loss state
+    6390 fast retransmits
+    673 retransmits in slow start
+    TCPTimeouts: 41242
+    TCPLossProbes: 10674
+    TCPLossProbeRecovery: 1277
+    TCPSackRecoveryFail: 124
+    TCPBacklogCoalesce: 9964
+    TCPDSACKOldSent: 21193
+    TCPDSACKOfoSent: 78
+    TCPDSACKRecv: 7283
+    TCPDSACKOfoRecv: 64
+    3749 connections reset due to unexpected data
+    16655 connections reset due to early user close
+    2238 connections aborted due to timeout
+    87 times unable to send RST due to no memory
+    TCPSACKDiscard: 68
+    TCPDSACKIgnoredOld: 11
+    TCPDSACKIgnoredNoUndo: 3820
+    TCPSpuriousRTOs: 39
+    TCPSackShifted: 3430
+    TCPSackMerged: 4495
+    TCPSackShiftFallback: 69137
+    IPReversePathFilter: 281
+    TCPRcvCoalesce: 661443
+    TCPOFOQueue: 204697
+    TCPOFOMerge: 82
+    TCPChallengeACK: 288
+    TCPSYNChallenge: 450
+    TCPSpuriousRtxHostQueues: 508
+    TCPAutoCorking: 187792
+    TCPFromZeroWindowAdv: 71
+    TCPToZeroWindowAdv: 71
+    TCPWantZeroWindowAdv: 159
+    TCPSynRetrans: 23404
+    TCPOrigDataSent: 3057512
+    TCPHystartTrainDetect: 320
+    TCPHystartTrainCwnd: 10747
+    TCPHystartDelayDetect: 85
+    TCPHystartDelayCwnd: 6837
+    TCPACKSkippedPAWS: 79
+    TCPACKSkippedSeq: 53
+    TCPACKSkippedChallenge: 165
+    TCPKeepAlive: 96739
+    TCPDelivered: 3113257
+    TCPAckCompressed: 48061
+    TcpTimeoutRehash: 39612
+    TcpDuplicateDataRehash: 552
+    TCPDSACKRecvSegs: 7276
+    TCPDSACKIgnoredDubious: 73
+IpExt:
+    InNoRoutes: 5205
+    InMcastPkts: 325644
+    OutMcastPkts: 118446
+    InBcastPkts: 244982
+    OutBcastPkts: 43568
+    InOctets: 21141650218
+    OutOctets: 8682603968
+    InMcastOctets: 64755963
+    OutMcastOctets: 19965169
+    InBcastOctets: 20483035
+    OutBcastOctets: 3136936
+    InNoECTPkts: 25828053
+    InECT0Pkts: 145177
+    InCEPkts: 509
+MPTcpExt:
