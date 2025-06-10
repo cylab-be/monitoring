@@ -20,9 +20,20 @@ use Tests\TestCase;
 class SensorsTest extends TestCase
 {
     /**
+     * @group disks
+     */
+    public function testDiskActivity()
+    {
+        $string = file_get_contents(__DIR__ . "/iostat");
+        $sensor = new \App\Sensor\DiskActivity();
+        $values = $sensor->extractUtilValues($string);
+        $this->assertEquals(5.65, $values["sdb"]);
+    }
+
+
+    /**
      * @group Disks
      */
-
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");
@@ -87,7 +98,7 @@ class SensorsTest extends TestCase
         $string = file_get_contents(__DIR__ . "/netstat");
         $this->assertEquals(24004, NetstatReport::parse($string)->tcp_segments_retransmitted);
     }
-    
+
     /**
      * @group netstat
      */
