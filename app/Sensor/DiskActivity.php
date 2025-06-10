@@ -8,6 +8,7 @@ use App\Record;
 use App\Report;
 use App\Status;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -29,13 +30,43 @@ class DiskActivity implements Sensor
 
     public function analyze(Record $record): ?Report
     {
-        $values = $this->extractUtilValues($record->data);
+        $records = $record->server->lastRecords("iostat");
+        $current_values = $this->extractUtilValues($record->data);
 
         $report = new Report();
         $report->setTitle("Storage : disk activity")
                 ->setStatus(Status::ok())
-                ->setHTML(view("sensor.diskactivity", ["values" => $values]));
+                ->setHTML(view("sensor.diskactivity", [
+                    "values" => $current_values,
+                    "datasets" => $this->extractDatasets($records)]));
         return $report;
+    }
+
+    /**
+     *
+     * @param Collection<Record> $records
+     * @return Array<Dataset>
+     */
+    public function extractDatasets(Collection $records) : array
+    {
+        $first = $records->first();
+        $values = $this->extractUtilValues($first->data);
+        $disks = array_keys($values);
+
+        $datasets = [];
+        foreach ($disks as $key => $disk) {
+            $datasets[$disk] = new Dataset($disk, ColorPalette::pick1Color($key));
+        }
+
+        foreach ($records as $record) {
+            /** @var Record $record */
+            $values = $this->extractUtilValues($record->data);
+            foreach ($values as $disk => $value) {
+                $datasets[$disk]->add(new Point(1000 * $record->time, $value));
+            }
+        }
+
+        return array_values($datasets);
     }
 
 
