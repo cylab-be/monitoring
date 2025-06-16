@@ -1,18 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<script>
-window.monitorURL = "{{ url('/') }}";
-window.monitorServerID = {{ $server->id }};
-window.monitorServerToken = "{{ $server->read_token }}";
-</script>
 <script src="/js/sensors.js"></script>
 
 <div class="container">
 
     <h1>
         <a class="text-decoration-none"
-            href="{{ $server->organization->url() }}">{{ $server->organization->name }}</a>
+            href="{{ route("servers.index", ["organization" => $server->organization]) }}">{{ $server->organization->name }}</a>
         / {{ $server->name }}
     </h1>
 
