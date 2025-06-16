@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class Reboot implements Sensor
+class Reboot extends Sensor
 {
     public function config(): SensorConfig
     {

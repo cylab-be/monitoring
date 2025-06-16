@@ -77,6 +77,7 @@ Route::middleware(['auth'])
 
         // device records
         Route::get("/records/{record}", "RecordController@show")->name("records.show");
+        Route::get("/records/{record}/{agent}", "RecordController@run")->name("records.run");
 
         // racks
         Route::get("organizations/{organization}/racks", 'RackController@index')->name("racks.index");

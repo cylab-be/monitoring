@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
  *
  * @author tibo
  */
-class Disks implements Sensor
+class Disks extends Sensor
 {
     public function config(): SensorConfig
     {

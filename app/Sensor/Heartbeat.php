@@ -17,7 +17,7 @@ use Carbon\Carbon;
  *
  * @author tibo
  */
-class Heartbeat implements Sensor
+class Heartbeat extends Sensor
 {
     //put your code here
     public function analyze(Record $record): Report

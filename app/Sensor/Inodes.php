@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
  *
  * @author tibo
  */
-class Inodes implements Sensor
+class Inodes extends Sensor
 {
     public function config(): SensorConfig
     {

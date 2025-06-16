@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author helha
  */
-class CPUtemperature implements Sensor
+class CPUtemperature extends Sensor
 {
     // Match a CPU line like
     // Package id 0:  +39.0°C  (high = +84.0°C, crit = +100.0°C)

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @author tibo
  */
-class Netstat implements Sensor
+class Netstat extends Sensor
 {
 
     public function config(): SensorConfig

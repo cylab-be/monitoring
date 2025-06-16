@@ -12,7 +12,7 @@ use App\Report;
  *
  * @author tibo
  */
-abstract class ServerInfoParser implements Sensor
+abstract class ServerInfoParser extends Sensor
 {
     public function analyze(Record $record): ?Report
     {

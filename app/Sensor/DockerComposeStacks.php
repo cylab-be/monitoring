@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class DockerComposeStacks implements Sensor
+class DockerComposeStacks extends Sensor
 {
     public function config(): SensorConfig
     {

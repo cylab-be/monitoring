@@ -7,8 +7,23 @@ namespace App;
  *
  * @author tibo
  */
-interface Sensor
+abstract class Sensor
 {
-    public function config() : SensorConfig;
-    public function analyze(Record $record) : ?Report;
+    abstract public function config() : SensorConfig;
+    abstract public function analyze(Record $record) : ?Report;
+
+    public function name() : string
+    {
+        return get_called_class();
+    }
+
+    /**
+     * Compute a pseudo ID based on the full class name.
+     * @return string
+     */
+    public function id() : string
+    {
+        $chunks = str_split(md5($this->name()), 8);
+        return implode('-', $chunks);
+    }
 }

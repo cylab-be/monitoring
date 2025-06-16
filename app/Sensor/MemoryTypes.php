@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class MemoryTypes implements Sensor
+class MemoryTypes extends Sensor
 {
 
     const REGEXES = [

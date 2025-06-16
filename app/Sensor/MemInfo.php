@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @author tibo
  */
-class MemInfo implements Sensor
+class MemInfo extends Sensor
 {
     const WARNING_RATIO = 0.95;
 

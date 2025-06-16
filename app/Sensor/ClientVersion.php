@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class ClientVersion implements Sensor
+class ClientVersion extends Sensor
 {
     public function config(): SensorConfig
     {

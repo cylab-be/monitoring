@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @author tibo
  */
-class Ifconfig implements Sensor
+class Ifconfig extends Sensor
 {
     /**
      * List of interface name prefixes.

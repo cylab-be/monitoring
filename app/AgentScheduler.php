@@ -7,7 +7,6 @@ use App\Server;
 use App\Sensor\StatusChangeDetector;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Symfony\Component\Finder\SplFileInfo;
@@ -24,18 +23,13 @@ class AgentScheduler
 
     /**
      *
-     * @var LazyCollection<Sensor>
+     * @var Collection<Sensor>
      */
     private $sensors;
-
-    // associative array
-    // trigger_label => array<Sensor>
-    private array $triggers;
 
     private function __construct()
     {
         $this->sensors = $this->autodiscover();
-        $this->triggers = $this->register($this->sensors);
     }
 
     private static $instance;
@@ -51,21 +45,21 @@ class AgentScheduler
 
     /**
      *
-     * @return LazyCollection<Sensor>
+     * @return Collection<Sensor>
      */
-    public function sensors() : LazyCollection
+    public function sensors() : Collection
     {
         return $this->sensors;
     }
 
     /**
      *
-     * @return LazyCollection<Sensor>
+     * @return Collection<Sensor>
      */
-    public function autodiscover() : LazyCollection
+    public function autodiscover() : Collection
     {
         $ROOT = __DIR__ . "/Sensor/";
-        return LazyCollection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) {
+        return Collection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) {
 
             $interface_name = "\App\Sensor";
             $class_name = '\App\Sensor\\' . $file->getFilenameWithoutExtension();
@@ -80,23 +74,6 @@ class AgentScheduler
 
             return new $class_name;
         })->filter();
-    }
-
-    /**
-     *
-     * @param LazyCollection<Sensor> $sensors
-     * @return array
-     */
-    public function register(LazyCollection $sensors) : array
-    {
-        $triggers = [];
-        foreach ($sensors as $sensor) {
-            /** @var Sensor $sensor */
-            $conf = $sensor->config();
-            $trigger_label = $conf->trigger_label;
-            $triggers[$trigger_label][] = $sensor;
-        }
-        return $triggers;
     }
 
     /**
@@ -124,16 +101,26 @@ class AgentScheduler
             return;
         }
 
-        $trigger_label = $record->label;
-
-        if (! isset($this->triggers[$trigger_label])) {
-            return;
-        }
-
-        foreach ($this->triggers[$trigger_label] as $agent) {
+        foreach ($this->agentsForLabel($record->label) as $agent) {
             /** @var Sensor $agent */
             RunAgent::dispatch($agent, $record);
         }
+    }
+
+    /**
+     * Get analysis agents that must be triggered by this label.
+     *
+     * @param string $label
+     * @return Collection<Sensor>
+     */
+    public function agentsForLabel(string $label) : Collection
+    {
+        return $this->sensors->filter(fn(Sensor $sensor) => $sensor->config()->trigger_label == $label);
+    }
+
+    public function agent(string $id) : Sensor
+    {
+        return $this->sensors->first(fn(Sensor $sensor) => $sensor->id() == $id);
     }
 
     public function notifySummary(ReportSummary $summary)

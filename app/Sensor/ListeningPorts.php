@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class ListeningPorts implements Sensor
+class ListeningPorts extends Sensor
 {
 
     public function config(): SensorConfig

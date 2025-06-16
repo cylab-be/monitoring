@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class Ssacli implements Sensor
+class Ssacli extends Sensor
 {
     public function config(): SensorConfig
     {

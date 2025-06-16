@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class Date implements Sensor
+class Date extends Sensor
 {
     public function config(): SensorConfig
     {

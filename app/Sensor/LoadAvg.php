@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @author tibo
  */
-class LoadAvg implements Sensor
+class LoadAvg extends Sensor
 {
     public function config(): SensorConfig
     {

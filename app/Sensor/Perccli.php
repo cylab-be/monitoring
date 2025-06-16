@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class Perccli implements Sensor
+class Perccli extends Sensor
 {
     public function config(): SensorConfig
     {

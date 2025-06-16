@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  *
  * @author tibo
  */
-class DiskActivity implements Sensor
+class DiskActivity extends Sensor
 {
 
     public function config(): SensorConfig

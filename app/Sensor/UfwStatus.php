@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class UfwStatus implements Sensor
+class UfwStatus extends Sensor
 {
     public function config(): SensorConfig
     {

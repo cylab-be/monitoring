@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author helha
  */
-class USBtemperature implements Sensor
+class USBtemperature extends Sensor
 {
     public function config(): SensorConfig
     {
