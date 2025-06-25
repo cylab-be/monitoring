@@ -42,7 +42,7 @@ class ExampleTest extends TestCase
             $user->organizations()->first()->name
         );
     }
-    
+
     /**
      * @group status
      */
@@ -50,10 +50,10 @@ class ExampleTest extends TestCase
     {
         $warning = Status::warning();
         $error = Status::error();
-        
+
         $this->assertGreaterThan($warning, $error);
         $this->assertTrue($error > $warning);
-        
+
         $this->assertEquals(Status::error(), max($warning, $error));
     }
 
@@ -73,14 +73,13 @@ class ExampleTest extends TestCase
         $server->save();
 
         $server_id = $server->id;
-        
+
         $record = new Record();
         $record->server_id = $server_id;
         $record->time = time();
         $record->data = "";
+        $record->label = "whatever";
         $record->save();
-        
-        $record_id = $record->id;
 
         $user = new User();
         $user->name = "Test";
