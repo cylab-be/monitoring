@@ -101,7 +101,7 @@ class AgentScheduler
             return;
         }
 
-        foreach ($this->agentsForLabel($label) as $agent) {
+        foreach ($this->agentsForLabel($record->label) as $agent) {
             /** @var Sensor $agent */
             RunAgent::dispatch($agent, $record);
         }
