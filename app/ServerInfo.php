@@ -59,6 +59,8 @@ class ServerInfo extends Model
     public function addresses() : array
     {
         $addresses = $this->addresses;
+
+        // append manually defined IP addresses
         foreach ($this->server->ips as $ip) {
             $addresses[] = $ip->ip;
         }

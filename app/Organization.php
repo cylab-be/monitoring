@@ -97,10 +97,8 @@ class Organization extends Model
 
     public function toAnsibleInventory() : string
     {
-        $inv = "";
-        foreach ($this->subnets as $subnet) {
-            $inv .= $subnet->toAnsibleInventory() . "\n";
-        }
-        return $inv;
+        return $this->subnets->map(fn($subnet) => $subnet->toAnsibleInventory())
+                ->union($this->tags->map(fn($tag) => $tag->toAnsibleInventory()))
+                ->implode("\n");
     }
 }

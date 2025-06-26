@@ -207,6 +207,15 @@ class Server extends Model
         return $this->hasMany(Ip::class);
     }
 
+    /**
+     * Full list of IP addresses : manual IPs + autodetected
+     * @return array
+     */
+    public function addresses() : array
+    {
+        return $this->info->addresses();
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
