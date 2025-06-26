@@ -48,6 +48,14 @@
                 <i class="fas fa-network-wired w-1-5"></i> Subnets
             </a>
         </li>
+
+
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route("tags.index", ["organization" => $organization]) }}">
+                <i class="fas fa-tags"></i> Tags
+            </a>
+        </li>
         @endif
     </ul>
 

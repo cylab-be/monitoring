@@ -90,4 +90,10 @@ Route::middleware(['auth'])
         Route::get("organizations/{organization}/subnets/create", 'SubnetController@create')->name("subnets.create");
         Route::get("organizations/{organization}/subnets/view", "SubnetController@view")->name("subnets.view");
         Route::resource("subnets", 'SubnetController')->except(["index", "create"]);
+
+        // tags
+        Route::get("organizations/{organization}/tags", 'TagController@index')->name("tags.index");
+        Route::get("organizations/{organization}/tags/create", 'TagController@create')->name("tags.create");
+        Route::get("organizations/{organization}/tags/view", "TagController@view")->name("tags.view");
+        Route::resource("tags", 'TagController')->except(["index", "create"]);
     });
