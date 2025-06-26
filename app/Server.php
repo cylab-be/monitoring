@@ -207,6 +207,11 @@ class Server extends Model
         return $this->hasMany(Ip::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function url() : string
     {
         return route("servers.show", ["server" => $this]);

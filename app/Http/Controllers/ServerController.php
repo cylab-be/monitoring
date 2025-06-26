@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Server;
 use App\Organization;
+use App\Tag;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -118,5 +119,24 @@ class ServerController extends Controller
         $server->summaries()->delete();
         $server->delete();
         return redirect(route("organizations.show", ["organization" => $server->organization]));
+    }
+
+    // Tags management
+    public function addTag(Server $server, Request $request)
+    {
+        $this->authorize("save", $server);
+
+        $tag = Tag::find($request->input("tag_id"));
+        $server->tags()->attach($tag);
+
+        return redirect($server->url());
+    }
+
+    public function deleteTag(Server $server, Tag $tag)
+    {
+        $this->authorize("save", $server);
+        $server->tags()->detach($tag);
+
+        return redirect($server->url());
     }
 }

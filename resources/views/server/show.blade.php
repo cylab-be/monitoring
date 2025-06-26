@@ -30,6 +30,15 @@
                 <i class="fas fa-terminal ml-3"></i> {{ $server->info->lsb }}
             </p>
 
+            <p>
+                @foreach ($server->tags as $tag)
+                <a class="badge badge-primary"
+                   href="{{ route("tags.show", ["tag" => $tag]) }}">
+                    {{ $tag->name }}
+                </a>
+                @endforeach
+            </p>
+
             @if ($server->info->uuid)
             <p>
                 <i class="far fa-id-card"></i> {{ $server->info->uuid }}
@@ -109,6 +118,8 @@
             </a>
         </div>
     </div>
+
+    @include("server.partials.tags")
 
     @foreach ($server->lastSummary()->reports() as $report)
     @include("report.partials.show", ["report" => $report])

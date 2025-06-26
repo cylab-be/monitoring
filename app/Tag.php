@@ -14,4 +14,9 @@ class Tag extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class);
+    }
 }

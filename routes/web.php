@@ -67,6 +67,11 @@ Route::middleware(['auth'])
         // devices
         Route::get("organizations/{organization}/servers", "ServerController@index")->name("servers.index");
         Route::get("organizations/{organization}/servers/create", "ServerController@create")->name("servers.create");
+
+        // device - tags
+        Route::post("servers/{server}/tags", "ServerController@addTag")->name("servers.tags.add");
+        Route::delete("servers/{server}/tags/{tag}", "ServerController@deleteTag")->name("servers.tags.remove");
+
         Route::get("servers/{server}/records", "ServerController@records")->name("servers.records");
         Route::resource('servers', 'ServerController')->except(["index", "create"]);
 
