@@ -23,12 +23,12 @@ class Reboot extends Sensor
             "Check if /var/run/reboot-required exists (on Debian based distros)"
         );
     }
-    
+
     public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("Reboot required");
-        
-        if ($record->data) {
+
+        if ($record->data == 'yes') {
             return $report->setStatus(Status::warning())
                     ->setHTML("<p>Reboot required: yes</p>");
         }

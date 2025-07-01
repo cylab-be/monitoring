@@ -16,7 +16,6 @@ $COMMANDS = [
     "lsb" => "lsb_release -a",
     "memory" => "cat /proc/meminfo",
     "memory_dmi" => "dmidecode --type 17",
-    "date" => "date +%s",
     "ifconfig" => "ifconfig",
     "ssacli" => "ssacli ctrl all show config",
     "perccli" => "perccli64 /c0 show",
@@ -36,11 +35,13 @@ $COMMANDS = [
     "ufw_status" => "ufw status verbose",
 
     # list installed APT packages
-    "apt_list" => "apt list --installed"
+    "apt_list" => "apt list --installed",
+
+    "date" => "date +%s"
 ];
 
 $FUNCTIONS = [
-    "reboot" => fn() => file_exists("/var/run/reboot-required"),
+    "reboot" => fn() => file_exists("/var/run/reboot-required") ? 'yes' : 'no',
     "updates" => fn() => file_get_contents("/var/lib/update-notifier/updates-available")
 ];
 
