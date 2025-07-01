@@ -26,7 +26,7 @@ class ClientVersion extends Sensor
 
     public function analyze(Record $record): Report
     {
-        $latest_version = "0.0.12";
+        $latest_version = $this->currentVersion();
         $installed_version = $record->data;
 
         $report = (new Report())->setTitle("Client Version");
@@ -42,5 +42,18 @@ class ClientVersion extends Sensor
         }
 
         return $report;
+    }
+
+    /**
+     * Extract current version number from client script.
+     * @return string
+     */
+    public function currentVersion() : string
+    {
+        $regex = '/^\$VERSION = "(\d+\.\d+\.\d+)";$/m';
+        $client = file_get_contents(__DIR__ . "/../../public/monitor");
+        $version = preg_match_one($regex, $client);
+
+        return $version;
     }
 }
