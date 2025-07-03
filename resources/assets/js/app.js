@@ -29,3 +29,16 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+
+// ----------------- filter table
+import Mark from "mark.js";
+let mark = new Mark("#filter-table");
+$("#filter-input").on("keyup", function() {
+    let value = $(this).val().toLowerCase();
+    mark.unmark();
+    mark.mark(value);
+
+    $("#filter-table tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+});

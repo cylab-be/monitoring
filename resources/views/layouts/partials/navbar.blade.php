@@ -53,9 +53,18 @@
         <li class="nav-item">
             <a class="nav-link text-white"
                href="{{ route("tags.index", ["organization" => $organization]) }}">
-                <i class="fas fa-tags"></i> Tags
+                <i class="fas fa-tags w-1-5"></i> Tags
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route("insights.packages", ["organization" => $organization]) }}">
+                <i class="fas fa-lightbulb w-1-5"></i> Packages
+            </a>
+        </li>
+
+
         @endif
     </ul>
 

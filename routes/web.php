@@ -101,4 +101,8 @@ Route::middleware(['auth'])
         Route::get("organizations/{organization}/tags/create", 'TagController@create')->name("tags.create");
         Route::get("organizations/{organization}/tags/view", "TagController@view")->name("tags.view");
         Route::resource("tags", 'TagController')->except(["index", "create"]);
+
+        // insights
+        Route::get("organizations/{organization}/insights/packages", 'InsightsController@packages')
+                ->name("insights.packages");
     });
