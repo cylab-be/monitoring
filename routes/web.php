@@ -105,4 +105,6 @@ Route::middleware(['auth'])
         // insights
         Route::get("organizations/{organization}/insights/packages", 'InsightsController@packages')
                 ->name("insights.packages");
+        Route::get("organizations/{organization}/insights/stacks", 'InsightsController@stacks')
+                ->name("insights.stacks");
     });

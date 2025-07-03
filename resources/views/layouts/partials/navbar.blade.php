@@ -57,11 +57,26 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link text-white"
-               href="{{ route("insights.packages", ["organization" => $organization]) }}">
-                <i class="fas fa-lightbulb w-1-5"></i> Packages
+        <li class="nav-item dropdown">
+            <a class="nav-link text-white dropdown-toggle" href="#" id="insightsDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-lightbulb w-1-5"></i> Insights
             </a>
+
+            <div class="dropdown-menu" aria-labelledby="insightsDropdown">
+                <a class="dropdown-item"
+                   href="{{ route("insights.packages", ["organization" => $organization]) }}">
+                    Packages
+                </a>
+                <a class="dropdown-item"
+                   href="{{ route("insights.stacks", ["organization" => $organization]) }}">
+                    Docker Stacks
+                </a>
+                <!--
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+                -->
+            </div>
         </li>
 
 
