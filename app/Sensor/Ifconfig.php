@@ -25,7 +25,8 @@ class Ifconfig extends Sensor
         "bge",
         "ovpn", // OpenVPN (OpnSENSE, FreeBSD)
         "wg", // Wireguard (OpnSENSE, FreeBSD)
-        "igc", "ixl"];
+        "igc", "ixl",
+        "ppp"]; // E.g. pppoe0, used for Internet connections
 
     public function config(): SensorConfig
     {
