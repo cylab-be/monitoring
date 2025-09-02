@@ -26,6 +26,7 @@ class Ifconfig extends Sensor
         "ovpn", // OpenVPN (OpnSENSE, FreeBSD)
         "wg", // Wireguard (OpnSENSE, FreeBSD)
         "igc", "ixl",
+        "vmbr", // virtual interface used for example by proxmox https://cylab.be/s/qsh5c
         "ppp"]; // E.g. pppoe0, used for Internet connections
 
     public function config(): SensorConfig
