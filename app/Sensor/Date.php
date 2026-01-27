@@ -32,7 +32,7 @@ class Date extends Sensor
         $delta = (int) $record->data - $record->time;
         $report->setHTML("<p>Time drift: $delta seconds</p>");
         
-        if (abs($delta) > 10) {
+        if (abs($delta) > 60) {
             return $report->setStatus(Status::warning());
         }
 
