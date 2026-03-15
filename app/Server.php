@@ -101,7 +101,9 @@ class Server extends Model
     }
 
     /**
-     * Get the last day of data.
+     *
+     * @param string $label
+     * @return DatabaseCollection<Record>
      */
     public function lastRecords(string $label) : DatabaseCollection
     {
@@ -139,8 +141,11 @@ class Server extends Model
             return new Collection();
         }
 
+        // https://stackoverflow.com/questions/76729231/larastan-complains-about-collection-methods-paramaters-after-upgrading-to-larave
+        // @phpstan-ignore-next-line
         return $summary->reports()->filter(
-            function (Report $report) {
+            function ($report) {
+                /** @var Report $report */
                 return $report->status_code > 0;
             }
         );

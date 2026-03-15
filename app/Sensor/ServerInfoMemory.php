@@ -18,7 +18,7 @@ class ServerInfoMemory extends ServerInfoParser
         $REGEX = "/^MemTotal:\\s+([0-9]+) kB$/m";
         $matches = array();
         preg_match($REGEX, $string, $matches);
-        $info->memory = $matches[1];
+        $info->memory = (int) $matches[1];
     }
 
     public function config(): SensorConfig

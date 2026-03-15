@@ -54,6 +54,11 @@ class MemInfo extends Sensor
     }
 
 
+    /**
+     *
+     * @param Collection<Record> $records
+     * @return Dataset
+     */
     public function usedMemoryPoints(Collection $records) : Dataset
     {
         $color = ColorPalette::pick1Color(0);
@@ -70,6 +75,11 @@ class MemInfo extends Sensor
         return $dataset;
     }
 
+    /**
+     *
+     * @param Collection<Record> $records
+     * @return Dataset
+     */
     public function cachedMemoryPoints(Collection $records) : Dataset
     {
         $color = ColorPalette::pick1Color(1);

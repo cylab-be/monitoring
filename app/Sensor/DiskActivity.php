@@ -50,6 +50,7 @@ class DiskActivity extends Sensor
     public function extractDatasets(Collection $records) : array
     {
         $first = $records->first();
+        /** @var Record $first */
         $values = $this->extractUtilValues($first->data);
         $disks = array_keys($values);
 

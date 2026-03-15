@@ -38,6 +38,11 @@ class Netstat extends Sensor
         return $report;
     }
 
+    /**
+     *
+     * @param Collection<Record> $records
+     * @return Dataset
+     */
     public function points(Collection $records) : Dataset
     {
         $dataset = new Dataset("Retransmitted TCP segments [%]");

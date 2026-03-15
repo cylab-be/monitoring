@@ -57,7 +57,7 @@ class Organization extends Model
     public function devicesByStatus() : Collection
     {
         return $this->servers->sort(function (Server $device1, Server $device2) {
-            return $device1->lastSummary()->status_code < $device2->lastSummary()->status_code;
+            return $device1->lastSummary()->status_code < $device2->lastSummary()->status_code ? 1 : -1;
         });
     }
 

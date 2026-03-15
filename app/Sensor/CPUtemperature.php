@@ -54,14 +54,14 @@ class CPUtemperature extends Sensor
 
             // this line corresponds to a CPU definition
             if (preg_match(self::REGEXPCPU, $line, $match) === 1) {
-                $cpu = new Cpu($match[2], $match[3], $match[4]);
+                $cpu = new Cpu($match[2], (float) $match[3], (float) $match[4]);
                 $cpus[] = $cpu;
                 continue;
             }
 
             // line correponds to a core definition
             if (preg_match(self::REGEXPCORE, $line, $match) === 1) {
-                $core = new Core($match[1], $match[2], $match[3]);
+                $core = new Core($match[1], (float) $match[2], (float) $match[3]);
                 // append to current CPU
                 $cpu->cores[] = $core;
                 continue;

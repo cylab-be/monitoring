@@ -53,7 +53,7 @@ class Ifconfig extends Sensor
     /**
      * Compute datasets (array time ordered points) that can be fed to Chart.js
      *
-     * @param Collection $records
+     * @param Collection<Record> $records
      * @return array
      */
     public function points(Collection $records) : array

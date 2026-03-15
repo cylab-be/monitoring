@@ -37,7 +37,8 @@ class LoadAvg extends Sensor
 
         $records = $server->lastRecords($record->label);
         $max_load = $records
-                ->map(function (Record $record) {
+                ->map(function ($record) {
+                    /** @var Record $record */
                     return $this->parse($record->data);
                 })
                 ->max();
@@ -61,6 +62,11 @@ class LoadAvg extends Sensor
         return $report->setStatus(Status::ok());
     }
 
+    /**
+     *
+     * @param Collection<Record> $records
+     * @return Dataset
+     */
     public function loadPoints(Collection $records) : Dataset
     {
         $dataset = new Dataset("Load");

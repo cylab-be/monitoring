@@ -25,7 +25,10 @@ class ServerInfoAddresses extends ServerInfoParser
         }
 
         // remove empty values
-        $info->addresses = array_filter($ips, 'strlen');
+        $info->addresses = array_filter(
+            $ips,
+            fn($address) => strlen($address) != 0
+        );
     }
 
     public function config(): SensorConfig
