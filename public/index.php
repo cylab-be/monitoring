@@ -9,6 +9,13 @@
 
 define('LARAVEL_START', microtime(true));
 
+#
+# https://laravel.com/docs/8.x/upgrade#maintenance-mode-updates
+#
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
