@@ -27,7 +27,7 @@ class UfwStatus extends Sensor
     public function analyze(Record $record): Report
     {
         $report = (new Report())->setTitle("UFW status")
-                ->setHTML($record->data);
+                ->setHTML("<pre>" . $record->data . "</pre>");
 
         if ($record->data == "Status: inactive") {
             return $report->setStatus(Status::warning());
