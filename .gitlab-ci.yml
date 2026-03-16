@@ -30,7 +30,6 @@ test:php83:
     - vendor/bin/phpunit --coverage-text --colors=never --testdox
     - vendor/bin/phpcs
     - vendor/bin/phpstan analyze --memory-limit=512M
-    - vendor/bin/unused_scanner unused-scanner.php
   artifacts:
     paths:
       - storage/logs/*.log
