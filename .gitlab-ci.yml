@@ -9,10 +9,10 @@ cache:
   paths:
     - composer-cache/
 
-# Test with PHP8.1
-test:php81:
+# Test with PHP8.3
+test:php83:
   stage: test
-  image: cylab/php:8.1
+  image: cylab/php:8.3
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   services:
     - mysql:5.7
@@ -37,7 +37,7 @@ test:php81:
     when: always
 
 test:dependencies:
-  image: cylab/php:8.1
+  image: cylab/php:8.3
   script:
     # in cylab/php:7.4, security-checker is already installed...
     - ~/.composer/vendor/bin/security-checker security:check composer.lock

@@ -5,7 +5,7 @@
 
 #### Step 1 : composer
 
-FROM cylab/php:8.1 AS composer
+FROM cylab/php:8.3 AS composer
 
 COPY . /var/www/html
 WORKDIR /var/www/html
@@ -21,7 +21,7 @@ RUN npm --version && npm install && npm run prod
 
 #### Step 3 : the actual docker image
 
-FROM cylab/laravel:8.1
+FROM cylab/laravel:8.3
 
 # Custom logs : request time, laravel session
 COPY ./docker/logs.conf /etc/apache2/conf-available/logs.conf
