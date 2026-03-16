@@ -46,6 +46,8 @@ Route::middleware(['auth'])
         Route::get("/status", function () {
             return view("status");
         })->name("status");
+        
+        Route::resource('/failed-jobs', 'FailedJobController')->only(['index', 'show']);
 
 
         Route::resource('organizations', 'OrganizationController');

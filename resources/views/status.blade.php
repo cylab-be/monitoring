@@ -12,6 +12,14 @@ $scheduler = \App\AgentScheduler::get();
 
     <h2>Jobs</h2>
     <p>Analysis jobs in queue: {{ Queue::size() }}</p>
+    
+    <p>
+        <a href='{{ route('failed-jobs.index') }}'
+           class='btn btn-sm btn-primary'>
+            Failed jobs: {{ \App\FailedJob::count() }}
+        </a>
+    </p>
+    
     <p>
         Throttling threshold: {{ $scheduler->throttlingTreshold() }}
     </p>
