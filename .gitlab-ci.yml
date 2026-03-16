@@ -9,10 +9,10 @@ cache:
   paths:
     - composer-cache/
 
-# Test with PHP7.4 
-test:php74:
+# Test with PHP8.1
+test:php81:
   stage: test
-  image: cylab/php:7.4
+  image: cylab/php:8.1
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   services:
     - mysql:5.7
@@ -37,14 +37,14 @@ test:php74:
     when: always
 
 test:dependencies:
-  image: cylab/php:7.4
+  image: cylab/php:8.1
   script:
     # in cylab/php:7.4, security-checker is already installed...
     - ~/.composer/vendor/bin/security-checker security:check composer.lock
 
 test:gitleaks:
   stage: test
-  image: 
+  image:
     name: "zricethezav/gitleaks"
     entrypoint: [""]
   script:
@@ -53,7 +53,7 @@ test:gitleaks:
     # with recent git versions
     - git config --global --add safe.directory $CI_PROJECT_DIR
     - gitleaks detect -v -c gitleaks.toml ./
-    
+
 build:
   stage: test
   ## Run on a gitlab-runner that is configured with docker-in-docker
