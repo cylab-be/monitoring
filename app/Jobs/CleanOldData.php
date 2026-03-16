@@ -5,6 +5,9 @@ namespace App\Jobs;
 use App\Record;
 use App\Report;
 use App\ReportSummary;
+use App\FailedJob;
+
+use Carbon\Carbon;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -37,5 +40,8 @@ class CleanOldData implements ShouldQueue
         
         $count = ReportSummary::where("time", "<", $max_age)->delete();
         logger()->info("Deleted $count report summaries");
+        
+        $count = FailedJob::where("failed_at", "<", Carbon::createFromTimestamp($max_age))->delete();
+        logger()->info("Deleted $count failed jobs records");
     }
 }
