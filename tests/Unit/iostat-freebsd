@@ -1,0 +1,10 @@
+extended device statistics  
+device       r/s     w/s     kr/s     kw/s  ms/r  ms/w  ms/o  ms/t qlen  %b  
+ada0           0       7      0.3    462.9     1     3    21     6    0   3 
+pass0          0       0      0.0      0.0     0     0     0     0    0   0 
+pass1          0       0      0.0      0.0     0     0     0     0    0   0 
+                        extended device statistics  
+device       r/s     w/s     kr/s     kw/s  ms/r  ms/w  ms/o  ms/t qlen  %b  
+ada0           0       0      0.0      0.0     0     0     0     0    0   3 
+pass0          0       0      0.0      0.0     0     0     0     0    0   0 
+pass1          0       0      0.0      0.0     0     0     0     0    0   0

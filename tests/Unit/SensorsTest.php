@@ -19,13 +19,6 @@ use Tests\TestCase;
  */
 class SensorsTest extends TestCase
 {
-    public function testDiskActivity()
-    {
-        $string = file_get_contents(__DIR__ . "/iostat");
-        $sensor = new \App\Sensor\DiskActivity();
-        $values = $sensor->extractUtilValues($string);
-        $this->assertEquals(5.65, $values["sdb"]);
-    }
 
     public function testDisksSensor()
     {

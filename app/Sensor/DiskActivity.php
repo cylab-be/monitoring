@@ -31,7 +31,7 @@ class DiskActivity extends Sensor
     public function analyze(Record $record): ?Report
     {
         $records = $record->server->lastRecords("iostat");
-        $current_values = $this->extractUtilValues($record->data);
+        $current_values = $this->extractUtilValuesFrom2Tables($record->data);
 
         $report = new Report();
         $report->setTitle("Storage : disk activity")
@@ -51,7 +51,7 @@ class DiskActivity extends Sensor
     {
         $first = $records->first();
         /** @var Record $first */
-        $values = $this->extractUtilValues($first->data);
+        $values = $this->extractUtilValuesFrom2Tables($first->data);
         $disks = array_keys($values);
 
         $datasets = [];
@@ -61,7 +61,7 @@ class DiskActivity extends Sensor
 
         foreach ($records as $record) {
             /** @var Record $record */
-            $values = $this->extractUtilValues($record->data);
+            $values = $this->extractUtilValuesFrom2Tables($record->data);
             foreach ($values as $disk => $value) {
                 $datasets[$disk]->add(new Point(1000 * $record->time, $value));
             }
@@ -71,20 +71,40 @@ class DiskActivity extends Sensor
     }
 
 
-    public function extractUtilValues(string $string) : array
+    public function extractUtilValuesFrom2Tables(string $string) : array
     {
+        $table = $this->extract2ndTable($string);
+        return $this->extractUtileValuesFromTable($table);
+    }
+    
+    private function extract2ndTable(string $string) : string
+    {
+        $string = trim($string);
+        
         // $string should contain 2 tables
         // each table starts with "Device ..."
         // we must skip the first table and only take into account the second table
+        
+        // On Linux systems
         $tables = explode("Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   "
                 . "wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  "
-                . "aqu-sz  %util", trim($string));
+                . "aqu-sz  %util", $string);
 
-        if (count($tables) != 3) {
-            throw new \Exception("Could not detect 2 iostat tables");
+        if (count($tables) == 3) {
+            return $tables[2];
         }
-
-        $table = $tables[2];
+        
+        // On freebsd
+        $tables = explode("device       r/s     w/s     kr/s     kw/s  ms/r  ms/w  ms/o  ms/t qlen  %b", $string);
+        if (count($tables) == 3) {
+            return $tables[2];
+        }
+        
+        throw new \Exception("Could not detect 2 iostat tables");
+    }
+    
+    private function extractUtileValuesFromTable(string $table) : array
+    {
         $table = str_replace(",", ".", $table);
         $lines = explode("\n", $table);
 
@@ -92,7 +112,7 @@ class DiskActivity extends Sensor
         foreach ($lines as $line) {
             $matches = [];
             // Use regex to match the device name and the last number (%util)
-            if (preg_match('/^(\S+).*?(\d+\.\d+)\s*$/', $line, $matches)) {
+            if (preg_match('/^(\S+).*?(\d+(?:\.\d+)?)\s*$/', $line, $matches)) {
                 $device = $matches[1];
                 if (Str::startsWith($device, "loop")) {
                     continue;
