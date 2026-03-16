@@ -47,11 +47,17 @@ class Server extends Model
     // define attributes that can be appended when serializing to json
     // used in OrganizationDashboardController@json
     // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
+  
+    // as of Laravel 12, appended attributes should be defined using accessor method
+    // protected function url(): Attribute
+    // but the function url(): string already exists, which causes as mixup with phpstan
+    // https://laravel.com/docs/12.x/eloquent-serialization#appending-values-to-json
+    // @phpstan-ignore rules.modelAppends,rules.modelAppends
     protected $appends = ['url', 'status', 'failing_sensors', 'last_record_time'];
 
     public function getUrlAttribute() : string
     {
-        return action("ServerController@show", ["server" => $this]);
+        return $this->url();
     }
 
     public function getStatusAttribute() : array

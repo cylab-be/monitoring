@@ -9,7 +9,6 @@ use Tests\TestCase;
 /**
  * Description of SensorManagementTest
  *
- * @group sensor-manager
  * @author tibo
  */
 class SensorManagementTest extends TestCase

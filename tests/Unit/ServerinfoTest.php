@@ -12,14 +12,10 @@ use Tests\TestCase;
 /**
  * Description of MemoryTest
  *
- * @group memory
  * @author tibo
  */
 class ServerinfoTest extends TestCase
 {
-    /**
-     * @group sensors
-     */
     public function testMemoryTypes()
     {
         $string = file_get_contents(__DIR__ . "/memory-dmi");
@@ -30,9 +26,6 @@ class ServerinfoTest extends TestCase
         $this->assertEquals(32, $dims[0]->size);
     }
     
-    /**
-     * @group memory
-     */
     public function testMemoryDmi()
     {
         $string = file_get_contents(__DIR__ . "/memory-dmi");
@@ -44,11 +37,6 @@ class ServerinfoTest extends TestCase
         $this->assertEquals(67108864, $info->memory);
     }
 
-    /**
-     * @group freebsd
-     * @group cpu
-     * @group freebsd-cpu
-     */
     public function testThreadsFreebsd()
     {
         $string = file_get_contents(__DIR__ . "/freebsd-dmi-cpu");
@@ -61,7 +49,6 @@ class ServerinfoTest extends TestCase
     /**
      * Test CPU cores extraction for a system with multiple processors and many threads
      *
-     * @group cpu
      */
     public function testThreadsMulti()
     {

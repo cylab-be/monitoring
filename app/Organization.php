@@ -36,6 +36,11 @@ class Organization extends Model
 
     // add servers when serializing to json
     // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
+    // as of Laravel 12, appended attributes should be defined using accessor method
+    // protected function url(): Attribute
+    // but the function url(): string already exists, which causes as mixup with phpstan
+    // https://laravel.com/docs/12.x/eloquent-serialization#appending-values-to-json
+    // @phpstan-ignore rules.modelAppends
     protected $appends = ['servers'];
 
     protected function getServersAttribute()

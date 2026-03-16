@@ -13,10 +13,6 @@ use Tests\TestCase;
  */
 class IfconfigTest extends TestCase
 {
-    /**
-     * @group ifconfig
-     * @group sensors
-     */
     public function testIfconfig()
     {
         $string = file_get_contents(__DIR__ . "/ifconfig");
@@ -32,8 +28,6 @@ class IfconfigTest extends TestCase
     /**
      * Test parsing of ifconfig string from a ubuntu 18.04 server
      *
-     * @group ifconfig
-     * @group sensors
      */
     public function testIfconfig1804()
     {
@@ -47,10 +41,6 @@ class IfconfigTest extends TestCase
         $this->assertEquals(266912412, $interfaces[1]->tx);
     }
 
-    /**
-     * @group ifconfig
-     * @group sensors
-     */
     public function testMultiIP()
     {
         $string = file_get_contents(__DIR__ . "/ifconfig-multi");

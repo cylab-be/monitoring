@@ -19,9 +19,6 @@ use Tests\TestCase;
  */
 class SensorsTest extends TestCase
 {
-    /**
-     * @group disks
-     */
     public function testDiskActivity()
     {
         $string = file_get_contents(__DIR__ . "/iostat");
@@ -30,10 +27,6 @@ class SensorsTest extends TestCase
         $this->assertEquals(5.65, $values["sdb"]);
     }
 
-
-    /**
-     * @group Disks
-     */
     public function testDisksSensor()
     {
         $string = file_get_contents(__DIR__ . "/df");
@@ -90,18 +83,12 @@ class SensorsTest extends TestCase
     }
 
 
-    /**
-     * @group netstat
-     */
     public function testNetstat()
     {
         $string = file_get_contents(__DIR__ . "/netstat");
         $this->assertEquals(24004, NetstatReport::parse($string)->tcp_segments_retransmitted);
     }
 
-    /**
-     * @group netstat
-     */
     public function testNetstatMint()
     {
         $string = file_get_contents(__DIR__ . "/netstat-mint");
@@ -110,10 +97,6 @@ class SensorsTest extends TestCase
         $this->assertEquals(6161477, $report->tcp_segments_sent);
     }
 
-
-    /**
-     * @group CPUtemp
-     */
     public function testCPUtemp()
     {
         $string = file_get_contents(__DIR__ . "/sensors");
@@ -124,9 +107,7 @@ class SensorsTest extends TestCase
         $this->assertEquals("Core 3", $cpus[0]->cores[3]->name);
         $this->assertEquals("34.0", $cpus[0]->cores[3]->value);
     }
-    /**
-     * @group USBtemp
-     */
+    
     public function testTEMPer()
     {
         $string = file_get_contents(__DIR__ . "/TEMPer");

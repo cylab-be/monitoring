@@ -43,9 +43,6 @@ class ExampleTest extends TestCase
         );
     }
 
-    /**
-     * @group status
-     */
     public function testStatusComparison()
     {
         $warning = Status::warning();
@@ -57,10 +54,6 @@ class ExampleTest extends TestCase
         $this->assertEquals(Status::error(), max($warning, $error));
     }
 
-
-    /**
-     * @group status-change
-     */
     public function testStatusChangeDetection()
     {
         $organization = new Organization();
