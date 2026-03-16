@@ -89,6 +89,11 @@ class Ifconfig extends Sensor
 
                 $previous_value = $current_value[$iname];
                 $delta_time = $interface->time - $previous_value->time;
+                
+                // just in case we got 2 records at the same moment...
+                if ($delta_time == 0) {
+                    continue;
+                }
 
                 // RX
                 $delta = $interface->rx - $previous_value->rx;
