@@ -50,7 +50,7 @@ class ClientVersion extends Sensor
      */
     public function currentVersion() : string
     {
-        require_once __DIR__ . "/../Http/Controllers/Client/parameters.php";
+        require __DIR__ . "/../Http/Controllers/Client/parameters.php";
         # @phpstan-ignore variable.undefined
         return $VERSION;
     }
