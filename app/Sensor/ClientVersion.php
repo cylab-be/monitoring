@@ -50,10 +50,8 @@ class ClientVersion extends Sensor
      */
     public function currentVersion() : string
     {
-        $regex = '/^\$VERSION = "(\d+\.\d+\.\d+)";$/m';
-        $client = file_get_contents(__DIR__ . "/../../public/monitor");
-        $version = preg_match_one($regex, $client);
-
-        return $version;
+        require_once __DIR__ . "/../Http/Controllers/Client/parameters.php";
+        # @phpstan-ignore variable.undefined
+        return $VERSION;
     }
 }

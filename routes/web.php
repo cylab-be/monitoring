@@ -28,6 +28,8 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/monitor', 'ClientController@get');
+
 Auth::routes(['register' => config("app.allow_registration")]);
 
 // public json dashboard
