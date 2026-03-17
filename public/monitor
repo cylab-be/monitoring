@@ -36,7 +36,11 @@ $COMMANDS = [
 
     # list installed APT packages
     "apt_list" => "apt list --installed",
+    
+    # list failed systemd units
+    "systemd-failed-units" => "systemctl list-units --state=failed",
 
+    # date should be the last command, so we can compare with the monitoring server
     "date" => "date +%s"
 ];
 
