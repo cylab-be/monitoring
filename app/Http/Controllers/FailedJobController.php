@@ -9,7 +9,7 @@ class FailedJobController extends Controller
     public function index()
     {
         return view('failed-job.index', [
-            'jobs' => FailedJob::orderByDesc('id')->select(['id', 'payload', 'failed_at'])->get()]);
+            'jobs' => FailedJob::orderByDesc('id')->select(['id', 'payload', 'failed_at'])->limit(1000)->get()]);
     }
     
     public function show(FailedJob $failed_job)

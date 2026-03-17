@@ -16,8 +16,11 @@ $scheduler = \App\AgentScheduler::get();
     <p>
         <a href='{{ route('failed-jobs.index') }}'
            class='btn btn-sm btn-primary'>
-            Failed jobs: {{ \App\FailedJob::count() }}
+            Failed jobs: {{ \App\FailedJob::count() }} total
+            | {{ \App\FailedJob::countInLastHour() }} in last hour
         </a>
+        
+        
     </p>
     
     <p>
