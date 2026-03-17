@@ -1,0 +1,9 @@
+/monitoring-scheduler-1 - Restarts: 0
+/monitoring-queue-1 - Restarts: 0
+/monitoring-web-1 - Restarts: 0
+/monitoring-mysql-1 - Restarts: 3
+/monitoring-redis-1 - Restarts: 0
+/monitoring-node-1 - Restarts: 0
+/monitoring-mailhog-1 - Restarts: 0
+/open-webui - Restarts: 0
+
