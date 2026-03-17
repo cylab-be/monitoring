@@ -22,7 +22,7 @@ class ColorPalette
 
     public static function pick1Color(int $key) : string
     {
-        return self::COLORS[$key];
+        return self::COLORS[$key % count(self::COLORS)];
     }
 
     public static function lighten(string $hex, $ratio) : string
