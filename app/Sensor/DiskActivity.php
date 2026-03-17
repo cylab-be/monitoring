@@ -103,6 +103,8 @@ class DiskActivity extends Sensor
         throw new \Exception("Could not detect 2 iostat tables");
     }
     
+    const SKIP_PREFIXES = ['loop', 'dm-'];
+    
     private function extractUtileValuesFromTable(string $table) : array
     {
         $table = str_replace(",", ".", $table);
@@ -114,7 +116,7 @@ class DiskActivity extends Sensor
             // Use regex to match the device name and the last number (%util)
             if (preg_match('/^(\S+).*?(\d+(?:\.\d+)?)\s*$/', $line, $matches)) {
                 $device = $matches[1];
-                if (Str::startsWith($device, "loop")) {
+                if (Str::startsWith($device, self::SKIP_PREFIXES)) {
                     continue;
                 }
 
