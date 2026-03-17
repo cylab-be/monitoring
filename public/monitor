@@ -2,7 +2,7 @@
 
 <?php
 
-$VERSION = "0.0.13";
+$VERSION = "0.0.14";
 
 // Define the commands to run
 $COMMANDS = [
@@ -30,6 +30,9 @@ $COMMANDS = [
 
     # list docker compose stacks
     "docker_compose_stacks" => "docker compose ls --format json",
+    # list number of restarts of each docker container
+    "docker-restarts" => 
+    "docker ps -q | xargs -I{} docker inspect --format '{{.Name}} - Restarts: {{.RestartCount}}' {}",
 
     "lshw" => "lshw",
     "ufw_status" => "ufw status verbose",
