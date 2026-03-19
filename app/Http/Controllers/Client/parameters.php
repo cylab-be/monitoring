@@ -1,6 +1,6 @@
 <?php
 
-$VERSION = "0.0.14";
+$VERSION = "0.0.15";
 
 // Define the commands to run
 $COMMANDS = [
@@ -10,14 +10,14 @@ $COMMANDS = [
     "iostat" => "iostat -x 2 2",
     "cpu" => "cat /proc/cpuinfo",
     "cpu_temperature" => "sensors",
-    "cpu_dmi" => "dmidecode -t processor",
+    "cpu_dmi" => "/usr/sbin/dmidecode -t processor",
     "lsb" => "lsb_release -a",
     "memory" => "cat /proc/meminfo",
-    "memory_dmi" => "dmidecode --type 17",
-    "ifconfig" => "ifconfig",
+    "memory_dmi" => "/usr/sbin/dmidecode --type 17",
+    "ifconfig" => "/usr/sbin/ifconfig",
     "ssacli" => "ssacli ctrl all show config",
     "perccli" => "perccli64 /c0 show",
-    "system" => "dmidecode -t system",
+    "system" => "/usr/sbin/dmidecode -t system",
     "upaimte" => "cat /proc/uptime",
     "uptime_cmd" => "uptime",
     "uname" => "uname -mrs",
@@ -30,7 +30,8 @@ $COMMANDS = [
     "docker_compose_stacks" => "command -v docker >/dev/null 2>&1 && docker compose ls --format json",
     # list number of restarts of each docker container
     "docker-restarts" =>
-    "command -v docker >/dev/null 2>&1 && docker ps -q | xargs -I{} docker inspect --format '{{.Name}} - Restarts: {{.RestartCount}}' {}",
+    "command -v docker >/dev/null 2>&1 && "
+    . "docker ps -q | xargs -I{} docker inspect --format '{{.Name}} - Restarts: {{.RestartCount}}' {}",
 
     "lshw" => "lshw",
     "ufw_status" => "ufw status verbose",
