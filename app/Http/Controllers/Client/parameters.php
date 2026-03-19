@@ -27,10 +27,10 @@ $COMMANDS = [
     "freebsd_top" => "top -n",
 
     # list docker compose stacks
-    "docker_compose_stacks" => "docker compose ls --format json",
+    "docker_compose_stacks" => "command -v docker >/dev/null 2>&1 && docker compose ls --format json",
     # list number of restarts of each docker container
     "docker-restarts" =>
-    "docker ps -q | xargs -I{} docker inspect --format '{{.Name}} - Restarts: {{.RestartCount}}' {}",
+    "command -v docker >/dev/null 2>&1 && docker ps -q | xargs -I{} docker inspect --format '{{.Name}} - Restarts: {{.RestartCount}}' {}",
 
     "lshw" => "lshw",
     "ufw_status" => "ufw status verbose",
