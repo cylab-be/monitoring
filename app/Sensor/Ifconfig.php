@@ -21,7 +21,8 @@ class Ifconfig extends Sensor
      * List of interface name prefixes.
      */
     const PREFIXES_WHITELIST = [
-        "eno", "ens", "enp", "eth", "wl", "venet", "igb", "ax", "tun",
+        "eno", "ens", "enp", "enx",
+        "eth", "wl", "venet", "igb", "ax", "tun",
         "bge",
         "ovpn", // OpenVPN (OpnSENSE, FreeBSD)
         "wg", // Wireguard (OpnSENSE, FreeBSD)
