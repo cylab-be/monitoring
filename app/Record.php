@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property-read int $id
@@ -35,7 +36,16 @@ class Record extends Model
     public function save(array $options = [])
     {
         if (parent::save($options)) {
-            AgentScheduler::get()->notify($this);
+            // If this record is saved inside a DB transaction, make sure
+            // the agent is dispatched only after commit.
+            $record = $this;
+            if (DB::connection()->transactionLevel() > 0) {
+                DB::afterCommit(function () use ($record) {
+                    AgentScheduler::get()->notify($record);
+                });
+            } else {
+                AgentScheduler::get()->notify($record);
+            }
             return true;
         }
 

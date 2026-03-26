@@ -6,6 +6,7 @@ use App\Server;
 use App\Record;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -16,18 +17,27 @@ class ApiController extends Controller
             abort(403);
         }
 
-        foreach ($request->all() as $label => $data) {
-            if (is_null($data)) {
-                continue;
-            }
+        $now = time();
+        // Wrap the code in a transaction to decrease concurrent writes to the database.
+        DB::transaction(function () use ($request, $server, $now) {
+            foreach ($request->all() as $label => $data) {
+                // 'token' is used for auth only; do not store it as a metric record.
+                if ($label === 'token') {
+                    continue;
+                }
 
-            $record = new Record();
-            $record->server_id = $server->id;
-            $record->time = time();
-            $record->label = $label;
-            $record->data = $data;
-            $record->save();
-        }
+                if (is_null($data)) {
+                    continue;
+                }
+
+                $record = new Record();
+                $record->server_id = $server->id;
+                $record->time = $now;
+                $record->label = $label;
+                $record->data = $data;
+                $record->save();
+            }
+        });
 
         return "ok";
     }
