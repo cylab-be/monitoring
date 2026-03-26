@@ -20,8 +20,8 @@ class CleanOldData implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
     // retentiont, in seconds
-    // 2 weeks
-    const RETENTION = 3600 * 24 * 14;
+    // 1 week
+    const RETENTION = 3600 * 24 * 7;
 
     /**
      * Execute the job.
