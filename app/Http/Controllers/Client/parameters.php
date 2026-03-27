@@ -41,6 +41,9 @@ $COMMANDS = [
     
     # list failed systemd units
     "systemd-failed-units" => "systemctl list-units --state=failed",
+    
+    # try to detect neighbors and rogue IPs
+    "ip-neighbors" => "ip --json neighbor show",
 
     # date should be the last command, so we can compare with the monitoring server
     "date" => "date +%s"
