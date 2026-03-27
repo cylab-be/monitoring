@@ -38,7 +38,8 @@ class IpNeighbors extends Sensor
         foreach ($neighbors as $neighbor) {
             // sometimes there is no hardware address...
             if (! isset($neighbor->lladdr)) {
-                $neighbor->vendor = null;
+                $neighbor->vendor = "";
+                $neighbor->lladdr = "";
             } else {
                 $neighbor->vendor = $vendors->lookup($neighbor->lladdr);
             }
