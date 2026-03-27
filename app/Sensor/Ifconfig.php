@@ -193,14 +193,10 @@ class Ifconfig extends Sensor
         }
 
         // filter out uninteresting interfaces
-        $filtered = [];
-        foreach ($interfaces as $interface) {
-            if (\starts_with($interface->name, self::PREFIXES_WHITELIST)) {
-                $filtered[] = $interface;
-            }
-        }
-
-        return $filtered;
+        return array_filter(
+            $interfaces,
+            fn($interface) => \starts_with($interface->name, self::PREFIXES_WHITELIST)
+        );
     }
 
     public function pregMatchOne(string $pattern, string $string, int $match_group = 1)
