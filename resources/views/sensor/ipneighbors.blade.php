@@ -3,6 +3,7 @@
     <tr>
         <td>{{ $neighbor->dst }}</td>
         <td>{{ $neighbor->lladdr }}</td>
+        <td>{{ $neighbor->vendor }}</td>
     </tr>
     @endforeach
 </table>

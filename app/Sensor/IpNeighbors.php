@@ -33,6 +33,12 @@ class IpNeighbors extends Sensor
             fn($neighbor) => \starts_with($neighbor->dev, Ifconfig::PREFIXES_WHITELIST)
         );
         
+        
+        $vendors = new MacVendor;
+        foreach ($neighbors as $neighbor) {
+            $neighbor->vendor = $vendors->lookup($neighbor->lladdr);
+        }
+        
         usort(
             $neighbors,
             fn($n1, $n2) => ip2long($n1->dst) > ip2long($n2->dst) ? 1 : -1
