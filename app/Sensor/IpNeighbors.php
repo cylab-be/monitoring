@@ -36,7 +36,12 @@ class IpNeighbors extends Sensor
         
         $vendors = new MacVendor;
         foreach ($neighbors as $neighbor) {
-            $neighbor->vendor = $vendors->lookup($neighbor->lladdr);
+            // sometimes there is no hardware address...
+            if (! isset($neighbor->lladdr)) {
+                $neighbor->vendor = null;
+            } else {
+                $neighbor->vendor = $vendors->lookup($neighbor->lladdr);
+            }
         }
         
         usort(
