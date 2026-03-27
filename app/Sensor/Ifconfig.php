@@ -193,9 +193,11 @@ class Ifconfig extends Sensor
         }
 
         // filter out uninteresting interfaces
-        return array_filter(
-            $interfaces,
-            fn($interface) => \starts_with($interface->name, self::PREFIXES_WHITELIST)
+        return array_values(
+            array_filter(
+                $interfaces,
+                fn($interface) => \starts_with($interface->name, self::PREFIXES_WHITELIST)
+            )
         );
     }
 
