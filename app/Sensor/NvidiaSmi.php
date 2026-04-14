@@ -20,18 +20,18 @@ class NvidiaSmi extends Sensor
     {
         $gpus = $this->parse($record->data);
         
-        $report = new Report();
-        $report->setTitle("Nvidia GPUs")
+        return (new Report())
+                ->setTitle("Nvidia GPUs")
                 ->setHTML(view("sensor.nvidia-smi", ["gpus" => $gpus]))
                 ->setStatus(Status::ok());
     }
     
     /**
-     * 
+     *
      * Parse lines like
      * index, name, utilization.gpu [%], utilization.memory [%], memory.used [MiB], memory.total [MiB], temperature.gpu
      * 0, NVIDIA GeForce RTX 5090, 0 %, 0 %, 19558 MiB, 32607 MiB, 45
-     * 
+     *
      * @param string $data
      * @return array
      */
