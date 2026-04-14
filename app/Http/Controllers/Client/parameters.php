@@ -45,6 +45,11 @@ $COMMANDS = [
     # try to detect neighbors and rogue IPs
     "ip-neighbors" => "ip --json neighbor show",
 
+    # fetch metrics from nvidia gpu(s)
+    "nvidia-smi" => "command -v nvidia-smi >/dev/null 2>&1 && "
+    . "nvidia-smi --query-gpu=index,name,utilization.gpu,utilization.memory,memory.used,memory.total,"
+    . "temperature.gpu --format=csv",
+
     # date should be the last command, so we can compare with the monitoring server
     "date" => "date +%s"
 ];
