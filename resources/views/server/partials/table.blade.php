@@ -1,4 +1,8 @@
-<table class="table table-striped my-5">
+<div class="mt-4 mb-2">
+    <input type="text" class="form-control d-inline form-control-sm w-10r" id="filter-input" placeholder="Search..." autofocus="">
+</div>
+
+<table class="table table-striped" id='filter-table'>
     @foreach($servers as $server)
     <tr>
         <td>
