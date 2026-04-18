@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Servers | ' . $organization->name )
+@section('title', 'Devices | ' . $organization->name )
 
 @section('content')
 <div class="container">

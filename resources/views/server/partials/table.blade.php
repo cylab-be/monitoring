@@ -6,6 +6,15 @@
                href="{{ route('servers.show', ['server' => $server]) }}">
                 {{ $server->name }}
             </a><br>
+            
+            @foreach ($server->tags as $tag)
+            <a class="badge badge-primary"
+               href="{{ route("tags.show", ["tag" => $tag]) }}">
+                {{ $tag->name }}
+            </a>
+            @endforeach
+            <br>
+            
 
             <div class="small text-muted">
                 <i class="fas fa-microchip"></i> {{ $server->info->cpuName() }} | {{ $server->info->vCores() }} vCores
