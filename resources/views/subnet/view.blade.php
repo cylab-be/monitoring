@@ -69,6 +69,26 @@
             });
             return visibleEdges;
         };
+        
+        let refreshCytoscape = function() {
+            let btn = $("#show-orphan");
+            cy.nodes().forEach(function(node) {
+                if (node.data('type') === 'subnet') {
+                    return;
+                }
+
+                // not an orphan
+                if (degreeVisible(node) !== 0) {
+                    return;
+                }
+
+                if (btn.hasClass("active")) {
+                    node.show();
+                } else {
+                    node.hide();
+                }
+            });
+        }
 
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -81,31 +101,15 @@
                 } else {
                     cy.getElementById('#subnet-{{ $subnet->id }}').hide();
                 }
+                refreshCytoscape();
             });
             @endforeach
             
             
             
             $("#show-orphan").on("click", function(evt) {
-                let btn = $("#show-orphan");
-                btn.toggleClass("active").blur();
-                
-                cy.nodes().forEach(function(node) {
-                    if (node.data('type') === 'subnet') {
-                        return;
-                    }
-                    
-                    // not an orphan
-                    if (degreeVisible(node) !== 0) {
-                        return;
-                    }
-                    
-                    if (btn.hasClass("active")) {
-                        node.show();
-                    } else {
-                        node.hide();
-                    }
-                });
+                $("#show-orphan").toggleClass("active").blur();
+                refreshCytoscape();
             });
         });
     </script>
