@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="card">
+<div class='row justify-content-md-center'>
+    <div class='col-md-6'>
+    <div class="card my-4">
         <div class="card-header">Subnet</div>
 
         <div class="card-body">
@@ -70,6 +71,7 @@
                 </div>
             </form>
         </div>
+    </div>
     </div>
 </div>
 @endsection

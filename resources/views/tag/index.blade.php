@@ -20,7 +20,8 @@
                     {{ $tag->name }}
                 </a><br>
                 <span class="badge badge-primary">
-                    <i class="fas fa-desktop"></i> {{ $tag->servers()->count() }} devices
+                    <i class="fas fa-desktop"></i> 
+                    {{ $tag->servers()->count() }} devices
                 </span>
             </td>
 

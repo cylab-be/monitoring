@@ -2,46 +2,45 @@
 @section('title', 'Subnets | ' . $organization->name )
 
 @section('content')
-<div class="container">
-    <h1>Subnets</h1>
-    <p>
-        <a href="{{ route('subnets.create', ["organization" => $organization]) }}"
-           class="btn btn-primary btn-sm">
-            <i class="fa fa-plus-circle"></i> New
-        </a>
+<h1>Subnets</h1>
+<p>
+    <a href="{{ route('subnets.create', ["organization" => $organization]) }}"
+       class="btn btn-primary btn-sm">
+        <i class="fa fa-plus-circle"></i> New
+    </a>
 
-        <a href="{{ route('subnets.view', ["organization" => $organization]) }}"
-           class="btn btn-primary btn-sm">
-            <i class="fas fa-project-diagram"></i> View
-        </a>
-    </p>
+    <a href="{{ route('subnets.view', ["organization" => $organization]) }}"
+       class="btn btn-primary btn-sm">
+        <i class="fas fa-project-diagram"></i> View
+    </a>
+</p>
 
-    <table class="table table-striped my-5">
-        @foreach($organization->subnets->sortBy("name") as $subnet)
-        <tr>
-            <td>
-                <a href="{{ route("subnets.show", ["subnet" => $subnet]) }}"
-                   class="text-decoration-none">
-                    {{ $subnet->name }}
-                </a><br>
-                <span class="badge badge-primary">
-                    <i class="fas fa-network-wired"></i>
-                    {{ $subnet->address }}/{{ $subnet->mask }}
-                </span>
+<table class="table table-striped my-5">
+    @foreach($organization->subnets->sortBy("name") as $subnet)
+    <tr>
+        <td>
+            <a href="{{ route("subnets.show", ["subnet" => $subnet]) }}"
+               class="text-decoration-none">
+                {{ $subnet->name }}
+            </a><br>
+            <span class="badge badge-primary">
+                <i class="fas fa-network-wired"></i>
+                {{ $subnet->address }}/{{ $subnet->mask }}
+            </span>
 
-                <span class="badge badge-primary">
-                    {{ $subnet->servers()->count() }} devices
-                </span>
-            </td>
+            <span class="badge badge-primary">
+                <i class="fas fa-desktop"></i> 
+                {{ $subnet->servers()->count() }} devices
+            </span>
+        </td>
 
-            <td class="text-right">
-                <a class="btn btn-primary btn-sm"
-                   href="{{ route('subnets.edit', ['subnet' => $subnet]) }}">
-                     Edit
-                </a>
-            </td>
-        </tr>
-        @endforeach
-    </table>
-</div>
+        <td class="text-right">
+            <a class="btn btn-primary btn-sm"
+               href="{{ route('subnets.edit', ['subnet' => $subnet]) }}">
+                 Edit
+            </a>
+        </td>
+    </tr>
+    @endforeach
+</table>
 @endsection

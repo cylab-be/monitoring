@@ -9,9 +9,7 @@
         </div>
 
         <div class="col-xl-10 col-sm-9">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
+            @yield('content')
         </div>
     </div>
 </body>
