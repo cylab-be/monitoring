@@ -24,7 +24,7 @@ chmod +x monitor
 
         <p>Add a cron entry to run it automatically:</p>
         <pre><code>echo "*/5 * * * * root sleep {{ $server->id % 240 }}  && /usr/bin/monitor -i {{ $server->id }} -t {{ $server->token }} -s {{ config("app.url") }}" | \
-sudo tee -a /etc/crontab
+sudo tee -a /etc/cron.d/monitor
 </code></pre>
     </div>
 </div>
