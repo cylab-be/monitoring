@@ -42,6 +42,26 @@ class SubnetController extends Controller
             "subnet" => $subnet,
             "organization" => $subnet->organization]);
     }
+    
+    public function devices(Subnet $subnet)
+    {
+        $this->authorize("show", $subnet->organization);
+        
+        $devices = $subnet->servers()
+                // extract only the device
+                ->map(function ($pair) {
+                    return $pair[0];
+                })
+                // some devices may have multiple IP in the same subnet
+                // => remove duplicates
+                ->unique()
+                ->sortBy("name");
+        
+        return view("subnet.devices", [
+            "subnet" => $subnet,
+            "organization" => $subnet->organization,
+            "servers" => $devices]);
+    }
 
 
     public function edit(Subnet $subnet)

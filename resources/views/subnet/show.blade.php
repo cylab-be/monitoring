@@ -8,6 +8,10 @@
     <span class="btn btn-sm btn-primary">
         <i class="fas fa-network-wired"></i>{{ $subnet->address }}/{{ $subnet->mask }}
     </span>
+    <a href='{{ route('subnets.devices', ["subnet" => $subnet]) }}'
+       class='btn btn-sm btn-primary'>
+        Devices
+    </a>
 </p>
 
 <table class="table table-striped my-5">
