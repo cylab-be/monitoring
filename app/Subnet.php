@@ -11,6 +11,18 @@ use Illuminate\Support\Str;
  */
 class Subnet extends Model
 {
+    protected $casts = ['properties' => 'array'];
+    
+    private $properties_handler = null;
+    
+    public function properties() : ArrayField
+    {
+        if ($this->properties_handler == null) {
+            $this->properties_handler = new ArrayField($this, "properties");
+        }
+        return $this->properties_handler;
+    }
+    
     public function organization()
     {
         return $this->belongsTo(Organization::class);
@@ -61,20 +73,28 @@ class Subnet extends Model
     {
         $r = [];
 
+        // create edges from this subnet to connected devices
         foreach ($this->servers() as [$server, $ip]) {
-            $r[] = ["data" => [
+            $r[] = [
+                "data" => [
                     "id" => rand(),
                     "source" => $server->cytoId(),
-                    "target" => $this->cytoId()]];
+                    "target" => $this->cytoId()],
+                "style" => [
+                    "line-color" => $this->properties()->getOrDefault("color", '#007bff')
+                ]];
         }
 
+        // create the node for the subnet itself...
         $r[] = [
             "data" => [
                 "id" => $this->cytoId(),
                 "label" => $this->name,
                 "url" => $this->url(),
                 "type" => "subnet"],
-            ];
+            "style" => [
+                "background-color" => $this->properties()->getOrDefault("color", '#007bff')
+            ]];
 
         return $r;
     }
