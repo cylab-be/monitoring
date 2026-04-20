@@ -27,6 +27,8 @@ class ExampleTest extends TestCase
 
         $server = new Server();
         $server->name = "srv01";
+        $server->properties = [];
+        
         $organization->servers()->save($server);
         $server->info()->create();
 

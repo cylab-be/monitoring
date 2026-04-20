@@ -62,6 +62,7 @@ class ExampleTest extends TestCase
 
         $server = new \App\Server();
         $server->name = "My test server";
+        $server->properties = [];
         $server->organization()->associate($organization);
         $server->save();
 
