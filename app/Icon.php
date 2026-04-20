@@ -20,8 +20,9 @@ class Icon
             $this->name = self::DEFAULT;
             return;
         }
-        
-        if (str_contains($name, '..') || str_contains($name, '/') || str_contains($name, '\\') || str_contains($name, "\0")) {
+
+        if (str_contains($name, '..') || str_contains($name, '/') || str_contains($name, '\\')
+                || str_contains($name, "\0")) {
             throw new \InvalidArgumentException('Invalid icon name.');
         }
 
