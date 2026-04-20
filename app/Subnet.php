@@ -31,7 +31,9 @@ class Subnet extends Model
 
     /**
      * Servers connected to this subnet.
-     * @return Collection<Server>
+     *
+     * returns a Collection of [Server, IP]
+     * @return Collection
      */
     public function servers() : Collection
     {
@@ -46,8 +48,12 @@ class Subnet extends Model
                 }
             }
         }
-
-        return $connected;
+        
+        return $connected->sort(function ($pair1, $pair2) {
+            $ip1 = $pair1[1];
+            $ip2 = $pair2[1];
+            return ip2long($ip1) >= ip2long($ip2) ? 1 : -1;
+        });
     }
 
     /**
