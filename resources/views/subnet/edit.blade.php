@@ -62,6 +62,21 @@
                         </span>
                     @endif
                 </div>
+                
+                <div class="form-group">
+                    <label for="color">Color</label>
+
+                    <input id="color" type="text"
+                           class="form-control{{ $errors->has('color') ? ' is-invalid' : '' }}"
+                           name="color"
+                           value="{{ old('color', $subnet->color()) }}">
+
+                    @if ($errors->has('color'))
+                        <span class="invalid-feedback">
+                            <strong>{{ $errors->first('color') }}</strong>
+                        </span>
+                    @endif
+                </div>
 
 
                 <div class="form-group">

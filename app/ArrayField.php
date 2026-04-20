@@ -60,4 +60,20 @@ class ArrayField
         }
         return $this->array()[$key];
     }
+    
+    /**
+     * Set a value and save the model object.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return bool
+     */
+    public function set(string $key, mixed $value)
+    {
+        $a = $this->array();
+        $a[$key] = $value;
+        $field = $this->field;
+        $this->model->$field = $a;
+        return $this->model->save();
+    }
 }

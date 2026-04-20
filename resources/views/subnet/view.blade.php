@@ -44,8 +44,7 @@
                 {
                     selector: 'node[type="subnet"]',
                     style: {
-                        'shape': 'square',
-                        //'background-color': '#007bff'
+                        'shape': 'square'
                     }
                 }
             ],

@@ -68,6 +68,11 @@ class Subnet extends Model
     {
         return route("subnets.show", ["subnet" => $this]);
     }
+    
+    public function color() : string
+    {
+        return $this->properties()->getOrDefault("color", '#007bff');
+    }
 
     public function toCytoscape() : array
     {
@@ -81,7 +86,7 @@ class Subnet extends Model
                     "source" => $server->cytoId(),
                     "target" => $this->cytoId()],
                 "style" => [
-                    "line-color" => $this->properties()->getOrDefault("color", '#007bff')
+                    "line-color" => $this->color()
                 ]];
         }
 
@@ -93,7 +98,7 @@ class Subnet extends Model
                 "url" => $this->url(),
                 "type" => "subnet"],
             "style" => [
-                "background-color" => $this->properties()->getOrDefault("color", '#007bff')
+                "background-color" => $this->color()
             ]];
 
         return $r;

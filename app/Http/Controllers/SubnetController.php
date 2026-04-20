@@ -80,12 +80,15 @@ class SubnetController extends Controller
             "name" => "required|string|max:255",
             "address" => "required|ip",
             "mask" => "required|int|min:0|max:32",
-            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys())
+            "organization_id" => Rule::in(Auth::user()->organizations->modelKeys()),
+            "color" => ['required', 'hex_color']
         ]);
 
         $subnet->name = $request->name;
         $subnet->address = $request->address;
         $subnet->mask = $request->mask;
+        $subnet->properties()->set("color", $request->color);
+        
         $subnet->organization()->associate(Organization::find($request->organization_id));
 
         $this->authorize("update", $subnet->organization);
