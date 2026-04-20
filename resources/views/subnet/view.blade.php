@@ -6,13 +6,13 @@
     <h1>{{ $organization->name }}</h1>
 
     <div>
-        <button class="btn btn-outline-primary active btn-sm"
+        <button class="btn btn-outline-primary active btn-sm my-1"
                 id="show-orphan">
             Orphan devices
         </button>
         
         @foreach ($organization->subnets as $subnet)
-        <button class="btn btn-outline-primary active btn-sm"
+        <button class="btn btn-outline-primary active btn-sm my-1"
                 id="btn-subnet-{{ $subnet->id }}">
             {{ $subnet->name }}
         </button>

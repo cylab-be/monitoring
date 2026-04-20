@@ -3,22 +3,6 @@
     <div class="card-header">Tags</div>
     <div class="card-body">
 
-        <form action="{{ route("servers.tags.add", ["server" => $server]) }}" method="POST">
-            @csrf
-
-            <div class="input-group">
-                <select name="tag_id" class="form-control">
-                    @foreach ($organization->tags->sortBy("name") as $tag)
-                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                    @endforeach
-                </select>
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Add</button>
-                </div>
-            </div>
-        </form>
-
-
         <table class="table table-sm mt-3">
             @foreach ($server->tags as $tag)
             <tr>
@@ -37,5 +21,20 @@
             </tr>
             @endforeach
         </table>
+        
+        <form action="{{ route("servers.tags.add", ["server" => $server]) }}" method="POST">
+            @csrf
+
+            <div class="input-group">
+                <select name="tag_id" class="form-control form-control-sm">
+                    @foreach ($organization->tags->sortBy("name") as $tag)
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-sm" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

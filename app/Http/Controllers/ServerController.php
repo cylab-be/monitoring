@@ -129,7 +129,7 @@ class ServerController extends Controller
         $tag = Tag::find($request->input("tag_id"));
         $server->tags()->attach($tag);
 
-        return redirect($server->url());
+        return redirect()->back();
     }
 
     public function deleteTag(Server $server, Tag $tag)
@@ -137,6 +137,6 @@ class ServerController extends Controller
         $this->authorize("save", $server);
         $server->tags()->detach($tag);
 
-        return redirect($server->url());
+        return redirect()->back();
     }
 }

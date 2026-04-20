@@ -42,6 +42,6 @@ class IpController extends Controller
     {
         $this->authorize("save", $ip->server);
         $ip->delete();
-        return redirect($ip->server->getUrlAttribute());
+        return redirect()->back();
     }
 }
