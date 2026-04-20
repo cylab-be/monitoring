@@ -35,7 +35,9 @@
                 {
                   selector: 'node',
                   style: {
-                    "background-color": '#777',
+                    //"background-color": '#777',
+                    'shape': 'square',
+                    "background-fit": "cover cover",
                     "text-valign": "bottom",
                     "text-halign": "center",
                     "label": "data(label)"

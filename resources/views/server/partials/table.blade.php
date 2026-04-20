@@ -5,6 +5,10 @@
 <table class="table table-striped" id='filter-table'>
     @foreach($servers as $server)
     <tr>
+        <td class="align-middle text-center">
+            <img class="w-4rem" 
+                src="{{ $server->icon()->url() }}">
+        </td>
         <td>
             <a class="text-decoration-none h5"
                href="{{ route('servers.show', ['server' => $server]) }}">

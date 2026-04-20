@@ -80,6 +80,25 @@ class Server extends Model
     {
         return $this->lastSummary()->time;
     }
+    
+    // -------------------------------------
+    
+    protected $casts = ['properties' => 'array'];
+    
+    private $properties_handler = null;
+    
+    public function properties() : ArrayField
+    {
+        if ($this->properties_handler == null) {
+            $this->properties_handler = new ArrayField($this, "properties");
+        }
+        return $this->properties_handler;
+    }
+    
+    public function icon() : Icon
+    {
+        return new Icon($this->properties()->get("icon"));
+    }
 
     // -------------------------------------
 
@@ -239,11 +258,17 @@ class Server extends Model
 
     public function toCytoscape() : array
     {
-        return ["data" => [
-            "id" => $this->cytoId(),
-            "label" => $this->name,
-            "type" => "device",
-            "url" => $this->url()]];
+        return [
+            "data" => [
+                "id" => $this->cytoId(),
+                "label" => $this->name,
+                "type" => "device",
+                "url" => $this->url()],
+            "style" => [
+                "background-image" => $this->icon()->url(),
+                'background-opacity' => 0,           // Hides the node's solid background
+                'border-width' => 0,
+            ]];
     }
 
     /**

@@ -27,6 +27,20 @@
                     </span>
                 @endif
             </div>
+            
+            <div class="form-group">
+                <label for="name">Icon</label>
+
+                <select id="icon" name="icon"
+                    class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}">
+                    
+                    <option value="{{ $server->icon()->name() }}">{{ $server->icon()->name() }}</option>
+                    
+                    @foreach (\App\Icon::all() as $icon)
+                    <option value="{{ $icon->name() }}">{{ $icon->name() }}</option>
+                    @endforeach
+                </select>                
+            </div>
 
             <div class="form-group">
                 <label for="description" >Description</label>
