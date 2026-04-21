@@ -87,6 +87,24 @@
     </div>
 </div>
 
+<div class="card">
+    <div class="card-header">Manual IP addresses</div>
+    <div class="card-body">
+        <table class="table table-sm">
+            @foreach ($server->ips as $ip)
+            <tr>
+                <td>
+                    {{ $ip->ip }}                    
+                    <a class="badge badge-primary" href="ssh://{{ $ip->ip }}">ssh</a>
+                    <a class="badge badge-primary" target="_blanck" href="http://{{ $ip->ip }}">http</a>
+                </td>
+                <td>{{ $ip->comment }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+</div>
+
 @foreach ($server->lastSummary()->reports() as $report)
 @include("report.partials.show", ["report" => $report])
 @endforeach
