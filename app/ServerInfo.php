@@ -54,7 +54,7 @@ class ServerInfo extends Model
 
     /**
      * Full list of IP addresses : manual IPs + autodetected
-     * @return array
+     * @return array<string>
      */
     public function addresses() : array
     {

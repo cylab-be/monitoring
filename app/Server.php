@@ -232,20 +232,6 @@ class Server extends Model
         return $this->belongsTo(Rack::class);
     }
 
-    public function ips()
-    {
-        return $this->hasMany(Ip::class);
-    }
-
-    /**
-     * Full list of IP addresses : manual IPs + autodetected
-     * @return array
-     */
-    public function addresses() : array
-    {
-        return $this->info->addresses();
-    }
-
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
@@ -255,6 +241,8 @@ class Server extends Model
     {
         return route("servers.show", ["server" => $this]);
     }
+    
+    // ------------------------------------------------------------------
 
     public function toCytoscape() : array
     {
@@ -278,5 +266,42 @@ class Server extends Model
     public function cytoId() : string
     {
         return "#server-" . $this->id;
+    }
+    
+    // -------------------------- IP addresses & subnets
+    
+    /**
+     * Manual IP addresses
+     */
+    public function ips()
+    {
+        return $this->hasMany(Ip::class);
+    }
+
+    /**
+     * Full list of IP addresses : manual IPs + autodetected
+     * @return array<string>
+     */
+    public function addresses() : array
+    {
+        return $this->info->addresses();
+    }
+    
+    public function subnets() : Collection
+    {
+        
+        $subnets = new Collection();
+        foreach ($this->organization->subnets as $subnet) {
+            foreach ($this->addresses() as $ip) {
+                if ($subnet->hasAddress($ip)) {
+                    $subnets->add($subnet);
+                    
+                    // go to next subnet
+                    break;
+                }
+            }
+        }
+        
+        return $subnets;
     }
 }

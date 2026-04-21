@@ -36,6 +36,19 @@
             </a>
             @endforeach
         </p>
+        
+        <p>
+            <span class="badge badge-primary" title="Connected subnets">
+                <i class="fas fa-network-wired w-1-5"></i>
+            </span>            
+            @foreach ($server->subnets() as $subnet)
+            <a class="badge badge-primary"
+               href="{{ route("subnets.show", ["subnet" => $subnet]) }}">
+                {{ $subnet->name }}
+            </a>
+            @endforeach
+            <br>
+        </p>
 
         @if ($server->info->uuid)
         <p>
