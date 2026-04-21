@@ -107,18 +107,22 @@ class SubnetController extends Controller
         $subnet->name = $request->name;
         $subnet->address = $request->address;
         $subnet->mask = $request->mask;
-        $subnet->properties()->set("color", $request->color);
-        
         $subnet->organization()->associate(Organization::find($request->organization_id));
 
         $this->authorize("update", $subnet->organization);
+        $subnet->properties()->set("color", $request->color);
+        
         $subnet->save();
+        
+        
 
         return redirect(route("subnets.index", ["organization" => $subnet->organization]));
     }
 
     public function destroy(Subnet $subnet)
     {
-        //
+        $this->authorize("update", $subnet->organization);
+        $subnet->delete();
+        return redirect(route("subnets.index", ["organization" => $subnet->organization]));
     }
 }
