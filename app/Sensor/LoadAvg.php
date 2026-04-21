@@ -25,14 +25,17 @@ class LoadAvg extends Sensor
             "Parse /proc/loadavg to check CPU load"
         );
     }
+    
+    const WARNING_THRESHOLD = 2;
+    const ERROR_THRESHOLD = 4;
 
 
     public function analyze(Record $record): Report
     {
         $server = $record->server;
 
-        $warning_threshold = $server->info->vCores();
-        $error_threshold = 2 * $warning_threshold;
+        $warning_threshold = self::WARNING_THRESHOLD * $server->info->vCores();
+        $error_threshold = self::ERROR_THRESHOLD * $server->info->vCores();
         $current_load = $this->parse($record->data);
 
         $records = $server->lastRecords($record->label);
