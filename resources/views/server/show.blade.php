@@ -98,7 +98,7 @@
                     <a class="badge badge-primary" href="ssh://{{ $ip->ip }}">ssh</a>
                     <a class="badge badge-primary" target="_blanck" href="http://{{ $ip->ip }}">http</a>
                 </td>
-                <td>{{ $ip->comment }}</td>
+                <td class="text-right">{{ $ip->comment }}</td>
             </tr>
             @endforeach
         </table>

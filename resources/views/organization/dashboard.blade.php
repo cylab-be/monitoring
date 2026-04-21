@@ -9,8 +9,8 @@
         @foreach($organization->devicesByStatus() as $server)
         <div class="col-md-3">
             <div class="card card-border-3 border-{{ $server->status()->color() }}">
-                <div class="card-header">
-                    <h5 class="card-title">
+                <div class="card-header py-2">
+                    <h5 class="card-title my-0">
                         <a class="text-dark"
                            href="{{ $server->getUrlAttribute() }}">
                         {{ $server->name }}
@@ -18,7 +18,16 @@
                     </h5>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body py-2">
+                    <div>
+                    @foreach ($server->tags as $tag)
+                    <a class="badge badge-primary"
+                       href="{{ route("tags.show", ["tag" => $tag]) }}">
+                        {{ $tag->name }}
+                    </a>
+                    @endforeach
+                    </div>
+                    
                     <ul class="list-unstyled">
                         @foreach ($server->getSensorsNOK() as $report)
                         <li>{{ $report->title }}</li>
