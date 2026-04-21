@@ -28,6 +28,7 @@
         </p>
 
         <p>
+            <span class="badge badge-primary"><i class="fas fa-tags w-1-5"></i></span>
             @foreach ($server->tags as $tag)
             <a class="badge badge-primary"
                href="{{ route("tags.show", ["tag" => $tag]) }}">
