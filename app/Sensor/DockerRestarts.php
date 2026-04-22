@@ -30,9 +30,9 @@ class DockerRestarts extends Sensor
     {
         $report = (new Report)->setTitle("Docker restart");
         $report->setStatus(Status::ok());
-        $report->setHTML("<pre>" . $record->data . "</pre>");
         
         $restarts = $this->parse($record->data);
+        $report->setHTML(view("sensor.dockerrestart", ["restarts" => $restarts]));
         
         $max = max(array_values($restarts));
         if ($max > self::THRESHOLD) {
