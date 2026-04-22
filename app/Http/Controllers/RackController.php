@@ -42,7 +42,7 @@ class RackController extends Controller
     public function dashboard(Organization $organization)
     {
         $this->authorize("show", $organization);
-        return view("rack.dashboard", ["organization" => $organization]);
+        return view("rack.dashboard", ["racks" => $organization->racks->sortBy("name")]);
     }
 
     // ------------------ ACTIONS
