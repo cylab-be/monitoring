@@ -1,7 +1,7 @@
 <table class='table table-sm'>
     <tr>
-        <th>Name</th>
-        <th class="text-right">Restarts</th>
+        <th>Container</th>
+        <th class="text-right">Restarts in 24h</th>
     </tr>
 
     @foreach ($restarts as $name => $restarts)

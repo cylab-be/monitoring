@@ -28,13 +28,27 @@ class DockerRestarts extends Sensor
     #[\Override]
     public function analyze(Record $record): ?\App\Report
     {
+        // first record from 24h ago
+        $server = $record->server;
+        $record24 = $server->records()
+                ->where("label", "docker-restarts")
+                ->where("time", ">", time() - 24 * 3600)
+                ->first();
+        
+        if (is_null($record24)) {
+            throw new \Exception("No record found for comparison ...");
+        }
+        
         $report = (new Report)->setTitle("Docker restart");
         $report->setStatus(Status::ok());
         
         $restarts = $this->parse($record->data);
-        $report->setHTML(view("sensor.dockerrestart", ["restarts" => $restarts]));
+        $restarts24 = $this->parse($record24->data);
+        $delta = $this->delta($restarts, $restarts24);
         
-        $max = max(array_values($restarts));
+        $report->setHTML(view("sensor.dockerrestart", ["restarts" => $delta]));
+        
+        $max = max(array_values($delta));
         if ($max > self::THRESHOLD) {
             $report->setStatus(Status::warning());
         }
@@ -59,5 +73,19 @@ class DockerRestarts extends Sensor
         }
         
         return $units;
+    }
+    
+    public function delta(array $now, array $earlier) : array
+    {
+        $delta = [];
+        foreach ($now as $container => $restarts_now) {
+            if (! isset($earlier[$container])) {
+                $delta[$container] = $restarts_now;
+            } else {
+                $delta[$container] = $restarts_now - $earlier[$container];
+            }
+        }
+        
+        return $delta;
     }
 }
