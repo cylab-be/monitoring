@@ -30,6 +30,16 @@
                    href="{{ route('tags.edit', ['tag' => $tag]) }}">
                      Edit
                 </a>
+                
+                <form method="POST" 
+                      action="{{ route("tags.destroy", ["tag" => $tag]) }}"
+                      class="d-inline-block">
+                    @csrf
+                    @method("DELETE")
+                    <button class="btn btn-danger btn-sm">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
+                    </button>
+                </form>
             </td>
         </tr>
         @endforeach

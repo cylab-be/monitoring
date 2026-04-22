@@ -84,6 +84,8 @@ class TagController extends Controller
 
     public function destroy(Tag $tag)
     {
-        //
+        $this->authorize("update", $tag->organization);
+        $tag->delete();
+        return redirect(route("tags.index", ["organization" => $tag->organization]));
     }
 }
