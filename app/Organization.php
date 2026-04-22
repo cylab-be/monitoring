@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
  * @property string $dashboard_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rack[] $racks
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Subnet[] $subnets
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tag[] $tags
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Server[] $servers

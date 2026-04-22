@@ -83,6 +83,8 @@ class RackController extends Controller
      */
     public function destroy(Rack $rack)
     {
-        //
+        $this->authorize("update", $rack->organization);
+        $rack->delete();
+        return redirect(route("racks.index", ["organization" => $rack->organization]));
     }
 }

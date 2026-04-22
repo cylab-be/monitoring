@@ -30,6 +30,16 @@
                    href="{{ route('racks.edit', ['rack' => $rack]) }}">
                      Edit
                 </a>
+                
+                <form method="POST" 
+                  action="{{ route("racks.destroy", ["rack" => $rack]) }}"
+                  class="d-inline-block">
+                @csrf
+                @method("DELETE")
+                <button class="btn btn-danger btn-sm">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i> Delete
+                </button>
+            </form>
             </td>
         </tr>
         @endforeach
