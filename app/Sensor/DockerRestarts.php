@@ -82,7 +82,12 @@ class DockerRestarts extends Sensor
             if (! isset($earlier[$container])) {
                 $delta[$container] = $restarts_now;
             } else {
-                $delta[$container] = $restarts_now - $earlier[$container];
+                // sometime delta may be negative, for example after a server reboot
+                // in that case we zeroize
+                $delta[$container] = max(
+                    $restarts_now - $earlier[$container],
+                    0
+                );
             }
         }
         
