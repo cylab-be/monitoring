@@ -32,11 +32,21 @@
         </div>
 
         <div class="card-body">
-            <ul class="list-unstyled">
+            <table class="table table-sm">
                 @foreach ($organization->users as $user)
-                <li>{{ $user->name }}</li>
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td class="text-right">
+                        <form action="{{ action("OrganizationUserController@destroy", ["organization" => $organization, "user" => $user]) }}"
+                            method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
                 @endforeach
-            </ul>
+            </table>
 
             <p>
                 <a class="btn btn-primary btn-sm"
@@ -46,24 +56,21 @@
             </p>
         </div>
     </div>
+    
+    @include('organization.partials.details', ["organization" => $organization])
 
-    <div class="card">
+    <div class="card border-danger">
         <div class="card-header">
             Danger zone
         </div>
         <div class="card-body">
-            <a class="btn btn-primary"
-               href="{{ action('OrganizationController@edit', ['organization' => $organization]) }}">
-                 Edit
-            </a>
-
             <form method="POST"
                   action="{{ action('OrganizationController@destroy', ['organization' => $organization]) }}"
                   style="display: inline-block">
                 {{ csrf_field() }}
                 {{ method_field("DELETE") }}
-                <button class="btn btn-danger">
-                     Delete
+                <button class="btn btn-danger btn-sm">
+                     Destroy
                 </button>
             </form>
         </div>

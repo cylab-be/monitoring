@@ -31,28 +31,13 @@
             <td class="text-right">
                 <a class="btn btn-primary btn-sm"
                    href="{{ route('servers.index', ['organization' => $organization]) }}">
-                     Devices
+                    <i class="fas fa-desktop w-1-5"></i> Devices
                 </a>
 
                 <a class="btn btn-primary btn-sm"
                    href="{{ route('organizations.show', ['organization' => $organization]) }}">
-                     Details
+                    <i class="fas fa-cog"></i> Settings
                 </a>
-
-                <a class="btn btn-primary btn-sm"
-                   href="{{ route('organizations.edit', ['organization' => $organization]) }}">
-                     Edit
-                </a>
-
-                <form method="POST"
-                      action="{{ action('OrganizationController@destroy', ['organization' => $organization]) }}"
-                      style="display: inline-block">
-                    {{ csrf_field() }}
-                    {{ method_field("DELETE") }}
-                    <button class="btn btn-danger btn-sm">
-                         Delete
-                    </button>
-                </form>
             </td>
         </tr>
         @endforeach

@@ -79,6 +79,12 @@
             </div>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link text-white"
+               href="{{ route('organizations.show', ['organization' => $organization]) }}">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </li>
 
         @endif
     </ul>
