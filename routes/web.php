@@ -53,6 +53,7 @@ Route::middleware(['auth'])
 
 
         Route::resource('organizations', 'OrganizationController');
+        
         Route::get('organizations/{organization}/dashboard', 'OrganizationController@dashboard')
                 ->name("organizations.dashboard");
         Route::get('organizations/{organization}/reset-token', 'OrganizationController@resetToken')
@@ -62,6 +63,10 @@ Route::middleware(['auth'])
         // ansible inventory
         Route::get("organizations/{organization}/inventory", "OrganizationController@inventory")
                 ->name("organizations.inventory");
+        
+        // API keys
+        Route::resource('organizations/{organization}/keys', "OrganizationKeysController")
+                ->only(["create", "store", "destroy"]);
 
 
         // users

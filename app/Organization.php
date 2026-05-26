@@ -82,6 +82,11 @@ class Organization extends Model
     {
         return $this->hasMany(Tag::class);
     }
+    
+    public function keys()
+    {
+        return $this->hasMany(Key::class);
+    }
 
     public function url() : string
     {

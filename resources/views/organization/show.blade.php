@@ -57,6 +57,46 @@
         </div>
     </div>
     
+    <div class="card">
+        <div class="card-header">
+            API Keys
+        </div>
+
+        <div class="card-body">
+            
+            @session('new_key')
+            <div class="alert alert-success" role="alert">
+                <p>Here is your new API key. Pay attention, <b>it will be displayed only once</b>:</p>
+                <p><code>{{ $value->plaintext }}</code></p>
+            </div>
+            @endsession
+            
+            <table class="table table-sm">
+                @foreach ($organization->keys as $key)
+                <tr>
+                    <td>{{ $key->name }}</td>
+                    <td>{{ $key->created_at }}</td>
+                    <td class="text-right">
+                        <form action="{{ action("OrganizationKeysController@destroy", ["organization" => $organization, "key" => $key]) }}"
+                            method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+
+            <p>
+                <a class="btn btn-primary btn-sm"
+                   href="{{ action("OrganizationKeysController@create", ["organization" => $organization]) }}">
+                    New
+                </a>
+            </p>
+        </div>
+    </div>
+    
     @include('organization.partials.details', ["organization" => $organization])
 
     <div class="card border-danger">
