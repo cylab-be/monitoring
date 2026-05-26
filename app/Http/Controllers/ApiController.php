@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Server;
 use App\Record;
+use App\Key;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,5 +41,25 @@ class ApiController extends Controller
         });
 
         return "ok";
+    }
+    
+    /**
+     * https://github.com/givebutter/laravel-keyable/blob/master/src/Http/Middleware/AuthenticateApiKey.php
+     * @param Request $request
+     */
+    public function inventory(Request $request)
+    {
+        $token = $request->bearerToken();
+        //Check for presence of key
+        if (! $token) {
+            return response(['error' => ['message' => 'Unauthorized']], 401);
+        }
+
+        $key = Key::getByPlaintextKey($token);
+        if (! ($key instanceof Key)) {
+            return response(['error' => ['message' => 'Unauthorized']], 401);
+        }
+
+        return response()->json($key->organization->inventory());
     }
 }

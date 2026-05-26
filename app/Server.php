@@ -24,6 +24,7 @@ use Illuminate\Support\Collection;
  * @property ?\App\ServerInfo $info
  * @property \App\Organization $organization
  * @property DatabaseCollection|array $ips
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tag[] $tags
  * @method static \Illuminate\Database\Eloquent\Builder|Server newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Server query()
@@ -79,6 +80,19 @@ class Server extends Model
     public function getLastRecordTimeAttribute() : int
     {
         return $this->lastSummary()->time;
+    }
+    
+    // -------------------------------------
+    
+    public function toInventory() : array
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "token" => $this->token,
+            "addresses" => $this->addresses(),
+            "tags" => $this->tags->map(fn(Tag $tag) => $tag->name),
+        ];
     }
     
     // -------------------------------------

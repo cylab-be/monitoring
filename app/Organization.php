@@ -106,10 +106,8 @@ class Organization extends Model
         return $r;
     }
 
-    public function toAnsibleInventory() : string
+    public function inventory() : array
     {
-        return $this->subnets->map(fn($subnet) => $subnet->toAnsibleInventory())
-                ->merge($this->tags->map(fn($tag) => $tag->toAnsibleInventory()))
-                ->implode("\n");
+        return $this->servers->map(fn(Server $server) => $server->toInventory())->toArray();
     }
 }

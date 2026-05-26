@@ -17,3 +17,6 @@ Route::get('sensor/{server}/{token}/memory', "ApiController@memory");
 Route::get('sensor/{server}/{token}/load', "ApiController@load");
 Route::get('sensor/{server}/{token}/ifconfig', "ApiController@ifconfig");
 Route::get('sensor/{server}/{token}/netstat', "ApiController@netstat");
+
+
+Route::get('organization/inventory.json', 'ApiController@inventory');

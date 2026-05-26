@@ -58,11 +58,6 @@ Route::middleware(['auth'])
                 ->name("organizations.dashboard");
         Route::get('organizations/{organization}/reset-token', 'OrganizationController@resetToken')
                 ->name("organizations.reset-token");
-
-
-        // ansible inventory
-        Route::get("organizations/{organization}/inventory", "OrganizationController@inventory")
-                ->name("organizations.inventory");
         
         // API keys
         Route::resource('organizations/{organization}/keys', "OrganizationKeysController")
