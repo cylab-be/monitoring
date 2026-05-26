@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-
 /**
  * @property Organization $organization
  * @property ?string $key
@@ -72,5 +71,15 @@ class Key extends Model
     public static function hash(string $key)
     {
         return hash('sha256', $key);
+    }
+    
+    /**
+     *
+     * @param string $plaintext
+     * @return Key|null
+     */
+    public static function getByPlaintextKey(string $plaintext) : ?Key
+    {
+        return self::where('key', self::hash($plaintext))->first();
     }
 }
