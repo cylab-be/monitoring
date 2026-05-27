@@ -57,6 +57,8 @@
         </div>
     </div>
     
+    @include ('organization.partials.installation')
+    
     <div class="card">
         <div class="card-header">
             API Keys

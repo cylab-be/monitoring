@@ -48,7 +48,21 @@ class Organization extends Model
     {
         return $this->servers()->orderBy("name")->get();
     }
+    
+    // --------------------------- PROPERTIES
+    protected $casts = ['properties' => 'array'];
+    
+    private $properties_handler = null;
+    
+    public function properties() : ArrayField
+    {
+        if ($this->properties_handler == null) {
+            $this->properties_handler = new ArrayField($this, "properties");
+        }
+        return $this->properties_handler;
+    }
 
+    // ------------------------- RELATIONS
 
     public function users()
     {

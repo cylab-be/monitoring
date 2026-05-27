@@ -51,8 +51,10 @@ Route::middleware(['auth'])
         
         Route::resource('/failed-jobs', 'FailedJobController')->only(['index', 'show']);
 
-
+        // organizations
         Route::resource('organizations', 'OrganizationController');
+        
+        Route::put('organizations/{organization}/installation', 'OrganizationController@updateInstallation');
         
         Route::get('organizations/{organization}/dashboard', 'OrganizationController@dashboard')
                 ->name("organizations.dashboard");

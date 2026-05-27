@@ -141,7 +141,7 @@
 
 @include("server.partials.client-install")
 
-<div class="card">
+<div class="card border-danger">
     <div class="card-header">
         Danger zone
     </div>

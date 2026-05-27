@@ -7,6 +7,7 @@ use League\CommonMark\CommonMarkConverter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * App\Server
@@ -256,7 +257,16 @@ class Server extends Model
         return route("servers.show", ["server" => $this]);
     }
     
-    // ------------------------------------------------------------------
+    public function customInstallationInstructions() : string
+    {
+        return Str::of($this->organization->properties()->getOrDefault("instructions", ""))
+                ->replace('%i%', (string) $this->id)
+                ->replace('%n%', $this->name)
+                ->replace('%t%', $this->token)
+                ->__toString();
+    }
+    
+    // ------------------------------ CYTOSCAPE
 
     public function toCytoscape() : array
     {

@@ -174,4 +174,14 @@ class OrganizationController extends Controller
         $subnet = long2ip($ip_long & $subnet_mask);
         return $subnet;
     }
+    
+    public function updateInstallation(Organization $organization, Request $request)
+    {
+        $this->authorize("update", $organization);
+        
+        $request->validate(["instructions" => "string|nullable|max:1024"]);
+        $organization->properties()->set("instructions", $request->input("instructions"));
+        
+        return redirect(action('OrganizationController@show', ["organization" => $organization]));
+    }
 }
