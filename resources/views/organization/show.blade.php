@@ -72,10 +72,17 @@
             @endsession
             
             <table class="table table-sm">
+                <tr>
+                    <th>Name</th>
+                    <th>Created</th>
+                    <th>Last used</th>
+                    <th></th>
+                </tr>
                 @foreach ($organization->keys as $key)
                 <tr>
                     <td>{{ $key->name }}</td>
                     <td>{{ $key->created_at }}</td>
+                    <td>{{ $key->last_used_at }}</td>
                     <td class="text-right">
                         <form action="{{ action("OrganizationKeysController@destroy", ["organization" => $organization, "key" => $key]) }}"
                             method="post">

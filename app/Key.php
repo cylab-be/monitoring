@@ -17,6 +17,10 @@ class Key extends Model
         'last_used_at' => 'datetime',
     ];
     
+    protected $fillable = [
+        'last_used_at',
+    ];
+    
     /**
      * Set a plain text and hashed value for new keys.
      */
@@ -36,6 +40,17 @@ class Key extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+    
+    /**
+     * Update the field last_used_at
+     */
+    public function use() : bool
+    {
+        return $this->forceFill(['last_used_at' => $this->freshTimestamp()])
+                ->save();
+    }
+    
+    // ------------------------------------- STATIC ---------------------------------
     
     /**
      * Generate a unique key.

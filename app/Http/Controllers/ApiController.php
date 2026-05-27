@@ -59,6 +59,8 @@ class ApiController extends Controller
         if (! ($key instanceof Key)) {
             return response(['error' => ['message' => 'Unauthorized']], 401);
         }
+        
+        $key->use();
 
         return response()->json($key->organization->inventory());
     }
