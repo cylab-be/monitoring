@@ -61,6 +61,17 @@ class Organization extends Model
         }
         return $this->properties_handler;
     }
+    
+    // -------------------------
+    
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        
+        // must manually set a default value for the properties field
+        // to avoid SQLSTATE[HY000]: General error: 1364 Field 'properties' doesn't have a default value
+        $this->properties = [];
+    }
 
     // ------------------------- RELATIONS
 
