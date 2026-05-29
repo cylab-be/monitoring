@@ -126,7 +126,11 @@ class Organization extends Model
     {
         return (object) [
             "name" => $this->name,
-            "devices" => $this->servers->map(fn(Server $server) => $server->toDashboard())->toArray(),
+            "devices" => $this->servers
+                ->sort(fn(Server $s1, Server $s2) => $s1->status()->code() < $s2->status()->code())
+                ->map(fn(Server $server) => $server->toDashboard())
+                ->values()
+                ->toArray(),
         ];
     }
 }
