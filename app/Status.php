@@ -33,9 +33,9 @@ class Status
         }
     }
     
-    public function jsonSerialize() : array
+    public function jsonSerialize() : object
     {
-        return [
+        return (object) [
             "code" => $this->code,
             "name" => $this->__toString(),
             "color" => $this->color()];

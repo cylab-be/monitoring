@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Organization;
 use App\Server;
 use App\Record;
 use App\Key;
@@ -49,19 +50,31 @@ class ApiController extends Controller
      */
     public function inventory(Request $request)
     {
+        $organization = $this->getOrganizationFromRequest($request);
+        return response()->json($organization->inventory());
+    }
+    
+    public function dashboard(Request $request)
+    {
+        $organization = $this->getOrganizationFromRequest($request);
+        return response()->json($organization->dashboard());
+    }
+
+    private function getOrganizationFromRequest($request) : Organization
+    {
         $token = $request->bearerToken();
         //Check for presence of key
         if (! $token) {
-            return response(['error' => ['message' => 'Unauthorized']], 401);
+            abort(401);
         }
 
         $key = Key::getByPlaintextKey($token);
         if (! ($key instanceof Key)) {
-            return response(['error' => ['message' => 'Unauthorized']], 401);
+            abort(401);
         }
         
         $key->use();
-
-        return response()->json($key->organization->inventory());
+        
+        return $key->organization;
     }
 }

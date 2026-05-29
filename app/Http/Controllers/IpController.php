@@ -35,7 +35,7 @@ class IpController extends Controller
         $this->authorize("save", $ip->server);
         $ip->save();
 
-        return redirect($ip->server->getUrlAttribute());
+        return redirect($ip->server->url());
     }
 
     public function destroy(Ip $ip)

@@ -42,48 +42,8 @@ class Server extends Model
 {
 
     protected $fillable = ["token"];
-
-    // don't show tokens when serializing to json
-    protected $hidden = ['token', 'read_token'];
-
-    // define attributes that can be appended when serializing to json
-    // used in OrganizationDashboardController@json
-    // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
-  
-    // as of Laravel 12, appended attributes should be defined using accessor method
-    // protected function url(): Attribute
-    // but the function url(): string already exists, which causes as mixup with phpstan
-    // https://laravel.com/docs/12.x/eloquent-serialization#appending-values-to-json
-    // @phpstan-ignore rules.modelAppends,rules.modelAppends
-    protected $appends = ['url', 'status', 'failing_sensors', 'last_record_time'];
-
-    public function getUrlAttribute() : string
-    {
-        return $this->url();
-    }
-
-    public function getStatusAttribute() : array
-    {
-        return $this->status()->jsonSerialize();
-    }
-
-    public function getFailingSensorsAttribute() : array
-    {
-        $failing_sensors = [];
-
-        foreach ($this->getSensorsNOK() as $report) {
-            $failing_sensors[] = $report->title;
-        }
-
-        return $failing_sensors;
-    }
-
-    public function getLastRecordTimeAttribute() : int
-    {
-        return $this->lastSummary()->time;
-    }
     
-    // -------------------------------------
+    // ------------------------------------- used by API calls
     
     public function toInventory() : array
     {
@@ -96,7 +56,20 @@ class Server extends Model
         ];
     }
     
-    // -------------------------------------
+    public function toDashboard() : object
+    {
+        return (object) [
+            "name" => $this->name,
+            "url" => $this->url(),
+            "status" => $this->status()->jsonSerialize(),
+            "last_record_time" => $this->lastSummary()->time,
+            // only keep the title of failing sensors
+            "failing_sensors" => $this->getSensorsNOK()->map(fn(Report $report) => $report->title)->values()->toArray(),
+            "tags" => $this->tags->map(fn(Tag $tag) => $tag->name)->toArray(),
+        ];
+    }
+    
+    // ------------------------------------- PROPERTIES
     
     protected $casts = ['properties' => 'array'];
     
@@ -183,12 +156,7 @@ class Server extends Model
 
         // https://stackoverflow.com/questions/76729231/larastan-complains-about-collection-methods-paramaters-after-upgrading-to-larave
         // @phpstan-ignore-next-line
-        return $summary->reports()->filter(
-            function ($report) {
-                /** @var Report $report */
-                return $report->status_code > 0;
-            }
-        );
+        return $summary->reports()->filter(fn(Report $report) => $report->status_code > 0);
     }
 
     public function reports()

@@ -14,3 +14,4 @@
 Route::post('record/{server}', "ApiController@echo");
 
 Route::get('organization/inventory.json', 'ApiController@inventory');
+Route::get('organization/dashboard.json', 'ApiController@dashboard');

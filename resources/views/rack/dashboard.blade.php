@@ -21,7 +21,7 @@
         <div class="server text-left size-{{ $server->size }}u"
              style="bottom: {{ 2*($server->position - 1) }}rem;">
             <p>
-                <a href="{{ $server->getUrlAttribute() }}"
+                <a href="{{ $server->url() }}"
                    class="text-decoration-none">
                     {{ $server->name }}
                 </a>

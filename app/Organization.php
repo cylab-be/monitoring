@@ -32,22 +32,6 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Organization extends Model
 {
-    // don't show dashboard token when serializing to json
-    protected $hidden = ['dashboard_token'];
-
-    // add servers when serializing to json
-    // https://laravel.com/docs/8.x/eloquent-serialization#appending-values-to-json
-    // as of Laravel 12, appended attributes should be defined using accessor method
-    // protected function url(): Attribute
-    // but the function url(): string already exists, which causes as mixup with phpstan
-    // https://laravel.com/docs/12.x/eloquent-serialization#appending-values-to-json
-    // @phpstan-ignore rules.modelAppends
-    protected $appends = ['servers'];
-
-    protected function getServersAttribute()
-    {
-        return $this->servers()->orderBy("name")->get();
-    }
     
     // --------------------------- PROPERTIES
     protected $casts = ['properties' => 'array'];
@@ -130,9 +114,19 @@ class Organization extends Model
         }
         return $r;
     }
+    
+    // ------------------------ API calls
 
     public function inventory() : array
     {
         return $this->servers->map(fn(Server $server) => $server->toInventory())->toArray();
+    }
+    
+    public function dashboard() : object
+    {
+        return (object) [
+            "name" => $this->name,
+            "devices" => $this->servers->map(fn(Server $server) => $server->toDashboard())->toArray(),
+        ];
     }
 }

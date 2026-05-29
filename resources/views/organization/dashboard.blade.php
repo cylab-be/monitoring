@@ -12,7 +12,7 @@
                 <div class="card-header py-2">
                     <h5 class="card-title my-0">
                         <a class="text-dark"
-                           href="{{ $server->getUrlAttribute() }}">
+                           href="{{ $server->url() }}">
                         {{ $server->name }}
                         </a>
                     </h5>

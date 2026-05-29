@@ -16,6 +16,6 @@ class OrganizationDashboardController extends Controller
             abort(403);
         }
 
-        return response()->json($organization);
+        return response()->json($organization->dashboard());
     }
 }
