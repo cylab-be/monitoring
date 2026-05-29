@@ -127,7 +127,7 @@ class Organization extends Model
         return (object) [
             "name" => $this->name,
             "devices" => $this->servers
-                ->sort(fn(Server $s1, Server $s2) => $s1->status()->code() < $s2->status()->code())
+                ->sort(fn(Server $s1, Server $s2) => ($s1->status()->code() < $s2->status()->code()) ? 1 : -1)
                 ->map(fn(Server $server) => $server->toDashboard())
                 ->values()
                 ->toArray(),
