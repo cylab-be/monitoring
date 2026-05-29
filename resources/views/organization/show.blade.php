@@ -7,27 +7,6 @@
 
     <div class="card">
         <div class="card-header">
-            Public dashboard
-        </div>
-
-        <div class="card-body">
-            <a class="btn btn-primary btn-sm"
-               href="{{ route("organizations.json", [
-                   "organization" => $organization,
-                   "token" => $organization->dashboard_token]) }}">
-                <i class="fas fa-code"></i> JSON
-            </a>
-
-            <a class="btn btn-primary btn-sm"
-               href="{{ action("OrganizationController@resetToken", [
-                   "organization" => $organization]) }}">
-                <i class="fas fa-redo-alt"></i> Reset dashboard token
-            </a>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
             Users
         </div>
 

@@ -32,13 +32,6 @@ Route::get('/monitor', 'ClientController@get');
 
 Auth::routes(['register' => config("app.allow_registration")]);
 
-// public json dashboard
-// maintain old URL convention
-Route::get(
-    '/app/organizations/{organization}/{token}/dashboard.json',
-    'OrganizationDashboardController@json'
-)->name("organizations.json");
-
 Route::middleware(['auth'])
     ->group(function () {
         Route::get("/home", function () {

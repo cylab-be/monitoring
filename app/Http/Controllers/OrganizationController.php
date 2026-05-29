@@ -84,14 +84,6 @@ class OrganizationController extends Controller
         return view("organization.dashboard", ["organization" => $organization]);
     }
 
-    public function resetToken(Organization $organization)
-    {
-        $this->authorize("update", $organization);
-        $organization->dashboard_token = \str_random(20);
-        $organization->save();
-        return redirect(action('OrganizationController@show', ["organization" => $organization]));
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
