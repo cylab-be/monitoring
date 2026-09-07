@@ -52,6 +52,20 @@ test:gitleaks:
     # with recent git versions
     - git config --global --add safe.directory $CI_PROJECT_DIR
     - gitleaks detect -v -c gitleaks.toml ./
+    
+test:npm-audit:
+  stage: test
+  image: node:22-alpine
+  script:
+    - npm audit
+
+test:npm-depcheck:
+  stage: test
+  image: node:22-alpine
+  script:
+    - npm install
+    - npm install --no-save depcheck
+    - npx depcheck
 
 build:
   stage: test
