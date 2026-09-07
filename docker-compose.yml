@@ -57,13 +57,12 @@ services:
 
 
   node:
-    image: node:16.15.0-alpine
-    # defined in .env
+    image: node:22-alpine
     user: "${UID}:${GID}"
     working_dir: /app
     volumes:
       - .:/app
-    entrypoint: /bin/sh -c "npm install && npm run watch-poll"
+    entrypoint: /bin/sh -c "npm install && npm run watch"
 
   redis:
     image: redis:4-alpine

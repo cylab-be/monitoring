@@ -13,11 +13,11 @@ RUN composer install --no-dev --optimize-autoloader
 
 #### Step 2 : node
 
-FROM node:16-alpine AS node
+FROM node:22-alpine AS node
 
 COPY . /var/www/html
 WORKDIR /var/www/html
-RUN npm --version && npm install && npm run prod
+RUN npm --version && npm install && npm run build
 
 #### Step 3 : the actual docker image
 
