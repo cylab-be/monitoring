@@ -23,7 +23,7 @@ $COMMANDS = [
     "uname" => "uname -mrs",
     "netstat_statistics" => "netstat -s",
     "netstat_listen_tcp" => "netstat -antp | grep LISTEN",
-    "netstat_listen_udp" => "netstat -anup | grep LISTEN",
+    "netstat_listen_udp" => "netstat -ulnp",
     "freebsd_top" => "top -n",
 
     # list docker compose stacks
