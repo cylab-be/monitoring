@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Status;
 

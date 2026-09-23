@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Sensor;
 use App\SensorConfig;
@@ -37,7 +37,7 @@ class CPUtemperature extends Sensor
         $report = (new Report())->setTitle("CPU : Temperature");
 
         $cpus = $this->parse($record->data);
-        $report->setHTML(view("sensor.cputemperature", ["cpus" => $cpus]));
+        $report->setHTML(blade(__DIR__ . "/CPUtemperature.blade.php", ["cpus" => $cpus]));
         $report->setStatus(Status::max($cpus));
 
         return $report;

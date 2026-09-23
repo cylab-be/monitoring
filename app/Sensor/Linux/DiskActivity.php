@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Sensor;
 use App\SensorConfig;
 use App\Record;
 use App\Report;
 use App\Status;
+use App\Sensor\Dataset;
+use App\Sensor\Point;
+use App\Sensor\ColorPalette;
+
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -36,9 +40,12 @@ class DiskActivity extends Sensor
         $report = new Report();
         $report->setTitle("Storage : disk activity")
                 ->setStatus(Status::ok())
-                ->setHTML(view("sensor.diskactivity", [
-                    "values" => $current_values,
-                    "datasets" => $this->extractDatasets($records)]));
+                ->setHTML(blade(
+                    __DIR__ . "/DiskActivity.blade.php",
+                    [
+                            "values" => $current_values,
+                    "datasets" => $this->extractDatasets($records)]
+                ));
         return $report;
     }
 
