@@ -27,7 +27,7 @@ class AgentScheduler
      */
     private $sensors;
 
-    private function __construct()
+    public function __construct()
     {
         $this->sensors = $this->autodiscover();
     }
@@ -51,12 +51,24 @@ class AgentScheduler
     {
         return $this->sensors;
     }
+    
+    /**
+     * Get list of commands defined by AgentConfigs
+     * @return array
+     */
+    public function commands() : array
+    {
+        return array_merge(...$this->sensors()
+                        ->map(fn(Sensor $sensor) => $sensor->config()->commands)
+                        ->filter()
+                        ->toArray());
+    }
 
     /**
      *
      * @return Collection<Sensor>
      */
-    public function autodiscover() : Collection
+    private function autodiscover() : Collection
     {
         $ROOT = __DIR__ . "/Sensor/";
         return Collection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) use ($ROOT) {

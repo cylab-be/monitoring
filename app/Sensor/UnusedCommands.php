@@ -9,6 +9,8 @@ use App\Report;
 use App\Record;
 use App\Server;
 
+use App\AgentScheduler;
+
 /**
  * Description of UnavailableCommands
  *
@@ -45,6 +47,8 @@ class UnusedCommands extends Sensor
         
         $unused_commands = [];
         # @phpstan-ignore variable.undefined
+        $COMMANDS = array_merge($COMMANDS, AgentScheduler::get()->commands());
+        
         foreach ($COMMANDS as $label => $command) {
             $count = $server->records()->where("label", $label)->count();
             

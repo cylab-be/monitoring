@@ -43,8 +43,19 @@ function check_config()
 
 function run_commands()
 {
-    global $COMMANDS, $FUNCTIONS, $RESULTS, $TOKEN, $VERSION;
+    global $COMMANDS, $ADDITIONAL_COMMANDS, $FUNCTIONS, $RESULTS, $TOKEN, $VERSION;
 
+    foreach ($ADDITIONAL_COMMANDS as $key => $cmd) {
+        echo "Running $key ... ";
+        $output = shell_exec($cmd . " 2> /dev/null");
+        if ($output !== null) {
+            echo "ok\n";
+            $RESULTS[$key] = trim($output);
+        } else {
+            echo "E\n";
+        }
+    }
+    
     foreach ($COMMANDS as $key => $cmd) {
         echo "Running $key ... ";
         $output = shell_exec($cmd . " 2> /dev/null");

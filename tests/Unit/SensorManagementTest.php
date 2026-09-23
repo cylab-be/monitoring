@@ -16,7 +16,7 @@ class SensorManagementTest extends TestCase
     public function testAutodiscover()
     {
         $manager = AgentScheduler::get();
-        $sensors = $manager->autodiscover();
+        $sensors = $manager->sensors();
         
         $this->assertTrue($sensors->count() > 5);
     }
