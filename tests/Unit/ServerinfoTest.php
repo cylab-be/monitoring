@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\Sensor\MemoryTypes;
 use App\ServerInfo;
-use App\Sensor\ServerInfoFreeBSDCPU;
-use App\Sensor\MemoryDMI;
+use App\Sensor\FreeBSD\ServerInfoCPU;
+use App\Sensor\DeviceInfo\MemoryDMI;
 
 use Tests\TestCase;
 
@@ -40,7 +40,7 @@ class ServerinfoTest extends TestCase
     public function testThreadsFreebsd()
     {
         $string = file_get_contents(__DIR__ . "/freebsd-dmi-cpu");
-        $sensor = new ServerInfoFreeBSDCPU();
+        $sensor = new ServerInfoCPU();
         $info = new ServerInfo();
         $sensor->analyzeString($string, $info);
         $this->assertEquals(4, $info->vCores());
@@ -53,7 +53,7 @@ class ServerinfoTest extends TestCase
     public function testThreadsMulti()
     {
         $string = file_get_contents(__DIR__ . "/dmi-cpu");
-        $sensor = new ServerInfoFreeBSDCPU();
+        $sensor = new ServerInfoCPU();
         $info = new ServerInfo();
         $sensor->analyzeString($string, $info);
         $this->assertEquals(64, $info->vCores());

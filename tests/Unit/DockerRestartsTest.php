@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Sensor\DockerRestarts;
+use App\Sensor\Docker\ContainerRestarts;
 
 use Tests\TestCase;
 
