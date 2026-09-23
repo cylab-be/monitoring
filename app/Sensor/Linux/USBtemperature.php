@@ -21,7 +21,8 @@ class USBtemperature extends Sensor
             "usb_temperature",
             "TEMPer",
             "Uses hid-query to read the value of a TEMPer USB device",
-            ["TEMPer" => "command -v hid-query >/dev/null 2>&1 && hid-query /dev/hidraw1 0x01 0x80 0x33 0x01 0x00 0x00 0x00 0x00"]
+            ["TEMPer" => "command -v hid-query >/dev/null 2>&1 && "
+                . "hid-query /dev/hidraw1 0x01 0x80 0x33 0x01 0x00 0x00 0x00 0x00"]
         );
     }
 
