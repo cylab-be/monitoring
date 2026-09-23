@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Status;
 
 use App\Sensor\Disks;
-use App\Sensor\CPUtemperature;
+use App\Sensor\Linux\CPUtemperature;
 use App\Sensor\Updates;
 use App\Sensor\NetstatReport;
 use App\Sensor\Temper;

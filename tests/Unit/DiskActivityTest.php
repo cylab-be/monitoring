@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Sensor\DiskActivity;
+use App\Sensor\Linux\DiskActivity;
 
 use Tests\TestCase;
 
