@@ -5,7 +5,7 @@ namespace App\Sensor\DeviceInfo;
 use App\SensorConfig;
 use App\ServerInfo;
 use App\Sensor\ServerInfoParser;
-use App\Sensor\Ifconfig;
+use App\Sensor\Linux\Ifconfig;
 
 /**
  * Prase ifconfig agent to get IP addresses of server.

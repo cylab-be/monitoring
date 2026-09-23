@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Sensor\Ifconfig;
+use App\Sensor\Linux\Ifconfig;
 
 use Tests\TestCase;
 

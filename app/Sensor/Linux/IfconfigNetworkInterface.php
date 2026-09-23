@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 /**
  * Description of NetworkInterface
  *
  * @author tibo
  */
-class NetworkInterface
+class IfconfigNetworkInterface
 {
     public $name;
 

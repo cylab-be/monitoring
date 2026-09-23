@@ -64,6 +64,10 @@ class NvidiaSmi extends Sensor
 
     public function config(): SensorConfig
     {
-        return new SensorConfig("nvidia-smi", "nvidia-smi", "Parse nvidia-smi data to get metrics on Nvidia gpus.");
+        return new SensorConfig(
+            "nvidia-smi",
+            "nvidia-smi",
+            "Parse nvidia-smi data to get metrics on Nvidia gpus."
+        );
     }
 }

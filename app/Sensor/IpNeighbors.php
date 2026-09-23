@@ -8,6 +8,8 @@ use App\Status;
 use App\Report;
 use App\Record;
 
+use App\Sensor\Linux\Ifconfig;
+
 /**
  * Description of IpNeighbors
  *

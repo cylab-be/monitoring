@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Sensor;
 use App\SensorConfig;
 use App\Status;
 use App\Report;
 use App\Record;
+
+use App\Sensor\Dataset;
+use App\Sensor\Point;
+use App\Sensor\ColorPalette;
 
 use Illuminate\Database\Eloquent\Collection;
 
@@ -46,7 +50,7 @@ class Ifconfig extends Sensor
         $server = $record->server;
         $interfaces = $this->parseIfconfigRecord($record);
         return $report->setStatus(Status::ok())
-                ->setHTML(view("agent.ifconfig", [
+                ->setHTML(blade(__DIR__ . "/Ifconfig.blade.php", [
                     "interfaces" => $interfaces,
                     "points" => $this->points($server->lastRecords("ifconfig"))]));
     }
@@ -146,7 +150,7 @@ class Ifconfig extends Sensor
      * Parse the result of the ifconfig command, skipping every virtual
      * interfaces (docker, br, lo) and return an array of NetworkInterface
      * @param string $string
-     * @return \App\Sensor\NetworkInterface[]
+     * @return \App\Sensor\Linux\IfconfigNetworkInterface[]
      */
     public function parseIfconfig(string $string) : array
     {
@@ -162,7 +166,7 @@ class Ifconfig extends Sensor
 
             if ($name !== false) {
                 // Starting the section of a new interface
-                $if = new NetworkInterface();
+                $if = new IfconfigNetworkInterface();
                 $interfaces[] = $if;
                 $if->name = $name;
                 continue;
