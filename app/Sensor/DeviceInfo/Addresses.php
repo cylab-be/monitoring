@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+use App\Sensor\ServerInfoParser;
+use App\Sensor\Ifconfig;
 
 /**
  * Prase ifconfig agent to get IP addresses of server.
  *
  * @author tibo
  */
-class ServerInfoAddresses extends ServerInfoParser
+class Addresses extends ServerInfoParser
 {
     public function analyzeString(string $string, ServerInfo $info)
     {

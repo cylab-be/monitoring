@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Description of ServerInfoUptime
  *
  * @author tibo
  */
-class ServerInfoUptime extends ServerInfoParser
+class Uptime extends ServerInfoParser
 {
     public function analyzeString(string $string, ServerInfo $info)
     {

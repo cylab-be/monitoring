@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  *
  * @author tibo
  */
-class ServerInfoCPU extends ServerInfoParser
+class CPU extends ServerInfoParser
 {
     public function analyzeString(string $string, ServerInfo $info)
     {
@@ -25,7 +27,7 @@ class ServerInfoCPU extends ServerInfoParser
         return new SensorConfig(
             "ServerInfoCPU",
             "cpu",
-            "Extract CPU threads from /proc/cpuinfo"
+            "Extract number CPU threads from /proc/cpuinfo"
         );
     }
 }

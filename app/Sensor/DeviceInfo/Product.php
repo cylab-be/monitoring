@@ -1,33 +1,35 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
 
+use App\Sensor\ServerInfoParser;
+
 /**
- * Description of ServerInfoManufacturer
+ * Description of ServerInfoProduct
  *
  * @author tibo
  */
-class ServerInfoManufacturer extends ServerInfoParser
+class Product extends ServerInfoParser
 {
-
+    //put your code here
     public function analyzeString(string $string, ServerInfo $info)
     {
-        $REGEX = "/^\s*Manufacturer: (.*)$/m";
+        $REGEX = "/^\s*Product Name: (.*)$/m";
 
         $matches = [];
         preg_match($REGEX, $string, $matches);
-        $info->manufacturer = $matches[1] ?? "unknown";
+        $info->product = $matches[1] ?? "unknown";
     }
 
     public function config(): SensorConfig
     {
         return new SensorConfig(
-            "ServerInfoManufacturer",
+            "ServerInfoProduct",
             "system",
-            "Use DMI system to extract manufacturer"
+            "Use DMI system to show product name"
         );
     }
 }

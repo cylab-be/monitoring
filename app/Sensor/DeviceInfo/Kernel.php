@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Use uname to get kernel name and version
  *
  * @author tibo
  */
-class ServerInfoKernel extends ServerInfoParser
+class Kernel extends ServerInfoParser
 {
+    #[\Override]
     public function analyzeString(string $string, ServerInfo $info)
     {
         $info->kernel = $string;

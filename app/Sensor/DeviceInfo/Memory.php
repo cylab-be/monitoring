@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Description of ServerInfoMemory
  *
  * @author tibo
  */
-class ServerInfoMemory extends ServerInfoParser
+class Memory extends ServerInfoParser
 {
     //put your code here
     public function analyzeString(string $string, ServerInfo $info)

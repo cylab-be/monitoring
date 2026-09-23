@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Uses DMI info to extract CPU name.
  *
  * @author tibo
  */
-class ServerInfoCPUName extends ServerInfoParser
+class CPUName extends ServerInfoParser
 {
     public function analyzeString(string $string, ServerInfo $info)
     {

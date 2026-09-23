@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Uses DMI to extract total memory.
  *
  * @author tibo
  */
-class ServerInfoMemoryDMI extends ServerInfoParser
+class MemoryDMI extends ServerInfoParser
 {
     //put your code here
     public function analyzeString(string $string, ServerInfo $info)

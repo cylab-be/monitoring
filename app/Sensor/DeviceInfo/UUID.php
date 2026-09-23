@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\DeviceInfo;
 
 use App\SensorConfig;
 use App\ServerInfo;
+
+use App\Sensor\ServerInfoParser;
 
 /**
  * Description of ServerInfoUUID
  *
  * @author tibo
  */
-class ServerInfoUUID extends ServerInfoParser
+class UUID extends ServerInfoParser
 {
     public function config(): SensorConfig
     {
