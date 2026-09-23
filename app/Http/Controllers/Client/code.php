@@ -1,8 +1,15 @@
 <?php
 
 $RESULTS = [];
-$TOKEN = "";
-$URL = "";
+
+/** @var ?string $SERVER monitoring server */
+$SERVER = null;
+
+/** @var ?string $ID device ID */
+$ID = null;
+
+/** @var ?string $TOKEN device TOKEN */
+$TOKEN = null;
 
 function usage()
 {
@@ -10,21 +17,39 @@ function usage()
     exit(1);
 }
 
+function parse_env_vars()
+{
+    global $SERVER, $ID, $TOKEN;
+    $SERVER = getenv('SERVER');
+    $ID = getenv('ID');
+    $TOKEN = getenv('TOKEN');
+}
+
 function parse_args()
 {
-    global $URL, $TOKEN;
+    global $SERVER, $ID, $TOKEN;
     $options = getopt('i:t:s:');
 
-    if ($options === false) {
-        usage();
+
+    if (isset($options["i"])) {
+        $ID = $options["i"];
     }
 
-    if (! isset($options["s"]) || ! isset($options["i"]) || ! isset($options["t"])) {
+    if (isset($options["s"])) {
+        $SERVER = $options["s"];
+    }
+    
+    if (isset($options["t"])) {
+        $TOKEN = $options["t"];
+    }
+}
+
+function check_config()
+{
+    global $SERVER, $ID, $TOKEN;
+    if ($SERVER == null || $ID == null || $TOKEN == null) {
         usage();
     }
-
-    $URL = $options["s"] . "/api/record/" . $options["i"];
-    $TOKEN = $options["t"];
 }
 
 function run_commands()
@@ -61,7 +86,9 @@ function run_commands()
 
 function upload_results()
 {
-    global $URL, $RESULTS;
+    global $SERVER, $ID, $RESULTS;
+    $URL = $SERVER . "/api/record/" . $ID;
+    
     // Encode JSON safely
     $json = json_encode($RESULTS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
@@ -73,7 +100,7 @@ function upload_results()
     curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    $response = curl_exec($ch);
+    curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
@@ -85,8 +112,10 @@ function run()
 {
     global $VERSION;
     echo "Monitoring $VERSION\n";
-    echo "https://gitlab.cylab.be/cylab/monitoring\n";
+    echo "https://gitlab.cylab.be/cylab/tokens\n";
+    parse_env_vars();
     parse_args();
+    check_config();
     run_commands();
     upload_results();
 }
