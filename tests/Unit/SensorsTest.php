@@ -8,7 +8,7 @@ use App\Sensor\Disks;
 use App\Sensor\Linux\CPUtemperature;
 use App\Sensor\Updates;
 use App\Sensor\NetstatReport;
-use App\Sensor\Temper;
+use App\Sensor\Linux\USBtemperature;
 
 use Tests\TestCase;
 
@@ -105,7 +105,7 @@ class SensorsTest extends TestCase
     {
         $string = file_get_contents(__DIR__ . "/TEMPer");
 
-        $temper = new Temper();
+        $temper = new USBtemperature();
         $t = $temper->convert($string);
         $this->assertEquals(23.75, $t);
     }
