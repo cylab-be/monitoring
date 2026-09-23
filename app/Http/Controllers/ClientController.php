@@ -9,7 +9,8 @@ class ClientController extends Controller
         $code = "#!/usr/bin/env php\n\n" .
                 file_get_contents(__DIR__ . "/Client/parameters.php") .
                 // remove the <?php
-                $this->stripFirstLine(file_get_contents(__DIR__ . "/Client/code.php"));
+                $this->stripFirstLine(file_get_contents(__DIR__ . "/Client/code.php")) .
+                $this->stripFirstLine(file_get_contents(__DIR__ . "/Client/main.php"));
         
         return response($code, 200)
             ->header('Content-Type', 'text/plain');

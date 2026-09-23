@@ -1,16 +1,5 @@
 <?php
 
-$RESULTS = [];
-
-/** @var ?string $SERVER monitoring server */
-$SERVER = null;
-
-/** @var ?string $ID device ID */
-$ID = null;
-
-/** @var ?string $TOKEN device TOKEN */
-$TOKEN = null;
-
 function usage()
 {
     echo "Usage: monitor -i <DEVICE_ID> -t <DEVICE_TOKEN> -s <SERVER_URL>\n";
@@ -119,5 +108,3 @@ function run()
     run_commands();
     upload_results();
 }
-
-run();
