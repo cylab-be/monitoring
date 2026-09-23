@@ -1,3 +1,4 @@
+<?php
 
 $RESULTS = [];
 $TOKEN = "";
@@ -80,8 +81,14 @@ function upload_results()
     echo "Result: $httpCode\n";
 }
 
-echo "Monitoring $VERSION\n";
-echo "https://gitlab.cylab.be/cylab/monitoring\n";
-parse_args();
-run_commands();
-upload_results();
+function run()
+{
+    global $VERSION;
+    echo "Monitoring $VERSION\n";
+    echo "https://gitlab.cylab.be/cylab/monitoring\n";
+    parse_args();
+    run_commands();
+    upload_results();
+}
+
+run();
