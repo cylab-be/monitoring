@@ -17,3 +17,13 @@ function preg_match_one(string $pattern, string $string, int $match_group = 1)
 
     return false;
 }
+
+use Illuminate\Support\Facades\Blade;
+
+function blade(string $template, array $args) : string
+{
+    return Blade::render(
+        file_get_contents($template),
+        $args
+    );
+}

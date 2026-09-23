@@ -59,11 +59,16 @@ class AgentScheduler
     public function autodiscover() : Collection
     {
         $ROOT = __DIR__ . "/Sensor/";
-        return Collection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) {
+        return Collection::make(File::allFiles($ROOT))->map(function (SplFileInfo $file) use ($ROOT) {
+            $relativePath = str_replace($ROOT, '', $file->getRealPath());
+            
+            // use relativePath to build full class name
+            // the regex removes the file extension
+            $classPath = preg_replace('/\.[^.]+$/', '', $relativePath);
+            $classPath = str_replace(['/', '\\'], '\\', $classPath);
 
-            $interface_name = "\App\Sensor";
-            $class_name = '\App\Sensor\\' . $file->getFilenameWithoutExtension();
-            if (!is_a($class_name, $interface_name, true)) {
+            $class_name = '\App\Sensor\\' . $classPath;
+            if (!is_a($class_name, "\App\Sensor", true)) {
                 return;
             }
 

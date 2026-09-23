@@ -8,7 +8,8 @@ use App\Record;
 use App\Report;
 
 /**
- * Description of ServerInfoParser
+ * A special kind of sensor that produces no report, but will update general information about the device
+ * E.g. CPU name, CPU core count, total memory etc.
  *
  * @author tibo
  */

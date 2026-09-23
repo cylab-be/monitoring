@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\FreeBSD;
 
 use App\SensorConfig;
 use App\ServerInfo;
+use App\Sensor\ServerInfoParser;
 
 /**
  * Description of ServerInfoCPU
  *
  * @author tibo
  */
-class ServerInfoFreeBSDCPU extends ServerInfoParser
+class ServerInfoCPU extends ServerInfoParser
 {
     public function analyzeString(string $string, ServerInfo $info)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Docker;
 
 use App\Sensor;
 use App\SensorConfig;
@@ -13,7 +13,7 @@ use App\Record;
  *
  * @author tibo
  */
-class DockerComposeStacks extends Sensor
+class ComposeStacks extends Sensor
 {
     public function config(): SensorConfig
     {
@@ -31,10 +31,9 @@ class DockerComposeStacks extends Sensor
         // only informative, allways ok
         $report->setStatus(Status::ok());
 
-        //
         // [{"Name":"monitoring","Status":"running(7)","ConfigFiles":"/home/monitoring/docker-compose.yml"}]
         $stacks = json_decode($record->data);
-        $report->setHTML(view("sensor.dockercomposestacks", ["stacks" => $stacks]));
+        $report->setHTML(blade(__DIR__ . "/ComposeStacks.blade.php", ["stacks" => $stacks]));
 
         return $report;
     }

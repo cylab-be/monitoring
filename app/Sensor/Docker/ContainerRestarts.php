@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Docker;
 
 use App\Sensor;
 use App\SensorConfig;
@@ -13,7 +13,7 @@ use App\Status;
  *
  * @author tibo
  */
-class DockerRestarts extends Sensor
+class ContainerRestarts extends Sensor
 {
     #[\Override]
     public function config(): SensorConfig
@@ -46,7 +46,7 @@ class DockerRestarts extends Sensor
         $restarts24 = $this->parse($record24->data);
         $delta = $this->delta($restarts, $restarts24);
         
-        $report->setHTML(view("sensor.dockerrestart", ["restarts" => $delta]));
+        $report->setHTML(blade(__DIR__ . "/ContainerRestarts.blade.php", ["restarts" => $delta]));
         
         $max = max(array_values($delta));
         if ($max > self::THRESHOLD) {
