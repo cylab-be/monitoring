@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="/js/sensors.js"></script>
 <h1>
     <a class="text-decoration-none"
         href="{{ route("servers.index", ["organization" => $server->organization]) }}">{{ $server->organization->name }}</a>

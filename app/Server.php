@@ -130,7 +130,7 @@ class Server extends Model
     }
 
     /**
-     *
+     * Get last 24h of records with specified label.
      * @param string $label
      * @return DatabaseCollection<Record>
      */

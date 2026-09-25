@@ -8,6 +8,11 @@ use App\Status;
 use App\Report;
 use App\Record;
 
+use App\Sensor\Dataset;
+use App\Sensor\Point;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Description of NvidiaSmi
  *
@@ -31,10 +36,47 @@ class NvidiaSmi extends Sensor
     {
         $gpus = $this->parse($record->data);
         
+        // analyze data for last 24h
+        $records24h = $record->server->lastRecords("nvidia-smi");
+        $datasets = $this->buildDatasets($records24h);
+        
         return (new Report())
                 ->setTitle("Nvidia GPUs")
-                ->setHTML(blade(__DIR__ . "/NvidiaSmi.blade.php", ["gpus" => $gpus]))
+                ->setHTML(blade(__DIR__ . "/NvidiaSmi.blade.php", [
+                    "gpus" => $gpus,
+                    "datasets" => $datasets]))
                 ->setStatus(Status::ok());
+    }
+    
+    /**
+     * Return one dataset for each GPU.
+     *
+     * @param Collection $records
+     * @return array<Dataset>
+     */
+    public function buildDatasets(Collection $records) : array
+    {
+        $datasets = [];
+        
+        /** @var Record $first_record */
+        $first_record = $records->first();
+        $gpus = $this->parse($first_record->data);
+        foreach ($gpus as $gpu) {
+            $datasets[$gpu["index"]] = new Dataset($gpu["index"]);
+        }
+        
+        foreach ($records as $record) {
+            /** @var Record $record */
+            $gpus = $this->parse($record->data);
+            
+            foreach ($gpus as $gpu) {
+                $datasets[$gpu["index"]]->add(new Point(
+                    $record->time * 1000,
+                    $gpu["utilization_gpu_pct"]
+                ));
+            }
+        }
+        return $datasets;
     }
     
     /**
