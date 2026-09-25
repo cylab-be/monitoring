@@ -16,12 +16,14 @@ use App\Status;
 class OpnSenseCheckUpdate extends Sensor
 {
     #[\Override]
-    public function config(): SensorConfig {
+    public function config(): SensorConfig
+    {
         return new SensorConfig(
-                "opnsense-check-update",
-                "opnsense-check-update", 
-                "Parse the output of /usr/local/opnsense/scripts/firmware/check.sh to check if updates are available",
-                ["opnsense-check-update" => "/usr/local/opnsense/scripts/firmware/check.sh"]);
+            "opnsense-check-update",
+            "opnsense-check-update",
+            "Parse the output of /usr/local/opnsense/scripts/firmware/check.sh to check if updates are available",
+            ["opnsense-check-update" => "/usr/local/opnsense/scripts/firmware/check.sh"]
+        );
     }
     
     //put your code here
