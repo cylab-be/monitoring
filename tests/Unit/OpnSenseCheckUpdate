@@ -1,0 +1,106 @@
+Fetching changelog information, please wait... done
+Updating OPNsense repository catalogue...
+Fetching meta.conf: . done
+Fetching data.pkg: .......... done
+Processing entries: .......... done
+OPNsense repository update completed. 931 packages processed.
+All repositories are up to date.
+Checking for upgrades (84 candidates): .......... done
+Processing candidates (84 candidates): .......... done
+The following 85 package(s) will be affected (of 0 checked):
+
+New packages to be INSTALLED:
+	py313-typing-extensions: 4.16.0 [OPNsense]
+
+Installed packages to be UPGRADED:
+	boost-libs: 1.89.0_2 -> 1.91.0 [OPNsense]
+	ca_root_nss: 3.125 -> 3.129 [OPNsense]
+	curl: 8.21.0 -> 8.22.0 [OPNsense]
+	cyrus-sasl: 2.1.28_5 -> 2.1.28_6 [OPNsense]
+	dhcp6c: 20260122 -> 20260122_1 [OPNsense]
+	dpinger: 3.4 -> 3.6 [OPNsense]
+	expat: 2.8.2 -> 2.8.4 [OPNsense]
+	filterlog: 0.8 -> 0.9 [OPNsense]
+	glib: 2.86.4,2 -> 2.88.3,2 [OPNsense]
+	hostapd: 2.11_3 -> 2.12_2 [OPNsense]
+	jansson: 2.15.1 -> 2.15.1_1 [OPNsense]
+	json-c: 0.19 -> 0.19_1 [OPNsense]
+	kea: 3.0.3 -> 3.0.4 [OPNsense]
+	krb5: 1.22.2_2 -> 1.22.2_3 [OPNsense]
+	libffi: 3.6.0 -> 3.8.0 [OPNsense]
+	libnghttp2: 1.69.0 -> 1.70.0 [OPNsense]
+	libpsl: 0.21.5_2 -> 0.23.3 [OPNsense]
+	libuuid: 2.42.2 -> 2.42.3 [OPNsense]
+	libxml2: 2.15.3 -> 2.15.4 [OPNsense]
+	log4cplus: 2.1.2 -> 2.2.0.1 [OPNsense]
+	monit: 5.35.2 -> 6.0.0 [OPNsense]
+	mpd5: 5.9_19 -> 5.9_20 [OPNsense]
+	nano: 9.0 -> 9.2 [OPNsense]
+	nss: 3.125 -> 3.129 [OPNsense]
+	ntp: 4.2.8p18_5 -> 4.2.8p18_6 [OPNsense]
+	openldap26-client: 2.6.13 -> 2.6.15 [OPNsense]
+	openssh-portable: 10.3.p1,1 -> 10.5.p1_1,1 [OPNsense]
+	openssl35: 3.5.7 -> 3.5.8 [OPNsense]
+	openvpn: 2.7.5 -> 2.7.7 [OPNsense]
+	opnsense: 26.7.1 -> 26.7.4_1 [OPNsense]
+	opnsense-update: 26.7 -> 26.7.4 [OPNsense]
+	os-isc-dhcp: 1.0_6 -> 1.0_7 [OPNsense]
+	pcre2: 10.47_1 -> 10.48 [OPNsense]
+	perl5: 5.42.2 -> 5.42.3 [OPNsense]
+	php85: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-ctype: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-curl: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-dom: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-filter: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-gettext: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-ldap: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-mbstring: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-pcntl: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-pdo: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-pecl-mcrypt: 1.0.7 -> 1.0.9 [OPNsense]
+	php85-phalcon: 5.16.0 -> 5.20.3 [OPNsense]
+	php85-phpseclib: 3.0.55 -> 3.0.57 [OPNsense]
+	php85-session: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-simplexml: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-sockets: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-sqlite3: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-xml: 8.5.8 -> 8.5.10 [OPNsense]
+	php85-zlib: 8.5.8 -> 8.5.10 [OPNsense]
+	py313-anyio: 4.13.0 -> 4.15.1 [OPNsense]
+	py313-certifi: 2026.6.17 -> 2026.7.22 [OPNsense]
+	py313-cffi: 2.0.0 -> 2.1.1 [OPNsense]
+	py313-charset-normalizer: 3.4.7 -> 3.5.1 [OPNsense]
+	py313-cryptography: 48.0.1,1 -> 50.0.1,1 [OPNsense]
+	py313-duckdb: 1.5.4 -> 1.5.5 [OPNsense]
+	py313-h2: 4.3.0 -> 4.4.1 [OPNsense]
+	py313-hpack: 4.1.0 -> 4.2.0 [OPNsense]
+	py313-idna: 3.18 -> 3.19 [OPNsense]
+	py313-numexpr: 2.14.1_2 -> 2.14.2 [OPNsense]
+	py313-packaging: 26.2 -> 26.3 [OPNsense]
+	py313-pandas: 2.3.3_3,1 -> 2.3.3_4,1 [OPNsense]
+	py313-pyasn1: 0.6.0 -> 0.6.4 [OPNsense]
+	py313-pyopenssl: 26.2.0,1 -> 26.4.0,1 [OPNsense]
+	py313-pytz: 2026.2,1 -> 2026.3,1 [OPNsense]
+	py313-pyyaml: 6.0.3 -> 6.0.3_1 [OPNsense]
+	py313-service-identity: 24.2.0 -> 26.1.0 [OPNsense]
+	py313-sqlite3: 3.13.14_10 -> 3.13.15_10 [OPNsense]
+	py313-trio: 0.33.0 -> 0.34.0 [OPNsense]
+	py313-tzdata: 2026.2 -> 2026.4 [OPNsense]
+	py313-ujson: 5.12.1 -> 6.0.0 [OPNsense]
+	python313: 3.13.14 -> 3.13.15 [OPNsense]
+	rrdtool: 1.9.0_1 -> 1.11.0 [OPNsense]
+	sqlite3: 3.53.3,1 -> 3.53.4,1 [OPNsense]
+	strongswan: 6.0.7 -> 6.1.0 [OPNsense]
+	suricata: 8.0.6 -> 8.0.7 [OPNsense]
+	syslog-ng: 4.12.0 -> 4.12.0_5 [OPNsense]
+	unbound: 1.25.1_1 -> 1.26.1 [OPNsense]
+	wpa_supplicant: 2.11_7 -> 2.12_1 [OPNsense]
+	zabbix7-agent: 7.0.28 -> 7.0.30 [OPNsense]
+	zip: 3.0_5 -> 3.0_6 [OPNsense]
+
+Number of packages to be installed: 1
+Number of packages to be upgraded: 84
+
+The process will require 13 MiB more space.
+173 MiB to be downloaded.
+
