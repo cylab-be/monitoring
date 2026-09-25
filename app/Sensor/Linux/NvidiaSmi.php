@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Sensor;
 use App\SensorConfig;
@@ -15,14 +15,25 @@ use App\Record;
  */
 class NvidiaSmi extends Sensor
 {
-    //put your code here
+    public function config(): SensorConfig
+    {
+        return new SensorConfig(
+            "nvidia-smi",
+            "nvidia-smi",
+            "Parse nvidia-smi data to get metrics on Nvidia gpus.",
+            ["nvidia-smi" => "command -v nvidia-smi >/dev/null 2>&1 && "
+            . "nvidia-smi --query-gpu=index,name,utilization.gpu,utilization.memory,memory.used,memory.total,"
+            . "temperature.gpu --format=csv",]
+        );
+    }
+    
     public function analyze(Record $record): ?Report
     {
         $gpus = $this->parse($record->data);
         
         return (new Report())
                 ->setTitle("Nvidia GPUs")
-                ->setHTML(view("sensor.nvidia-smi", ["gpus" => $gpus]))
+                ->setHTML(blade(__DIR__ . "/NvidiaSmi.blade.php", ["gpus" => $gpus]))
                 ->setStatus(Status::ok());
     }
     
@@ -60,14 +71,5 @@ class NvidiaSmi extends Sensor
         }
         
         return $gpus;
-    }
-
-    public function config(): SensorConfig
-    {
-        return new SensorConfig(
-            "nvidia-smi",
-            "nvidia-smi",
-            "Parse nvidia-smi data to get metrics on Nvidia gpus."
-        );
     }
 }

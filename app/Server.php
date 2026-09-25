@@ -4,6 +4,7 @@ namespace App;
 
 use League\CommonMark\CommonMarkConverter;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
@@ -40,6 +41,7 @@ use Illuminate\Support\Str;
  */
 class Server extends Model
 {
+    use HasFactory;
 
     protected $fillable = ["token"];
     
@@ -94,6 +96,19 @@ class Server extends Model
     {
         $attributes["token"] = str_random(32);
         parent::__construct($attributes);
+    }
+    
+    protected static function booted() {
+        static::creating(function ($server) {
+            // Logic before saving (e.g., generate UUIDs)
+        });
+
+        static::created(function ($server) {
+            // create ServerInfo model
+            $server_info = new ServerInfo;
+            $server_info->server_id = $server->id;
+            $server_info->save();
+        });
     }
 
     public function organization()

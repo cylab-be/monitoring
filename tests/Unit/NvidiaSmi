@@ -1,0 +1,2 @@
+index, name, utilization.gpu [%], utilization.memory [%], memory.used [MiB], memory.total [MiB], temperature.gpu
+0, NVIDIA GeForce RTX 5090, 12 %, 23 %, 19332 MiB, 32607 MiB, 44
