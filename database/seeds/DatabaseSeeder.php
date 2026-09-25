@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $servers_count = 12;
-        $days = 2;
+        $servers_count = 4;
+        $days = 1;
         
         $email = Str::lower(Str::random(8)) . "@example.com";
         $password = "password";
         
-        echo "Created new user ...\n";
+        echo "Create new user ...\n";
         echo "* email: $email\n";
         echo "* password: $password\n\n";
         
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         
         echo "Create $servers_count servers ...\n\n";
         
-        $servers = factory(Server::class, $servers_count)->make();
+        $servers = Server::factory()->count($servers_count)->make();
         foreach ($servers as $server) {
             /** @var Server $server */
             $server->organization_id = $org->id;
@@ -75,7 +75,8 @@ class DatabaseSeeder extends Seeder
         "cpu-temperature" => "sensors",
         "perccli" => "perccli",
         "netstat-listen-tcp" => "netstat-tcp",
-        "system" => "system"
+        "system" => "system",
+        "nvidia-smi" => "NvidiaSmi"
     ];
     
     
@@ -94,18 +95,19 @@ class DatabaseSeeder extends Seeder
             $record->data = trim(file_get_contents(__DIR__ . "/../../tests/Unit/" . $file));
             $record->save();
             
-            $this->progress();
+            $this->showProgress();
         }
     }
     
     
     private $records_count = 0;
     
-    private function progress()
+    private function showProgress()
     {
         $this->records_count++;
         if ($this->records_count % 1000 == 0) {
-            echo $this->records_count . "(" . 
+            echo date('Ymd H:i:s ') .
+                    $this->records_count . "(" . 
                     round($this->records_count / $this->records_total * 100) . "%)\n";
         }
     }

@@ -1,12 +1,24 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Server;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Server::class, function (Faker $faker) {
-    return [
-        "name" => $faker->name()
-    ];
-});
+/**
+ * @extends Factory<Server>
+ */
+class ServerFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => fake()->name,
+            'properties' => []
+        ];
+    }
+}
