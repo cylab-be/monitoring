@@ -98,7 +98,8 @@ class Server extends Model
         parent::__construct($attributes);
     }
     
-    protected static function booted() {
+    protected static function booted()
+    {
         static::creating(function ($server) {
             // Logic before saving (e.g., generate UUIDs)
         });

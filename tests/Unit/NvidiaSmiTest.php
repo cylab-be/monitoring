@@ -6,7 +6,6 @@ use App\Sensor\Linux\NvidiaSmi;
 
 use Tests\TestCase;
 
-
 class NvidiaSmiTest extends TestCase
 {
     public function testParse()
