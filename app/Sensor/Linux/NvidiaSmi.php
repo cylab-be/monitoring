@@ -10,6 +10,7 @@ use App\Record;
 
 use App\Sensor\Dataset;
 use App\Sensor\Point;
+use App\Sensor\ColorPalette;
 
 use Illuminate\Database\Eloquent\Collection;
 
@@ -57,12 +58,13 @@ class NvidiaSmi extends Sensor
     public function buildDatasets(Collection $records) : array
     {
         $datasets = [];
+        $palette = new ColorPalette();
         
         /** @var Record $first_record */
         $first_record = $records->first();
         $gpus = $this->parse($first_record->data);
         foreach ($gpus as $gpu) {
-            $datasets[$gpu["index"]] = new Dataset($gpu["index"]);
+            $datasets[$gpu["index"]] = new Dataset($gpu["index"], $palette->next());
         }
         
         foreach ($records as $record) {

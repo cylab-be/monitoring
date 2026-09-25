@@ -10,6 +10,19 @@ namespace App\Sensor;
 class ColorPalette
 {
     const COLORS = ["#d6e6ff","#d7f9f8","#ffffea","#fff0d4","#fbe0e0","#e5d4ef"];
+    
+    private $cur = 0;
+    
+    /**
+     * Get the next color.
+     * @return string
+     */
+    public function next() : string
+    {
+        $color =  self::pick1Color($this->cur);
+        $this->cur++;
+        return $color;
+    }
 
 
     public static function pick2Colors(int $key) : array
