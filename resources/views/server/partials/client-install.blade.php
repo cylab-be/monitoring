@@ -11,7 +11,7 @@ sudo apt-get install net-tools sysstat lm-sensors php-cli php-curl
 curl -sL {{ config("app.url") }}/monitor | env ID="{{ $server->id }}" TOKEN="{{ $server->token }}" SERVER="{{ config("app.url") }}" php
 
 # Add a cron entry to run it automatically
-echo '*/5 * * * * root sleep {{ $server->id % 240 }}  && curl -sL {{ config("app.url") }}/monitor | env ID="{{ $server->id }}" TOKEN="{{ $server->token }}" SERVER="{{ config("app.url") }}" /usr/bin/php' | \
+echo '*/5 * * * * root sleep {{ $server->id % 240 }}  && curl -sL {{ config("app.url") }}/monitor | env ID="{{ $server->id }}" TOKEN="{{ $server->token }}" SERVER="{{ config("app.url") }}" php' | \
 sudo tee -a /etc/cron.d/monitor
         
 {{ $server->customInstallationInstructions() }}
