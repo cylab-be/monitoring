@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Organization;
+use App\Server;
+
+use Illuminate\Support\Collection;
 
 class InsightsController extends Controller
 {
@@ -17,29 +20,47 @@ class InsightsController extends Controller
         $packages = collect();
 
         foreach ($organization->servers as $device) {
-            $last_record = $device->lastRecord("apt_list");
-            if (is_null($last_record)) {
-                continue;
-            }
-
-            $packages = $packages->merge(
-                // create collection
-                collect(explode("\n", $last_record->data))
-
-                    // first line simply contains 'Listing...'
-                    ->skip(1)
-
-                    // create a triplet [package name, device, source]
-                    ->map(fn($package) => [
-                        "name" => $package,
-                        "device" => $device,
-                "source" => "apt_list"])
-            );
+            $packages->merge($this->packagesOfDevice($device));
         }
 
         return view("insights.packages", [
             "organization" => $organization,
             "packages" => $packages->sortBy("name")->all()]);
+    }
+    
+    private static array $SENSORS = [
+        \App\Sensor\Linux\Debian\ListPackages::class,
+        \App\Sensor\FreeBSD\ListPackages::class
+    ];
+    
+    public function packagesOfDevice(Server $device) : Collection
+    {
+        $packages = collect();
+        
+        foreach (self::$SENSORS as $sensor_class) {
+            /** @var \App\Sensor $sensor */
+            $sensor = new $sensor_class;
+            $label = $sensor->config()->trigger_label;
+            
+            $last_record = $device->lastRecord($label);
+            if (is_null($last_record)) {
+                continue;
+            }
+            
+            $packages = $packages->merge(
+                // create a collection from array
+                // @phpstan-ignore method.notFound
+                collect($sensor->parse($last_record->data))
+                    
+                    // create a triplet [package name, device, source]
+                    ->map(fn($package) => [
+                        "name" => $package,
+                        "device" => $device,
+                "source" => $label])
+            );
+        }
+        
+        return $packages;
     }
 
     /**

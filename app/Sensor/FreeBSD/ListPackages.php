@@ -35,4 +35,14 @@ class ListPackages extends Sensor
                 ->setStatus(Status::ok())
                 ->setHTML("<pre>" . $record->data . "</pre>");
     }
+    
+    /**
+     * Return an array of packages
+     * @param string $data
+     * @return array
+     */
+    public static function parse(string $data) : array
+    {
+        return explode("\n", $data);
+    }
 }
