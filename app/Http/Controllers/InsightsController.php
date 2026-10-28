@@ -20,7 +20,7 @@ class InsightsController extends Controller
         $packages = collect();
 
         foreach ($organization->servers as $device) {
-            $packages->merge($this->packagesOfDevice($device));
+            $packages = $packages->merge($this->packagesOfDevice($device));
         }
 
         return view("insights.packages", [
@@ -47,10 +47,11 @@ class InsightsController extends Controller
                 continue;
             }
             
+            $array = $sensor->parse($last_record->data);
             $packages = $packages->merge(
                 // create a collection from array
                 // @phpstan-ignore method.notFound
-                collect($sensor->parse($last_record->data))
+                collect($array)
                     
                     // create a triplet [package name, device, source]
                     ->map(fn($package) => [
@@ -59,7 +60,6 @@ class InsightsController extends Controller
                 "source" => $label])
             );
         }
-        
         return $packages;
     }
 
