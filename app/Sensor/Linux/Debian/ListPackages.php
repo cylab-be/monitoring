@@ -2,6 +2,8 @@
 
 namespace App\Sensor\Linux\Debian;
 
+use App\SensorConfig;
+
 /**
  * Description of ListPackages
  *
@@ -9,6 +11,15 @@ namespace App\Sensor\Linux\Debian;
  */
 class ListPackages
 {
+    public function config(): SensorConfig
+    {
+        return new SensorConfig(
+            "apt-list-packages",
+            "apt_list",
+            "List installed APT packages"
+        );
+    }
+    
     /**
      * Return an array of packages
      * @param string $data
