@@ -47,10 +47,10 @@ class InsightsController extends Controller
                 continue;
             }
             
+            // @phpstan-ignore method.notFound
             $array = $sensor->parse($last_record->data);
             $packages = $packages->merge(
                 // create a collection from array
-                // @phpstan-ignore method.notFound
                 collect($array)
                     
                     // create a triplet [package name, device, source]
