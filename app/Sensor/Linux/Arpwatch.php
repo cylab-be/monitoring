@@ -104,6 +104,16 @@ class Arpwatch extends Sensor
             fn($neighbor) => \starts_with($neighbor->interface, Ifconfig::PREFIXES_WHITELIST)
         );
         
+        // dedupe: keep the most recent entry per (mac, ip, interface)
+        $latest = [];
+        foreach ($entries as $neighbor) {
+            $key = implode('|', [$neighbor->mac, $neighbor->ip, $neighbor->interface]);
+            if (!isset($latest[$key]) || $neighbor->timestamp > $latest[$key]->timestamp) {
+                $latest[$key] = $neighbor;
+            }
+        }
+        $entries = array_values($latest);
+
         // sort by IP
         usort($entries, fn($n1, $n2) => ip2long($n1->ip) <=> ip2long($n2->ip));
 

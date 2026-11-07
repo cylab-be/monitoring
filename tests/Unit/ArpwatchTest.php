@@ -57,4 +57,24 @@ class ArpwatchTest extends TestCase
         $this->assertEquals([], $this->parse(""));
         $this->assertEquals([], $this->parse("\n  \n"));
     }
+
+    public function testDedupesKeepingMostRecent()
+    {
+        $string = "1c:69:7a:69:8d:82 192.168.178.2 1774096200 wlp194s0\n"
+            . "1c:69:7a:69:8d:82 192.168.178.2 1774096272 wlp194s0\n"
+            . "1c:69:7a:69:8d:82 192.168.178.2 1774096100 wlp194s0\n";
+        $entries = $this->parse($string);
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals(1774096272, $entries[0]->timestamp);
+    }
+
+    public function testKeepsDifferentMacForSameIp()
+    {
+        $string = "1c:69:7a:69:8d:82 192.168.178.2 1774096200 wlp194s0\n"
+            . "c8:2e:18:dc:87:4c 192.168.178.2 1774096272 wlp194s0\n";
+        $entries = $this->parse($string);
+
+        $this->assertCount(2, $entries);
+    }
 }
