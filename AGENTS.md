@@ -8,7 +8,7 @@
 ## Commands
 - **Linting**: Use `vendor/bin/phpcs` (follows PSR2 + custom rules).
 - **Typechecking**: Use `vendor/bin/phpstan` (level 5).
-- **Testing**: Use `vendor/bin/phpunit`.
+- **Testing**: Use `vendor/bin/phpunit` — unit tests can be run directly on the host, no Docker required.
 - **Frontend Build**: `npm run build` (uses `esbuild.mjs`).
 - **Frontend Watch**: `npm run watch`.
 
