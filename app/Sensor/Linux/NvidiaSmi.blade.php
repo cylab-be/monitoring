@@ -64,3 +64,45 @@
         new Chart(ctx, config);
     });
 </script>
+
+<canvas id="nvidia-smi-memory-chart" width='400' height='200'></canvas>
+<script>
+    window.addEventListener('load', function() {
+
+        let ctx = document.getElementById('nvidia-smi-memory-chart').getContext('2d');
+        let config = {
+            type: 'line',
+            data: {
+                datasets: @json($memory_datasets)
+            },
+            options: {
+                legend: {
+                    display: true,
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        display: true,
+                        scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Mem [MiB]'
+                        }
+                    }]
+                },
+                annotation: {
+                    annotations: []
+                }
+            }
+        };
+        new Chart(ctx, config);
+    });
+</script>

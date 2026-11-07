@@ -39,42 +39,45 @@ class NvidiaSmi extends Sensor
         
         // analyze data for last 24h
         $records24h = $record->server->lastRecords("nvidia-smi");
-        $datasets = $this->buildDatasets($records24h);
-        
+        $datasets = $this->buildDatasets($records24h, "utilization_gpu_pct");
+        $memory_datasets = $this->buildDatasets($records24h, "memory_used_mib");
+
         return (new Report())
                 ->setTitle("Nvidia GPUs")
                 ->setHTML(blade(__DIR__ . "/NvidiaSmi.blade.php", [
                     "gpus" => $gpus,
-                    "datasets" => $datasets]))
+                    "datasets" => $datasets,
+                    "memory_datasets" => $memory_datasets]))
                 ->setStatus(Status::ok());
     }
-    
+
     /**
      * Return one dataset for each GPU.
      *
      * @param Collection $records
+     * @param string $metric key returned by parse(), e.g. "utilization_gpu_pct" or "memory_used_mib"
      * @return array<Dataset>
      */
-    public function buildDatasets(Collection $records) : array
+    public function buildDatasets(Collection $records, string $metric) : array
     {
         $datasets = [];
         $palette = new ColorPalette();
-        
+
         /** @var Record $first_record */
         $first_record = $records->first();
         $gpus = $this->parse($first_record->data);
         foreach ($gpus as $gpu) {
             $datasets[$gpu["index"]] = new Dataset($gpu["index"], $palette->next());
         }
-        
+
         foreach ($records as $record) {
             /** @var Record $record */
             $gpus = $this->parse($record->data);
-            
+
             foreach ($gpus as $gpu) {
                 $datasets[$gpu["index"]]->add(new Point(
                     $record->time * 1000,
-                    $gpu["utilization_gpu_pct"]
+                    $gpu[$metric]
                 ));
             }
         }
