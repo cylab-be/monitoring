@@ -14,7 +14,8 @@ final class ArpEntry
         public readonly string $ip,
         public readonly int $timestamp,
         public readonly string $interface,
-        public readonly ?string $vendor = null
+        public readonly ?string $vendor = null,
+        public readonly ?string $name = null
     ) {
     }
 
@@ -32,6 +33,7 @@ final class ArpEntry
             'timestamp'  => $this->timestamp,
             'interface'  => $this->interface,
             'vendor'     => $this->vendor,
+            'name'       => $this->name,
             'seen_at'    => $this->seenAt()->format(DATE_ATOM),
         ];
     }

@@ -44,7 +44,9 @@ class Arpwatch extends Sensor
      * Parse an arpwatch file string into ArpEntry objects.
      *
      * Expected format per line (whitespace-separated):
-     *   <mac> <ip> <unix-timestamp> <interface>
+     *   <mac> <ip> <unix-timestamp> [<device-name>] <interface>
+     *
+     * The device name is optional and may be empty (4-field lines).
      *
      * Blank lines and lines starting with '#' (comments) are ignored.
      *
@@ -74,14 +76,18 @@ class Arpwatch extends Sensor
             // Tokens separated by one or more whitespace chars.
             $parts = preg_split('/\s+/', $line) ?: [];
 
-            if (count($parts) !== 4) {
+            // Device name is optional: 4 fields when empty, 5 otherwise.
+            if (count($parts) === 4) {
+                [$mac, $ip, $ts, $iface] = $parts;
+                $name = null;
+            } elseif (count($parts) === 5) {
+                [$mac, $ip, $ts, $name, $iface] = $parts;
+            } else {
                 throw new \RuntimeException(sprintf(
-                    'Malformed arp line (expected 4 fields): "%s"',
+                    'Malformed arp line (expected 4 or 5 fields): "%s"',
                     $rawLine
                 ));
             }
-
-            [$mac, $ip, $ts, $iface] = $parts;
 
             if (!preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $mac)) {
                 throw new \RuntimeException("Invalid MAC address: \"$mac\"");
@@ -95,7 +101,7 @@ class Arpwatch extends Sensor
             
             $vendor = $vendors->lookup($mac);
 
-            $entries[] = new ArpEntry($mac, $ip, (int) $ts, $iface, $vendor);
+            $entries[] = new ArpEntry($mac, $ip, (int) $ts, $iface, $vendor, $name);
         }
         
         // filter out irrelevant network interfaces
