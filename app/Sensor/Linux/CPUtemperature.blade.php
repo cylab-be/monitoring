@@ -53,6 +53,22 @@
                 }
             }
         };
-        new Chart(ctx, config);
+        let chart = new Chart(ctx, config);
+
+        let cpus = @json($cpus);
+        let crit_values = [...new Set(cpus.map(c => c.critvalue))];
+        for (let value of crit_values) {
+            let annotation = {
+                drawTime: 'afterDraw',
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: value,
+                borderColor: 'red',
+                borderWidth: 2
+            };
+            config.options.annotation.annotations.push(annotation);
+        }
+        chart.update();
     });
 </script>
