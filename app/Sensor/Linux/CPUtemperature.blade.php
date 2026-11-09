@@ -11,14 +11,6 @@
         <td class="text-right"><b> {{ $CPU->value }}</b></td>
         <td class="text-right"><b>{{ $CPU->critvalue }}</b></td>
     </tr>
-    
-    @foreach ($CPU->cores as $core) 
-    <tr>
-        <td>{{ $core->name }}</td>
-        <td class="text-right">{{ $core->value  }}</td>
-        <td class="text-right">{{ $CPU->critvalue }}</td>
-    </tr>
-    @endforeach
 @endforeach
 
 </table>
