@@ -22,6 +22,15 @@ class ArpwatchTest extends TestCase
     public function testParseSampleFile()
     {
         $string = file_get_contents(__DIR__ . "/ArpwatchTest.txt");
+
+        // the sample file is static: bring its timestamps inside the 30-day window
+        $ts1 = time() - 7200;
+        $ts2 = time() - 3600;
+        $string = strtr($string, [
+            "1774096272" => (string) $ts1,
+            "1774096285" => (string) $ts2,
+        ]);
+
         $entries = $this->parse($string);
 
         $this->assertCount(4, $entries);
@@ -29,7 +38,7 @@ class ArpwatchTest extends TestCase
 
         $this->assertEquals("1c:69:7a:69:8d:82", $entries[0]->mac);
         $this->assertEquals("192.168.178.2", $entries[0]->ip);
-        $this->assertEquals(1774096272, $entries[0]->timestamp);
+        $this->assertEquals($ts1, $entries[0]->timestamp);
         $this->assertEquals("wlp194s0", $entries[0]->interface);
 
         // 4-field lines have no device name.
@@ -41,10 +50,10 @@ class ArpwatchTest extends TestCase
 
         $this->assertEquals("48:45:e6:b2:79:7b", $entries[3]->mac);
         $this->assertEquals("192.168.178.180", $entries[3]->ip);
-        $this->assertEquals(1774096272, $entries[3]->timestamp);
+        $this->assertEquals($ts1, $entries[3]->timestamp);
 
         // The seenAt() convenience method must be consistent with the raw timestamp.
-        $this->assertEquals("1774096285", $entries[1]->seenAt()->format("U"));
+        $this->assertEquals((string) $ts2, $entries[1]->seenAt()->format("U"));
     }
 
     public function testIgnoresBlankLinesAndComments()
@@ -52,7 +61,7 @@ class ArpwatchTest extends TestCase
         $string = "# arpwatch sample\n"
             . "\n"
             . "   # indented comment\n"
-            . "1c:69:7a:69:8d:82\t192.168.178.2\t1774096272\twlp194s0\n";
+            . "1c:69:7a:69:8d:82\t192.168.178.2\t" . (time() - 3600) . "\twlp194s0\n";
         $entries = $this->parse($string);
 
         $this->assertCount(1, $entries);
@@ -67,22 +76,35 @@ class ArpwatchTest extends TestCase
 
     public function testDedupesKeepingMostRecent()
     {
-        $string = "1c:69:7a:69:8d:82 192.168.178.2 1774096200 wlp194s0\n"
-            . "1c:69:7a:69:8d:82 192.168.178.2 1774096272 wlp194s0\n"
-            . "1c:69:7a:69:8d:82 192.168.178.2 1774096100 wlp194s0\n";
+        $now = time();
+        $string = "1c:69:7a:69:8d:82 192.168.178.2 " . ($now - 7200) . " wlp194s0\n"
+            . "1c:69:7a:69:8d:82 192.168.178.2 " . ($now - 3600) . " wlp194s0\n"
+            . "1c:69:7a:69:8d:82 192.168.178.2 " . ($now - 5400) . " wlp194s0\n";
         $entries = $this->parse($string);
 
         $this->assertCount(1, $entries);
-        $this->assertEquals(1774096272, $entries[0]->timestamp);
+        $this->assertEquals($now - 3600, $entries[0]->timestamp);
     }
 
     public function testKeepsDifferentMacForSameIp()
     {
-        $string = "1c:69:7a:69:8d:82 192.168.178.2 1774096200 wlp194s0\n"
-            . "c8:2e:18:dc:87:4c 192.168.178.2 1774096272 wlp194s0\n";
+        $now = time();
+        $string = "1c:69:7a:69:8d:82 192.168.178.2 " . ($now - 7200) . " wlp194s0\n"
+            . "c8:2e:18:dc:87:4c 192.168.178.2 " . ($now - 3600) . " wlp194s0\n";
         $entries = $this->parse($string);
 
         $this->assertCount(2, $entries);
+    }
+
+    public function testFiltersOutEntriesOlderThan30Days()
+    {
+        $now = time();
+        $string = "1c:69:7a:69:8d:82 192.168.178.2 " . ($now - 3600) . " wlp194s0\n"
+            . "48:45:e6:b2:79:7b 192.168.178.180 " . ($now - 31 * 24 * 3600) . " wlp194s0\n";
+        $entries = $this->parse($string);
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals("192.168.178.2", $entries[0]->ip);
     }
 
     public function testMalformedLineThrows()

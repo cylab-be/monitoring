@@ -50,8 +50,8 @@ class Arpwatch extends Sensor
      *
      * Blank lines and lines starting with '#' (comments) are ignored.
      *
-     * Returns only entries on whitelisted interfaces, vendor-enriched and
-     * sorted by IP.
+     * Returns only entries on whitelisted interfaces that are not older
+     * than 30 days, vendor-enriched and sorted by IP.
      *
      * @param string $data
      * @return ArpEntry[]
@@ -108,6 +108,12 @@ class Arpwatch extends Sensor
         $entries = array_filter(
             $entries,
             fn($neighbor) => \starts_with($neighbor->interface, Ifconfig::PREFIXES_WHITELIST)
+        );
+
+        // filter out entries older than 30 days
+        $entries = array_filter(
+            $entries,
+            fn($neighbor) => $neighbor->timestamp > time() - 30 * 24 * 3600
         );
         
         // dedupe: keep the most recent entry per (mac, ip, interface)
