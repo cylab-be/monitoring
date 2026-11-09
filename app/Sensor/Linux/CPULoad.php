@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Sensor;
+namespace App\Sensor\Linux;
 
 use App\Sensor;
+use App\Sensor\Dataset;
+use App\Sensor\Point;
+
 use App\SensorConfig;
 use App\Status;
 use App\Report;
@@ -15,14 +18,15 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @author tibo
  */
-class LoadAvg extends Sensor
+class CPULoad extends Sensor
 {
     public function config(): SensorConfig
     {
         return new SensorConfig(
             "loadavg",
             "loadavg",
-            "Parse /proc/loadavg to check CPU load"
+            "Parse /proc/loadavg to check CPU load",
+            ["loadavg" => "cat /proc/loadavg"]
         );
     }
     
@@ -47,7 +51,7 @@ class LoadAvg extends Sensor
                 ->max();
 
         $report = (new Report())->setTitle("CPU : Load");
-        $report->setHTML(view("agent.loadavg", [
+        $report->setHTML(blade(__DIR__ . '/CPULoad.blade.php', [
             "current_load" => $current_load,
             "warning_threshold" => $warning_threshold,
             "error_threshold" => $error_threshold,

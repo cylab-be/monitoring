@@ -4,7 +4,6 @@ $VERSION = "0.0.15";
 
 // Define the commands to run
 $COMMANDS = [
-    "loadavg" => "cat /proc/loadavg",
     "disks" => "df",
     "inodes" => "df -i",
     "iostat" => "iostat -x 2 2",

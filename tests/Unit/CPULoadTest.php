@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\Record;
 use App\Sensor\Dataset;
-use App\Sensor\LoadAvg;
 use App\Sensor\Point;
+use App\Sensor\Linux\CPULoad;
 
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 
@@ -16,7 +16,7 @@ use Tests\TestCase;
  *
  * @author tibo
  */
-class LoadAvgTest extends TestCase
+class CPULoadTest extends TestCase
 {
     private function record(int $time, string $data) : Record
     {
@@ -28,13 +28,13 @@ class LoadAvgTest extends TestCase
 
     public function testParseSampleFile()
     {
-        $string = file_get_contents(__DIR__ . "/loadavg");
-        $this->assertEquals(0.87, (new LoadAvg())->parse($string));
+        $string = file_get_contents(__DIR__ . "/CPULoadTest.txt");
+        $this->assertEquals(0.87, (new CPULoad())->parse($string));
     }
 
     public function testParse()
     {
-        $sensor = new LoadAvg();
+        $sensor = new CPULoad();
 
         $this->assertEquals(0.87, $sensor->parse("0.87 1.06 1.01 1/1450 39621"));
         $this->assertEquals(10.5, $sensor->parse("10.50 1.06 1.01 1/1450 39621"));
@@ -47,7 +47,7 @@ class LoadAvgTest extends TestCase
             $this->record(1700003600, "2.50 1.06 1.01"),
         ]);
 
-        $dataset = (new LoadAvg())->loadPoints($records);
+        $dataset = (new CPULoad())->loadPoints($records);
 
         $this->assertInstanceOf(Dataset::class, $dataset);
         $this->assertEquals("Load", $dataset->label);
