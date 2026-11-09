@@ -107,4 +107,6 @@ Route::middleware(['auth'])
                 ->name("insights.packages");
         Route::get("organizations/{organization}/insights/stacks", 'InsightsController@stacks')
                 ->name("insights.stacks");
+        Route::get("organizations/{organization}/insights/neighbors", 'InsightsController@neighbors')
+                ->name("insights.neighbors");
     });

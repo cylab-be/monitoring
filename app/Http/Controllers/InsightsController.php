@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Organization;
 use App\Server;
+use App\Sensor\Linux\ArpEntry;
+use App\Sensor\Linux\Arpwatch;
 
 use Illuminate\Support\Collection;
 
@@ -89,5 +91,60 @@ class InsightsController extends Controller
             "organization" => $organization,
             "stacks" => $stacks->sortBy('Name')
         ]);
+    }
+
+    /**
+     * List the network neighbors detected by arpwatch.
+     *
+     * @param Organization $organization
+     */
+    public function neighbors(Organization $organization)
+    {
+        // create an empty collection
+        $neighbors = collect();
+
+        // index the known devices by their addresses: ip => server
+        $known = [];
+        foreach ($organization->servers as $server) {
+            foreach ($server->addresses() as $address) {
+                $known[$address] = $server;
+            }
+        }
+
+        $sensor = new Arpwatch;
+
+        foreach ($organization->servers as $device) {
+            $last_record = $device->lastRecord("arpwatch");
+            if (is_null($last_record)) {
+                continue;
+            }
+
+            try {
+                $entries = $sensor->parse($last_record->data);
+            } catch (\RuntimeException) {
+                // skip devices with malformed arpwatch data
+                continue;
+            }
+
+            $neighbors = $neighbors->merge(
+                collect($entries)
+
+                    // create a row [ip, mac, vendor, ...] with the owning device
+                    ->map(fn(ArpEntry $entry) => [
+                        "ip" => $entry->ip,
+                        "mac" => $entry->mac,
+                        "vendor" => $entry->vendor,
+                        "name" => $entry->name,
+                        "interface" => $entry->interface,
+                        "seen_at" => $entry->seenAt()->format("Y-m-d H:i:s"),
+                        "device" => $device,
+                        "known_device" => $known[$entry->ip] ?? null,
+                    ])
+            );
+        }
+
+        return view("insights.neighbors", [
+            "organization" => $organization,
+            "neighbors" => $neighbors->sortBy(fn($n) => ip2long($n["ip"]))->all()]);
     }
 }

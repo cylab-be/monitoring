@@ -72,6 +72,10 @@
                    href="{{ route("insights.stacks", ["organization" => $organization]) }}">
                     Docker Stacks
                 </a>
+                <a class="dropdown-item"
+                   href="{{ route("insights.neighbors", ["organization" => $organization]) }}">
+                    Network Neighbors
+                </a>
                 <!--
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a>
