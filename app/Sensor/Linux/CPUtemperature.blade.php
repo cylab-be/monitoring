@@ -14,3 +14,45 @@
 @endforeach
 
 </table>
+
+<canvas id="cpu-temperature-chart" width='400' height='200'></canvas>
+<script>
+    window.addEventListener('load', function() {
+
+        let ctx = document.getElementById('cpu-temperature-chart').getContext('2d');
+        let config = {
+            type: 'line',
+            data: {
+                datasets: @json($datasets)
+            },
+            options: {
+                legend: {
+                    display: true,
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        display: true,
+                        scaleLabel: {
+                                display: true,
+                                labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature [°C]'
+                        }
+                    }]
+                },
+                annotation: {
+                    annotations: []
+                }
+            }
+        };
+        new Chart(ctx, config);
+    });
+</script>

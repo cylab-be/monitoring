@@ -8,6 +8,12 @@ use App\Status;
 use App\Report;
 use App\Record;
 
+use App\Sensor\Dataset;
+use App\Sensor\Point;
+use App\Sensor\ColorPalette;
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
      * Description of Update
  *
@@ -37,10 +43,50 @@ class CPUtemperature extends Sensor
         $report = (new Report())->setTitle("CPU : Temperature");
 
         $cpus = $this->parse($record->data);
-        $report->setHTML(blade(__DIR__ . "/CPUtemperature.blade.php", ["cpus" => $cpus]));
+
+        // analyze data for last 24h
+        $records24h = $record->server->lastRecords("cpu_temperature");
+        $datasets = $this->buildDatasets($records24h);
+
+        $report->setHTML(blade(__DIR__ . "/CPUtemperature.blade.php", [
+            "cpus" => $cpus,
+            "datasets" => $datasets
+        ]));
         $report->setStatus(Status::max($cpus));
 
         return $report;
+    }
+
+    /**
+     * Return one dataset per CPU package.
+     *
+     * @param Collection $records
+     * @return array<Dataset>
+     */
+    public function buildDatasets(Collection $records) : array
+    {
+        $datasets = [];
+        $palette = new ColorPalette();
+
+        /** @var Record $first_record */
+        $first_record = $records->first();
+        $cpus = $this->parse($first_record->data);
+        foreach ($cpus as $cpu) {
+            $datasets[$cpu->name] = new Dataset("CPU " . $cpu->name, $palette->next());
+        }
+
+        foreach ($records as $record) {
+            /** @var Record $record */
+            $cpus = $this->parse($record->data);
+
+            foreach ($cpus as $cpu) {
+                $datasets[$cpu->name]->add(new Point(
+                    $record->time * 1000,
+                    $cpu->value
+                ));
+            }
+        }
+        return $datasets;
     }
 
     public function parse(string $string)
