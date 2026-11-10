@@ -47,7 +47,8 @@ Route::middleware(['auth'])
         // organizations
         Route::resource('organizations', 'OrganizationController');
         
-        Route::put('organizations/{organization}/installation', 'OrganizationController@updateInstallation');
+        Route::put('organizations/{organization}/installation', 'OrganizationController@updateInstallation')
+                ->name("organizations.installation");
         
         Route::get('organizations/{organization}/dashboard', 'OrganizationController@dashboard')
                 ->name("organizations.dashboard");
