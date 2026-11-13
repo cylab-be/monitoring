@@ -38,8 +38,7 @@ test:php83:
 test:dependencies:
   image: cylab/php:8.3
   script:
-    # in cylab/php:7.4, security-checker is already installed...
-    - ~/.composer/vendor/bin/security-checker security:check composer.lock
+    - composer audit --locked
 
 test:gitleaks:
   stage: test
@@ -52,7 +51,7 @@ test:gitleaks:
     # with recent git versions
     - git config --global --add safe.directory $CI_PROJECT_DIR
     - gitleaks detect -v -c gitleaks.toml ./
-    
+
 test:npm-audit:
   stage: test
   image: node:22-alpine
