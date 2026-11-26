@@ -30,8 +30,8 @@ class CPULoad extends Sensor
         );
     }
     
-    const WARNING_THRESHOLD = 2;
-    const ERROR_THRESHOLD = 4;
+    const WARNING_THRESHOLD = 10;
+    const ERROR_THRESHOLD = 20;
 
 
     public function analyze(Record $record): Report
