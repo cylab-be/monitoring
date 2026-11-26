@@ -30,6 +30,7 @@ class CPULoad extends Sensor
         );
     }
     
+    // Warning and error coefficient are high on purpose as load is not an indicator of CPU usage...
     const WARNING_THRESHOLD = 10;
     const ERROR_THRESHOLD = 20;
 
